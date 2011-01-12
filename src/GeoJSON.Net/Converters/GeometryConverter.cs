@@ -15,6 +15,7 @@ namespace GeoJSON.Net.Converters
 
     using GeoJSON.Net;
     using GeoJSON.Net.Exceptions;
+    using GeoJSON.Net.Geometry;
 
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;

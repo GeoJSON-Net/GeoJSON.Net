@@ -12,6 +12,7 @@ namespace GeoJSON.Net
     using System.Collections.Generic;
 
     using GeoJSON.Net.Converters;
+    using GeoJSON.Net.Geometry;
 
     using Newtonsoft.Json;
 

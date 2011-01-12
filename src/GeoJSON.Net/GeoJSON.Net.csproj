@@ -39,11 +39,13 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\PointsConverter.cs" />
     <Compile Include="Converters\GeometryConverter.cs" />
     <Compile Include="Converters\MultiPolygonConverter.cs" />
     <Compile Include="Converters\PositionConverter.cs" />
     <Compile Include="Converters\PolygonConverter.cs" />
     <Compile Include="Converters\TimestampConverter.cs" />
+    <Compile Include="Geometry\MultiPoint.cs" />
     <Compile Include="Geometry\GeometryType.cs" />
     <Compile Include="Position.cs" />
     <Compile Include="Exceptions\ParsingException.cs" />

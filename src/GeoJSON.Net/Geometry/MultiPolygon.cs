@@ -11,6 +11,8 @@ namespace GeoJSON.Net
 {
     using System.Collections.Generic;
 
+    using GeoJSON.Net.Geometry;
+
     /// <summary>
     /// Defines the MultiPolygon type.
     /// </summary>
