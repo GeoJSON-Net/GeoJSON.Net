@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GeoJSONType.cs" company="Jörg Battermann">
+// <copyright file="GeoJSONObjectType.cs" company="Jörg Battermann">
 //   Copyright © Jörg Battermann 2011
 // </copyright>
 // <summary>
@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace GeoJSON.Net.Geometry
+namespace GeoJSON.Net
 {
     using System;
 
@@ -15,7 +15,7 @@ namespace GeoJSON.Net.Geometry
     /// Defines the GeoJSON Objects types as defined in the <see cref="http://geojson.org/geojson-spec.html#geojson-objects">geojson.org v1.0 spec</see>.
     /// </summary>
     [Flags]
-    public enum GeometryType
+    public enum GeoJSONObjectType
     {
         /// <summary>
         /// Defines the <see cref="http://geojson.org/geojson-spec.html#point">Point</see> type.
@@ -50,6 +50,16 @@ namespace GeoJSON.Net.Geometry
         /// <summary>
         /// Defines the <see cref="http://geojson.org/geojson-spec.html#geometry-collection">GeometryCollection</see> type.
         /// </summary>
-        GeometryCollection
+        GeometryCollection,
+
+        /// <summary>
+        /// Defines the <see cref="http://geojson.org/geojson-spec.html#feature-objects">Feature</see> type.
+        /// </summary>
+        Feature,
+
+        /// <summary>
+        /// Defines the <see cref="http://geojson.org/geojson-spec.html#feature-collection-objects">FeatureCollection</see> type.
+        /// </summary>
+        FeatureCollection
     }
 }

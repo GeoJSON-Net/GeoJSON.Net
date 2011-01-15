@@ -1,26 +1,22 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IGeometry.cs" company="Jörg Battermann">
+// <copyright file="ICRSObject.cs" company="Jörg Battermann">
 //   Copyright © Jörg Battermann 2011
 // </copyright>
 // <summary>
-//   Defines the IGeometry type.
+//   Base Interface for CRSBase Object types.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace GeoJSON.Net.Geometry
+namespace GeoJSON.Net.CoordinateReferenceSystem
 {
-    using Newtonsoft.Json;
-
     /// <summary>
-    /// Base Interface for Geometry types.
+    /// Base Interface for CRSBase Object types.
     /// </summary>
-    [JsonObject(MemberSerialization.OptIn)]
-    public interface IGeometry
+    public interface ICRSObject
     {
         /// <summary>
-        /// Gets the type of the Geometry object.
+        /// Gets the CRS type.
         /// </summary>
-        [JsonProperty(PropertyName = "type")]
-        GeometryType Type { get; }
+        CRSType Type { get; }
     }
 }

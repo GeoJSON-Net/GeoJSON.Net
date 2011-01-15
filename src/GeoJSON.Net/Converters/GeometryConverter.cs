@@ -25,7 +25,7 @@ namespace GeoJSON.Net.Converters
     using SimpleGeo.Net.Helpers.Json.Converters;
 
     /// <summary>
-    /// Defines the Geometry type. Converts to/from a SimpleGeo 'geometry' field
+    /// Defines the GeometryObject type. Converts to/from a SimpleGeo 'geometry' field
     /// </summary>
     public class GeometryConverter : JsonConverter
     {
@@ -88,7 +88,7 @@ namespace GeoJSON.Net.Converters
 
                     if (parsingErrors.Any())
                     {
-                        throw new AggregateException("Error Parsing Geometry.", parsingErrors);
+                        throw new AggregateException("Error Parsing GeometryObject.", parsingErrors);
                     }
 
                     return point;
@@ -108,7 +108,7 @@ namespace GeoJSON.Net.Converters
 
                     if (parsingErrors.Any())
                     {
-                        throw new AggregateException("Error parsing Geometry.", parsingErrors);
+                        throw new AggregateException("Error parsing GeometryObject.", parsingErrors);
                     }
 
                     return polygon;
@@ -129,7 +129,7 @@ namespace GeoJSON.Net.Converters
 
                     if (parsingErrors.Any())
                     {
-                        throw new AggregateException("Error parsing Geometry.", parsingErrors);
+                        throw new AggregateException("Error parsing GeometryObject.", parsingErrors);
                     }
 
                     return multiPolygon;
@@ -149,10 +149,10 @@ namespace GeoJSON.Net.Converters
         {
             if (objectType.IsInterface)
             {
-                return objectType == typeof(IGeometry);
+                return objectType == typeof(IGeometryObject);
             }
 
-            return objectType.GetInterface(typeof(IGeometry).Name, true) != null;
+            return objectType.GetInterface(typeof(IGeometryObject).Name, true) != null;
         }
     }
 }

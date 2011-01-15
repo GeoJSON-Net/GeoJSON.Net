@@ -13,6 +13,7 @@ namespace SimpleGeo.Net.Helpers.Json.Converters
 
     using GeoJSON.Net;
     using GeoJSON.Net.Exceptions;
+    using GeoJSON.Net.Geometry;
 
     using Newtonsoft.Json;
 

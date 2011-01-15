@@ -7,12 +7,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace GeoJSON.Net
+namespace GeoJSON.Net.Geometry
 {
-    using System;
     using System.Collections.Generic;
 
-    using GeoJSON.Net.Geometry;
+    using Newtonsoft.Json;
 
     /// <summary>
     /// Coordinates of a Polygon are a list of LinearRing coordinate arrays.
@@ -20,7 +19,7 @@ namespace GeoJSON.Net
     /// Any subsequent elements represent interior rings (or holes).
     /// </summary>
     /// <seealso cref="http://geojson.org/geojson-spec.html#polygon"/>
-    public class Polygon : IGeometry
+    public class Polygon : GeoJSONObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Polygon"/> class.

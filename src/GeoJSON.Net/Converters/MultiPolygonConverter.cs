@@ -16,6 +16,7 @@ namespace SimpleGeo.Net.Helpers.Json.Converters
     using GeoJSON.Net;
     using GeoJSON.Net.Converters;
     using GeoJSON.Net.Exceptions;
+    using GeoJSON.Net.Geometry;
 
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
@@ -69,7 +70,7 @@ namespace SimpleGeo.Net.Helpers.Json.Converters
 
             if (parsingErrors.Any())
             {
-                throw new AggregateException("Error parsing Geometry.", parsingErrors);
+                throw new AggregateException("Error parsing GeometryObject.", parsingErrors);
             }
 
             return new MultiPolygon(polygons);

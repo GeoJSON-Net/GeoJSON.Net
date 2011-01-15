@@ -7,13 +7,11 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace GeoJSON.Net
+namespace GeoJSON.Net.Geometry
 {
-    using System;
     using System.Collections.Generic;
 
     using GeoJSON.Net.Converters;
-    using GeoJSON.Net.Geometry;
 
     using Newtonsoft.Json;
 
@@ -21,44 +19,24 @@ namespace GeoJSON.Net
     /// Contains an array of <see cref="Point"/>s.
     /// </summary>
     /// <seealso cref="http://geojson.org/geojson-spec.html#multipoint"/>
-    [JsonObject(MemberSerialization.OptIn)]
-    public class MultiPoint : IGeometry
+    public class MultiPoint : GeoJSONObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MultiPoint"/> class.
         /// </summary>
-        /// <param name="points">The points.</param>
-        public MultiPoint(List<Point> points)
-            : this()
+        /// <param name="coordinates">The coordinates.</param>
+        public MultiPoint(List<Point> coordinates = null)
         {
-            if (points == null)
-            {
-                throw new ArgumentNullException("points");
-            }
-
-            this.Points = points;
-        }
-
-        /// <summary>
-        /// Prevents a default instance of the <see cref="MultiPoint"/> class from being created.
-        /// </summary>
-        private MultiPoint()
-        {
-            this.Points = new List<Point>();
-            this.Type = GeometryType.MultiPoint;
+            this.Coordinates = coordinates ?? new List<Point>();
+            this.Type = GeoJSONObjectType.MultiPoint;
         }
         
         /// <summary>
-        /// Gets the type of the Geometry object.
+        /// Gets the Coordinates.
         /// </summary>
-        public GeometryType Type { get; private set; }
-
-        /// <summary>
-        /// Gets the Points.
-        /// </summary>
-        /// <value>The Points.</value>
-        [JsonProperty(PropertyName = "coordinates")]
+        /// <value>The Coordinates.</value>
+        [JsonProperty(PropertyName = "coordinates", Required = Required.Always)]
         [JsonConverter(typeof(PointsConverter))]
-        public List<Point> Points { get; private set; }
+        public List<Point> Coordinates { get; private set; }
     }
 }

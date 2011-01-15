@@ -7,16 +7,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace GeoJSON.Net
+namespace GeoJSON.Net.Geometry
 {
     using System.Collections.Generic;
-
-    using GeoJSON.Net.Geometry;
 
     /// <summary>
     /// Defines the MultiPolygon type.
     /// </summary>
-    public class MultiPolygon : IGeometry
+    public class MultiPolygon : GeoJSONObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MultiPolygon"/> class.
@@ -24,7 +22,7 @@ namespace GeoJSON.Net
         /// <param name="polygons">The polygons contained in this MultiPolygon.</param>
         public MultiPolygon(List<Polygon> polygons = null)
         {
-            this.Type = GeometryType.MultiPolygon;
+            this.Type = GeoJSONObjectType.MultiPolygon;
             this.Polygons = polygons ?? new List<Polygon>();
         }
 
@@ -32,10 +30,5 @@ namespace GeoJSON.Net
         /// Gets the list of points Polygons enclosed in this MultiPolygon.
         /// </summary>
         public List<Polygon> Polygons { get; private set; }
-
-        /// <summary>
-        /// Gets the type of the Geometry object.
-        /// </summary>
-        public GeometryType Type { get; private set; }
     }
 }

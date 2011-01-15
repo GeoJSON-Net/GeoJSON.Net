@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace GeoJSON.Net
+namespace GeoJSON.Net.Feature
 {
     using System.Collections.Generic;
 
@@ -22,40 +22,28 @@ namespace GeoJSON.Net
     /// <seealso cref="http://simplegeo.com/docs/getting-started/simplegeo-101#feature"/>
     /// <seealso cref="http://simplegeo.com/docs/api-endpoints/simplegeo-features"/>
     /// <seealso cref="http://developers.simplegeo.com/blog/2010/12/08/simplegeo-features-api/"/>
-    [JsonObject(MemberSerialization.OptIn)]
-    public class Feature
+    public class Feature : GeoJSONObject
     {
         /// <summary>
-        /// Gets the <see cref="Handle"/>.
+        /// Gets the <see cref="id"/>.
         /// </summary>
         /// <value>The handle.</value>
         [JsonProperty(PropertyName = "id")]
-        [JsonConverter(typeof(FeatureIdToHandleConverter))]
-        public Handle Handle { get; private set; }
+        public string Id { get; private set; }
 
         /// <summary>
         /// Gets the geometry.
         /// </summary>
         /// <value>The geometry.</value>
-        [JsonProperty(PropertyName = "geometry")]
+        [JsonProperty(PropertyName = "geometry", Required = Required.AllowNull)]
         [JsonConverter(typeof(GeometryConverter))]
-        public IGeometry Geometry { get; private set; }
+        public IGeometryObject GeometryObject { get; private set; }
         
         /// <summary>
         /// Gets the properties.
         /// </summary>
         /// <value>The properties.</value>
-        [JsonProperty(PropertyName = "properties")]
+        [JsonProperty(PropertyName = "properties", Required = Required.AllowNull)]
         public Dictionary<string, object> Properties { get; private set; }
-        
-        /// <summary>
-        /// Gets the URL.
-        /// </summary>
-        /// <param name="client">The client.</param>
-        /// <returns>Full Url of this Feature</returns>
-        public string GetUrl(Client client)
-        {
-            return string.Format("{0}/{1}/features/{2}.json", client.Authority, client.VersionPath, this.Handle);
-        }
     }
 }

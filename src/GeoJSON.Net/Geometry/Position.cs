@@ -7,7 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace GeoJSON.Net
+namespace GeoJSON.Net.Geometry
 {
     using System;
     using System.Globalization;
