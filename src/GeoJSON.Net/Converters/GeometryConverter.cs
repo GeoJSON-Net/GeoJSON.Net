@@ -13,16 +13,12 @@ namespace GeoJSON.Net.Converters
     using System.Collections.Generic;
     using System.Linq;
 
-    using GeoJSON.Net;
     using GeoJSON.Net.Exceptions;
     using GeoJSON.Net.Geometry;
 
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
     using Newtonsoft.Json.Serialization;
-
-    using SimpleGeo.Net;
-    using SimpleGeo.Net.Helpers.Json.Converters;
 
     /// <summary>
     /// Defines the GeometryObject type. Converts to/from a SimpleGeo 'geometry' field

@@ -21,8 +21,6 @@ namespace GeoJSON.Net.Converters
     using Newtonsoft.Json.Linq;
     using Newtonsoft.Json.Serialization;
 
-    using SimpleGeo.Net.Helpers.Json.Converters;
-
     /// <summary>
     /// Converter to read and write the <see cref="MultiPolygon" /> type.
     /// </summary>

@@ -7,12 +7,10 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace GeoJSON.Net
+namespace GeoJSON.Net.Geometry
 {
     using System;
     using System.Collections.Generic;
-
-    using GeoJSON.Net.Geometry;
 
     using Newtonsoft.Json;
 
@@ -62,3 +60,4 @@ namespace GeoJSON.Net
         }
     }
 }
+ 

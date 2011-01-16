@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\GeoJSON.Net.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,10 +30,12 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\GeoJSON.Net.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\libs\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=4.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dependencies\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -44,9 +47,11 @@
     <Compile Include="Converters\MultiPolygonConverter.cs" />
     <Compile Include="Converters\PositionConverter.cs" />
     <Compile Include="Converters\PolygonConverter.cs" />
-    <Compile Include="Converters\TimestampConverter.cs" />
+    <Compile Include="CoordinateReferenceSystem\LinkedCRS.cs" />
     <Compile Include="CoordinateReferenceSystem\CRSBase.cs" />
     <Compile Include="CoordinateReferenceSystem\CRSType.cs" />
+    <Compile Include="CoordinateReferenceSystem\ICRSObject.cs" />
+    <Compile Include="CoordinateReferenceSystem\NamedCRS.cs" />
     <Compile Include="GeoJSONObject.cs" />
     <Compile Include="Geometry\GeometryType.cs" />
     <Compile Include="Geometry\LineString.cs" />
@@ -60,6 +65,7 @@
     <Compile Include="Geometry\MultiPolygon.cs" />
     <Compile Include="Geometry\Point.cs" />
     <Compile Include="Geometry\Polygon.cs" />
+    <Compile Include="IGeoJSONObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

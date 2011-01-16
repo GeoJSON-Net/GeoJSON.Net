@@ -7,14 +7,12 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace SimpleGeo.Net.Helpers.Json.Converters
+namespace GeoJSON.Net.Converters
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
 
-    using GeoJSON.Net;
-    using GeoJSON.Net.Converters;
     using GeoJSON.Net.Exceptions;
     using GeoJSON.Net.Geometry;
 
