@@ -17,27 +17,39 @@ namespace GeoJSON.Net.Feature
     using Newtonsoft.Json;
 
     /// <summary>
-    /// The Features endpoint provides details for all SimpleGeo features.
+    /// A GeoJSON <see cref="http://geojson.org/geojson-spec.html#feature-objects">Feature Object</see>.
     /// </summary>
-    /// <seealso cref="http://simplegeo.com/docs/getting-started/simplegeo-101#feature"/>
-    /// <seealso cref="http://simplegeo.com/docs/api-endpoints/simplegeo-features"/>
-    /// <seealso cref="http://developers.simplegeo.com/blog/2010/12/08/simplegeo-features-api/"/>
     public class Feature : GeoJSONObject
     {
         /// <summary>
-        /// Gets the <see cref="id"/>.
+        /// Initializes a new instance of the <see cref="Feature"/> class.
+        /// </summary>
+        /// <param name="geometry">The Geometry Object.</param>
+        /// <param name="properties">The properties.</param>
+        public Feature(IGeometryObject geometry, Dictionary<string, object> properties = null)
+        {
+            this.Geometry = geometry;
+            this.Properties = properties;
+
+            this.Type = GeoJSONObjectType.Feature;
+        }
+
+        /// <summary>
+        /// Gets or sets the id.
         /// </summary>
         /// <value>The handle.</value>
         [JsonProperty(PropertyName = "id")]
-        public string Id { get; private set; }
+        public string Id { get; set; }
 
         /// <summary>
-        /// Gets the geometry.
+        /// Gets or sets the geometry.
         /// </summary>
-        /// <value>The geometry.</value>
+        /// <value>
+        /// The geometry.
+        /// </value>
         [JsonProperty(PropertyName = "geometry", Required = Required.AllowNull)]
         [JsonConverter(typeof(GeometryConverter))]
-        public IGeometryObject GeometryObject { get; private set; }
+        public IGeometryObject Geometry { get; set; }
         
         /// <summary>
         /// Gets the properties.

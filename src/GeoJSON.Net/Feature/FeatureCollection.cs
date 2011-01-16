@@ -16,13 +16,24 @@ namespace GeoJSON.Net.Feature
     /// <summary>
     /// Defines the FeatureCollection type.
     /// </summary>
-    public class FeatureCollection : Feature
+    public class FeatureCollection : GeoJSONObject
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FeatureCollection"/> class.
+        /// </summary>
+        /// <param name="features">The features.</param>
+        public FeatureCollection(List<Feature> features)
+        {
+            this.Features = features;
+
+            this.Type = GeoJSONObjectType.FeatureCollection;
+        }
+
         /// <summary>
         /// Gets the features.
         /// </summary>
         /// <value>The features.</value>
-        [JsonProperty(PropertyName = "feature", Required = Required.Always)]
+        [JsonProperty(PropertyName = "features", Required = Required.Always)]
         public List<Feature> Features { get; private set; }
     }
 }
