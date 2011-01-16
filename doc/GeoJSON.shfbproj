@@ -29,10 +29,10 @@
     <FeedbackEMailAddress>jb%40joergbattermann.com</FeedbackEMailAddress>
     <FeedbackEMailLinkText>Joerg Battermann</FeedbackEMailLinkText>
     <CopyrightHref>https://github.com/jbattermann/GeoJSON.Net/blob/master/LICENSE</CopyrightHref>
-    <CopyrightText>Copyright %28c%29 2011, J&amp;#246%3brg Battermann</CopyrightText>
+    <CopyrightText>Copyright %28c%29 2011, Joerg Battermann</CopyrightText>
     <MissingTags>Summary, Parameter, Returns, AutoDocumentCtors, TypeParameter, AutoDocumentDispose</MissingTags>
     <KeepLogFile>False</KeepLogFile>
-    <ProjectSummary>.Net library for GeoJSON types &amp;amp%3b corresponding Json.Net %28de%29serializers.</ProjectSummary>
+    <ProjectSummary>.Net library for GeoJSON types and corresponding Json.Net %28de%29serializers.</ProjectSummary>
   </PropertyGroup>
   <!-- There are no properties for these groups.  AnyCPU needs to appear in
        order for Visual Studio to perform the build.  The others are optional

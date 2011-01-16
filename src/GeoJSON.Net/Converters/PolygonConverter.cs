@@ -10,16 +10,10 @@
 namespace GeoJSON.Net.Converters
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
 
-    using GeoJSON.Net;
-    using GeoJSON.Net.Exceptions;
     using GeoJSON.Net.Geometry;
 
     using Newtonsoft.Json;
-    using Newtonsoft.Json.Linq;
-    using Newtonsoft.Json.Serialization;
 
     /// <summary>
     /// Converter to read and write the <see cref="MultiPolygon" /> type.
@@ -45,35 +39,8 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            var pointsArray = (JArray)serializer.Deserialize(reader);
-
-            if (pointsArray == null || pointsArray.Count != 1)
-            {
-                throw new ParsingException("Polygon geometry coordinates could not be parsed.");
-            }
-
-            var points = new List<Point>();
-            var parsingErrors = new List<Exception>();
-
-            var polygonDeserializerSettings = new JsonSerializerSettings
-            {
-                Error = delegate(object sender, ErrorEventArgs args)
-                {
-                    parsingErrors.Add(args.ErrorContext.Error);
-                    args.ErrorContext.Handled = true;
-                },
-                Converters = { new PositionConverter() }
-            };
-            points.AddRange(JsonConvert.DeserializeObject<List<Point>>(
-                pointsArray.First.ToString(),
-                polygonDeserializerSettings));
-
-            if (parsingErrors.Any())
-            {
-                throw new AggregateException("Error parsing GeometryObject.", parsingErrors);
-            }
-
-            return new Polygon(points);
+            // ToDo: implement
+            throw new NotImplementedException();
         }
 
         /// <summary>

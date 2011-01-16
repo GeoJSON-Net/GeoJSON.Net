@@ -12,6 +12,8 @@ namespace GeoJSON.Net.Geometry
     using System;
     using System.Collections.Generic;
 
+    using GeoJSON.Net.Converters;
+
     using Newtonsoft.Json;
 
     /// <summary>
@@ -46,6 +48,7 @@ namespace GeoJSON.Net.Geometry
         /// </summary>
         /// <value>The Positions.</value>
         [JsonProperty(PropertyName = "coordinates", Required = Required.Always)]
+        [JsonConverter(typeof(PositionConverter))]
         public List<Position> Coordinates { get; private set; }
 
         /// <summary>
@@ -56,7 +59,18 @@ namespace GeoJSON.Net.Geometry
         /// </returns>
         public bool IsLinearRing()
         {
-            return this.Coordinates.Count >= 4 && this.Coordinates[0].Equals(this.Coordinates[this.Coordinates.Count - 1]);
+            return this.Coordinates.Count >= 4 && this.IsClosed();
+        }
+
+        /// <summary>
+        /// Determines whether this instance has its first and last coordinate at the same position and thereby is closed.
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if this instance is closed; otherwise, <c>false</c>.
+        /// </returns>
+        public bool IsClosed()
+        {
+            return this.Coordinates[0].Equals(this.Coordinates[this.Coordinates.Count - 1]);
         }
     }
 }

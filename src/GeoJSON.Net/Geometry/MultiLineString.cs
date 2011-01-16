@@ -19,16 +19,16 @@ namespace GeoJSON.Net.Geometry
     /// Contains an array of <see cref="Point"/>s.
     /// </summary>
     /// <seealso cref="http://geojson.org/geojson-spec.html#multipoint"/>
-    public class MultiPoint : GeoJSONObject
+    public class MultiLineString : GeoJSONObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MultiPoint"/> class.
+        /// Initializes a new instance of the <see cref="MultiLineString"/> class.
         /// </summary>
         /// <param name="coordinates">The coordinates.</param>
-        public MultiPoint(List<Point> coordinates = null)
+        public MultiLineString(List<LineString> coordinates)
         {
-            this.Coordinates = coordinates ?? new List<Point>();
-            this.Type = GeoJSONObjectType.MultiPoint;
+            this.Coordinates = coordinates ?? new List<LineString>();
+            this.Type = GeoJSONObjectType.MultiLineString;
         }
         
         /// <summary>
@@ -36,6 +36,6 @@ namespace GeoJSON.Net.Geometry
         /// </summary>
         /// <value>The Coordinates.</value>
         [JsonProperty(PropertyName = "coordinates", Required = Required.Always)]
-        public List<Point> Coordinates { get; private set; }
+        public List<LineString> Coordinates { get; private set; }
     }
 }

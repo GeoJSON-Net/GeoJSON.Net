@@ -9,14 +9,18 @@
 
 namespace GeoJSON.Net.Geometry
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
+
+    using GeoJSON.Net.Converters;
 
     using Newtonsoft.Json;
 
     /// <summary>
-    /// Coordinates of a Polygon are a list of LinearRing coordinate arrays.
-    /// The first element in the array represents the exterior ring.
-    /// Any subsequent elements represent interior rings (or holes).
+    /// Coordinates of a Polygon are a list of <see cref="http://geojson.org/geojson-spec.html#id16">linear rings</see>
+    /// coordinate arrays. The first element in the array represents the exterior ring. Any subsequent elements
+    /// represent interior rings (or holes).
     /// </summary>
     /// <seealso cref="http://geojson.org/geojson-spec.html#polygon"/>
     public class Polygon : GeoJSONObject
@@ -24,24 +28,30 @@ namespace GeoJSON.Net.Geometry
         /// <summary>
         /// Initializes a new instance of the <see cref="Polygon"/> class.
         /// </summary>
-        /// <param name="linearRings">The linear rings.</param>
-        public Polygon(List<List<Point>> linearRings = null)
+        /// <param name="linearRings">
+        /// The <see cref="http://geojson.org/geojson-spec.html#id16">linear rings</see> with the first element
+        /// in the array representing the exterior ring. Any subsequent elements represent interior rings (or holes).
+        /// </param>
+        public Polygon(List<LineString> linearRings = null)
         {
-            this.LinearRing = linearRings ?? new List<List<Point>>();
-        }
+            if (linearRings == null)
+            {
+                throw new ArgumentNullException("linearRings");
+            }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Polygon"/> class.
-        /// </summary>
-        /// <param name="exteriorRingPoints">The exterior ring points.</param>
-        public Polygon(List<Point> exteriorRingPoints = null)
-        {
-            this.LinearRing = (exteriorRingPoints != null) ? new List<List<Point>> { exteriorRingPoints } : new List<List<Point>>();
+            if (linearRings.Any(linearRing => !linearRing.IsLinearRing()))
+            {
+                throw new ArgumentOutOfRangeException("linearRings", "All elements must be closed LineStrings with 4 or more positions (see GeoJSON spec at 'http://geojson.org/geojson-spec.html#linestring').");
+            }
+
+            this.Coordinates = linearRings;
+            this.Type = GeoJSONObjectType.Polygon;
         }
 
         /// <summary>
         /// Gets the list of points outlining this Polygon.
         /// </summary>
-        public List<List<Point>> LinearRing { get; private set; }
+        [JsonProperty(PropertyName = "coordinates", Required = Required.Always)]
+        public List<LineString> Coordinates { get; private set; }
     }
 }

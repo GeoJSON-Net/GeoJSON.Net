@@ -42,9 +42,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Converters\PointsConverter.cs" />
     <Compile Include="Converters\GeometryConverter.cs" />
-    <Compile Include="Converters\MultiPolygonConverter.cs" />
     <Compile Include="Converters\PositionConverter.cs" />
     <Compile Include="Converters\PolygonConverter.cs" />
     <Compile Include="CoordinateReferenceSystem\LinkedCRS.cs" />
@@ -53,6 +51,7 @@
     <Compile Include="CoordinateReferenceSystem\ICRSObject.cs" />
     <Compile Include="CoordinateReferenceSystem\NamedCRS.cs" />
     <Compile Include="GeoJSONObject.cs" />
+    <Compile Include="Geometry\MultiLineString.cs" />
     <Compile Include="Geometry\GeometryType.cs" />
     <Compile Include="Geometry\LineString.cs" />
     <Compile Include="Geometry\MultiPoint.cs" />
