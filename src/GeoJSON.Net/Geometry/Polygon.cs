@@ -3,7 +3,7 @@
 //   Copyright © Jörg Battermann 2011
 // </copyright>
 // <summary>
-//   Defines the Polygon type.
+//   Defines the <see cref="http://geojson.org/geojson-spec.html#polygon">Polygon</see> type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -12,24 +12,23 @@ namespace GeoJSON.Net.Geometry
     using System;
     using System.Collections.Generic;
     using System.Linq;
-
-    using GeoJSON.Net.Converters;
-
+    
     using Newtonsoft.Json;
 
     /// <summary>
-    /// Coordinates of a Polygon are a list of <see cref="http://geojson.org/geojson-spec.html#id16">linear rings</see>
+    /// Defines the <see cref="http://geojson.org/geojson-spec.html#polygon">Polygon</see> type.
+    /// Coordinates of a Polygon are a list of <see cref="http://geojson.org/geojson-spec.html#linestring">linear rings</see>
     /// coordinate arrays. The first element in the array represents the exterior ring. Any subsequent elements
     /// represent interior rings (or holes).
     /// </summary>
     /// <seealso cref="http://geojson.org/geojson-spec.html#polygon"/>
-    public class Polygon : GeoJSONObject
+    public class Polygon : GeoJSONObject, IGeometryObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Polygon"/> class.
         /// </summary>
         /// <param name="linearRings">
-        /// The <see cref="http://geojson.org/geojson-spec.html#id16">linear rings</see> with the first element
+        /// The <see cref="http://geojson.org/geojson-spec.html#linestring">linear rings</see> with the first element
         /// in the array representing the exterior ring. Any subsequent elements represent interior rings (or holes).
         /// </param>
         public Polygon(List<LineString> linearRings = null)

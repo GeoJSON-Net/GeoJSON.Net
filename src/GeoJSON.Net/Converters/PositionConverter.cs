@@ -10,8 +10,8 @@
 namespace GeoJSON.Net.Converters
 {
     using System;
+    using System.Collections.Generic;
 
-    using GeoJSON.Net;
     using GeoJSON.Net.Exceptions;
     using GeoJSON.Net.Geometry;
 
@@ -19,7 +19,7 @@ namespace GeoJSON.Net.Converters
     using Newtonsoft.Json.Linq;
 
     /// <summary>
-    /// Converter to read and write the <see cref="Position" /> type.
+    /// Converter to read and write the <see cref="GeographicPosition" /> type.
     /// </summary>
     public class PositionConverter : JsonConverter
     {
@@ -59,10 +59,10 @@ namespace GeoJSON.Net.Converters
             }
             catch (Exception ex)
             {
-                throw new ParsingException("Could not parse SimpleGeo Response. (Latitude or Longitude missing from Point geometry?)", ex);
+                throw new ParsingException("Could not parse GeoJSON Response. (Latitude or Longitude missing from Point geometry?)", ex);
             }
 
-            return new Position(latitude, longitude);
+            return new List<IPosition> { new GeographicPosition(latitude, longitude) };
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(Position);
+            return objectType == typeof(GeographicPosition);
         }
     }
 }

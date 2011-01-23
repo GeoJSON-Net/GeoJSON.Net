@@ -9,12 +9,9 @@
 
 namespace GeoJSON.Net
 {
-    using System;
-
     /// <summary>
     /// Defines the GeoJSON Objects types as defined in the <see cref="http://geojson.org/geojson-spec.html#geojson-objects">geojson.org v1.0 spec</see>.
     /// </summary>
-    [Flags]
     public enum GeoJSONObjectType
     {
         /// <summary>

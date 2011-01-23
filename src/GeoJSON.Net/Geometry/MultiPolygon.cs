@@ -3,7 +3,7 @@
 //   Copyright © Jörg Battermann 2011
 // </copyright>
 // <summary>
-//   Defines the MultiPolygon type.
+//   Defines the <see cref="http://geojson.org/geojson-spec.html#multipolygon">MultiPolygon</see> type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,9 +16,9 @@ namespace GeoJSON.Net.Geometry
     using Newtonsoft.Json;
 
     /// <summary>
-    /// Defines the MultiPolygon type.
+    /// Defines the <see cref="http://geojson.org/geojson-spec.html#multipolygon">MultiPolygon</see> type.
     /// </summary>
-    public class MultiPolygon : GeoJSONObject
+    public class MultiPolygon : GeoJSONObject, IGeometryObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MultiPolygon"/> class.

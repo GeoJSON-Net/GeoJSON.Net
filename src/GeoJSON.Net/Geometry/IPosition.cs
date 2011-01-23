@@ -1,6 +1,6 @@
 ﻿namespace GeoJSON.Net.Geometry
 {
-    public class Position : IPosition
+    public interface IPosition
     {
     }
 }

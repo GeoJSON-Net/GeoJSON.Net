@@ -10,16 +10,13 @@
 namespace GeoJSON.Net.Geometry
 {
     using System.Collections.Generic;
-
-    using GeoJSON.Net.Converters;
-
     using Newtonsoft.Json;
 
     /// <summary>
     /// Contains an array of <see cref="Point"/>s.
     /// </summary>
     /// <seealso cref="http://geojson.org/geojson-spec.html#multipoint"/>
-    public class MultiPoint : GeoJSONObject
+    public class MultiPoint : GeoJSONObject, IGeometryObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MultiPoint"/> class.

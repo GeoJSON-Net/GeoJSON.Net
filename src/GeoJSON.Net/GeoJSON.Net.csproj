@@ -51,12 +51,14 @@
     <Compile Include="CoordinateReferenceSystem\ICRSObject.cs" />
     <Compile Include="CoordinateReferenceSystem\NamedCRS.cs" />
     <Compile Include="GeoJSONObject.cs" />
+    <Compile Include="Geometry\GeometryCollection.cs" />
+    <Compile Include="Geometry\ProjectedPosition.cs" />
+    <Compile Include="Geometry\IPosition.cs" />
     <Compile Include="Geometry\MultiLineString.cs" />
-    <Compile Include="Geometry\GeometryType.cs" />
     <Compile Include="Geometry\LineString.cs" />
     <Compile Include="Geometry\MultiPoint.cs" />
     <Compile Include="GeoJSONObjectType.cs" />
-    <Compile Include="Geometry\Position.cs" />
+    <Compile Include="Geometry\GeographicPosition.cs" />
     <Compile Include="Exceptions\ParsingException.cs" />
     <Compile Include="Feature\Feature.cs" />
     <Compile Include="Feature\FeatureCollection.cs" />
@@ -64,6 +66,7 @@
     <Compile Include="Geometry\MultiPolygon.cs" />
     <Compile Include="Geometry\Point.cs" />
     <Compile Include="Geometry\Polygon.cs" />
+    <Compile Include="Geometry\Position.cs" />
     <Compile Include="IGeoJSONObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

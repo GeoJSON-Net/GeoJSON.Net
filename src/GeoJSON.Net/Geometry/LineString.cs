@@ -3,7 +3,7 @@
 //   Copyright © Jörg Battermann 2011
 // </copyright>
 // <summary>
-//   Defines the LineString type.
+//   Defines the <see cref="http://geojson.org/geojson-spec.html#linestring">LineString</see> type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -17,17 +17,16 @@ namespace GeoJSON.Net.Geometry
     using Newtonsoft.Json;
 
     /// <summary>
-    /// For type 'LineString', the 'Coordinates' member must be an array/list of two or more positions.
+    ///   Defines the <see cref="http://geojson.org/geojson-spec.html#linestring">LineString</see> type.
     /// </summary>
-    /// <seealso cref="http://geojson.org/geojson-spec.html#linestring"/>
     [JsonObject(MemberSerialization.OptIn)]
-    public class LineString : GeoJSONObject
+    public class LineString : GeoJSONObject, IGeometryObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="LineString"/> class.
         /// </summary>
         /// <param name="coordinates">The coordinates.</param>
-        public LineString(List<Position> coordinates)
+        public LineString(List<IPosition> coordinates)
         {
             if (coordinates == null)
             {
@@ -49,7 +48,7 @@ namespace GeoJSON.Net.Geometry
         /// <value>The Positions.</value>
         [JsonProperty(PropertyName = "coordinates", Required = Required.Always)]
         [JsonConverter(typeof(PositionConverter))]
-        public List<Position> Coordinates { get; private set; }
+        public List<IPosition> Coordinates { get; private set; }
 
         /// <summary>
         /// Determines whether this LineString is a <see cref="http://geojson.org/geojson-spec.html#linestring">LinearRing</see>.

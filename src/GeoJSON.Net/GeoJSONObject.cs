@@ -18,8 +18,11 @@ namespace GeoJSON.Net
     public abstract class GeoJSONObject : IGeoJSONObject
     {
         /// <summary>
-        /// Gets the type of the Geometry Object.
+        /// Gets the (mandatory) type of the <see cref="http://geojson.org/geojson-spec.html#geojson-objects">GeoJSON Object</see>.
         /// </summary>
+        /// <value>
+        /// The type of the object.
+        /// </value>
         [JsonProperty(PropertyName = "type", Required = Required.Always)]
         public GeoJSONObjectType Type { get; internal set; }
 
@@ -29,7 +32,7 @@ namespace GeoJSON.Net
         /// <value>
         /// The Coordinate Reference System Objects.
         /// </value>
-        [JsonProperty(PropertyName = "crs")]
+        [JsonProperty(PropertyName = "crs", Required = Required.AllowNull)]
         public CoordinateReferenceSystem.ICRSObject CRS { get; set; }
 
         /// <summary>
@@ -42,7 +45,7 @@ namespace GeoJSON.Net
         /// In addition, the coordinate reference system for the bbox is assumed to match the coordinate reference
         /// system of the GeoJSON object of which it is a member.
         /// </value>
-        [JsonProperty(PropertyName = "bbox")]
+        [JsonProperty(PropertyName = "bbox", Required = Required.AllowNull)]
         public double[] BoundingBoxes { get; set; }
     }
 }

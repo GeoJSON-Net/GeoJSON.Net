@@ -1,9 +1,9 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MultiPoint.cs" company="Jörg Battermann">
+// <copyright file="MultiLineString.cs" company="Jörg Battermann">
 //   Copyright © Jörg Battermann 2011
 // </copyright>
 // <summary>
-//   Defines the MultiPoint type.
+//   Defines the <see cref="http://geojson.org/geojson-spec.html#multilinestring">MultiLineString</see> type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -11,15 +11,12 @@ namespace GeoJSON.Net.Geometry
 {
     using System.Collections.Generic;
 
-    using GeoJSON.Net.Converters;
-
     using Newtonsoft.Json;
 
     /// <summary>
-    /// Contains an array of <see cref="Point"/>s.
+    /// Defines the <see cref="http://geojson.org/geojson-spec.html#multilinestring">MultiLineString</see> type.
     /// </summary>
-    /// <seealso cref="http://geojson.org/geojson-spec.html#multipoint"/>
-    public class MultiLineString : GeoJSONObject
+    public class MultiLineString : GeoJSONObject, IGeometryObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MultiLineString"/> class.
