@@ -30,4 +30,5 @@ _ReSharper*/
 *.pidb
 *.userprefs
 **/StyleCop.Cache
+*.dotCover
 StyleCop.Cache

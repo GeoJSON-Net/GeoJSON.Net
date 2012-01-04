@@ -5,7 +5,7 @@
     <version>0.0.0.1</version> 
     <authors>Joerg Battermann</authors> 
     <owners>Joerg Battermann</owners>
-    <description>.Net library for GeoJSON types & corresponding Json.Net (de)serializers.</description> 
+    <description>.Net library for GeoJSON types and corresponding Json.Net (de)serializers.</description> 
     <projectUrl>https://github.com/jbattermann/GeoJSON.Net</projectUrl>
     <licenseUrl>https://github.com/jbattermann/GeoJSON.Net/blob/master/LICENSE</licenseUrl>
     <tags>geojson geo json geolocation .net40</tags>
