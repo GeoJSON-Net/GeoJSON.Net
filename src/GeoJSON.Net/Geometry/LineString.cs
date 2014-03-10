@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LineString.cs" company="Jörg Battermann">
-//   Copyright © Jörg Battermann 2011
+// <copyright file="LineString.cs" company="Joerg Battermann">
+//   Copyright © Joerg Battermann 2014
 // </copyright>
 // <summary>
 //   Defines the <see cref="http://geojson.org/geojson-spec.html#linestring">LineString</see> type.

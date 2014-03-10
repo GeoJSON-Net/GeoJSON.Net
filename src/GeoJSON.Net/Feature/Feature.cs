@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Feature.cs" company="Jörg Battermann">
-//   Copyright © Jörg Battermann 2011
+// <copyright file="Feature.cs" company="Joerg Battermann">
+//   Copyright © Joerg Battermann 2014
 // </copyright>
 // <summary>
 //   Defines the Feature type.
@@ -11,8 +11,8 @@ namespace GeoJSON.Net.Feature
 {
     using System.Collections.Generic;
 
-    using GeoJSON.Net.Converters;
-    using GeoJSON.Net.Geometry;
+    using Converters;
+    using Geometry;
 
     using Newtonsoft.Json;
 
@@ -22,14 +22,16 @@ namespace GeoJSON.Net.Feature
     public class Feature : GeoJSONObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Feature"/> class.
+        /// Initializes a new instance of the <see cref="Feature" /> class.
         /// </summary>
         /// <param name="geometry">The Geometry Object.</param>
         /// <param name="properties">The properties.</param>
-        public Feature(IGeometryObject geometry, Dictionary<string, object> properties = null)
+        /// <param name="id">The (optional) identifier.</param>
+        public Feature(IGeometryObject geometry, Dictionary<string, object> properties = null, string id = null)
         {
             this.Geometry = geometry;
-            this.Properties = properties;
+            this.Properties = properties ?? new Dictionary<string, object>();
+            this.Id = id;
 
             this.Type = GeoJSONObjectType.Feature;
         }
@@ -38,7 +40,7 @@ namespace GeoJSON.Net.Feature
         /// Gets or sets the id.
         /// </summary>
         /// <value>The handle.</value>
-        [JsonProperty(PropertyName = "id")]
+        [JsonProperty(PropertyName = "id", Required = Required.Default)]
         public string Id { get; set; }
 
         /// <summary>

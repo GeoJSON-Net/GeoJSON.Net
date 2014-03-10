@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="ICRSObject.cs" company="Jörg Battermann">
-//   Copyright © Jörg Battermann 2011
+// <copyright file="ICRSObject.cs" company="Joerg Battermann">
+//   Copyright © Joerg Battermann 2014
 // </copyright>
 // <summary>
 //   Base Interface for CRSBase Object types.

@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NamedCRS.cs" company="Jörg Battermann">
-//   Copyright © Jörg Battermann 2011
+// <copyright file="NamedCRS.cs" company="Joerg Battermann">
+//   Copyright © Joerg Battermann 2014
 // </copyright>
 // <summary>
 //   Defines the <see cref="http://geojson.org/geojson-spec.html#named-crs">Named CRS type</see>.

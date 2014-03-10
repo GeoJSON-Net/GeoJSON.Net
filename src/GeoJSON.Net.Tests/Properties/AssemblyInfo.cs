@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="AssemblyInfo.cs" company="Jörg Battermann">
-//   Copyright © Jörg Battermann 2011
+// <copyright file="AssemblyInfo.cs" company="Joerg Battermann">
+//   Copyright © Joerg Battermann 2014
 // </copyright>
 // <summary>
 //   AssemblyInfo.cs
@@ -13,9 +13,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("GeoJSON.Net.Tests")]
 [assembly: AssemblyDescription("Unit tests for the GeoJSON.Net library")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Jörg Battermann")]
+[assembly: AssemblyCompany("Joerg Battermann")]
 [assembly: AssemblyProduct("GeoJSON.Net.Tests")]
-[assembly: AssemblyCopyright("Copyright © Jörg Battermann 2011")]
+[assembly: AssemblyCopyright("Copyright © Joerg Battermann 2014")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

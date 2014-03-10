@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IGeoJSONObject.cs" company="Jörg Battermann">
-//   Copyright © Jörg Battermann 2011
+// <copyright file="IGeoJSONObject.cs" company="Joerg Battermann">
+//   Copyright © Joerg Battermann 2014
 // </copyright>
 // <summary>
 //   Defines the IGeoJSONObject interface.

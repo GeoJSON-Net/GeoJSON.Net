@@ -1,11 +1,13 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="CRSBase.cs" company="Jörg Battermann">
-//   Copyright © Jörg Battermann 2011
+// <copyright file="CRSBase.cs" company="Joerg Battermann">
+//   Copyright © Joerg Battermann 2014
 // </copyright>
 // <summary>
 //   Defines the CRSBase type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
+using Newtonsoft.Json.Converters;
 
 namespace GeoJSON.Net.CoordinateReferenceSystem
 {
@@ -23,6 +25,7 @@ namespace GeoJSON.Net.CoordinateReferenceSystem
         /// Gets the type of the GeometryObject object.
         /// </summary>
         [JsonProperty(PropertyName = "type", Required = Required.Always)]
+        [JsonConverter(typeof(StringEnumConverter))]
         public CRSType Type { get; internal set; }
 
         /// <summary>

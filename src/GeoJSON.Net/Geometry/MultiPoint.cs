@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MultiPoint.cs" company="Jörg Battermann">
-//   Copyright © Jörg Battermann 2011
+// <copyright file="MultiPoint.cs" company="Joerg Battermann">
+//   Copyright © Joerg Battermann 2014
 // </copyright>
 // <summary>
 //   Defines the MultiPoint type.

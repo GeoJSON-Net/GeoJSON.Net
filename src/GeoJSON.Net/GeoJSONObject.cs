@@ -1,11 +1,13 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GeoJSONObject.cs" company="Jörg Battermann">
-//   Copyright © Jörg Battermann 2011
+// <copyright file="GeoJSONObject.cs" company="Joerg Battermann">
+//   Copyright © Joerg Battermann 2014
 // </copyright>
 // <summary>
 //   Defines the GeoJSONObject type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
+
+using Newtonsoft.Json.Converters;
 
 namespace GeoJSON.Net
 {
@@ -24,6 +26,7 @@ namespace GeoJSON.Net
         /// The type of the object.
         /// </value>
         [JsonProperty(PropertyName = "type", Required = Required.Always)]
+        [JsonConverter(typeof(StringEnumConverter))]
         public GeoJSONObjectType Type { get; internal set; }
 
         /// <summary>

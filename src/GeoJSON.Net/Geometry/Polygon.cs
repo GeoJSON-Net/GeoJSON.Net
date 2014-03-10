@@ -1,6 +1,6 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Polygon.cs" company="Jörg Battermann">
-//   Copyright © Jörg Battermann 2011
+// <copyright file="Polygon.cs" company="Joerg Battermann">
+//   Copyright © Joerg Battermann 2014
 // </copyright>
 // <summary>
 //   Defines the <see cref="http://geojson.org/geojson-spec.html#polygon">Polygon</see> type.
