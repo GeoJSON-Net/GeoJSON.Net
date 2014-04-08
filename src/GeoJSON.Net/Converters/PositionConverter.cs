@@ -17,6 +17,8 @@ namespace GeoJSON.Net.Converters
 
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
+    using System.Text;
+    using System.IO;
 
     /// <summary>
     /// Converter to read and write the <see cref="GeographicPosition" /> type.
@@ -28,8 +30,27 @@ namespace GeoJSON.Net.Converters
         /// </summary>
         /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.</param><param name="value">The value.</param><param name="serializer">The calling serializer.</param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            throw new NotImplementedException();
+        {            
+            var coordinateElements = value as System.Collections.Generic.List<GeoJSON.Net.Geometry.IPosition>;
+            if (coordinateElements != null)
+            {
+                if (coordinateElements.Count > 0) 
+                {
+                    var coordinates = coordinateElements[0] as GeographicPosition;
+
+                    var coordinateArray = new JArray(coordinates.Longitude, coordinates.Latitude);
+                    if (coordinates.Altitude.HasValue && coordinates.Altitude != 0)
+                        coordinateArray = new JArray(coordinates.Longitude, coordinates.Latitude, coordinates.Altitude);
+
+                    serializer.Serialize(writer, coordinateArray);
+
+                }
+                else
+                    serializer.Serialize(writer, null);
+            }
+            else
+                serializer.Serialize(writer, value);
+            
         }
 
         /// <summary>
