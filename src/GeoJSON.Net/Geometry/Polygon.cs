@@ -14,6 +14,7 @@ namespace GeoJSON.Net.Geometry
     using System.Linq;
     
     using Newtonsoft.Json;
+    using GeoJSON.Net.Converters;
 
     /// <summary>
     /// Defines the <see cref="http://geojson.org/geojson-spec.html#polygon">Polygon</see> type.
@@ -51,6 +52,7 @@ namespace GeoJSON.Net.Geometry
         /// Gets the list of points outlining this Polygon.
         /// </summary>
         [JsonProperty(PropertyName = "coordinates", Required = Required.Always)]
+        [JsonConverter(typeof(PolygonConverter))]
         public List<LineString> Coordinates { get; private set; }
     }
 }
