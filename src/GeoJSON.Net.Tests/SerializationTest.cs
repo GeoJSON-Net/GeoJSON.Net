@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using Xunit;
-
+using System.Text.RegularExpressions;
 
 namespace GeoJSON.Net.Tests
 {
@@ -28,7 +28,17 @@ namespace GeoJSON.Net.Tests
                 }.ToList<IPosition>();
 
             var model = new Polygon(new List<LineString> { new LineString(coordinates) });
-            var returnData = JsonConvert.SerializeObject(model, Formatting.Indented, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+            var serializedData = JsonConvert.SerializeObject(model, Formatting.Indented, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+
+            var matches = Regex.Matches(serializedData, @"(?<coordinates>[0-9]+([.,][0-9]+))");
+
+            double lng;
+            double.TryParse(matches[0].Value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out lng);
+
+            //Double precision can pose a problem 
+            Assert.True(Math.Abs(lng - 4.889259338378906) < 0.0000001);
+
+            Assert.True(!serializedData.Contains("latitude"));
         }
     }
 }
