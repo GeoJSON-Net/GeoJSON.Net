@@ -34,7 +34,7 @@ namespace GeoJSON.Net.Converters
             var coordinateElements = value as System.Collections.Generic.List<GeoJSON.Net.Geometry.IPosition>;
             if (coordinateElements != null)
             {
-                if (coordinateElements.Count > 0) 
+                if (coordinateElements.Count > 0 && coordinateElements[0] is GeographicPosition) 
                 {
                     var coordinates = coordinateElements[0] as GeographicPosition;
 

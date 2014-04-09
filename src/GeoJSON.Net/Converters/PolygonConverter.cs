@@ -12,8 +12,9 @@ namespace GeoJSON.Net.Converters
     using System;
 
     using GeoJSON.Net.Geometry;
-
+    using System.Linq;
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
 
     /// <summary>
     /// Converter to read and write the <see cref="MultiPolygon" /> type.
@@ -26,8 +27,33 @@ namespace GeoJSON.Net.Converters
         /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.</param><param name="value">The value.</param><param name="serializer">The calling serializer.</param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            // ToDo: implement
-            throw new NotImplementedException();
+            var coordinateElements = value as System.Collections.Generic.List<GeoJSON.Net.Geometry.LineString>;
+            if (coordinateElements != null && coordinateElements.Count > 0)
+            {
+                var coordinateArray = new JArray();
+                if (coordinateElements[0].Coordinates[0] is GeographicPosition)
+                {
+                    foreach(var subPolygon in coordinateElements)
+                    {
+                        var subPolygonCoordinateArray = new JArray();
+                        foreach (var coordinates in subPolygon.Coordinates.Select(x => x as GeographicPosition))
+                        {
+                            var coordinateElement = new JArray(coordinates.Longitude, coordinates.Latitude);
+                            if (coordinates.Altitude.HasValue && coordinates.Altitude != 0)
+                                coordinateElement = new JArray(coordinates.Longitude, coordinates.Latitude, coordinates.Altitude);
+
+                            subPolygonCoordinateArray.Add(coordinateElement);
+                        }
+                        coordinateArray.Add(subPolygonCoordinateArray);
+                    }
+                    serializer.Serialize(writer, coordinateArray);
+                }
+                else
+                    // ToDo: implement
+                    throw new NotImplementedException();
+            }
+            else
+                serializer.Serialize(writer, value);
         }
 
         /// <summary>
