@@ -28,23 +28,23 @@ namespace GeoJSON.Net.Geometry
         /// <summary>
         /// Initializes a new instance of the <see cref="Polygon"/> class.
         /// </summary>
-        /// <param name="linearRings">
+        /// <param name="coordinates">
         /// The <see cref="http://geojson.org/geojson-spec.html#linestring">linear rings</see> with the first element
         /// in the array representing the exterior ring. Any subsequent elements represent interior rings (or holes).
         /// </param>
-        public Polygon(List<LineString> linearRings = null)
+        public Polygon(List<LineString> coordinates = null)
         {
-            if (linearRings == null)
+            if (coordinates == null)
             {
                 throw new ArgumentNullException("linearRings");
             }
 
-            if (linearRings.Any(linearRing => !linearRing.IsLinearRing()))
+            if (coordinates.Any(linearRing => !linearRing.IsLinearRing()))
             {
                 throw new ArgumentOutOfRangeException("linearRings", "All elements must be closed LineStrings with 4 or more positions (see GeoJSON spec at 'http://geojson.org/geojson-spec.html#linestring').");
             }
 
-            this.Coordinates = linearRings;
+            this.Coordinates = coordinates;
             this.Type = GeoJSONObjectType.Polygon;
         }
 
@@ -53,6 +53,6 @@ namespace GeoJSON.Net.Geometry
         /// </summary>
         [JsonProperty(PropertyName = "coordinates", Required = Required.Always)]
         [JsonConverter(typeof(PolygonConverter))]
-        public List<LineString> Coordinates { get; private set; }
+        public List<LineString> Coordinates { get; set; }
     }
 }

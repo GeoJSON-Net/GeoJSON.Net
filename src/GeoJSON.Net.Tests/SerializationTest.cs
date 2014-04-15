@@ -40,5 +40,53 @@ namespace GeoJSON.Net.Tests
 
             Assert.True(!serializedData.Contains("latitude"));
         }
+
+        [Fact]
+        public void PolygonDeserialization()
+        {
+            #region geoJsonText
+            var geoJsonText = @"{
+        'type': 'Polygon',
+        'coordinates': [
+          [
+            [
+              5.3173828125,
+              52.379790828551016
+              
+            ],
+            [
+              5.456085205078125,
+              52.36721467920585
+            ],
+            [
+              5.386047363281249,
+              52.303440474272755,
+                4.23
+            ],
+            [
+              5.3173828125,
+              52.379790828551016
+            ]
+          ]
+        ]
+      }";
+            #endregion
+            //geoJsonText = geoJsonText.Replace("\r\n", "");
+            var polygon = JsonConvert.DeserializeObject<Polygon>(geoJsonText, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+
+            Assert.NotNull(polygon);
+            Assert.NotNull(polygon.Coordinates);
+            Assert.True(polygon.Coordinates.Count == 1);
+            Assert.True(polygon.Coordinates[0].Coordinates.Count == 4);
+
+            var firstPoint = polygon.Coordinates[0].Coordinates[0] as GeographicPosition;
+            Assert.True(Math.Abs(firstPoint.Latitude - 52.37979082) < 0.0001);
+            Assert.True(Math.Abs(firstPoint.Longitude - 5.3173828125) < 0.0001);
+            Assert.True(!firstPoint.Altitude.HasValue);
+
+            var thirdPoint = polygon.Coordinates[0].Coordinates[2] as GeographicPosition;
+            Assert.True(thirdPoint.Altitude.HasValue && Math.Abs(thirdPoint.Altitude.Value - 4.23) < 0.0001);
+
+        }
     }
 }
