@@ -15,6 +15,9 @@ namespace GeoJSON.Net.Converters
     using System.Linq;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
+    using System.Collections.Generic;
+    using System.Text.RegularExpressions;
+    using System.Globalization;
 
     /// <summary>
     /// Converter to read and write the <see cref="MultiPolygon" /> type.
@@ -65,8 +68,38 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            // ToDo: implement
-            throw new NotImplementedException();
+            var inputJsonValue = serializer.Deserialize(reader).ToString();
+
+            //sanitizing input
+            inputJsonValue = inputJsonValue.Replace(Environment.NewLine, "");
+            inputJsonValue = inputJsonValue.Replace(" ", "");
+
+            var polygonCoordinates = new List<GeographicPosition>();
+
+            //parsing coordinates groups
+            MatchCollection coordinateGroups = Regex.Matches(inputJsonValue, @"(\[\d+.\d+,\d+.\d+[,\d+.\d+]*\])");
+            foreach (Match coordinatePair in coordinateGroups) 
+            {
+                var coordinates = Regex.Match(coordinatePair.Value, @"(?<longitude>\d+.\d+),(?<latitude>\d+.\d+)(?:,)?(?<altitude>\d+.\d+)*");
+
+                double lng;
+                double lat;
+                double alt;
+
+                double.TryParse(coordinates.Groups["longitude"].Value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out lng);
+                double.TryParse(coordinates.Groups["latitude"].Value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out lat);
+                double.TryParse(coordinates.Groups["altitude"].Value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out alt);
+
+                if (lng != 0 && lat != 0)
+                    if (alt == 0)
+                        polygonCoordinates.Add(new GeographicPosition(lat, lng));
+                    else
+                        polygonCoordinates.Add(new GeographicPosition(lat, lng, alt));
+                
+            }
+
+
+            return new List<LineString> { new LineString(polygonCoordinates.ToList<IPosition>()) };
         }
 
         /// <summary>
