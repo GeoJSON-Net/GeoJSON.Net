@@ -12,8 +12,12 @@ namespace GeoJSON.Net.Converters
     using System;
 
     using GeoJSON.Net.Geometry;
-
+    using System.Collections;
     using Newtonsoft.Json;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Newtonsoft.Json.Serialization;
+    using System.Text.RegularExpressions;
 
     /// <summary>
     /// Defines the GeometryObject type. Converts to/from a SimpleGeo 'geometry' field
@@ -39,6 +43,21 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
+            var inputJsonValue = serializer.Deserialize(reader).ToString();
+            inputJsonValue = inputJsonValue.Replace(Environment.NewLine, "");
+            inputJsonValue = inputJsonValue.Replace(" ", "");
+
+            var geoType = Regex.Match(inputJsonValue, @"type\W+(?<type>\w+)\W+");
+            var geoTypeString = geoType.Groups["type"].Value.ToLowerInvariant();
+
+            switch (geoTypeString) 
+            { 
+                case "polygon":
+                    return JsonConvert.DeserializeObject<Polygon>(inputJsonValue, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+                    break;
+
+            }
+
             // ToDo: implement
             throw new NotImplementedException();
         }
