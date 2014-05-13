@@ -7,16 +7,10 @@ GeoJSON is .NET library for the GeoJSON spec v1.0 (see http://geojson.org/geojso
 
 ##Examples
 ### Deserialize GeoJSON file
-The example shows how to deserialize GeoJSON file:
-    ```csharp
-using (FileStream fs = System.IO.File.Open(pathToFile, FileMode.Open))
-{
-    var fileContent = new StreamReader(fs).ReadToEnd();
-    var features = JsonConvert.DeserializeObject<GeoJSON.Net.Feature.FeatureCollection>(fileContent);
-}```
+The example shows how to deserialize GeoJSON file:  
+    `JsonConvert.DeserializeObject<GeoJSON.Net.Feature.FeatureCollection>(string content);`
 
 
-
-Enjoy!
--Joerg Battermann
+Enjoy!  
+-Joerg Battermann  
 jb at joergbattermann.com
