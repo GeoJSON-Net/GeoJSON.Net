@@ -54,5 +54,48 @@ namespace GeoJSON.Net.Geometry
         [JsonProperty(PropertyName = "coordinates", Required = Required.Always)]
         [JsonConverter(typeof(PolygonConverter))]
         public List<LineString> Coordinates { get; set; }
+
+
+        public static bool operator ==(Polygon a, Polygon b)
+        {
+            if (a.Coordinates == null && b.Coordinates == null)
+                return true;
+
+            //If only one of the coordinates is null, or their count is different
+            if (a.Coordinates == null || b.Coordinates == null || a.Coordinates.Count != b.Coordinates.Count)
+                return false;
+
+            if (a.Coordinates.Count == 0)
+                return true;
+
+            if (a.Coordinates[0].Coordinates.Count != b.Coordinates[0].Coordinates.Count)
+                return false;
+
+            //logic for multipolygon to compare each line string            
+            for (int i = 0; i < a.Coordinates.Count; i++) 
+            { 
+                for (int j = 0; j < a.Coordinates[i].Coordinates.Count; j++)
+                {
+                    var firstComparer = a.Coordinates[i].Coordinates[j] as GeographicPosition;
+                    var secondComparer = b.Coordinates[i].Coordinates[j] as GeographicPosition;
+                    
+                    if (Math.Abs(firstComparer.Latitude - secondComparer.Latitude) > 0.0001
+                        || Math.Abs(firstComparer.Longitude - secondComparer.Longitude) > 0.0001
+                        || (firstComparer.Altitude.HasValue && secondComparer.Altitude.HasValue && (Math.Abs(firstComparer.Altitude.Value - secondComparer.Altitude.Value) > 0.0001)))   
+                        return false;
+                }
+            }
+            return true;
+        }
+
+        public static bool operator !=(Polygon a, Polygon b)
+        {
+            return !(a == b);
+        }
+
+        public override int GetHashCode()
+        {
+            return Coordinates.GetHashCode();
+        }
     }
 }

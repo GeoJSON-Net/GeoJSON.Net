@@ -1,7 +1,0 @@
-.Net types for the GeoJSON spec v1.0 (see http://geojson.org/geojson-spec.html) to be used with Json.Net (http://json.codeplex.com).
-
-Now also available as NuGet package via 'Install-Package GeoJSON.Net', see https://nuget.org/packages/GeoJSON.Net
-
-Enjoy!
--Joerg Battermann
-jb at joergbattermann.com
