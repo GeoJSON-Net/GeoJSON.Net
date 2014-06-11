@@ -77,10 +77,10 @@ namespace GeoJSON.Net.Converters
             var polygonCoordinates = new List<GeographicPosition>();
 
             //parsing coordinates groups
-            MatchCollection coordinateGroups = Regex.Matches(inputJsonValue, @"(\[\d+.\d+,\d+.\d+[,\d+.\d+]*\])");
+            MatchCollection coordinateGroups = Regex.Matches(inputJsonValue, @"(\[[-+]{0,1}\d{1,3}.\d+,[-+]{0,1}\d{1,2}.\d+[,\d+.\d+]*\])");
             foreach (Match coordinatePair in coordinateGroups) 
             {
-                var coordinates = Regex.Match(coordinatePair.Value, @"(?<longitude>\d+.\d+),(?<latitude>\d+.\d+)(?:,)?(?<altitude>\d+.\d+)*");
+                var coordinates = Regex.Match(coordinatePair.Value, @"(?<longitude>[+-]{0,1}\d+.\d+),(?<latitude>[+-]{0,1}\d+.\d+)(?:,)?(?<altitude>\d+.\d+)*");
 
                 double lng;
                 double lat;
