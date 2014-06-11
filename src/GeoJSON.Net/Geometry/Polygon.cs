@@ -58,6 +58,12 @@ namespace GeoJSON.Net.Geometry
 
         public static bool operator ==(Polygon a, Polygon b)
         {
+            if ((object)a == null && (object)b == null)
+                return true;
+
+            if ((object)a != null && (object)b == null || (object)a == null && (object)b != null)
+                return false;
+
             if (a.Coordinates == null && b.Coordinates == null)
                 return true;
 
