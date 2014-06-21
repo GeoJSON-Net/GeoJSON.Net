@@ -55,7 +55,9 @@ namespace GeoJSON.Net.Converters
                 case "polygon":
                     return JsonConvert.DeserializeObject<Polygon>(inputJsonValue, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
                     break;
-
+                case "point":
+                    return JsonConvert.DeserializeObject<Point>(inputJsonValue, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+                    break;
             }
 
             // ToDo: implement

@@ -33,7 +33,7 @@ namespace GeoJSON.Net.Geometry
                 throw new ArgumentNullException("coordinates");
             }
 
-            this.Coordinates = new List<IPosition> { coordinates };
+            this.Coordinates = coordinates;
             this.Type = GeoJSONObjectType.Point;
         }
 
@@ -41,8 +41,13 @@ namespace GeoJSON.Net.Geometry
         /// Gets the Coordinate(s).
         /// </summary>
         /// <value>The Coordinates.</value>
+        //[JsonProperty(PropertyName = "coordinates", Required = Required.Always)]
+        //[JsonConverter(typeof(PositionConverter))]
+        //public List<double> JsonCoordinates { get; set; }
+
         [JsonProperty(PropertyName = "coordinates", Required = Required.Always)]
-        [JsonConverter(typeof(PositionConverter))]
-        public List<IPosition> Coordinates { get; private set; }
+        [JsonConverter(typeof(PointConverter))]
+
+        public IPosition Coordinates { get; set; }
     }
 }

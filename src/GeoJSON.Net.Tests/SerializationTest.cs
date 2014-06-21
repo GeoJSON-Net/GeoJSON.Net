@@ -1,4 +1,5 @@
 ﻿using GeoJSON.Net.Converters;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using GeoJSON.Net.Feature;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
@@ -9,14 +10,14 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using Xunit;
 using System.Text.RegularExpressions;
 
 namespace GeoJSON.Net.Tests
 {
+    [TestClass]
     public class SerializationTest
     {
-        [Fact]
+        [TestMethod]
         public void PolygonSerialization()
         {
             var coordinates = new List<GeographicPosition> 
@@ -36,12 +37,12 @@ namespace GeoJSON.Net.Tests
             double.TryParse(matches[0].Value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out lng);
 
             //Double precision can pose a problem 
-            Assert.True(Math.Abs(lng - 4.889259338378906) < 0.0000001);
+            Assert.IsTrue(Math.Abs(lng - 4.889259338378906) < 0.0000001);
 
-            Assert.True(!serializedData.Contains("latitude"));
+            Assert.IsTrue(!serializedData.Contains("latitude"));
         }
 
-        [Fact]
+        [TestMethod]
         public void PolygonDeserialization()
         {
             #region geoJsonText
@@ -74,22 +75,22 @@ namespace GeoJSON.Net.Tests
             //geoJsonText = geoJsonText.Replace("\r\n", "");
             var polygon = JsonConvert.DeserializeObject<Polygon>(geoJsonText, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
 
-            Assert.NotNull(polygon);
-            Assert.NotNull(polygon.Coordinates);
-            Assert.True(polygon.Coordinates.Count == 1);
-            Assert.True(polygon.Coordinates[0].Coordinates.Count == 4);
+            Assert.IsNotNull(polygon);
+            Assert.IsNotNull(polygon.Coordinates);
+            Assert.IsTrue(polygon.Coordinates.Count == 1);
+            Assert.IsTrue(polygon.Coordinates[0].Coordinates.Count == 4);
 
             var firstPoint = polygon.Coordinates[0].Coordinates[0] as GeographicPosition;
-            Assert.True(Math.Abs(firstPoint.Latitude - 52.37979082) < 0.0001);
-            Assert.True(Math.Abs(firstPoint.Longitude - 5.3173828125) < 0.0001);
-            Assert.True(!firstPoint.Altitude.HasValue);
+            Assert.IsTrue(Math.Abs(firstPoint.Latitude - 52.37979082) < 0.0001);
+            Assert.IsTrue(Math.Abs(firstPoint.Longitude - 5.3173828125) < 0.0001);
+            Assert.IsTrue(!firstPoint.Altitude.HasValue);
 
             var thirdPoint = polygon.Coordinates[0].Coordinates[2] as GeographicPosition;
-            Assert.True(thirdPoint.Altitude.HasValue && Math.Abs(thirdPoint.Altitude.Value - 4.23) < 0.0001);
+            Assert.IsTrue(thirdPoint.Altitude.HasValue && Math.Abs(thirdPoint.Altitude.Value - 4.23) < 0.0001);
 
         }
 
-        [Fact]
+        [TestMethod]
         public void PolygonDeserialization1() 
         {
             #region geoJsonText
@@ -121,9 +122,55 @@ namespace GeoJSON.Net.Tests
             var polygon = JsonConvert.DeserializeObject<Polygon>(geoJsonText, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
             
             var firstPoint = polygon.Coordinates[0].Coordinates[0] as GeographicPosition;
-            Assert.True(Math.Abs(firstPoint.Latitude + 52.37979082) < 0.0001);
-            Assert.True(Math.Abs(firstPoint.Longitude - 165.3173828125) < 0.0001);
-            Assert.True(!firstPoint.Altitude.HasValue);
+            Assert.IsTrue(Math.Abs(firstPoint.Latitude + 52.37979082) < 0.0001);
+            Assert.IsTrue(Math.Abs(firstPoint.Longitude - 165.3173828125) < 0.0001);
+            Assert.IsTrue(!firstPoint.Altitude.HasValue);
+        }
+
+        [TestMethod]
+        public void PointDeserialization()
+        {
+            #region data
+            var geoJsonText = @"{
+        'type': 'Point',
+        'coordinates': 
+            [
+              165.3173828125,
+              -52.379790828551016
+            ]
+      }";
+            #endregion
+            var point = JsonConvert.DeserializeObject<Point>(geoJsonText, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+
+            var coordinates = point.Coordinates as GeographicPosition;
+
+            Assert.IsTrue(coordinates.Longitude - 165.3173828125 < 0.0001);
+            Assert.IsTrue(coordinates.Latitude + 52.379790828551016 < 0.0001);
+
+        }
+
+
+        [TestMethod]
+        public void PointFeatureDeserialization()
+        {
+            #region data
+            var geoJsonText = @"{'type': 'Feature','geometry':{
+        'type': 'Point',
+        'coordinates': 
+            [
+              165.3173828125,
+              -52.379790828551016
+            ]
+      }}";
+            #endregion
+            var features = JsonConvert.DeserializeObject<GeoJSON.Net.Feature.Feature>(geoJsonText, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+
+            var geometry = features.Geometry as Point;
+            var coordinates = geometry.Coordinates as GeographicPosition;
+
+            Assert.IsTrue(coordinates.Longitude - 165.3173828125 < 0.0001);
+            Assert.IsTrue(coordinates.Latitude + 52.379790828551016 < 0.0001);
+
         }
     }
 }
