@@ -86,9 +86,9 @@ namespace GeoJSON.Net.Converters
                 double lat;
                 double alt;
 
-                double.TryParse(coordinates.Groups["longitude"].Value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out lng);
-                double.TryParse(coordinates.Groups["latitude"].Value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out lat);
-                double.TryParse(coordinates.Groups["altitude"].Value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out alt);
+                double.TryParse(coordinates.Groups["longitude"].Value, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out lng);
+                double.TryParse(coordinates.Groups["latitude"].Value, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out lat);
+                double.TryParse(coordinates.Groups["altitude"].Value, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out alt);
 
                 if (lng != 0 && lat != 0)
                     if (alt == 0)

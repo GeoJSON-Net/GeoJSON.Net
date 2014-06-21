@@ -23,14 +23,14 @@ namespace GeoJSON.Net.Converters
     /// <summary>
     /// Converter to read and write the <see cref="GeographicPosition" /> type.
     /// </summary>
-    public class PositionConverter : JsonConverter
+    public class PointConverter : JsonConverter
     {
         /// <summary>
         /// Writes the JSON representation of the object.
         /// </summary>
         /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.</param><param name="value">The value.</param><param name="serializer">The calling serializer.</param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {            
+        {
             var coordinateElements = value as System.Collections.Generic.List<GeoJSON.Net.Geometry.IPosition>;
             if (coordinateElements != null)
             {
@@ -71,19 +71,21 @@ namespace GeoJSON.Net.Converters
                         coordinates));
             }
 
-            string latitude;
-            string longitude;
+            float latDouble = (float)coordinates.First;
+
+            float latitude;
+            float longitude;
             try
             {
-                longitude = coordinates.First.ToString();
-                latitude = coordinates.Last.ToString();
+                longitude = (float)coordinates.First;
+                latitude = (float)coordinates.Last;
             }
             catch (Exception ex)
             {
                 throw new ParsingException("Could not parse GeoJSON Response. (Latitude or Longitude missing from Point geometry?)", ex);
             }
 
-            return new List<IPosition> { new GeographicPosition(latitude, longitude) };
+            return new GeographicPosition(latitude, longitude) ;
         }
 
         /// <summary>
