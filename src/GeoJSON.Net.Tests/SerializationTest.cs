@@ -43,6 +43,22 @@ namespace GeoJSON.Net.Tests
         }
 
         [TestMethod]
+        public void GeographicPositionSerialization()
+        {
+            var model = new GeoJSON.Net.Geometry.GeographicPosition(112.12, 10);
+
+            var serialized = JsonConvert.SerializeObject(model, Formatting.Indented, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+
+            var matches = Regex.Matches(serialized, @"(\d+.\d+)");
+            Assert.IsTrue(matches.Count == 2);
+            double lng= 0;
+            double.TryParse(matches[0].Value, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out lng);
+
+            Assert.AreEqual(lng, 112.12);
+        }
+
+
+        [TestMethod]
         public void PolygonDeserialization()
         {
             #region geoJsonText
@@ -146,9 +162,7 @@ namespace GeoJSON.Net.Tests
 
             Assert.IsTrue(coordinates.Longitude - 165.3173828125 < 0.0001);
             Assert.IsTrue(coordinates.Latitude + 52.379790828551016 < 0.0001);
-
         }
-
 
         [TestMethod]
         public void PointFeatureDeserialization()
