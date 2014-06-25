@@ -47,7 +47,6 @@ namespace GeoJSON.Net.Geometry
 
         [JsonProperty(PropertyName = "coordinates", Required = Required.Always)]
         [JsonConverter(typeof(PointConverter))]
-
         public IPosition Coordinates { get; set; }
     }
 }

@@ -6,10 +6,17 @@ GeoJSON is .NET library for the GeoJSON spec v1.0 (see http://geojson.org/geojso
 2. Download the source, compile and include GeoJSON.Net.dll in you project
 
 ##Examples
-### Deserialize GeoJSON file
-The example shows how to deserialize GeoJSON file:  
+### Point serialization
+    `var point = new GeoJSON.Net.Geometry.Point(new GeoJSON.Net.Geometry.GeographicPosition(45.79012, 15.94107));
+	var featureProperties = new Dictionary<string, object> { {"Name", "Foo"} };
+	var model = new GeoJSON.Net.Feature.Feature(point, featureProperties);
+	var serializedData = JsonConvert.SerializeObject(model, Formatting.Indented, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver(), NullValueHandling = NullValueHandling.Ignore });`
+
+### Deserialize GeoJSON file  
     `JsonConvert.DeserializeObject<GeoJSON.Net.Feature.FeatureCollection>(string content);`
 
+##News
+- 2014-06-25 - added Polygon and Point serialization
 
 Enjoy!  
 -Joerg Battermann  

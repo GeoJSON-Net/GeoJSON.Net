@@ -30,8 +30,15 @@ namespace GeoJSON.Net.Converters
         /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.</param><param name="value">The value.</param><param name="serializer">The calling serializer.</param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            // ToDo: implement
-            throw new NotImplementedException();
+            if (value is GeoJSON.Net.Geometry.Point
+                || value is GeoJSON.Net.Geometry.Polygon) 
+            {
+                serializer.Serialize(writer, value);
+            }
+
+            else
+                // ToDo: implement
+                throw new NotImplementedException();
         }
 
         /// <summary>
