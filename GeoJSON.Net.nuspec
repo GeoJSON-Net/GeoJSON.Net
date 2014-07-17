@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>GeoJSON.Net</id>
-        <version>0.0.0.5</version>
+        <version>0.0.0.6</version>
         <authors>Joerg Battermann</authors>
         <owners>Joerg Battermann</owners>
         <licenseUrl>https://github.com/jbattermann/GeoJSON.Net/blob/master/LICENSE</licenseUrl>
