@@ -18,6 +18,8 @@ GeoJSON is .NET library for the GeoJSON spec v1.0 (see http://geojson.org/geojso
 ##News
 - 2014-06-25 - added Polygon and Point serialization
 
+##Build Status: ![Build Status](https://ci.appveyor.com/api/projects/status/lfxlj13sa5vk0l3y)
+
 Enjoy!  
 -Joerg Battermann  
 jb at joergbattermann.com
