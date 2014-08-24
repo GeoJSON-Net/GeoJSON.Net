@@ -14,7 +14,7 @@ namespace GeoJSON.Net.Exceptions
     /// <summary>
     /// Exception raised when response from SimpleGeo API cannot be parsed
     /// </summary>
-    public class ParsingException : ApplicationException
+    public class ParsingException : Exception
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="ParsingException"/> class.

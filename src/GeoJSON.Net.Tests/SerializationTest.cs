@@ -47,7 +47,6 @@ namespace GeoJSON.Net.Tests
             var model = new GeoJSON.Net.Feature.Feature(polygon, featureProperties);
 
             var serializedData = JsonConvert.SerializeObject(model, Formatting.Indented, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver(), NullValueHandling = NullValueHandling.Ignore });
-
         }
 
 
