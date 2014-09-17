@@ -85,7 +85,7 @@ namespace GeoJSON.Net.Converters
                 return objectType == typeof(IGeometryObject);
             }
 
-            return objectType.GetInterface(typeof(IGeometryObject).Name, true) != null;
+            return typeof(IGeometryObject).IsAssignableFrom(objectType);
         }
     }
 }
