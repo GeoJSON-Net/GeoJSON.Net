@@ -38,41 +38,8 @@ namespace GeoJSON.Net.Geometry
             {
                 throw new ArgumentNullException("linearRings");
             }
-            //SetEndPoint(coordinates);
-
-            /*List<int> toRemove = new List<int>();
-            for (int i = 0; i < coordinates.Count(); i++)
-            {
-                if (!coordinates.ElementAt(i).IsLinearRing())
-                {
-                    toRemove.Add(i);
-                }
-            }
-
-            for (int j = 0; j < toRemove.Count(); j++)
-            {
-                coordinates.RemoveAt(j);
-            }*/
             if (coordinates.Any(linearRing => !linearRing.IsLinearRing()))
             {
-                /*var d = coordinates.First(linearRing => !linearRing.IsLinearRing());Z
-                System.Diagnostics.Debug.WriteLine(d.customString());
-
-                List<LineString> test = Coordinates.FindAll(linearRing => !linearRing.IsLinearRing());
-
-                foreach (LineString ls in test)
-                {
-                    var thisList = ls.Coordinates;
-
-
-                        
-
-                }*/
-                for (int i = 0; i < coordinates.Count(); i++)
-                {
-                    System.Diagnostics.Debug.WriteLine("polygon["+i+"] is: " + coordinates[i].customString());
-                }
-
                 throw new ArgumentOutOfRangeException("linearRings", "All elements must be closed LineStrings with 4 or more positions (see GeoJSON spec at 'http://geojson.org/geojson-spec.html#linestring').");
             }
 
@@ -154,15 +121,6 @@ namespace GeoJSON.Net.Geometry
         public override int GetHashCode()
         {
             return Coordinates.GetHashCode();
-        }
-
-        public void SetEndPoint(List<LineString> coordinates)
-        {
-            for (int g = 0; g < coordinates.Count; g++)
-            {
-                coordinates.ElementAt(g).MakeClosed();
-            }
-
         }
     }
 }
