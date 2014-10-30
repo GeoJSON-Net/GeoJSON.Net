@@ -38,7 +38,6 @@ namespace GeoJSON.Net.Geometry
             {
                 throw new ArgumentNullException("linearRings");
             }
-
             if (coordinates.Any(linearRing => !linearRing.IsLinearRing()))
             {
                 throw new ArgumentOutOfRangeException("linearRings", "All elements must be closed LineStrings with 4 or more positions (see GeoJSON spec at 'http://geojson.org/geojson-spec.html#linestring').");
@@ -46,6 +45,26 @@ namespace GeoJSON.Net.Geometry
 
             this.Coordinates = coordinates;
             this.Type = GeoJSONObjectType.Polygon;
+        }
+        /// <summary>
+        /// Returns a pretty string object of the linestring
+        /// </summary>
+        public string customString()
+        {
+            string ret = "[";
+            bool first = true;
+            for (int i = 0; i < Coordinates.Count(); i++)
+            {
+                if (!first)
+                {
+                    ret += ",";
+                }
+                first = false;
+                ret += Coordinates[i].customString();
+            }
+            ret += "]";
+
+            return ret;
         }
 
         /// <summary>
