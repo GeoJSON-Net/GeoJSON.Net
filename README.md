@@ -1,25 +1,30 @@
-##What is GeoJSON.NET
-GeoJSON is .NET library for the GeoJSON spec v1.0 (see http://geojson.org/geojson-spec.html), it uses Newtonsoft Json.NET (http://json.codeplex.com) for serialization and deserialization.
+#GeoJSON.NET [![NuGet Version](http://img.shields.io/nuget/v/GeoJSON.NET.svg?style=flat)](https://www.nuget.org/packages/GeoJSON.NET/) [![Build status](https://ci.appveyor.com/api/projects/status/lfxlj13sa5vk0l3y)](https://ci.appveyor.com/project/jbattermann/geojson-net)
 
-##Installing
-1. Available as NuGet package via 'Install-Package GeoJSON.Net', see https://nuget.org/packages/GeoJSON.Net
-2. Download the source, compile and include GeoJSON.Net.dll in you project
+GeoJSON.Net is a .NET library for the [GeoJSON v1.0 specificaton](see http://geojson.org/geojson-spec.html) and it uses and provides [Newtonsoft Json.NET](http://json.codeplex.com) converters for serialization and deserialization of GeoJSON data.
 
-##Examples
-### Point serialization
-    `var point = new GeoJSON.Net.Geometry.Point(new GeoJSON.Net.Geometry.GeographicPosition(45.79012, 15.94107));
-	var featureProperties = new Dictionary<string, object> { {"Name", "Foo"} };
-	var model = new GeoJSON.Net.Feature.Feature(point, featureProperties);
-	var serializedData = JsonConvert.SerializeObject(model, Formatting.Indented, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver(), NullValueHandling = NullValueHandling.Ignore });`
+##Installation & Usage
+Well all you basically have to do is install the [GeoJSON.Net](https://www.nuget.org/packages/GeoJSON.Net/) NuGet package:
 
-### Deserialize GeoJSON file  
-    `JsonConvert.DeserializeObject<GeoJSON.Net.Feature.FeatureCollection>(string content);`
+`PM> Install-Package GeoJSON.Net`
+
+That's all there is. Really. From there on you can go ahead and (De-)Serialize GeoJSON using the provided [converters](https://github.com/jbattermann/GeoJSON.Net/tree/master/src/GeoJSON.Net/Converters) - see [the Tests for example usage](https://github.com/jbattermann/GeoJSON.Net/tree/master/src/GeoJSON.Net.Tests).
+
 
 ##News
-- 2014-06-25 - added Polygon and Point serialization
+Well it's probably best to check out the [commits](https://github.com/jbattermann/GeoJSON.Net/commits/master) what has been added over time.
 
-##Build Status: [![Build status](https://ci.appveyor.com/api/projects/status/lfxlj13sa5vk0l3y)](https://ci.appveyor.com/project/jbattermann/geojson-net)
+## Contributing
+Highly welcome! Just fork away and send a pull request.
 
-Enjoy!  
--Joerg Battermann  
-jb at joergbattermann.com
+
+##Thanks
+This library would be NOTHING without its [contributors](https://github.com/jbattermann/GeoJSON.Net/graphs/contributors) - thanks so much!!
+
+## Copyright
+
+Copyright © 2014 Jörg Battermann & [Contributors](https://github.com/jbattermann/GeoJSON.Net/graphs/contributors)
+
+## License
+
+GeoJSON.Net is licensed under [MIT](http://www.opensource.org/licenses/mit-license.php "Read more about the MIT license form"). Refer to [LICENSE.md](https://github.com/jbattermann/GeoJSON.Net/blob/master/LICENSE.md) for more information.
+
