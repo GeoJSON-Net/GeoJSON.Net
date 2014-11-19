@@ -11,16 +11,18 @@ namespace GeoJSON.Net.Converters
 {
     using System;
 
-    using Geometry;
+    using GeoJSON.Net.Geometry;
     using System.Linq;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
     using System.Collections.Generic;
+    using System.Text.RegularExpressions;
+    using System.Globalization;
 
     /// <summary>
     /// Converter to read and write the <see cref="MultiPolygon" /> type.
     /// </summary>
-    public class PolygonConverter : JsonConverter
+    public class LineStringConverter : JsonConverter
     {
         /// <summary>
         /// Writes the JSON representation of the object.
@@ -28,25 +30,25 @@ namespace GeoJSON.Net.Converters
         /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.</param><param name="value">The value.</param><param name="serializer">The calling serializer.</param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            var coordinateElements = value as List<LineString>;
+            var coordinateElements = value as List<IPosition>;
             if (coordinateElements != null && coordinateElements.Count > 0)
             {
-                if (coordinateElements[0].Coordinates[0] is GeographicPosition)
+                var coordinateArray = new JArray();
+                foreach (var position in coordinateElements)
                 {
-                    var converter = new LineStringConverter();
-                    writer.WriteStartArray();
-                    foreach (var subPolygon in coordinateElements)
-                    {
-                        converter.WriteJson(writer, subPolygon.Coordinates, serializer);
-                    }
-                    writer.WriteEndArray();
+                    var coordinates = (GeographicPosition) position;
+                    var coordinateElement = new JArray(coordinates.Longitude, coordinates.Latitude);
+                    if (coordinates.Altitude.HasValue)
+                        coordinateElement = new JArray(coordinates.Longitude, coordinates.Latitude, coordinates.Altitude);
+
+                    coordinateArray.Add(coordinateElement);
                 }
-                else
-                    // ToDo: implement
-                    throw new NotImplementedException();
+                serializer.Serialize(writer, coordinateArray);
             }
             else
+            {
                 serializer.Serialize(writer, value);
+            }
         }
 
         /// <summary>
@@ -58,10 +60,23 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            var ringArray = serializer.Deserialize(reader) as JArray;
-            var converter = new LineStringConverter();
-            var rings = ringArray.Select(ring => (LineString)converter.ReadJson(reader, typeof(LineString), ring, serializer)).ToList();
-            return rings;
+            return new LineString((existingValue as JArray).Select(coordinate =>
+            {
+                var cArray = coordinate as JArray;
+                if (cArray.Count == 2)
+                {
+                    return (IPosition)new GeographicPosition((double) cArray[1], (double) cArray[0]);
+                }
+                else if (cArray.Count == 3)
+                {
+                    return (IPosition)new GeographicPosition((double)cArray[1], (double)cArray[0], (double)cArray[2]);
+                }
+                else
+                {
+                    throw new JsonException(string.Format("Coordinate must have two or three components ({0} found).",
+                        cArray.Count));
+                }
+            }).ToList());
         }
 
         /// <summary>
@@ -73,7 +88,7 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(Polygon);
+            return objectType == typeof(LineString);
         }
     }
 }

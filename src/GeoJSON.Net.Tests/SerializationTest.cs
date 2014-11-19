@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using GeoJSON.Net.Feature;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
@@ -125,7 +126,85 @@ namespace GeoJSON.Net.Tests
             Assert.AreEqual(lng, 112.12);
         }
 
+        [TestMethod]
+        public void FeatureSerialization()
+        {
+            var coordinates = new[]
+            {
+                new List<IPosition> 
+                { 
+                    new GeographicPosition(52.370725881211314, 4.889259338378906), 
+                    new GeographicPosition(52.3711451105601, 4.895267486572266), 
+                    new GeographicPosition(52.36931095278263, 4.892091751098633), 
+                    new GeographicPosition(52.370725881211314, 4.889259338378906) 
+                },
+                new List<IPosition> 
+                { 
+                    new GeographicPosition(52.370725881211314, 4.989259338378906), 
+                    new GeographicPosition(52.3711451105601, 4.995267486572266), 
+                    new GeographicPosition(52.36931095278263, 4.992091751098633), 
+                    new GeographicPosition(52.370725881211314, 4.989259338378906) 
+                },
+            };
+            var settings = new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() };
+            IGeometryObject geometry;
 
-       
+            geometry = new LineString(coordinates[0]);
+            AssertCoordinates(JsonConvert.SerializeObject(new Feature.Feature(geometry), settings), 1, coordinates[0]);
+            geometry = new Point(coordinates[0][0]);
+            AssertCoordinates(JsonConvert.SerializeObject(new Feature.Feature(geometry), settings), 0, coordinates[0].Take(1).ToArray());
+            geometry = new MultiLineString(coordinates.Select(ca => new LineString(ca)).ToList());
+            AssertCoordinates(JsonConvert.SerializeObject(new Feature.Feature(geometry), settings), 2, coordinates);
+            geometry = new Polygon(coordinates.Select(ca => new LineString(ca)).ToList());
+            AssertCoordinates(JsonConvert.SerializeObject(new Feature.Feature(geometry), settings), 2, coordinates);
+        }
+
+        private void AssertCoordinates(string geojson, int expectedNesting, IEnumerable<object> coords)
+        {
+            var coordMatch = Regex.Matches(geojson, "\"coordinates\":(.+?)(,\\s*\"|})");
+            Assert.AreEqual(1, coordMatch.Count);
+            var deserializedCoords = JsonConvert.DeserializeObject<JArray>(coordMatch[0].Groups[1].Value);
+            AssertCoordInternal(deserializedCoords, expectedNesting, coords);
+        }
+
+        private void AssertCoordInternal(JArray coords, int expectedNesting, IEnumerable<object> expectedCoords)
+        {
+            Assert.IsTrue(expectedNesting >= 0);
+
+            if (expectedNesting == 0)
+            {
+                AssertCoordinate((GeographicPosition) expectedCoords.First(), coords);
+            }
+            else
+            {
+                var enumerator = expectedCoords.GetEnumerator();
+                var moveNext = enumerator.MoveNext();
+                var i = 0;
+
+                foreach (var deserializedCoord in coords)
+                {
+                    Assert.IsTrue(moveNext);
+                    var array = deserializedCoord as JArray;
+                    if (array != null && array.Count > 0 && !(array[0] is JValue))
+                    {
+                        AssertCoordInternal(array, expectedNesting - 1, (IEnumerable<object>)enumerator.Current);
+                    }
+                    else if (array != null)
+                    {
+                        var expectedCoord = (GeographicPosition)enumerator.Current;
+                        AssertCoordinate(expectedCoord, array);
+                    }
+
+                    moveNext = enumerator.MoveNext();
+                    i++;
+                }
+            }
+        }
+
+        private static void AssertCoordinate(GeographicPosition expectedCoord, JArray array)
+        {
+            Assert.AreEqual(expectedCoord.Latitude, (double) array[1], 1e-6);
+            Assert.AreEqual(expectedCoord.Longitude, (double) array[0], 1e-6);
+        }
     }
 }
