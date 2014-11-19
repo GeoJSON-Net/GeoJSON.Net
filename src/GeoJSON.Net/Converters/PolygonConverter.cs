@@ -68,38 +68,25 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            var inputJsonValue = serializer.Deserialize(reader).ToString();
-
-            //sanitizing input
-            inputJsonValue = inputJsonValue.Replace(Environment.NewLine, "");
-            inputJsonValue = inputJsonValue.Replace(" ", "");
-
-            var polygonCoordinates = new List<GeographicPosition>();
-
-            //parsing coordinates groups
-            MatchCollection coordinateGroups = Regex.Matches(inputJsonValue, @"(\[[-+]{0,1}\d{1,3}.\d+,[-+]{0,1}\d{1,2}.\d+[,\d+.\d+]*\])");
-            foreach (Match coordinatePair in coordinateGroups) 
+            var ringArray = serializer.Deserialize(reader) as JArray;
+            var rings = ringArray.Select(ring => new LineString((ring as JArray).Select(coordinate =>
             {
-                var coordinates = Regex.Match(coordinatePair.Value, @"(?<longitude>[+-]{0,1}\d+.\d+),(?<latitude>[+-]{0,1}\d+.\d+)(?:,)?(?<altitude>\d+.\d+)*");
-
-                double lng;
-                double lat;
-                double alt;
-
-                double.TryParse(coordinates.Groups["longitude"].Value, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out lng);
-                double.TryParse(coordinates.Groups["latitude"].Value, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out lat);
-                double.TryParse(coordinates.Groups["altitude"].Value, NumberStyles.AllowDecimalPoint | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out alt);
-
-                if (lng != 0 && lat != 0)
-                    if (alt == 0)
-                        polygonCoordinates.Add(new GeographicPosition(lat, lng));
-                    else
-                        polygonCoordinates.Add(new GeographicPosition(lat, lng, alt));
-                
-            }
-
-
-            return new List<LineString> { new LineString(polygonCoordinates.ToList<IPosition>()) };
+                var cArray = coordinate as JArray;
+                if (cArray.Count == 2)
+                {
+                    return (IPosition)new GeographicPosition((double) cArray[1], (double) cArray[0]);
+                }
+                else if (cArray.Count == 3)
+                {
+                    return (IPosition)new GeographicPosition((double)cArray[1], (double)cArray[0], (double)cArray[2]);
+                }
+                else
+                {
+                    throw new JsonException(string.Format("Coordinate must have two or three components ({0} found).",
+                        cArray.Count));
+                }
+            }).ToList())).ToList();
+            return rings;
         }
 
         /// <summary>
