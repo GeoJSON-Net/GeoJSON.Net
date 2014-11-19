@@ -76,6 +76,41 @@ namespace GeoJSON.Net.Tests
         }
 
         [TestMethod]
+        public void MultiLineStringSerialization()
+        {
+            var coordinates = new[]
+            {
+                new List<IPosition> 
+                { 
+                    new GeographicPosition(52.370725881211314, 4.889259338378906), 
+                    new GeographicPosition(52.3711451105601, 4.895267486572266), 
+                    new GeographicPosition(52.36931095278263, 4.892091751098633), 
+                    new GeographicPosition(52.370725881211314, 4.889259338378906) 
+                },
+                new List<IPosition> 
+                { 
+                    new GeographicPosition(52.370725881211314, 4.989259338378906), 
+                    new GeographicPosition(52.3711451105601, 4.995267486572266), 
+                    new GeographicPosition(52.36931095278263, 4.992091751098633), 
+                    new GeographicPosition(52.370725881211314, 4.989259338378906) 
+                },
+            };
+
+            var model = new MultiLineString(coordinates.Select(ca => new LineString(ca)).ToList());
+            var serializedData = JsonConvert.SerializeObject(model, Formatting.Indented, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver(), NullValueHandling = NullValueHandling.Ignore });
+
+            var matches = Regex.Matches(serializedData, @"(?<coordinates>[0-9]+([.,][0-9]+))");
+
+            double lng;
+            double.TryParse(matches[0].Value, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out lng);
+
+            //Double precision can pose a problem 
+            Assert.IsTrue(Math.Abs(lng - 4.889259338378906) < 0.0000001);
+
+            Assert.IsTrue(!serializedData.Contains("latitude"));
+        }
+
+        [TestMethod]
         public void GeographicPositionSerialization()
         {
             var model = new GeoJSON.Net.Geometry.GeographicPosition(112.12, 10);

@@ -118,5 +118,68 @@ namespace GeoJSON.Net.Tests
             Assert.IsTrue(coordinates.Latitude + 52.379790828551016 < 0.0001);
         }
 
+        [TestMethod]
+        public void MultiLineStringDeserialization()
+        {
+            #region geoJsonText
+            var geoJsonText = @"{
+        'type': 'MultiLineString',
+        'coordinates': [
+          [
+            [
+              5.3173828125,
+              52.379790828551016
+              
+            ],
+            [
+              5.456085205078125,
+              52.36721467920585
+            ],
+            [
+              5.386047363281249,
+              52.303440474272755,
+                4.23
+            ]
+          ],
+          [
+            [
+              5.3273828125,
+              52.379790828551016
+              
+            ],
+            [
+              5.486085205078125,
+              52.36721467920585
+            ],
+            [
+              5.426047363281249,
+              52.303440474272755,
+                4.23
+            ]
+          ]
+        ]
+      }";
+            #endregion
+            //geoJsonText = geoJsonText.Replace("\r\n", "");
+            var multiLineString = JsonConvert.DeserializeObject<MultiLineString>(geoJsonText, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+
+            Assert.IsNotNull(multiLineString);
+            Assert.IsNotNull(multiLineString.Coordinates);
+            Assert.AreEqual(2, multiLineString.Coordinates.Count);
+            Assert.AreEqual(3, multiLineString.Coordinates[0].Coordinates.Count);
+            Assert.AreEqual(3, multiLineString.Coordinates[1].Coordinates.Count);
+
+            var firstPoint = multiLineString.Coordinates[0].Coordinates[0] as GeographicPosition;
+            Assert.IsNotNull(firstPoint);
+            Assert.AreEqual(52.37979082, firstPoint.Latitude, 0.0001);
+            Assert.AreEqual(5.3173828125, firstPoint.Longitude, 0.0001);
+            Assert.IsTrue(!firstPoint.Altitude.HasValue);
+
+            var thirdPoint = multiLineString.Coordinates[0].Coordinates[2] as GeographicPosition;
+            Assert.IsNotNull(thirdPoint);
+            Assert.IsTrue(thirdPoint.Altitude.HasValue);
+            Assert.AreEqual(4.23, thirdPoint.Altitude.Value, 0.0001);
+
+        }
     }
 }

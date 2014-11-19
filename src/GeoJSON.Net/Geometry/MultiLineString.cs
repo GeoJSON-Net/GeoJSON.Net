@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using GeoJSON.Net.Converters;
+
 namespace GeoJSON.Net.Geometry
 {
     using System.Collections.Generic;
@@ -33,6 +35,7 @@ namespace GeoJSON.Net.Geometry
         /// </summary>
         /// <value>The Coordinates.</value>
         [JsonProperty(PropertyName = "coordinates", Required = Required.Always)]
+        [JsonConverter(typeof(PolygonConverter))]
         public List<LineString> Coordinates { get; private set; }
     }
 }
