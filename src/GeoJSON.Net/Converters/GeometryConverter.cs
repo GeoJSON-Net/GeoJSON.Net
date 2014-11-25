@@ -31,7 +31,8 @@ namespace GeoJSON.Net.Converters
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             if (value is GeoJSON.Net.Geometry.Point
-                || value is GeoJSON.Net.Geometry.Polygon) 
+                || value is GeoJSON.Net.Geometry.Polygon
+                || value is GeoJSON.Net.Geometry.LineString)
             {
                 serializer.Serialize(writer, value);
             }
@@ -61,10 +62,10 @@ namespace GeoJSON.Net.Converters
             { 
                 case "polygon":
                     return JsonConvert.DeserializeObject<Polygon>(inputJsonValue, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
-                    break;
                 case "point":
                     return JsonConvert.DeserializeObject<Point>(inputJsonValue, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
-                    break;
+                case "linestring":
+                    return JsonConvert.DeserializeObject<LineString>(inputJsonValue, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
             }
 
             // ToDo: implement

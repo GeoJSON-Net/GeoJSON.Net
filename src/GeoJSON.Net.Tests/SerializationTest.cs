@@ -1,6 +1,5 @@
-﻿using GeoJSON.Net.Converters;
+﻿using GeoJSON.Net.Feature;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using GeoJSON.Net.Feature;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -8,8 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Text.RegularExpressions;
 
 namespace GeoJSON.Net.Tests
@@ -23,9 +20,9 @@ namespace GeoJSON.Net.Tests
         [TestMethod]
         public void PointFeatureSerialization() 
         {
-            var point = new GeoJSON.Net.Geometry.Point(new GeoJSON.Net.Geometry.GeographicPosition(45.79012, 15.94107));
+            var point = new Point(new GeographicPosition(45.79012, 15.94107));
             var featureProperties = new Dictionary<string, object> { {"Name", "Foo"} };
-            var model = new GeoJSON.Net.Feature.Feature(point, featureProperties);
+            var model = new Feature.Feature(point, featureProperties);
             var serializedData = JsonConvert.SerializeObject(model, Formatting.Indented, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver(), NullValueHandling = NullValueHandling.Ignore });
 
             Assert.IsFalse(serializedData.Contains("longitude"));
@@ -44,7 +41,7 @@ namespace GeoJSON.Net.Tests
 
             var polygon = new Polygon(new List<LineString> { new LineString(coordinates) });
             var featureProperties = new Dictionary<string, object> { { "Name", "Foo" } };
-            var model = new GeoJSON.Net.Feature.Feature(polygon, featureProperties);
+            var model = new Feature.Feature(polygon, featureProperties);
 
             var serializedData = JsonConvert.SerializeObject(model, Formatting.Indented, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver(), NullValueHandling = NullValueHandling.Ignore });
         }
@@ -78,7 +75,7 @@ namespace GeoJSON.Net.Tests
         [TestMethod]
         public void GeographicPositionSerialization()
         {
-            var model = new GeoJSON.Net.Geometry.GeographicPosition(112.12, 10);
+            var model = new GeographicPosition(112.12, 10);
 
             var serialized = JsonConvert.SerializeObject(model, Formatting.Indented, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
 
@@ -90,7 +87,30 @@ namespace GeoJSON.Net.Tests
             Assert.AreEqual(lng, 112.12);
         }
 
+        [TestMethod]
+        public void FeatureCollectionSerialization()
+        {
+            var model = new FeatureCollection(null);
+            for (var i = 10; i-->0;)
+            {
+                var geom = new LineString(new[]
+                {
+                    new GeographicPosition(51.010, -1.034),
+                    new GeographicPosition(51.010, -0.034),
+                });
 
-       
+                var props = new Dictionary<string, object>();
+                props.Add("test1", "1");
+                props.Add("test2", 2);
+
+                var feature = new Feature.Feature(geom, props);
+                model.Features.Add(feature);
+            }
+
+            var serialized = JsonConvert.SerializeObject(model, Formatting.Indented, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+            
+            Assert.IsNotNull(serialized);
+            Assert.IsFalse(string.IsNullOrEmpty(serialized));
+        }
     }
 }

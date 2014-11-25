@@ -1,15 +1,7 @@
-﻿using GeoJSON.Net.Converters;
-using GeoJSON.Net.Feature;
-using GeoJSON.Net.Geometry;
+﻿using GeoJSON.Net.Geometry;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading;
 
 namespace GeoJSON.Net.Tests
 {
