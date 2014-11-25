@@ -1,4 +1,5 @@
-﻿using GeoJSON.Net.Geometry;
+﻿using GeoJSON.Net.Feature;
+using GeoJSON.Net.Geometry;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -118,5 +119,18 @@ namespace GeoJSON.Net.Tests
             Assert.IsTrue(coordinates.Latitude + 52.379790828551016 < 0.0001);
         }
 
+        [TestMethod]
+        public void FeatureCollectionDeserialization()
+        {
+            var geoJsonText = @"{'type': 'FeatureCollection', 'crs': {'type': 'name','properties': {'name': 'urn:ogc:def:crs:OGC:1.3:CRS84'}},
+                'features': [{'type': 'Feature','properties': {'ITEM_CODE': 'PB','UNIQUE_ID': '1570',},'geometry': {'type': 'Polygon', 'coordinates': [[
+                [-0.12513, 51.542634],[-0.125125,51.542618],[-0.125279,51.542595],[-0.125362,51.542583],[-0.125369,51.542601],[-0.12513,51.542634]]]}}]}";
+
+            var featureCollection = JsonConvert.DeserializeObject<FeatureCollection>(geoJsonText,
+                new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+
+            Assert.IsNotNull(featureCollection);
+            Assert.AreEqual(1, featureCollection.Features.Count);
+        }
     }
 }
