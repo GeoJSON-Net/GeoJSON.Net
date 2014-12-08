@@ -33,7 +33,8 @@ namespace GeoJSON.Net.Converters
             if (value is Point
                 || value is Polygon
                 || value is LineString
-                || value is MultiLineString)
+                || value is MultiLineString
+                || value is MultiPolygon)
             {
                 serializer.Serialize(writer, value);
             }

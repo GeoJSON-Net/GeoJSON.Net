@@ -159,6 +159,51 @@ namespace GeoJSON.Net.Tests
             AssertCoordinates(JsonConvert.SerializeObject(new Feature.Feature(geometry), settings), 2, coordinates);
         }
 
+        [TestMethod]
+        public void MultiPolygonSerialization()
+        {
+            var expectedJson = "{\"geometry\":{\"coordinates\":[[[[0.0,0.0],[1.0,0.0],[1.0,1.0],[0.0,1.0],[0.0,0.0]]],[[[100.0,100.0],[101.0,100.0],[101.0,101.0],[100.0,101.0],[100.0,100.0]],[[200.0,200.0],[201.0,200.0],[201.0,201.0],[200.0,201.0],[200.0,200.0]]]],\"type\":\"MultiPolygon\"},\"properties\":{},\"type\":\"Feature\"}";
+            var polygon1 = new Polygon(new List<LineString>
+            {
+                new LineString((new List<GeographicPosition>
+                {
+                    new GeographicPosition(0, 0),
+                    new GeographicPosition(0, 1),
+                    new GeographicPosition(1, 1),
+                    new GeographicPosition(1, 0),
+                    new GeographicPosition(0, 0)
+                }).ToList<IPosition>())
+
+            });
+
+            var polygon2 = new Polygon(new List<LineString>
+            {
+                new LineString((new List<GeographicPosition>
+                {
+                    new GeographicPosition(100, 100),
+                    new GeographicPosition(100, 101),
+                    new GeographicPosition(101, 101),
+                    new GeographicPosition(101, 100),
+                    new GeographicPosition(100, 100)
+                }).ToList<IPosition>()),
+                new LineString((new List<GeographicPosition>
+                {
+                    new GeographicPosition(200, 200),
+                    new GeographicPosition(200, 201),
+                    new GeographicPosition(201, 201),
+                    new GeographicPosition(201, 200),
+                    new GeographicPosition(200, 200)
+                }).ToList<IPosition>())
+
+            });
+
+            var multipolygon = new MultiPolygon(new List<Polygon> { polygon1, polygon2 });
+            var newFeature = new Feature.Feature(multipolygon);
+            var serializedData = JsonConvert.SerializeObject(newFeature, Formatting.Indented, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver(), NullValueHandling = NullValueHandling.Ignore });
+            var serializedDataWithouWhiteSpace = Regex.Replace(serializedData, @"(\s|$)+", "");
+            Assert.IsTrue(serializedDataWithouWhiteSpace == expectedJson);
+        }
+
         private void AssertCoordinates(string geojson, int expectedNesting, IEnumerable<object> coords)
         {
             var coordMatch = Regex.Matches(geojson, "\"coordinates\":(.+?)(,\\s*\"|})");

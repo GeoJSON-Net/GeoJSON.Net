@@ -34,7 +34,7 @@ namespace GeoJSON.Net.Geometry
         /// Gets the list of Polygons enclosed in this MultiPolygon.
         /// </summary>
         [JsonProperty(PropertyName = "coordinates", Required = Required.Always)]
-        [JsonConverter(typeof(PointConverter))]
+        [JsonConverter(typeof(MultiPolygonConverter))]
         public List<Polygon> Coordinates { get; private set; }
     }
 }
