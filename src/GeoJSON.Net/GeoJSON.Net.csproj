@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Converters\GeometryConverter.cs" />
+    <Compile Include="Converters\MultiPolygonConverter.cs" />
     <Compile Include="Converters\PointConverter.cs" />
     <Compile Include="Converters\LineStringConverter.cs" />
     <Compile Include="Converters\PolygonConverter.cs" />
