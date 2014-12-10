@@ -73,5 +73,44 @@ namespace GeoJSON.Net.Tests
             Assert.IsFalse(polygon == polygon2);
 
         }
+
+				[TestMethod]
+				public void TestFeatureFromClass()
+				{
+					var testObject = new MyTestClass()
+						{
+							BooleanProperty = true,
+							DateTimeProperty = DateTime.Now,
+							DoubleProperty = 1.2345d,
+							EnumProperty = MyTestEnum.Value1,
+							IntProperty = -1,
+							StringProperty = "Hello, GeoJSON !"
+						};
+
+					Feature.Feature feature = new Feature.Feature(new Point(new GeographicPosition(10, 10)), testObject);
+
+					Assert.IsNotNull(feature.Properties);
+					Assert.IsTrue(feature.Properties.Count > 1);
+					Assert.AreEqual(feature.Properties.Count, 6);
+
+				}
+
+				public enum MyTestEnum
+				{
+					Undefined,
+					Value1,
+					Value2
+				}
+				public class MyTestClass
+				{
+					public int IntProperty { get; set; }
+					public string StringProperty { get; set; }
+					public DateTime DateTimeProperty { get; set; }
+					public double DoubleProperty { get; set; }
+					public bool BooleanProperty { get; set; }
+					public MyTestEnum EnumProperty { get; set; }
+				}
+
+			
     }
 }

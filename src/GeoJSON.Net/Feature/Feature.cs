@@ -9,12 +9,12 @@
 
 namespace GeoJSON.Net.Feature
 {
-    using System.Collections.Generic;
-
-    using Converters;
-    using Geometry;
-
-    using Newtonsoft.Json;
+	using System.Collections.Generic;
+	using System.Reflection;
+	using System.Linq;
+	using Converters;
+	using Geometry;
+	using Newtonsoft.Json;
 
     /// <summary>
     /// A GeoJSON <see cref="http://geojson.org/geojson-spec.html#feature-objects">Feature Object</see>.
@@ -35,6 +35,31 @@ namespace GeoJSON.Net.Feature
 
             this.Type = GeoJSONObjectType.Feature;
         }
+
+				/// <summary>
+				/// Initializes a new instance of the <see cref="Feature" /> class.
+				/// </summary>
+				/// <param name="geometry">The Geometry Object.</param>
+				/// <param name="featureObject">Class used to fill feature properties. Any public member will be added to feature properties</param>
+				/// <param name="id">The (optional) identifier.</param>
+				public Feature(IGeometryObject geometry, object featureObject, string id = null)
+				{
+					this.Geometry = geometry;
+					this.Id = id;
+
+					if (featureObject == null)
+					{
+						this.Properties = new Dictionary<string, object>();
+					}
+					else
+					{
+						this.Properties = featureObject.GetType()
+																							.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+																							.ToDictionary(prop => prop.Name, prop => prop.GetValue(featureObject, null));
+					}
+
+					this.Type = GeoJSONObjectType.Feature;
+				}
 
         /// <summary>
         /// Gets or sets the id.
