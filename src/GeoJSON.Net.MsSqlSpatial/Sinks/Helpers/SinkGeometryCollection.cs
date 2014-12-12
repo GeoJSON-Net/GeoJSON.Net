@@ -6,11 +6,11 @@ using Microsoft.SqlServer.Types;
 
 namespace GeoJSON.Net.MsSqlSpatial.Sinks
 {
-	internal class SinkGeometryCollection : List<SinkGeometry>
+	internal class SinkGeometryCollection<T> : List<SinkGeometry<T>>
 	{
-		public OpenGisGeometryType GeometryType { get; set; }
+		public T GeometryType { get; set; }
 
-		public SinkGeometryCollection(OpenGisGeometryType geomType)
+		public SinkGeometryCollection(T geomType)
 		{
 			GeometryType = geomType;
 		}

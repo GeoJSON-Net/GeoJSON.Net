@@ -64,7 +64,8 @@
   <ItemGroup>
     <Compile Include="SqlServerTypes\Loader.cs" />
     <Compile Include="SqlString.cs" />
-    <Compile Include="ToGeoJSONTests.cs" />
+    <Compile Include="ToGeoJSONGeographyTests.cs" />
+    <Compile Include="ToGeoJSONGeometryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

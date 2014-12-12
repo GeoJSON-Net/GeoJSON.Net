@@ -8,57 +8,66 @@ using Microsoft.SqlServer.Types;
 namespace GeoJSON.Net.MsSqlSpatial.Sinks
 {
 	/// <summary>
-	/// Sink converting a SqlGeometry to a GeoJSON geometry
-	/// Usage : <code>SqlGeometryGeoJsonSink sink = new SqlGeometryGeoJsonSink();
-	///	sqlGeometry.Populate(sink);
+	/// Sink converting a SqlGeography to a GeoJSON geometry
+	/// Usage : <code>SqlGeographyGeoJsonSink sink = new SqlGeographyGeoJsonSink();
+	///	sqlgeography.Populate(sink);
 	///	// sink.BoundingBox returns a GeoJSON compliant double[] bbox 
-	///	return sink.ConstructedGeometry; // returns an IGeometryObject
-	///	
+	///	return sink.ConstructedGeography; // returns an IGeometryObject
 	///	</code> 
 	/// </summary>
-	internal class SqlGeometryGeoJsonSink : IGeometrySink110
+	internal class SqlGeographyGeoJsonSink : IGeographySink110
 	{
-		SinkGeometryCollection<OpenGisGeometryType> _geomCollection;
-		SinkGeometry<OpenGisGeometryType> _currentGeometry;
+		SinkGeometryCollection<OpenGisGeographyType> _geomCollection;
+		SinkGeometry<OpenGisGeographyType> _currentGeometry;
 		SinkLineRing _currentRing;
-		double _xmin = double.MaxValue;
-		double _ymin = double.MaxValue;
-		double _xmax = double.MinValue;
-		double _ymax = double.MinValue;
+		double _lonMin = 180;
+		double _latMin = 90;
+		double _lonMax = -180;
+		double _latMax = -90;
 
 		#region Sink implementation
 
 
-		public void AddLine(double x, double y, double? z, double? m)
+		public void AddLine(double lat, double lon, double? z, double? m)
 		{
-			_currentRing.Add(new GeographicPosition(y, x, z));
+			_currentRing.Add(new GeographicPosition(lon, lat, z));
 
-			UpdateBoundingBox(x, y);
+			UpdateBoundingBox(lon, lat);
 		}
-		private void UpdateBoundingBox(double x, double y)
+		private void UpdateBoundingBox(double lon, double lat)
 		{
-			_xmin = Math.Min(x, _xmin);
-			_ymin = Math.Min(y, _ymin);
-			_xmax = Math.Max(x, _xmax);
-			_ymax = Math.Max(y, _ymax);
+			_lonMin = Math.Min(lon, _lonMin);
+			_latMin = Math.Min(lat, _latMin);
+			_lonMax = Math.Max(lon, _lonMax);
+			_latMax = Math.Max(lat, _latMax);
 		}
 
-		public void BeginFigure(double x, double y, double? z, double? m)
+		public void BeginFigure(double lat, double lon, double? z, double? m)
 		{
 			_currentRing = new SinkLineRing();
-			_currentRing.Add(new GeographicPosition(y, x, z));
+			_currentRing.Add(new GeographicPosition(lon, lat, z));
 
-			UpdateBoundingBox(x, y);
+			UpdateBoundingBox(lon, lat);
 		}
 
-		public void BeginGeometry(OpenGisGeometryType type)
+
+		public void BeginGeography(OpenGisGeographyType type)
 		{
 			if (_geomCollection == null)
 			{
-				_geomCollection = new SinkGeometryCollection<OpenGisGeometryType>(type);
+				_geomCollection = new SinkGeometryCollection<OpenGisGeographyType>(type);
 			}
 
-			_currentGeometry = new SinkGeometry<OpenGisGeometryType>(type);
+			_currentGeometry = new SinkGeometry<OpenGisGeographyType>(type);
+		}
+
+		public void EndGeography()
+		{
+			if (_currentGeometry == null)
+				return;
+
+			_geomCollection.Add(_currentGeometry);
+			_currentGeometry = null;
 		}
 
 		public void EndFigure()
@@ -68,15 +77,6 @@ namespace GeoJSON.Net.MsSqlSpatial.Sinks
 
 			_currentGeometry.Add(_currentRing);
 			_currentRing = null;
-		}
-
-		public void EndGeometry()
-		{
-			if (_currentGeometry == null)
-				return;
-
-			_geomCollection.Add(_currentGeometry);
-			_currentGeometry = null;
 		}
 
 		public void SetSrid(int srid)
@@ -93,7 +93,7 @@ namespace GeoJSON.Net.MsSqlSpatial.Sinks
 
 		#endregion
 
-		public IGeometryObject ConstructedGeometry
+		public IGeometryObject ConstructedGeography
 		{
 			get
 			{
@@ -101,31 +101,31 @@ namespace GeoJSON.Net.MsSqlSpatial.Sinks
 
 				switch (_geomCollection.GeometryType)
 				{
-					case OpenGisGeometryType.Point:
+					case OpenGisGeographyType.Point:
 						_geometry = ConstructGeometryPart(_geomCollection[0]);
 						((Point)_geometry).BoundingBoxes = this.BoundingBox;
 						break;
-					case OpenGisGeometryType.MultiPoint:
+					case OpenGisGeographyType.MultiPoint:
 						_geometry = new MultiPoint(_geomCollection.Select(g => (Point)ConstructGeometryPart(g)).ToList());
 						((MultiPoint)_geometry).BoundingBoxes = this.BoundingBox;
 						break;
-					case OpenGisGeometryType.LineString:
+					case OpenGisGeographyType.LineString:
 						_geometry = ConstructGeometryPart(_geomCollection[0]);
 						((LineString)_geometry).BoundingBoxes = this.BoundingBox;
 						break;
-					case OpenGisGeometryType.MultiLineString:
+					case OpenGisGeographyType.MultiLineString:
 						_geometry = new MultiLineString(_geomCollection.Select(g => (LineString)ConstructGeometryPart(g)).ToList());
 						((MultiLineString)_geometry).BoundingBoxes = this.BoundingBox;
 						break;
-					case OpenGisGeometryType.Polygon:
+					case OpenGisGeographyType.Polygon:
 						_geometry = ConstructGeometryPart(_geomCollection.First());
 						((Polygon)_geometry).BoundingBoxes = this.BoundingBox;
 						break;
-					case OpenGisGeometryType.MultiPolygon:
+					case OpenGisGeographyType.MultiPolygon:
 						_geometry = new MultiPolygon(_geomCollection.Select(g => (Polygon)ConstructGeometryPart(g)).ToList()) { BoundingBoxes = this.BoundingBox };
 						((MultiPolygon)_geometry).BoundingBoxes = this.BoundingBox;
 						break;
-					case OpenGisGeometryType.GeometryCollection:
+					case OpenGisGeographyType.GeometryCollection:
 						_geometry = new GeometryCollection(_geomCollection.Select(g => ConstructGeometryPart(g)).ToList()) { BoundingBoxes = this.BoundingBox };
 						((GeometryCollection)_geometry).BoundingBoxes = this.BoundingBox;
 						break;
@@ -141,33 +141,33 @@ namespace GeoJSON.Net.MsSqlSpatial.Sinks
 		{
 			get
 			{
-				return new double[] { _xmin, _ymin, _xmax, _ymax };
+				return new double[] { _lonMin, _latMin, _lonMax, _latMax };
 			}
 		}
 
-		private IGeometryObject ConstructGeometryPart(SinkGeometry<OpenGisGeometryType> geomPart)
+		private IGeometryObject ConstructGeometryPart(SinkGeometry<OpenGisGeographyType> geomPart)
 		{
 
 			IGeometryObject geometry = null;
 
 			switch (geomPart.GeometryType)
 			{
-				case OpenGisGeometryType.Point:
+				case OpenGisGeographyType.Point:
 					geometry = new Point(geomPart[0][0]);
 					break;
-				case OpenGisGeometryType.MultiPoint:
+				case OpenGisGeographyType.MultiPoint:
 					MultiPoint mp = new MultiPoint(geomPart.Select(g => new Point(g[0])).ToList());
 					geometry = mp;
 					break;
-				case OpenGisGeometryType.LineString:
+				case OpenGisGeographyType.LineString:
 					geometry = new LineString(geomPart[0]);
 					break;
-				case OpenGisGeometryType.MultiLineString:
+				case OpenGisGeographyType.MultiLineString:
 					geometry = new MultiLineString(geomPart.Select(line => new LineString(line))
 																																		.ToList()
 																															);
 					break;
-				case OpenGisGeometryType.Polygon:
+				case OpenGisGeographyType.Polygon:
 					geometry = new Polygon(geomPart.Select(line => new LineString(line))
 																																		.ToList()
 																															);
@@ -179,7 +179,6 @@ namespace GeoJSON.Net.MsSqlSpatial.Sinks
 
 			return geometry;
 		}
-
 
 	}
 }

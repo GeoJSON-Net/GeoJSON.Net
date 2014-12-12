@@ -51,6 +51,8 @@
     <Compile Include="Sinks\Helpers\SinkGeometry.cs" />
     <Compile Include="Sinks\Helpers\SinkGeometryCollection.cs" />
     <Compile Include="Sinks\Helpers\SinkLineString.cs" />
+    <Compile Include="Sinks\Helpers\SqlSpatialExtensions.cs" />
+    <Compile Include="Sinks\SqlGeographyGeoJSONSink.cs" />
     <Compile Include="Sinks\SqlGeometryGeoJSONSink.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlServerTypes\Loader.cs" />
