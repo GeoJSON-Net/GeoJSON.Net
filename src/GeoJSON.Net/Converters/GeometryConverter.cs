@@ -66,11 +66,11 @@ namespace GeoJSON.Net.Converters
             { 
                 case "polygon":
                     return JsonConvert.DeserializeObject<Polygon>(inputJsonValue, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
-                    break;
                 case "point":
                     return JsonConvert.DeserializeObject<Point>(inputJsonValue, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
-                    break;
-            }
+				case "multipolygon":
+					return JsonConvert.DeserializeObject<MultiPolygon>(inputJsonValue, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+			}
 
             // ToDo: implement
             throw new NotImplementedException();
