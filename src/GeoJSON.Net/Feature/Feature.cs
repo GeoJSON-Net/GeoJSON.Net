@@ -27,6 +27,7 @@ namespace GeoJSON.Net.Feature
         /// <param name="geometry">The Geometry Object.</param>
         /// <param name="properties">The properties.</param>
         /// <param name="id">The (optional) identifier.</param>
+        [JsonConstructor]
         public Feature(IGeometryObject geometry, Dictionary<string, object> properties = null, string id = null)
         {
             this.Geometry = geometry;
