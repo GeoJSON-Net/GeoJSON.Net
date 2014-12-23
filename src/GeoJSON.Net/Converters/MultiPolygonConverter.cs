@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -60,8 +61,11 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            throw new NotImplementedException();
-        }
+			var o = serializer.Deserialize<JArray>(reader);
+			var polygonConverter = new PolygonConverter();
+			var polygons = o.Select(polygonObject => polygonConverter.ReadJson(polygonObject.CreateReader(), typeof(Polygon), polygonObject, serializer) as List<LineString>).Select(lines => new Polygon(lines)).ToList();
+			return polygons;
+		}
 
         /// <summary>
         /// Determines whether this instance can convert the specified object type.
