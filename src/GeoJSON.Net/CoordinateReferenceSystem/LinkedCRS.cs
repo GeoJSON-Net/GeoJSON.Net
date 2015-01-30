@@ -15,7 +15,7 @@ namespace GeoJSON.Net.CoordinateReferenceSystem
     /// <summary>
     /// Defines the <see cref="http://geojson.org/geojson-spec.html#linked-crs">Linked CRS type</see>.
     /// </summary>
-    public class LinkedCRS : CRSBase
+    public class LinkedCRS : CRSBase, ICRSObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="LinkedCRS"/> class.
