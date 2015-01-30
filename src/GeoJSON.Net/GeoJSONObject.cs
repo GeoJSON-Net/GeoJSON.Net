@@ -7,6 +7,7 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using GeoJSON.Net.Converters;
 using Newtonsoft.Json.Converters;
 
 namespace GeoJSON.Net
@@ -36,6 +37,7 @@ namespace GeoJSON.Net
         /// The Coordinate Reference System Objects.
         /// </value>
         [JsonProperty(PropertyName = "crs", Required = Required.Default)]
+        [JsonConverter(typeof(CrsConverter))]
         public CoordinateReferenceSystem.ICRSObject CRS { get; set; }
 
         /// <summary>

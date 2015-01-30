@@ -1,15 +1,8 @@
-﻿using GeoJSON.Net.Converters;
-using GeoJSON.Net.Feature;
-using GeoJSON.Net.Geometry;
+﻿using GeoJSON.Net.Geometry;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading;
 
 namespace GeoJSON.Net.Tests
 {
@@ -20,7 +13,7 @@ namespace GeoJSON.Net.Tests
         /// Test that the last coordinate must be the same as the first to complete the polygon
         /// </summary>
         [TestMethod]
-        public void LineStringIsClosed() 
+        public void LineStringIsClosed()
         {
             var coordinates = new List<GeographicPosition> 
             { 
@@ -35,7 +28,7 @@ namespace GeoJSON.Net.Tests
 
 
         [TestMethod]
-        public void ComparePolygons() 
+        public void ComparePolygons()
         {
             var coordinates = new List<GeographicPosition> 
                 { 
@@ -74,43 +67,43 @@ namespace GeoJSON.Net.Tests
 
         }
 
-				[TestMethod]
-				public void TestFeatureFromClass()
-				{
-					var testObject = new MyTestClass()
-						{
-							BooleanProperty = true,
-							DateTimeProperty = DateTime.Now,
-							DoubleProperty = 1.2345d,
-							EnumProperty = MyTestEnum.Value1,
-							IntProperty = -1,
-							StringProperty = "Hello, GeoJSON !"
-						};
+        [TestMethod]
+        public void TestFeatureFromClass()
+        {
+            var testObject = new MyTestClass()
+                {
+                    BooleanProperty = true,
+                    DateTimeProperty = DateTime.Now,
+                    DoubleProperty = 1.2345d,
+                    EnumProperty = MyTestEnum.Value1,
+                    IntProperty = -1,
+                    StringProperty = "Hello, GeoJSON !"
+                };
 
-					Feature.Feature feature = new Feature.Feature(new Point(new GeographicPosition(10, 10)), testObject);
+            Feature.Feature feature = new Feature.Feature(new Point(new GeographicPosition(10, 10)), testObject);
 
-					Assert.IsNotNull(feature.Properties);
-					Assert.IsTrue(feature.Properties.Count > 1);
-					Assert.AreEqual(feature.Properties.Count, 6);
+            Assert.IsNotNull(feature.Properties);
+            Assert.IsTrue(feature.Properties.Count > 1);
+            Assert.AreEqual(feature.Properties.Count, 6);
 
-				}
+        }
 
-				public enum MyTestEnum
-				{
-					Undefined,
-					Value1,
-					Value2
-				}
-				public class MyTestClass
-				{
-					public int IntProperty { get; set; }
-					public string StringProperty { get; set; }
-					public DateTime DateTimeProperty { get; set; }
-					public double DoubleProperty { get; set; }
-					public bool BooleanProperty { get; set; }
-					public MyTestEnum EnumProperty { get; set; }
-				}
+        public enum MyTestEnum
+        {
+            Undefined,
+            Value1,
+            Value2
+        }
+        public class MyTestClass
+        {
+            public int IntProperty { get; set; }
+            public string StringProperty { get; set; }
+            public DateTime DateTimeProperty { get; set; }
+            public double DoubleProperty { get; set; }
+            public bool BooleanProperty { get; set; }
+            public MyTestEnum EnumProperty { get; set; }
+        }
 
-			
+
     }
 }

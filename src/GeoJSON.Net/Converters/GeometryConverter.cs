@@ -70,7 +70,9 @@ namespace GeoJSON.Net.Converters
                     return JsonConvert.DeserializeObject<Point>(inputJsonValue, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
 				case "multipolygon":
 					return JsonConvert.DeserializeObject<MultiPolygon>(inputJsonValue, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
-			}
+                case "linestring":
+                    return JsonConvert.DeserializeObject<LineString>(inputJsonValue, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+            }
 
             // ToDo: implement
             throw new NotImplementedException();

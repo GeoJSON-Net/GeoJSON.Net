@@ -42,6 +42,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\CrsConverter.cs" />
     <Compile Include="Converters\GeometryConverter.cs" />
     <Compile Include="Converters\MultiPolygonConverter.cs" />
     <Compile Include="Converters\PointConverter.cs" />

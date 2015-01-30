@@ -7,12 +7,14 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System.Linq;
+
 namespace GeoJSON.Net.Geometry
 {
     using System;
     using System.Collections.Generic;
 
-    using GeoJSON.Net.Converters;
+    using Converters;
 
     using Newtonsoft.Json;
 
@@ -26,20 +28,22 @@ namespace GeoJSON.Net.Geometry
         /// Initializes a new instance of the <see cref="LineString"/> class.
         /// </summary>
         /// <param name="coordinates">The coordinates.</param>
-        public LineString(List<IPosition> coordinates)
+        public LineString(IEnumerable<IPosition> coordinates)
         {
             if (coordinates == null)
             {
                 throw new ArgumentNullException("coordinates");
             }
 
-            if (coordinates.Count < 2)
+            var coordsList = coordinates.ToList();
+
+            if (coordsList.Count < 2)
             {
                 throw new ArgumentOutOfRangeException("coordinates", "According to the GeoJSON v1.0 spec a LineString must have at least two or more positions.");
             }
 
-            this.Coordinates = coordinates;
-            this.Type = GeoJSONObjectType.LineString;
+            Coordinates = coordsList;
+            Type = GeoJSONObjectType.LineString;
         }
 
         /// <summary>
@@ -58,7 +62,7 @@ namespace GeoJSON.Net.Geometry
         /// </returns>
         public bool IsLinearRing()
         {
-            return this.Coordinates.Count >= 4 && this.IsClosed();
+            return Coordinates.Count >= 4 && IsClosed();
         }
 
         /// <summary>
@@ -69,17 +73,17 @@ namespace GeoJSON.Net.Geometry
         /// </returns>
         public bool IsClosed()
         {
-            if (this.Coordinates[0] is GeographicPosition) 
+            if (Coordinates[0] is GeographicPosition) 
             {
-                var firstCoordinate = this.Coordinates[0] as GeographicPosition;
-                var lastCoordinate = this.Coordinates[this.Coordinates.Count - 1] as GeographicPosition;
+                var firstCoordinate = Coordinates[0] as GeographicPosition;
+                var lastCoordinate = Coordinates[Coordinates.Count - 1] as GeographicPosition;
 
                 return firstCoordinate.Latitude == lastCoordinate.Latitude
                     && firstCoordinate.Longitude == lastCoordinate.Longitude
                     && firstCoordinate.Altitude == lastCoordinate.Altitude;
             }
             else
-                return this.Coordinates[0].Equals(this.Coordinates[this.Coordinates.Count - 1]);
+                return Coordinates[0].Equals(Coordinates[Coordinates.Count - 1]);
         }
     }
 }
