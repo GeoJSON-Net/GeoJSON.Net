@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using GeoJSON.Net.CoordinateReferenceSystem;
 
 namespace GeoJSON.Net.Tests
 {
@@ -225,6 +226,50 @@ namespace GeoJSON.Net.Tests
             var serializedData = JsonConvert.SerializeObject(newFeature, Formatting.Indented, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver(), NullValueHandling = NullValueHandling.Ignore });
             var serializedDataWithouWhiteSpace = Regex.Replace(serializedData, @"(\s|$)+", "");
             Assert.IsTrue(serializedDataWithouWhiteSpace == expectedJson);
+        }
+
+        [TestMethod]
+        public void NamedCrsHasCorrectType()
+        {
+            var collection = new FeatureCollection(null);
+            collection.CRS = new NamedCRS("EPSG:31370");
+
+            Assert.AreEqual(CRSType.Name, collection.CRS.Type);
+        }
+
+        [TestMethod]
+        public void NamedCrsSerializationWithValue()
+        {
+            var collection = new FeatureCollection(null);
+            collection.CRS = new NamedCRS("EPSG:31370");
+
+            var serializedData = JsonConvert.SerializeObject(collection, Formatting.None, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver(), NullValueHandling = NullValueHandling.Ignore });
+            Assert.IsTrue(serializedData.Contains("\"crs\":{\"type\":\"Name\",\"properties\":{\"name\":\"EPSG:31370\"}}"));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void NamedCrsSerializationNull()
+        {
+            var collection = new FeatureCollection(null);
+            collection.CRS = new NamedCRS(null);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        public void NamedCrsSerializationEmpty()
+        {
+            var collection = new FeatureCollection(null);
+            collection.CRS = new NamedCRS("");
+        }
+
+        [TestMethod]
+        public void NamedCrsSerializationNotSet()
+        {
+            var collection = new FeatureCollection(null);
+
+            var serializedData = JsonConvert.SerializeObject(collection, Formatting.None, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver(), NullValueHandling = NullValueHandling.Ignore });
+            Assert.IsTrue(!serializedData.Contains("\"crs\""));
         }
 
         private void AssertCoordinates(string geojson, int expectedNesting, IEnumerable<object> coords)
