@@ -28,20 +28,22 @@ namespace GeoJSON.Net.Converters
 
                     foreach (var lineString in polygon.Coordinates)
                     {
-                        var coordinateElements = lineString.Coordinates as List<IPosition>;
+                        var coordinateElements = lineString.Coordinates;
                         if (coordinateElements != null && coordinateElements.Count > 0)
                         {
                             var coordinateArray = new JArray();
                             foreach (var position in coordinateElements)
                             {
                                 var coordinates = (GeographicPosition)position;
-                                var coordinateElement = new JArray(coordinates.Longitude, coordinates.Latitude);
-                                if (coordinates.Altitude.HasValue)
-                                    coordinateElement = new JArray(coordinates.Longitude, coordinates.Latitude, coordinates.Altitude);
+
+                                var coordinateElement = coordinates.Altitude.HasValue 
+                                    ? new JArray(coordinates.Longitude, coordinates.Latitude, coordinates.Altitude) 
+                                    : new JArray(coordinates.Longitude, coordinates.Latitude);
 
                                 coordinateArray.Add(coordinateElement);
                             }
-                            writer.WriteRawValue(coordinateArray.ToString());
+
+                            serializer.Serialize(writer, coordinateArray);
                         }
                     }
                     writer.WriteEndArray();
