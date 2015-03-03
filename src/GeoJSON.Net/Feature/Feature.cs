@@ -19,7 +19,7 @@ namespace GeoJSON.Net.Feature
     /// <summary>
     /// A GeoJSON <see cref="http://geojson.org/geojson-spec.html#feature-objects">Feature Object</see>.
     /// </summary>
-    public class Feature : GeoJSONObject
+    public class Feature : TopoJSONObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Feature" /> class.

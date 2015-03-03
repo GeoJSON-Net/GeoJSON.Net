@@ -57,6 +57,11 @@ namespace GeoJSON.Net
         /// <summary>
         /// Defines the <see cref="http://geojson.org/geojson-spec.html#feature-collection-objects">FeatureCollection</see> type.
         /// </summary>
-        FeatureCollection
+        FeatureCollection,
+
+        /// <summary>
+        /// The topology type <see cref="https://github.com/topojson/topojson-specification/blob/master/README.md#21-topology-objects">(definition)</see>
+        /// </summary>
+        Topology
     }
 }

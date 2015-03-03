@@ -16,7 +16,7 @@ namespace GeoJSON.Net.Geometry
     /// Contains an array of <see cref="Point"/>s.
     /// </summary>
     /// <seealso cref="http://geojson.org/geojson-spec.html#multipoint"/>
-    public class MultiPoint : GeoJSONObject, IGeometryObject
+    public class MultiPoint : TopoJSONObject, IGeometryObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MultiPoint"/> class.

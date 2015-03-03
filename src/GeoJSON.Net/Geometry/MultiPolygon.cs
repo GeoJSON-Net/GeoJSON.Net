@@ -18,7 +18,7 @@ namespace GeoJSON.Net.Geometry
     /// <summary>
     /// Defines the <see cref="http://geojson.org/geojson-spec.html#multipolygon">MultiPolygon</see> type.
     /// </summary>
-    public class MultiPolygon : GeoJSONObject, IGeometryObject
+    public class MultiPolygon : TopoJSONObject, IGeometryObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MultiPolygon"/> class.

@@ -20,7 +20,7 @@ namespace GeoJSON.Net.Geometry
     /// In geography, a point refers to a Position on a map, expressed in latitude and longitude.
     /// </summary>
     /// <seealso cref="http://geojson.org/geojson-spec.html#point"/>
-    public class Point : GeoJSONObject, IGeometryObject
+    public class Point : TopoJSONObject, IGeometryObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Point"/> class.

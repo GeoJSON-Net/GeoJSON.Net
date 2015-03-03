@@ -18,7 +18,7 @@ namespace GeoJSON.Net.Geometry
     /// <summary>
     /// Defines the <see cref="http://geojson.org/geojson-spec.html#geometry-collection">GeometryCollection</see> type.
     /// </summary>
-    public class GeometryCollection : GeoJSONObject, IGeometryObject
+    public class GeometryCollection : TopoJSONObject, IGeometryObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="GeometryCollection"/> class.

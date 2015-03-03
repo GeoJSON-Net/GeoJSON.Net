@@ -18,7 +18,7 @@ namespace GeoJSON.Net.Geometry
     /// <summary>
     /// Defines the <see cref="http://geojson.org/geojson-spec.html#multilinestring">MultiLineString</see> type.
     /// </summary>
-    public class MultiLineString : GeoJSONObject, IGeometryObject
+    public class MultiLineString : TopoJSONObject, IGeometryObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MultiLineString"/> class.

@@ -18,10 +18,10 @@ namespace GeoJSON.Net
     /// Base class for all IGeometryObject implementing types
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    public abstract class GeoJSONObject : IGeoJSONObject
+    public abstract class TopoJSONObject : ITopoJSONObject
     {
         /// <summary>
-        /// Gets the (mandatory) type of the <see cref="http://geojson.org/geojson-spec.html#geojson-objects">GeoJSON Object</see>.
+        /// Gets the (mandatory) type of the <see cref="https://github.com/topojson/topojson-specification/blob/master/README.md#21-topology-objects">TopoJSON Object</see>.
         /// </summary>
         /// <value>
         /// The type of the object.
@@ -41,14 +41,12 @@ namespace GeoJSON.Net
         public CoordinateReferenceSystem.ICRSObject CRS { get; set; }
 
         /// <summary>
-        /// Gets or sets the (optional) <see cref="http://geojson.org/geojson-spec.html#coordinate-reference-system-objects">Bounding Boxes</see>.
+        /// Gets or sets the (optional) <see cref="https://github.com/topojson/topojson-specification/blob/master/README.md#3-bounding-boxes">Bounding Boxes</see>.
         /// </summary>
         /// <value>
         /// The value of the bbox member must be a 2*n array where n is the number of dimensions represented in the
         /// contained geometries, with the lowest values for all axes followed by the highest values.
-        /// The axes order of a bbox follows the axes order of geometries.
-        /// In addition, the coordinate reference system for the bbox is assumed to match the coordinate reference
-        /// system of the GeoJSON object of which it is a member.
+        /// The axes order of a bbox follows the axes order of geometries. The bounding box should not be transformed using the topology’s transform, if any.
         /// </value>
         [JsonProperty(PropertyName = "bbox", Required = Required.Default)]
         public double[] BoundingBoxes { get; set; }

@@ -22,7 +22,7 @@ namespace GeoJSON.Net.Geometry
     ///   Defines the <see cref="http://geojson.org/geojson-spec.html#linestring">LineString</see> type.
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    public class LineString : GeoJSONObject, IGeometryObject
+    public class LineString : TopoJSONObject, IGeometryObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="LineString"/> class.
