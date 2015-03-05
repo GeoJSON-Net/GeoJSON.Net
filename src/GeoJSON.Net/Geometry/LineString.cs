@@ -73,17 +73,18 @@ namespace GeoJSON.Net.Geometry
         /// </returns>
         public bool IsClosed()
         {
-            if (Coordinates[0] is GeographicPosition) 
+            var firstCoordinate = Coordinates[0] as GeographicPosition;
+
+            if (firstCoordinate != null) 
             {
-                var firstCoordinate = Coordinates[0] as GeographicPosition;
                 var lastCoordinate = Coordinates[Coordinates.Count - 1] as GeographicPosition;
 
                 return firstCoordinate.Latitude == lastCoordinate.Latitude
                     && firstCoordinate.Longitude == lastCoordinate.Longitude
                     && firstCoordinate.Altitude == lastCoordinate.Altitude;
             }
-            else
-                return Coordinates[0].Equals(Coordinates[Coordinates.Count - 1]);
+
+            return Coordinates[0].Equals(Coordinates[Coordinates.Count - 1]);
         }
     }
 }

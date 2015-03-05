@@ -38,7 +38,6 @@ namespace GeoJSON.Net.CoordinateReferenceSystem
             }
 
             this.Properties = new Dictionary<string, object> { { "name", name } };
-
             this.Type = CRSType.Name;
         }
     }

@@ -25,6 +25,31 @@ namespace GeoJSON.Net.Geometry
     /// <seealso cref="http://geojson.org/geojson-spec.html#polygon"/>
     public class Polygon : GeoJSONObject, IGeometryObject
     {
+        protected bool Equals(Polygon other)
+        {
+            return this == other;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
+
+            return Equals((Polygon)obj);
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Polygon"/> class.
         /// </summary>
@@ -58,10 +83,10 @@ namespace GeoJSON.Net.Geometry
 
         public static bool operator ==(Polygon a, Polygon b)
         {
-            if ((object)a == null && (object)b == null)
+            if (ReferenceEquals(null, a) && ReferenceEquals(null, b))
                 return true;
 
-            if ((object)a != null && (object)b == null || (object)a == null && (object)b != null)
+            if (!ReferenceEquals(null, a) && ReferenceEquals(null, b) || ReferenceEquals(null, a) && !ReferenceEquals(null, b))
                 return false;
 
             if (a.Coordinates == null && b.Coordinates == null)
@@ -101,7 +126,7 @@ namespace GeoJSON.Net.Geometry
 
         public override int GetHashCode()
         {
-            return Coordinates.GetHashCode();
+            return (Coordinates != null ? Coordinates.GetHashCode() : 0);
         }
     }
 }

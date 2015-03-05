@@ -10,15 +10,12 @@
 namespace GeoJSON.Net.Converters
 {
     using System;
-    using System.Collections.Generic;
 
-    using GeoJSON.Net.Exceptions;
-    using GeoJSON.Net.Geometry;
+    using Exceptions;
+    using Geometry;
 
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
-    using System.Text;
-    using System.IO;
 
     /// <summary>
     /// Converter to read and write the <see cref="GeographicPosition" /> type.
@@ -31,18 +28,19 @@ namespace GeoJSON.Net.Converters
         /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.</param><param name="value">The value.</param><param name="serializer">The calling serializer.</param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            var coordinates = value as GeoJSON.Net.Geometry.GeographicPosition;
+            var coordinates = value as GeographicPosition;
             if (coordinates != null)
             {
-                var coordinateArray = new JArray(coordinates.Longitude, coordinates.Latitude);
-                if (coordinates.Altitude.HasValue && coordinates.Altitude != 0)
-                    coordinateArray = new JArray(coordinates.Longitude, coordinates.Latitude, coordinates.Altitude);
+                var coordinateArray = coordinates.Altitude.HasValue && coordinates.Altitude != 0
+                    ? new JArray(coordinates.Longitude, coordinates.Latitude, coordinates.Altitude)
+                    : new JArray(coordinates.Longitude, coordinates.Latitude);
 
                 serializer.Serialize(writer, coordinateArray);
             }
             else
+            {
                 serializer.Serialize(writer, value);
-            
+            }
         }
 
         /// <summary>
@@ -55,6 +53,7 @@ namespace GeoJSON.Net.Converters
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var coordinates = serializer.Deserialize<JArray>(reader);
+
             if (coordinates == null || coordinates.Count != 2)
             {
                 throw new ParsingException(
@@ -63,21 +62,16 @@ namespace GeoJSON.Net.Converters
                         coordinates));
             }
 
-            float latDouble = (float)coordinates.First;
-
-            float latitude;
-            float longitude;
             try
             {
-                longitude = (float)coordinates.First;
-                latitude = (float)coordinates.Last;
+                var longitude = coordinates.First.Value<double>();
+                var latitude = coordinates.Last.Value<double>();
+                return new GeographicPosition(latitude, longitude);
             }
             catch (Exception ex)
             {
                 throw new ParsingException("Could not parse GeoJSON Response. (Latitude or Longitude missing from Point geometry?)", ex);
             }
-
-            return new GeographicPosition(latitude, longitude) ;
         }
 
         /// <summary>
@@ -89,7 +83,7 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(GeographicPosition);
+            return typeof(GeographicPosition).IsAssignableFrom(objectType);
         }
     }
 }

@@ -28,13 +28,13 @@ namespace GeoJSON.Net.Converters
 
                     foreach (var lineString in polygon.Coordinates)
                     {
-                        var coordinateElements = lineString.Coordinates;
-                        if (coordinateElements != null && coordinateElements.Count > 0)
+                        var coordinateElements = lineString.Coordinates.OfType<GeographicPosition>();
+                        if (coordinateElements.Any())
                         {
                             var coordinateArray = new JArray();
                             foreach (var position in coordinateElements)
                             {
-                                var coordinates = (GeographicPosition)position;
+                                var coordinates = position;
 
                                 var coordinateElement = coordinates.Altitude.HasValue 
                                     ? new JArray(coordinates.Longitude, coordinates.Latitude, coordinates.Altitude) 
