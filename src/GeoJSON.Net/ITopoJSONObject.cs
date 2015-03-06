@@ -9,7 +9,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
-namespace GeoJSON.Net
+using GeoJSON.Net;
+namespace TopoJSON.Net
 {
     /// <summary>
     /// Base Interface for TopoJSONObject types.
@@ -17,7 +18,7 @@ namespace GeoJSON.Net
     public interface ITopoJSONObject
     {
         /// <summary>
-        /// Gets the (mandatory) type of the <see cref="https://github.com/topojson/topojson-specification/blob/master/README.md#22-geometry-objects">TopoJSON Object</see>.
+        /// Gets the (mandatory) type of the <see href="https://github.com/topojson/topojson-specification/blob/master/README.md#22-geometry-objects">TopoJSON Object</see>.
         /// </summary>
         /// <value>
         /// The type of the object.
@@ -25,7 +26,7 @@ namespace GeoJSON.Net
         GeoJSONObjectType Type { get; }
 
         /// <summary>
-        /// Gets or sets the (optional) <see cref="https://github.com/topojson/topojson-specification/blob/master/README.md#3-bounding-boxes">Bounding Boxes</see>.
+        /// Gets or sets the (optional) <see href="https://github.com/topojson/topojson-specification/blob/master/README.md#3-bounding-boxes">Bounding Boxes</see>.
         /// </summary>
         /// <value>
         /// The value of the bbox member must be a 2*n array where n is the number of dimensions represented in the

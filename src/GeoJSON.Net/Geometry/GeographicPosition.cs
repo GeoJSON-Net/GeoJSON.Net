@@ -3,7 +3,7 @@
 //   Copyright © Joerg Battermann 2014
 // </copyright>
 // <summary>
-//   Defines the Geographic Position type a.k.a. <see cref="http://geojson.org/geojson-spec.html#positions">Geographic Coordinate Reference System</see>.
+//   Defines the Geographic Position type a.k.a. <see href="http://geojson.org/geojson-spec.html#positions">Geographic Coordinate Reference System</see>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,7 +13,7 @@ namespace GeoJSON.Net.Geometry
     using System.Globalization;
 
     /// <summary>
-    /// Defines the Geographic Position type a.k.a. <see cref="http://geojson.org/geojson-spec.html#positions">Geographic Coordinate Reference System</see>.
+    /// Defines the Geographic Position type a.k.a. <see href="http://geojson.org/geojson-spec.html#positions">Geographic Coordinate Reference System</see>.
     /// </summary>
     public class GeographicPosition : Position
     {

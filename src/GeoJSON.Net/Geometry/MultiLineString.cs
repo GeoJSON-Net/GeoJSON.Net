@@ -3,7 +3,7 @@
 //   Copyright © Joerg Battermann 2014
 // </copyright>
 // <summary>
-//   Defines the <see cref="http://geojson.org/geojson-spec.html#multilinestring">MultiLineString</see> type.
+//   Defines the <see href="http://geojson.org/geojson-spec.html#multilinestring">MultiLineString</see> type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,9 +16,9 @@ namespace GeoJSON.Net.Geometry
     using Newtonsoft.Json;
 
     /// <summary>
-    /// Defines the <see cref="http://geojson.org/geojson-spec.html#multilinestring">MultiLineString</see> type.
+    /// Defines the <see href="http://geojson.org/geojson-spec.html#multilinestring">MultiLineString</see> type.
     /// </summary>
-    public class MultiLineString : TopoJSONObject, IGeometryObject
+    public class MultiLineString : GeoJSONObject, IGeometryObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="MultiLineString"/> class.

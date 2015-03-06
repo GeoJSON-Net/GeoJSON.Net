@@ -16,7 +16,7 @@ namespace GeoJSON.Net.Feature
     /// <summary>
     /// Defines the FeatureCollection type.
     /// </summary>
-    public class FeatureCollection : TopoJSONObject
+    public class FeatureCollection : GeoJSONObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="FeatureCollection"/> class.

@@ -10,9 +10,9 @@ namespace GeoJSON.Net.Converters
     using Newtonsoft.Json.Linq;
 
     /// <summary>
-    /// Serializes a list of arcs into JSON.
+    /// Serializes and deserializes 
     /// </summary>
-    public class ArcsConverter : JsonConverter
+    public class PolygonArcsConverter : JsonConverter
     {
         /// <summary>
         /// Converts if we have a list of arcs.

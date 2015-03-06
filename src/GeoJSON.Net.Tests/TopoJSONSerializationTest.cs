@@ -10,12 +10,13 @@ namespace GeoJSON.Net.Tests
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
     using System.Diagnostics;
+    using TopoJSON.Net.Geometry;
 
     [TestClass]
     public class TopoJSONSerializationTest
     {
         [TestMethod]
-        public void TestTopologySerialization() {
+        public void TestGeneratedTopologySerialization() {
             Topology topology = new Topology();
             
             List<GeographicPosition> l1 = new List<GeographicPosition>();
@@ -51,8 +52,74 @@ namespace GeoJSON.Net.Tests
                 }
             );
 
-            Debug.WriteLine(serializedJSON);
             Assert.AreNotEqual("", serializedJSON);
+        }
+
+        [TestMethod]
+        public void TestRealStringTopologyDeserialization() {
+            string topology_string = 
+                ///*              
+                @"{
+              'type':'Topology',
+              'objects':{
+                'fokus4711':{
+                  'type':'Polygon',
+                  'properties':{
+                    'shorthand':'B',
+                    'longhand':'Land Berlin',
+                    'priority':0
+                  },
+                  'arcs':[[1]]
+                }
+              },
+              'arcs':[[[52.13, 13.13], [53.13, 12.13]]],
+              'bbox':[5.82275390625, 47.26432008025478, 15.073242187499998, 55.04061432771672],
+              'properties':{
+                'content_url':'https://example.com/katwarn_de/',
+                'shorthand':'KW',
+                'longhand':'KATWARN'
+              }
+            }"; //*/
+            /*@"
+            {
+            'type':'Topology',
+            'transform':{
+            'scale': [1,1],
+            'translate': [0,0]
+            },
+            'objects':{
+            'two-squares':{
+                'type': 'GeometryCollection',
+                'geometries':[
+                {'type': 'Polygon', 'arcs':[[0,1]],'properties': {'name': 'Left_Polygon' }},
+                {'type': 'Polygon', 'arcs':[[2,-1]],'properties': {'name': 'Right_Polygon' }}
+                ]
+            },
+            'one-line': {
+                'type':'GeometryCollection',
+                'geometries':[
+                {'type': 'LineString', 'arcs': [3],'properties':{'name':'Under_LineString'}}
+                ]
+            },
+            'two-places':{
+                'type':'GeometryCollection',
+                'geometries':[
+                {'type':'Point','coordinates':[0,0],'properties':{'name':'Origine_Point'}},
+                {'type':'Point','coordinates':[0,-1],'properties':{'name':'Under_Point'}}
+                ]
+            }
+            },
+            'arcs': [
+            [[1,2],[0,-2]],
+            [[1,0],[-1,0],[0,2],[1,0]],
+            [[1,2],[1,0],[0,-2],[-1,0]],
+            [[0,-1],[2,0]]
+            ]
+            }
+            ";*/
+            var topology = JsonConvert.DeserializeObject<Topology>(topology_string);
+            Assert.IsInstanceOfType(topology, typeof(Topology));
+            Assert.AreEqual(1, topology.Arcs.Count);
         }
     }
 }

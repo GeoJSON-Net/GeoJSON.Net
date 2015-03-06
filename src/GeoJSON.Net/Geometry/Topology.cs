@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace GeoJSON.Net.Geometry
+namespace TopoJSON.Net.Geometry
 {
+    using GeoJSON.Net;
     using GeoJSON.Net.Converters;
+    using GeoJSON.Net.Geometry;
     using Newtonsoft.Json;
 
     /// <summary>
@@ -15,6 +17,14 @@ namespace GeoJSON.Net.Geometry
     [JsonObject(MemberSerialization.OptIn)]
     public class Topology : TopoJSONObject, IGeometryObject
     {
+        #region ---------- Objects ----------
+        /// <summary>
+        /// The list of arcs.
+        /// </summary>
+        [JsonProperty(PropertyName = "objects", Required = Required.Default, Order = 50)]
+        [JsonConverter(typeof(TopoJSONGeometryConverter))]
+        public List<IGeometryObject> Objects { get; set; }
+        #endregion
 
         #region ---------- Arcs ----------
         private List<Arc> _arcs;
@@ -22,7 +32,7 @@ namespace GeoJSON.Net.Geometry
         /// <summary>
         /// The list of arcs.
         /// </summary>
-        [JsonProperty(PropertyName = "arcs", Required = Required.Always)]
+        [JsonProperty(PropertyName = "arcs", Required = Required.Always, Order = 100)]
         [JsonConverter(typeof(ArcsConverter))]
         public List<Arc> Arcs
         {
@@ -30,6 +40,13 @@ namespace GeoJSON.Net.Geometry
             set { _arcs = value; }
         }
         #endregion
+
+        /// <summary>
+        /// Gets the properties.
+        /// </summary>
+        /// <value>The properties.</value>
+        [JsonProperty(PropertyName = "properties", Required = Required.AllowNull)]
+        public Dictionary<string, object> Properties { get; private set; }
 
         /// <summary>
         /// Default constructor.

@@ -17,19 +17,19 @@ namespace GeoJSON.Net.Geometry
     using GeoJSON.Net.Converters;
 
     /// <summary>
-    /// Defines the <see cref="http://geojson.org/geojson-spec.html#polygon">Polygon</see> type.
-    /// Coordinates of a Polygon are a list of <see cref="http://geojson.org/geojson-spec.html#linestring">linear rings</see>
+    /// Defines the <see href="http://geojson.org/geojson-spec.html#polygon">Polygon</see> type.
+    /// Coordinates of a Polygon are a list of <see href="http://geojson.org/geojson-spec.html#linestring">linear rings</see>
     /// coordinate arrays. The first element in the array represents the exterior ring. Any subsequent elements
     /// represent interior rings (or holes).
     /// </summary>
-    /// <seealso cref="http://geojson.org/geojson-spec.html#polygon"/>
-    public class Polygon : TopoJSONObject, IGeometryObject
+    /// <seealso href="http://geojson.org/geojson-spec.html#polygon"/>
+    public class Polygon : GeoJSONObject, IGeometryObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Polygon"/> class.
         /// </summary>
         /// <param name="coordinates">
-        /// The <see cref="http://geojson.org/geojson-spec.html#linestring">linear rings</see> with the first element
+        /// The <see href="http://geojson.org/geojson-spec.html#linestring">linear rings</see> with the first element
         /// in the array representing the exterior ring. Any subsequent elements represent interior rings (or holes).
         /// </param>
         public Polygon(List<LineString> coordinates = null)
@@ -55,7 +55,12 @@ namespace GeoJSON.Net.Geometry
         [JsonConverter(typeof(PolygonConverter))]
         public List<LineString> Coordinates { get; set; }
 
-
+        /// <summary>
+        /// The equals operator that tests two polygons.
+        /// </summary>
+        /// <param name="a">Polygon a</param>
+        /// <param name="b">Polygon b</param>
+        /// <returns></returns>
         public static bool operator ==(Polygon a, Polygon b)
         {
             if ((object)a == null && (object)b == null)
@@ -94,11 +99,21 @@ namespace GeoJSON.Net.Geometry
             return true;
         }
 
+        /// <summary>
+        /// The not equal operator checks if two polygons are not equal.
+        /// </summary>
+        /// <param name="a">Polygon a</param>
+        /// <param name="b">Polygon b</param>
+        /// <returns></returns>
         public static bool operator !=(Polygon a, Polygon b)
         {
             return !(a == b);
         }
 
+        /// <summary>
+        /// Get the hash code.
+        /// </summary>
+        /// <returns>The hash code.</returns>
         public override int GetHashCode()
         {
             return Coordinates.GetHashCode();

@@ -42,6 +42,8 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\TopoJSONGeometryConverter.cs" />
+    <Compile Include="Converters\PolygonArcsConverter.cs" />
     <Compile Include="Converters\ArcsConverter.cs" />
     <Compile Include="Converters\CrsConverter.cs" />
     <Compile Include="Converters\GeometryConverter.cs" />
@@ -54,8 +56,11 @@
     <Compile Include="CoordinateReferenceSystem\CRSType.cs" />
     <Compile Include="CoordinateReferenceSystem\ICRSObject.cs" />
     <Compile Include="CoordinateReferenceSystem\NamedCRS.cs" />
+    <Compile Include="GeoJSONObject.cs" />
     <Compile Include="Geometry\Arc.cs" />
+    <Compile Include="Geometry\TopoJSONPolygon.cs" />
     <Compile Include="Geometry\Topology.cs" />
+    <Compile Include="IGeoJSONObject.cs" />
     <Compile Include="TopoJSONObject.cs" />
     <Compile Include="Geometry\GeometryCollection.cs" />
     <Compile Include="Geometry\ProjectedPosition.cs" />
