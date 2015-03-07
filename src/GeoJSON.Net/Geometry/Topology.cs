@@ -22,7 +22,7 @@ namespace TopoJSON.Net.Geometry
         /// The list of arcs.
         /// </summary>
         [JsonProperty(PropertyName = "objects", Required = Required.Default, Order = 50)]
-        [JsonConverter(typeof(TopoJSONGeometryConverter))]
+        [JsonConverter(typeof(TopoJSONObjectsConverter))]
         public List<IGeometryObject> Objects { get; set; }
         #endregion
 
@@ -40,13 +40,6 @@ namespace TopoJSON.Net.Geometry
             set { _arcs = value; }
         }
         #endregion
-
-        /// <summary>
-        /// Gets the properties.
-        /// </summary>
-        /// <value>The properties.</value>
-        [JsonProperty(PropertyName = "properties", Required = Required.AllowNull)]
-        public Dictionary<string, object> Properties { get; private set; }
 
         /// <summary>
         /// Default constructor.

@@ -24,7 +24,7 @@ namespace GeoJSON.Net.Converters
     /// <summary>
     /// Defines the GeometryObject type. Converts to/from a SimpleGeo 'geometry' field
     /// </summary>
-    public class TopoJSONGeometryConverter : JsonConverter
+    public class TopoJSONObjectsConverter : JsonConverter
     {
         /// <summary>
         /// Writes the JSON representation of the object.
@@ -57,44 +57,44 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            JObject jObject = existingValue as JObject;
-            String type = jObject["type"].Value<String>(); // TODO: Check for upper case and existence here!!!
-            IGeometryObject igo = null;
-            List<IGeometryObject> geoList = new List<IGeometryObject>();
-            switch (type.ToLowerInvariant())
-            {
-                case "point":
-                    igo = JsonConvert.DeserializeObject<Point>(jObject.ToString(), new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
-                    geoList.Add(igo);
-                    break;
-                case "multipoint":
-                    igo = JsonConvert.DeserializeObject<MultiPoint>(jObject.ToString(), new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
-                    geoList.Add(igo);
-                    break;
-                case "polygon":
-                    igo = JsonConvert.DeserializeObject<TopoJSONPolygon>(jObject.ToString(), new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
-                    geoList.Add(igo);
-                    break;
-                case "multipolygon":
-                    igo = JsonConvert.DeserializeObject<TopoJSONMultiPolygon>(jObject.ToString(), new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
-                    geoList.Add(igo);
-                    break;
-                case "geometrycollection":
-                    JToken geometries = JArray.FromObject(jObject["geometries"]); // TODO: Check if exists here.
-                    var converter = new TopoJSONGeometryConverter();
-                    foreach (var geometryObject in geometries)
-                    {
-                        var ls  = (List<IGeometryObject>)converter.ReadJson(reader, typeof(List<IGeometryObject>), geometryObject, serializer);
-                        geoList.AddRange(ls);
-                    }
-                    //geoList = geometries.Select(go => ).ToList();
-                    break;
-                case "linestring":
-                    igo = JsonConvert.DeserializeObject<LineString>(jObject.ToString(), new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
-                    geoList.Add(igo);
-                    break;
+            JObject objects = serializer.Deserialize<JObject>(reader);
+            List<IGeometryObject> geoJSONObjects = new List<IGeometryObject>();
+            foreach (var geometryObject in objects) {
+                String id = geometryObject.Key;
+                JObject geometry = geometryObject.Value as JObject;
+                var converter = new TopoJSONGeometryConverter();
+                var geoList = (List<IGeometryObject>)converter.ReadJson(reader, typeof(List<IGeometryObject>), geometry, serializer);
+                geoJSONObjects.AddRange(geoList);
             }
-            return geoList;
+            return geoJSONObjects;
+
+            /*
+            // There should be only one property which is the object name
+            String name = jGeometry.Properties().ElementAt(0).Name;
+
+            var innerObject = jGeometry.Properties().ElementAt(0).ElementAt(0);//["type"].Value<String>();  //Values<String?>("type") ?? "";
+
+            var inputJsonValue = innerObject.ToString();
+            inputJsonValue = inputJsonValue.Replace(Environment.NewLine, "");
+            inputJsonValue = inputJsonValue.Replace(" ", "");
+
+            var geoType = Regex.Match(inputJsonValue, @"type\W+(?<type>\w+)\W+");
+            var geoTypeString = geoType.Groups["type"].Value.ToLowerInvariant();
+
+            switch (geoTypeString) 
+            { 
+                case "polygon":
+                    return JsonConvert.DeserializeObject<TopoJSONPolygon>(inputJsonValue, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+                case "point":
+                    return JsonConvert.DeserializeObject<Point>(inputJsonValue, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+				case "multipolygon":
+					return JsonConvert.DeserializeObject<MultiPolygon>(inputJsonValue, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+                case "linestring":
+                    return JsonConvert.DeserializeObject<LineString>(inputJsonValue, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+            }
+
+            // ToDo: implement
+            throw new NotImplementedException();*/
         }
 
         /// <summary>

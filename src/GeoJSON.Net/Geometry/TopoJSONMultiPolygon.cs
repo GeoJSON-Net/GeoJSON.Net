@@ -10,21 +10,19 @@
     using GeoJSON.Net;
 
     /// <summary>
-    /// Defines the <see href="https://github.com/topojson/topojson-specification#225-polygon">Polygon</see> type.
-    /// For type “Polygon”, the “arcs” member must be an array of LinearRing arc indexes. For Polygons with multiple rings, 
-    /// the first must be the exterior ring and any others must be interior rings or holes. 
-    /// A LinearRing is closed LineString with 4 or more positions. The first and last positions are equivalent (they represent equivalent points).
+    /// Defines the <see href="https://github.com/topojson/topojson-specification#226-multipolygon">MultiPolygon</see> type.
+    /// For type “MultiPolygon”, the “arcs” member must be an array of Polygon arc indexes.
     /// </summary>
-    /// <seealso href="http://geojson.org/geojson-spec.html#polygon"/>
+    /// <seealso href="http://geojson.org/geojson-spec.html#multipolygon"/>
     [JsonObject(MemberSerialization.OptIn)]
-    public class TopoJSONPolygon : TopoJSONObject, IGeometryObject
+    public class TopoJSONMultiPolygon : TopoJSONObject, IGeometryObject
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="TopoJSONPolygon"/> class.
         /// </summary>
-        public TopoJSONPolygon(List<List<int>> arcIdx)
+        public TopoJSONMultiPolygon(List<List<List<int>>> arcIdx)
         {
-            this.Type = GeoJSONObjectType.Polygon;
+            this.Type = GeoJSONObjectType.MultiPolygon;
             this.ArcIdx = arcIdx;
         }
 
@@ -32,12 +30,12 @@
         /// The arc indices.
         /// </summary>
         [JsonProperty(PropertyName = "arcs", Required = Required.Always)]
-        public List<List<int>> ArcIdx { get; set; }
+        public List<List<List<int>>> ArcIdx { get; set; }
 
         /// <summary>
         /// Gets the list of points outlining this Polygon.
         /// </summary>
-        public List<GeographicPosition> Coordinates { get; set; }
+        public List<TopoJSONPolygon> Coordinates { get; set; }
 
         /// <summary>
         /// Get the hash code.

@@ -58,7 +58,7 @@ namespace GeoJSON.Net.Tests
         [TestMethod]
         public void TestRealStringTopologyDeserialization() {
             string topology_string = 
-                ///*              
+                /*              
                 @"{
               'type':'Topology',
               'objects':{
@@ -79,8 +79,9 @@ namespace GeoJSON.Net.Tests
                 'shorthand':'KW',
                 'longhand':'KATWARN'
               }
-            }"; //*/
-            /*@"
+            }"; */
+            ///*
+            @"
             {
             'type':'Topology',
             'transform':{
@@ -116,7 +117,8 @@ namespace GeoJSON.Net.Tests
             [[0,-1],[2,0]]
             ]
             }
-            ";*/
+            ";
+            //*/
             var topology = JsonConvert.DeserializeObject<Topology>(topology_string);
             Assert.IsInstanceOfType(topology, typeof(Topology));
             Assert.AreEqual(1, topology.Arcs.Count);

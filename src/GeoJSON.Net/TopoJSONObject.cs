@@ -43,5 +43,14 @@ namespace TopoJSON.Net
         /// </value>
         [JsonProperty(PropertyName = "bbox", Required = Required.Default)]
         public double[] BoundingBoxes { get; set; }
+
+        #region ---------- Properties ----------
+        /// <summary>
+        /// Gets the properties.
+        /// </summary>
+        /// <value>The properties.</value>
+        [JsonProperty(PropertyName = "properties", Required = Required.Default)]
+        public Dictionary<string, object> Properties { get; private set; }
+        #endregion
     }
 }
