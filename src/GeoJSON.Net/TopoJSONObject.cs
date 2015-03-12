@@ -33,6 +33,7 @@ namespace TopoJSON.Net
         [JsonConverter(typeof(StringEnumConverter))]
         public GeoJSONObjectType Type { get; internal set; }
 
+        #region ---------- Bounding Boxes ----------
         /// <summary>
         /// Gets or sets the (optional) <see href="https://github.com/topojson/topojson-specification/blob/master/README.md#3-bounding-boxes">Bounding Boxes</see>.
         /// </summary>
@@ -43,6 +44,7 @@ namespace TopoJSON.Net
         /// </value>
         [JsonProperty(PropertyName = "bbox", Required = Required.Default)]
         public double[] BoundingBoxes { get; set; }
+        #endregion
 
         #region ---------- Properties ----------
         /// <summary>
@@ -52,5 +54,13 @@ namespace TopoJSON.Net
         [JsonProperty(PropertyName = "properties", Required = Required.Default)]
         public Dictionary<string, object> Properties { get; private set; }
         #endregion
+
+        #region ---------- Name ----------
+        /// <summary>
+        /// A unique Id. This is needed for named (sub-) objects
+        /// </summary>
+        public string name { get; set; }
+        #endregion
     }
+
 }

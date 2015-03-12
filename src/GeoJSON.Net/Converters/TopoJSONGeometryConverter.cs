@@ -81,16 +81,18 @@ namespace GeoJSON.Net.Converters
                     break;
                 case "geometrycollection":
                     JToken geometries = JArray.FromObject(jObject["geometries"]); // TODO: Check if exists here.
+                    List<IGeometryObject> subgeometries = new List<IGeometryObject>();
                     var converter = new TopoJSONGeometryConverter();
                     foreach (var geometryObject in geometries)
                     {
                         var ls  = (List<IGeometryObject>)converter.ReadJson(reader, typeof(List<IGeometryObject>), geometryObject, serializer);
-                        geoList.AddRange(ls);
+                        subgeometries.AddRange(ls);
                     }
-                    //geoList = geometries.Select(go => ).ToList();
+                    igo = new GeometryCollection(subgeometries);
+                    geoList.Add(igo);
                     break;
                 case "linestring":
-                    igo = JsonConvert.DeserializeObject<LineString>(jObject.ToString(), new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
+                    igo = JsonConvert.DeserializeObject<TopoJSONLineString>(jObject.ToString(), new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
                     geoList.Add(igo);
                     break;
             }

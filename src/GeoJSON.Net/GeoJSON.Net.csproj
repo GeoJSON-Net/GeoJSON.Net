@@ -59,6 +59,7 @@
     <Compile Include="CoordinateReferenceSystem\NamedCRS.cs" />
     <Compile Include="GeoJSONObject.cs" />
     <Compile Include="Geometry\Arc.cs" />
+    <Compile Include="Geometry\TopoJSONLineString.cs" />
     <Compile Include="Geometry\TopoJSONMultiPolygon.cs" />
     <Compile Include="Geometry\TopoJSONPolygon.cs" />
     <Compile Include="Geometry\Topology.cs" />
