@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace GeoJSON.Net.Converters
+namespace TopoJSON.Net.Converters
 {
+    using GeoJSON.Net.Converters;
     using GeoJSON.Net.Geometry;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;

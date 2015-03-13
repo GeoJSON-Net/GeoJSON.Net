@@ -20,6 +20,7 @@ namespace GeoJSON.Net.Converters
     using System.Text.RegularExpressions;
     using TopoJSON.Net.Geometry;
     using Newtonsoft.Json.Linq;
+    using TopoJSON.Net;
 
     /// <summary>
     /// Defines the GeometryObject type. Converts to/from a SimpleGeo 'geometry' field
@@ -58,43 +59,18 @@ namespace GeoJSON.Net.Converters
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             JObject objects = serializer.Deserialize<JObject>(reader);
-            List<IGeometryObject> geoJSONObjects = new List<IGeometryObject>();
+            List<TopoJSONNamedObjectWrapper> geoJSONObjects = new List<TopoJSONNamedObjectWrapper>();
             foreach (var geometryObject in objects) {
                 String id = geometryObject.Key;
                 JObject geometry = geometryObject.Value as JObject;
                 var converter = new TopoJSONGeometryConverter();
-                var geoList = (List<IGeometryObject>)converter.ReadJson(reader, typeof(List<IGeometryObject>), geometry, serializer);
-                geoJSONObjects.AddRange(geoList);
+                IGeometryObject igo  = (IGeometryObject)converter.ReadJson(reader, typeof(IGeometryObject), geometry, serializer);
+                TopoJSONNamedObjectWrapper wrapper = new TopoJSONNamedObjectWrapper(id, igo);
+                // This is so dirty that it hurts makes my eyes melt into my brain. 
+                //(igo as TopoJSONObject).name = id;
+                geoJSONObjects.Add(wrapper);
             }
             return geoJSONObjects;
-
-            /*
-            // There should be only one property which is the object name
-            String name = jGeometry.Properties().ElementAt(0).Name;
-
-            var innerObject = jGeometry.Properties().ElementAt(0).ElementAt(0);//["type"].Value<String>();  //Values<String?>("type") ?? "";
-
-            var inputJsonValue = innerObject.ToString();
-            inputJsonValue = inputJsonValue.Replace(Environment.NewLine, "");
-            inputJsonValue = inputJsonValue.Replace(" ", "");
-
-            var geoType = Regex.Match(inputJsonValue, @"type\W+(?<type>\w+)\W+");
-            var geoTypeString = geoType.Groups["type"].Value.ToLowerInvariant();
-
-            switch (geoTypeString) 
-            { 
-                case "polygon":
-                    return JsonConvert.DeserializeObject<TopoJSONPolygon>(inputJsonValue, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
-                case "point":
-                    return JsonConvert.DeserializeObject<Point>(inputJsonValue, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
-				case "multipolygon":
-					return JsonConvert.DeserializeObject<MultiPolygon>(inputJsonValue, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
-                case "linestring":
-                    return JsonConvert.DeserializeObject<LineString>(inputJsonValue, new JsonSerializerSettings { ContractResolver = new CamelCasePropertyNamesContractResolver() });
-            }
-
-            // ToDo: implement
-            throw new NotImplementedException();*/
         }
 
         /// <summary>

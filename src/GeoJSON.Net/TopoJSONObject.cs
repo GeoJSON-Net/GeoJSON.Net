@@ -54,13 +54,6 @@ namespace TopoJSON.Net
         [JsonProperty(PropertyName = "properties", Required = Required.Default)]
         public Dictionary<string, object> Properties { get; private set; }
         #endregion
-
-        #region ---------- Name ----------
-        /// <summary>
-        /// A unique Id. This is needed for named (sub-) objects
-        /// </summary>
-        public string name { get; set; }
-        #endregion
     }
 
 }

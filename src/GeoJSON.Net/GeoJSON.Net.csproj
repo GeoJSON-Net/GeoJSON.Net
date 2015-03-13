@@ -42,6 +42,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\TopoJSONTransformationConverter.cs" />
     <Compile Include="Converters\TopoJSONGeometryConverter.cs" />
     <Compile Include="Converters\TopoJSONObjectsConverter.cs" />
     <Compile Include="Converters\PolygonArcsConverter.cs" />
@@ -59,9 +60,13 @@
     <Compile Include="CoordinateReferenceSystem\NamedCRS.cs" />
     <Compile Include="GeoJSONObject.cs" />
     <Compile Include="Geometry\Arc.cs" />
+    <Compile Include="Geometry\INamedGeometryObject.cs" />
+    <Compile Include="Geometry\TopoJSONMultiLineString.cs" />
     <Compile Include="Geometry\TopoJSONLineString.cs" />
     <Compile Include="Geometry\TopoJSONMultiPolygon.cs" />
+    <Compile Include="Geometry\TopoJSONNamedObjectWrapper.cs" />
     <Compile Include="Geometry\TopoJSONPolygon.cs" />
+    <Compile Include="Geometry\TopoJSONTransformationInfo.cs" />
     <Compile Include="Geometry\Topology.cs" />
     <Compile Include="IGeoJSONObject.cs" />
     <Compile Include="TopoJSONObject.cs" />
