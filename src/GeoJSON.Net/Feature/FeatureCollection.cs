@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+
 namespace GeoJSON.Net.Feature
 {
     using System.Collections.Generic;
@@ -21,11 +23,22 @@ namespace GeoJSON.Net.Feature
         /// <summary>
         /// Initializes a new instance of the <see cref="FeatureCollection"/> class.
         /// </summary>
+        public FeatureCollection() : this(new List<Feature>())
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FeatureCollection"/> class.
+        /// </summary>
         /// <param name="features">The features.</param>
         public FeatureCollection(List<Feature> features)
         {
-            this.Features = features ?? new List<Feature>();
+            if (features == null)
+            {
+                throw new ArgumentNullException("features");
+            }
 
+            this.Features = features;
             this.Type = GeoJSONObjectType.FeatureCollection;
         }
 
