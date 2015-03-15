@@ -22,10 +22,33 @@
         /// <summary>
         /// Initializes a new instance of the <see cref="TopoJSONPolygon"/> class.
         /// </summary>
+        /// <param name="arcIdx">The arcs index.</param>
         public TopoJSONPolygon(List<List<int>> arcIdx)
         {
             this.Type = GeoJSONObjectType.Polygon;
             this.ArcIdx = arcIdx;
+            this.Coordinates = new List<GeographicPosition>();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TopoJSONPolygon"/> class.
+        /// </summary>
+        /// <param name="coords">The coordinates.</param>
+        public TopoJSONPolygon(List<GeographicPosition> coords)
+        {
+            this.Type = GeoJSONObjectType.Polygon;
+            this.Coordinates = coords;
+            this.ArcIdx = new List<List<int>>();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TopoJSONPolygon"/> class.
+        /// </summary>
+        public TopoJSONPolygon()
+        {
+            this.Type = GeoJSONObjectType.Polygon;
+            this.Coordinates = new List<GeographicPosition>();
+            this.ArcIdx = new List<List<int>>();
         }
 
         /// <summary>

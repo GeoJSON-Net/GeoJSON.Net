@@ -27,12 +27,34 @@ namespace TopoJSON.Net.Geometry
     public class TopoJSONLineString : TopoJSONObject, IGeometryObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LineString"/> class.
+        /// Initializes a new instance of the <see cref="TopoJSONLineString"/> class.
         /// </summary>
-        /// <param name="coordinates">The coordinates.</param>
+        /// <param name="arcindex">The arcs index.</param>
         public TopoJSONLineString(List<int> arcindex)
         {
             this.ArcIdx = arcindex;
+            this.Coordinates = new List<GeographicPosition>();
+            Type = GeoJSONObjectType.LineString;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TopoJSONLineString"/> class.
+        /// </summary>
+        /// <param name="coords">A list of coordinates.</param>
+        public TopoJSONLineString(List<GeographicPosition> coords)
+        {
+            this.ArcIdx = new List<int>();
+            this.Coordinates = coords;
+            Type = GeoJSONObjectType.LineString;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TopoJSONLineString"/> class.
+        /// </summary>
+        public TopoJSONLineString()
+        {
+            this.ArcIdx = new List<int>();
+            this.Coordinates = new List<GeographicPosition>();
             Type = GeoJSONObjectType.LineString;
         }
 
@@ -46,7 +68,7 @@ namespace TopoJSON.Net.Geometry
         /// Gets the Positions.
         /// </summary>
         /// <value>The Positions.</value>
-        public List<IPosition> Coordinates { get; private set; }
+        public List<GeographicPosition> Coordinates { get; set; }
 
         /// <summary>
         /// Determines whether this LineString is a <see href="http://geojson.org/geojson-spec.html#linestring">LinearRing</see>.

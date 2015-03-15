@@ -22,13 +22,24 @@ namespace TopoJSON.Net.Geometry
     public class TopoJSONMultiLineString : TopoJSONObject, IGeometryObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="MultiLineString"/> class.
+        /// Initializes a new instance of the <see cref="TopoJSONMultiLineString"/> class.
         /// </summary>
-        /// <param name="coordinates">The coordinates.</param>
+        /// <param name="arcIdx">The arcs index.</param>
         public TopoJSONMultiLineString(List<List<int>> arcIdx)
         {
             this.ArcIdx = arcIdx;
             this.Type = GeoJSONObjectType.MultiLineString;
+            this.Coordinates = new List<TopoJSONLineString>();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TopoJSONMultiLineString"/> class.
+        /// </summary>
+        public TopoJSONMultiLineString()
+        {
+            this.ArcIdx = new List<List<int>>();
+            this.Type = GeoJSONObjectType.MultiLineString;
+            this.Coordinates = new List<TopoJSONLineString>();
         }
 
         /// <summary>
@@ -41,6 +52,6 @@ namespace TopoJSON.Net.Geometry
         /// Gets the Coordinates.
         /// </summary>
         /// <value>The Coordinates.</value>
-        public List<TopoJSONLineString> Coordinates { get; private set; }
+        public List<TopoJSONLineString> Coordinates { get; set; }
     }
 }

@@ -114,7 +114,7 @@ namespace GeoJSON.Net.Tests
                     'longhand':'Land Berlin',
                     'priority':0
                   },
-                  'arcs':[[1]]
+                  'arcs':[[0]]
                 }
               },
               'arcs':[[[52.13, 13.13], [53.13, 12.13]]],

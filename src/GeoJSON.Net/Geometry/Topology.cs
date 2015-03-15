@@ -75,6 +75,10 @@ namespace TopoJSON.Net.Geometry
             }
         }
 
+        /// <summary>
+        /// Restores the coordinates for a given Geometry Object.
+        /// </summary>
+        /// <param name="igo">The Geometry Object</param>
         private void restoreGeometryCoordinates(IGeometryObject igo) {
             // Go over all types. Point and MultiPoint can be left out here. 
             switch (igo.Type)
@@ -82,20 +86,16 @@ namespace TopoJSON.Net.Geometry
                 // LineStrings
                 case GeoJSONObjectType.LineString:
                     TopoJSONLineString ls = igo as TopoJSONLineString;
-                    foreach (var idx in ls.ArcIdx)
-                    {
-                        Arc arc = null;
-                        // We have to invert negative indexes
-                        if (idx < 0) {
-                            int realIndex = Math.Abs(idx) - 1;
-                            arc = this.Arcs[realIndex];
-                            arc.Positions.Reverse();
-                        }
-                        arc = this.decodeArc(arc);
-                    }
+                    ls.Coordinates = this.getCoordinatesFromArcsIndex(ls.ArcIdx);
                     break;
                 // MultiLineStrings
                 case GeoJSONObjectType.MultiLineString:
+                    TopoJSONMultiLineString mls = igo as TopoJSONMultiLineString;
+                    foreach (var idxArray in mls.ArcIdx) {
+                        List<GeographicPosition> lsCoords = this.getCoordinatesFromArcsIndex(idxArray);
+                        TopoJSONLineString l = new TopoJSONLineString(lsCoords);
+                        mls.Coordinates.Add(l);
+                    }
                     break;
                 // GeometryCollections
                 case GeoJSONObjectType.GeometryCollection:
@@ -110,39 +110,54 @@ namespace TopoJSON.Net.Geometry
                     List<GeographicPosition> coordinates = new List<GeographicPosition>();
                     foreach (var idxArray in poly.ArcIdx)
                     {
-                        foreach (var idx in idxArray)
-                        {
-                            Arc arc = new Arc();
-                            // We have to invert negative indexes
-                            if (idx < 0)
-                            {
-                                int realIndex = Math.Abs(idx) - 1;
-                                // We're getting acopy here since we plan to modify it.
-                                arc.Positions = this.Arcs[realIndex].Positions.ToList();
-                                arc.Positions.Reverse();
-                            }
-                            else
-                            {
-                                arc.Positions = this.Arcs[idx].Positions.ToList();
-                            }
-                            arc = this.decodeArc(arc);
-                            coordinates.AddRange(arc.Positions);
-                        }
+                        coordinates = this.getCoordinatesFromArcsIndex(idxArray);
                     }
                     poly.Coordinates = coordinates;
                     break;
                 // MultiPolygon
                 case GeoJSONObjectType.MultiPolygon:
                     TopoJSONMultiPolygon mpoly = igo as TopoJSONMultiPolygon;
-                    List<GeographicPosition> coords = new List<GeographicPosition>();
                     foreach (var idxArray in mpoly.ArcIdx)
                     {
                         foreach (var idx in idxArray)
-                        { 
+                        {
+                            List<GeographicPosition> polyCoords = new List<GeographicPosition>();
+                            polyCoords = this.getCoordinatesFromArcsIndex(idx);
+                            TopoJSONPolygon tp = new TopoJSONPolygon(polyCoords);
+                            mpoly.Coordinates.Add(tp);
                         }
                     }
                     break;
             }
+        }
+
+        /// <summary>
+        /// From a given arcs index this method retrieves and decodes all coordinates
+        /// and stores them in a list.
+        /// </summary>
+        /// <param name="idxArray">The index.</param>
+        /// <returns>A list of coordinates.</returns>
+        private List<GeographicPosition> getCoordinatesFromArcsIndex(List<int> idxArray) {
+            List<GeographicPosition> coordinates = new List<GeographicPosition>();
+            foreach (var idx in idxArray)
+            {
+                Arc arc = new Arc();
+                // We have to invert negative indexes
+                if (idx < 0)
+                {
+                    int realIndex = Math.Abs(idx) - 1;
+                    // We're getting acopy here since we plan to modify it.
+                    arc.Positions = this.Arcs[realIndex].Positions.ToList();
+                    arc.Positions.Reverse();
+                }
+                else
+                {
+                    arc.Positions = this.Arcs[idx].Positions.ToList();
+                }
+                arc = this.decodeArc(arc);
+                coordinates.AddRange(arc.Positions);
+            }
+            return coordinates;
         }
 
         /// <summary>
@@ -152,6 +167,8 @@ namespace TopoJSON.Net.Geometry
         /// <param name="arc">The arc.</param>
         /// <returns>The decoded arc.</returns>
         private Arc decodeArc (Arc arc) {
+            if (arc == null)
+                return arc;
             // Decoding is only needed if the arc is quantized.
             if (this.Transform == null)
                 return arc;

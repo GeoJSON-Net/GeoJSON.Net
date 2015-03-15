@@ -23,7 +23,18 @@
         public TopoJSONMultiPolygon(List<List<List<int>>> arcIdx)
         {
             this.Type = GeoJSONObjectType.MultiPolygon;
+            this.Coordinates = new List<TopoJSONPolygon>();
             this.ArcIdx = arcIdx;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TopoJSONPolygon"/> class.
+        /// </summary>
+        public TopoJSONMultiPolygon()
+        {
+            this.Type = GeoJSONObjectType.MultiPolygon;
+            this.Coordinates = new List<TopoJSONPolygon>();
+            this.ArcIdx = new List<List<List<int>>>();
         }
 
         /// <summary>

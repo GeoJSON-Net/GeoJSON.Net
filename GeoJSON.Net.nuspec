@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
-        <id>GeoJSON.Net</id>
+        <id>TopoJSON.Net</id>
         <version>0.0.0.6</version>
-        <authors>Joerg Battermann</authors>
-        <owners>Joerg Battermann</owners>
+        <authors>Friedrich Politz / Joerg Battermann</authors>
+        <owners>Friedrich Politz</owners>
         <licenseUrl>https://github.com/jbattermann/GeoJSON.Net/blob/master/LICENSE</licenseUrl>
         <projectUrl>https://github.com/jbattermann/GeoJSON.Net</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>.Net library for GeoJSON types and corresponding Json.Net (de)serializers.</description>
+        <description>.Net library for TopoJSON and GeoJSON types and corresponding Json.Net (de)serializers.</description>
         <language>en-US</language>
-        <tags>geojson geo json geolocation .net40</tags>
+        <tags>geojson topojson geo topo topology json geolocation .net40</tags>
         <dependencies>
             <dependency id="Newtonsoft.Json" />
         </dependencies>
