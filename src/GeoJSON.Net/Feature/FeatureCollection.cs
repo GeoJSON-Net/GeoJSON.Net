@@ -8,27 +8,25 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace GeoJSON.Net.Feature
 {
-    using System.Collections.Generic;
-
-    using Newtonsoft.Json;
-
     /// <summary>
-    /// Defines the FeatureCollection type.
+    ///     Defines the FeatureCollection type.
     /// </summary>
     public class FeatureCollection : GeoJSONObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="FeatureCollection"/> class.
+        ///     Initializes a new instance of the <see cref="FeatureCollection" /> class.
         /// </summary>
         public FeatureCollection() : this(new List<Feature>())
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FeatureCollection"/> class.
+        ///     Initializes a new instance of the <see cref="FeatureCollection" /> class.
         /// </summary>
         /// <param name="features">The features.</param>
         public FeatureCollection(List<Feature> features)
@@ -38,12 +36,12 @@ namespace GeoJSON.Net.Feature
                 throw new ArgumentNullException("features");
             }
 
-            this.Features = features;
-            this.Type = GeoJSONObjectType.FeatureCollection;
+            Features = features;
+            Type = GeoJSONObjectType.FeatureCollection;
         }
 
         /// <summary>
-        /// Gets the features.
+        ///     Gets the features.
         /// </summary>
         /// <value>The features.</value>
         [JsonProperty(PropertyName = "features", Required = Required.Always)]
