@@ -1,6 +1,7 @@
 The MIT License (MIT)
 
-Copyright (c) 2014 Jörg Battermann & Contributors
+GeoJSON.Net: Copyright (c) 2014 Jörg Battermann & Contributors
+TopoJSON.Net: Copyright (c) 2015 Friedrich Politz
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

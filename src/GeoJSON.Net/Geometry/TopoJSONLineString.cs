@@ -9,50 +9,66 @@
 
 using System.Linq;
 
-namespace GeoJSON.Net.Geometry
+namespace TopoJSON.Net.Geometry
 {
     using System;
     using System.Collections.Generic;
 
-    using Converters;
+    using GeoJSON.Net.Converters;
 
     using Newtonsoft.Json;
+    using GeoJSON.Net;
+    using GeoJSON.Net.Geometry;
 
     /// <summary>
     ///   Defines the <see href="http://geojson.org/geojson-spec.html#linestring">LineString</see> type.
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    public class LineString : GeoJSONObject, IGeometryObject
+    public class TopoJSONLineString : TopoJSONObject, IGeometryObject
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LineString"/> class.
+        /// Initializes a new instance of the <see cref="TopoJSONLineString"/> class.
         /// </summary>
-        /// <param name="coordinates">The coordinates.</param>
-        public LineString(IEnumerable<IPosition> coordinates)
+        /// <param name="arcindex">The arcs index.</param>
+        public TopoJSONLineString(List<int> arcindex)
         {
-            if (coordinates == null)
-            {
-                throw new ArgumentNullException("coordinates");
-            }
-
-            var coordsList = coordinates.ToList();
-
-            if (coordsList.Count < 2)
-            {
-                throw new ArgumentOutOfRangeException("coordinates", "According to the GeoJSON v1.0 spec a LineString must have at least two or more positions.");
-            }
-
-            Coordinates = coordsList;
+            this.ArcIdx = arcindex;
+            this.Coordinates = new List<GeographicPosition>();
             Type = GeoJSONObjectType.LineString;
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TopoJSONLineString"/> class.
+        /// </summary>
+        /// <param name="coords">A list of coordinates.</param>
+        public TopoJSONLineString(List<GeographicPosition> coords)
+        {
+            this.ArcIdx = new List<int>();
+            this.Coordinates = coords;
+            Type = GeoJSONObjectType.LineString;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TopoJSONLineString"/> class.
+        /// </summary>
+        public TopoJSONLineString()
+        {
+            this.ArcIdx = new List<int>();
+            this.Coordinates = new List<GeographicPosition>();
+            Type = GeoJSONObjectType.LineString;
+        }
+
+        /// <summary>
+        /// The arc indices.
+        /// </summary>
+        [JsonProperty(PropertyName = "arcs", Required = Required.Always)]
+        public List<int> ArcIdx { get; set; }
 
         /// <summary>
         /// Gets the Positions.
         /// </summary>
         /// <value>The Positions.</value>
-        [JsonProperty(PropertyName = "coordinates", Required = Required.Always)]
-        [JsonConverter(typeof(LineStringConverter))]
-        public List<IPosition> Coordinates { get; private set; }
+        public List<GeographicPosition> Coordinates { get; set; }
 
         /// <summary>
         /// Determines whether this LineString is a <see href="http://geojson.org/geojson-spec.html#linestring">LinearRing</see>.

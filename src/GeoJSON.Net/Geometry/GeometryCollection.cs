@@ -3,7 +3,7 @@
 //   Copyright © Joerg Battermann 2014
 // </copyright>
 // <summary>
-//   Defines the <see cref="http://geojson.org/geojson-spec.html#geometry-collection">GeometryCollection</see> type.
+//   Defines the <see href="http://geojson.org/geojson-spec.html#geometry-collection">GeometryCollection</see> type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,7 +16,7 @@ namespace GeoJSON.Net.Geometry
     using Newtonsoft.Json;
 
     /// <summary>
-    /// Defines the <see cref="http://geojson.org/geojson-spec.html#geometry-collection">GeometryCollection</see> type.
+    /// Defines the <see href="http://geojson.org/geojson-spec.html#geometry-collection">GeometryCollection</see> type.
     /// </summary>
     public class GeometryCollection : GeoJSONObject, IGeometryObject
     {

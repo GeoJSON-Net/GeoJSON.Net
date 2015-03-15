@@ -15,7 +15,7 @@ namespace GeoJSON.Net
     public interface IGeoJSONObject
     {
         /// <summary>
-        /// Gets the (mandatory) type of the <see cref="http://geojson.org/geojson-spec.html#geojson-objects">GeoJSON Object</see>.
+        /// Gets the (mandatory) type of the <see href="http://geojson.org/geojson-spec.html#geojson-objects">GeoJSON Object</see>.
         /// </summary>
         /// <value>
         /// The type of the object.
@@ -23,7 +23,7 @@ namespace GeoJSON.Net
         GeoJSONObjectType Type { get; }
 
         /// <summary>
-        /// Gets the (optional) <see cref="http://geojson.org/geojson-spec.html#coordinate-reference-system-objects">Coordinate Reference System Object</see>.
+        /// Gets the (optional) <see href="http://geojson.org/geojson-spec.html#coordinate-reference-system-objects">Coordinate Reference System Object</see>.
         /// </summary>
         /// <value>
         /// The Coordinate Reference System Objects.
@@ -31,7 +31,7 @@ namespace GeoJSON.Net
         CoordinateReferenceSystem.ICRSObject CRS { get; }
 
         /// <summary>
-        /// Gets or sets the (optional) <see cref="http://geojson.org/geojson-spec.html#coordinate-reference-system-objects">Bounding Boxes</see>.
+        /// Gets or sets the (optional) <see href="http://geojson.org/geojson-spec.html#coordinate-reference-system-objects">Bounding Boxes</see>.
         /// </summary>
         /// <value>
         /// The value of the bbox member must be a 2*n array where n is the number of dimensions represented in the
