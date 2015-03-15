@@ -46,13 +46,16 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CoordinateReferenceSystem\DefaultCrsTests.cs" />
     <Compile Include="CoordinateReferenceSystem\LinkedCRSTests.cs" />
     <Compile Include="CoordinateReferenceSystem\NamedCrsTests.cs" />
+    <Compile Include="CoordinateReferenceSystem\UnspecifiedCRSTests.cs" />
     <Compile Include="Feature\FeatureCollectionTests.cs" />
     <Compile Include="Feature\FeatureTests.cs" />
     <Compile Include="Geometry\GeometryTests.cs" />
     <Compile Include="Geometry\LineStringTests.cs" />
     <Compile Include="Geometry\MultiLineStringTests.cs" />
+    <Compile Include="Geometry\MultiPointTests.cs" />
     <Compile Include="Geometry\MultiPolygonTests.cs" />
     <Compile Include="Geometry\PointTests.cs" />
     <Compile Include="Geometry\PolygonTests.cs" />
@@ -108,6 +111,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Geometry\PolygonTests_Can_Serialize.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Geometry\MultiPointTests_Can_Deserialize.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Geometry\MultiPointTests_Can_Serialize.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="packages.config" />

@@ -10,7 +10,7 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
     public class NamedCRSTests : TestBase
     {
         [Test]
-        public void NamedCrs_Has_Correct_Type()
+        public void Has_Correct_Type()
         {
             var name = "EPSG:31370";
             var crs = new NamedCRS(name);
@@ -19,7 +19,7 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
         }
 
         [Test]
-        public void NamedCrs_Has_Name_Property_With_Name()
+        public void Has_Name_Property_With_Name()
         {
             var name = "EPSG:31370";
             var crs = new NamedCRS(name);
@@ -29,7 +29,7 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
         }
 
         [Test]
-        public void NamedCrsSerializationWithValue()
+        public void Can_Serialize()
         {
             var collection = new FeatureCollection() { CRS = new NamedCRS("EPSG:31370") };
             var actualJson = JsonConvert.SerializeObject(collection);
@@ -38,24 +38,15 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
         }
 
         [Test]
-        public void NamedCrs_Ctor_Throws_ArgumentNullExpection_When_Name_Is_Null()
+        public void Ctor_Throws_ArgumentNullExpection_When_Name_Is_Null()
         {
             Assert.Throws<ArgumentNullException>(() => { var collection = new FeatureCollection() { CRS = new NamedCRS(null) }; });
         }
 
         [Test]
-        public void NamedCrs_Ctor_Throws_ArgumentNullExpection_When_Name_Is_Empty()
+        public void Ctor_Throws_ArgumentNullExpection_When_Name_Is_Empty()
         {
             Assert.Throws<ArgumentException>(() => { var collection = new FeatureCollection() { CRS = new NamedCRS(string.Empty) }; });
-        }
-
-        [Test]
-        public void NamedCrsSerializationNotSet()
-        {
-            var collection = new FeatureCollection();
-
-            var serializedData = JsonConvert.SerializeObject(collection);
-            Assert.IsTrue(!serializedData.Contains("\"crs\""));
         }
     }
 }
