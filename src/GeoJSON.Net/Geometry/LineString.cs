@@ -7,25 +7,27 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using GeoJSON.Net.Converters;
+using Newtonsoft.Json;
 
 namespace GeoJSON.Net.Geometry
 {
-    using System;
-    using System.Collections.Generic;
-
-    using Converters;
-
-    using Newtonsoft.Json;
-
     /// <summary>
-    ///   Defines the <see cref="http://geojson.org/geojson-spec.html#linestring">LineString</see> type.
+    ///     Defines the <see cref="http://geojson.org/geojson-spec.html#linestring">LineString</see> type.
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
     public class LineString : GeoJSONObject, IGeometryObject
     {
+        [JsonConstructor]
+        protected internal LineString()
+        {
+        }
+
         /// <summary>
-        /// Initializes a new instance of the <see cref="LineString"/> class.
+        ///     Initializes a new instance of the <see cref="LineString" /> class.
         /// </summary>
         /// <param name="coordinates">The coordinates.</param>
         public LineString(IEnumerable<IPosition> coordinates)
@@ -39,7 +41,9 @@ namespace GeoJSON.Net.Geometry
 
             if (coordsList.Count < 2)
             {
-                throw new ArgumentOutOfRangeException("coordinates", "According to the GeoJSON v1.0 spec a LineString must have at least two or more positions.");
+                throw new ArgumentOutOfRangeException(
+                    "coordinates", 
+                    "According to the GeoJSON v1.0 spec a LineString must have at least two or more positions.");
             }
 
             Coordinates = coordsList;
@@ -47,44 +51,85 @@ namespace GeoJSON.Net.Geometry
         }
 
         /// <summary>
-        /// Gets the Positions.
+        ///     Gets the Positions.
         /// </summary>
         /// <value>The Positions.</value>
         [JsonProperty(PropertyName = "coordinates", Required = Required.Always)]
         [JsonConverter(typeof(LineStringConverter))]
-        public List<IPosition> Coordinates { get; private set; }
+        public List<IPosition> Coordinates { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
+
+            return Equals((LineString)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return Coordinates.GetHashCode();
+        }
 
         /// <summary>
-        /// Determines whether this LineString is a <see cref="http://geojson.org/geojson-spec.html#linestring">LinearRing</see>.
+        ///     Determines whether this instance has its first and last coordinate at the same position and thereby is closed.
         /// </summary>
         /// <returns>
-        ///   <c>true</c> if it is a linear ring; otherwise, <c>false</c>.
+        ///     <c>true</c> if this instance is closed; otherwise, <c>false</c>.
+        /// </returns>
+        public bool IsClosed()
+        {
+            var firstCoordinate = Coordinates[0] as GeographicPosition;
+
+            if (firstCoordinate != null)
+            {
+                var lastCoordinate = Coordinates[Coordinates.Count - 1] as GeographicPosition;
+
+                return firstCoordinate.Latitude == lastCoordinate.Latitude
+                       && firstCoordinate.Longitude == lastCoordinate.Longitude
+                       && firstCoordinate.Altitude == lastCoordinate.Altitude;
+            }
+
+            return Coordinates[0].Equals(Coordinates[Coordinates.Count - 1]);
+        }
+
+        /// <summary>
+        ///     Determines whether this LineString is a
+        ///     <see cref="http://geojson.org/geojson-spec.html#linestring">LinearRing</see>.
+        /// </summary>
+        /// <returns>
+        ///     <c>true</c> if it is a linear ring; otherwise, <c>false</c>.
         /// </returns>
         public bool IsLinearRing()
         {
             return Coordinates.Count >= 4 && IsClosed();
         }
 
-        /// <summary>
-        /// Determines whether this instance has its first and last coordinate at the same position and thereby is closed.
-        /// </summary>
-        /// <returns>
-        ///   <c>true</c> if this instance is closed; otherwise, <c>false</c>.
-        /// </returns>
-        public bool IsClosed()
+        public static bool operator ==(LineString left, LineString right)
         {
-            if (Coordinates[0] is GeographicPosition) 
-            {
-                var firstCoordinate = Coordinates[0] as GeographicPosition;
-                var lastCoordinate = Coordinates[Coordinates.Count - 1] as GeographicPosition;
+            return Equals(left, right);
+        }
 
-                return firstCoordinate.Latitude == lastCoordinate.Latitude
-                    && firstCoordinate.Longitude == lastCoordinate.Longitude
-                    && firstCoordinate.Altitude == lastCoordinate.Altitude;
-            }
-            else
-                return Coordinates[0].Equals(Coordinates[Coordinates.Count - 1]);
+        public static bool operator !=(LineString left, LineString right)
+        {
+            return !Equals(left, right);
+        }
+
+        protected bool Equals(LineString other)
+        {
+            return base.Equals(other) && Coordinates.SequenceEqual(other.Coordinates);
         }
     }
 }
- 
