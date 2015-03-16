@@ -1,6 +1,7 @@
 The MIT License (MIT)
 
 GeoJSON.Net: Copyright (c) 2014 Jörg Battermann & Contributors
+
 TopoJSON.Net: Copyright (c) 2015 Friedrich Politz
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

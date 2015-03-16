@@ -177,9 +177,8 @@ namespace TopoJSON.Net.Geometry
             double x = 0, y = 0;
             foreach (var position in arc.Positions)
             {
-                // TODO: Switch latitude and longitude
-                double lat = (x += position.Longitude) * this.Transform.Scale[0] +  this.Transform.Translation[0];
-                double lon = (y += position.Latitude) * this.Transform.Scale[1] +  this.Transform.Translation[1];
+                double lon = (x += position.Longitude) * this.Transform.Scale[0] + this.Transform.Translation[0];
+                double lat = (y += position.Latitude) * this.Transform.Scale[1] + this.Transform.Translation[1];
                 positions.Add(new GeographicPosition(lat, lon));
             }
             decodedArc.Positions = positions;

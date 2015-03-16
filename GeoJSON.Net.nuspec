@@ -2,11 +2,11 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>TopoJSON.Net</id>
-        <version>0.0.0.6</version>
+        <version>0.0.0.7</version>
         <authors>Friedrich Politz / Joerg Battermann</authors>
         <owners>Friedrich Politz</owners>
-        <licenseUrl>https://github.com/jbattermann/GeoJSON.Net/blob/master/LICENSE</licenseUrl>
-        <projectUrl>https://github.com/jbattermann/GeoJSON.Net</projectUrl>
+        <licenseUrl>https://github.com/Freddixx/TopoJSON.Net/blob/master/LICENSE.md</licenseUrl>
+        <projectUrl>https://github.com/Freddixx/TopoJSON.Net</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>.Net library for TopoJSON and GeoJSON types and corresponding Json.Net (de)serializers.</description>
         <language>en-US</language>
