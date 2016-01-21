@@ -96,13 +96,18 @@ namespace GeoJSON.Net.Geometry
             if (firstCoordinate != null)
             {
                 var lastCoordinate = Coordinates[Coordinates.Count - 1] as GeographicPosition;
+                var secondCoordinate = Coordinates[1] as GeographicPosition;
 
-                return firstCoordinate.Latitude == lastCoordinate.Latitude
+                return (firstCoordinate.Latitude == lastCoordinate.Latitude
                        && firstCoordinate.Longitude == lastCoordinate.Longitude
-                       && firstCoordinate.Altitude == lastCoordinate.Altitude;
+                       && firstCoordinate.Altitude == lastCoordinate.Altitude) ||
+                       (firstCoordinate.Latitude == secondCoordinate.Latitude
+                       && firstCoordinate.Longitude == secondCoordinate.Longitude
+                       && firstCoordinate.Altitude == secondCoordinate.Altitude);
             }
 
-            return Coordinates[0].Equals(Coordinates[Coordinates.Count - 1]);
+            return Coordinates[0].Equals(Coordinates[Coordinates.Count - 1]) || 
+                Coordinates[0].Equals(Coordinates[1]);
         }
 
         /// <summary>
