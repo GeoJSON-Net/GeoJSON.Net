@@ -25,6 +25,22 @@ namespace GeoJSON.Net.Tests.Geometry
         }
 
         [Test]
+        public void Is_Closed_FirstTwo()
+        {
+            var coordinates = new List<GeographicPosition>
+            {
+                new GeographicPosition(52.370725881211314, 4.889259338378906),
+                new GeographicPosition(52.370725881211314, 4.889259338378906),
+                new GeographicPosition(52.3711451105601, 4.895267486572266),
+                new GeographicPosition(52.36931095278263, 4.892091751098633)
+            };
+
+            var lineString = new LineString(coordinates);
+
+            Assert.IsTrue(lineString.IsClosed());
+        }
+
+        [Test]
         public void Is_Not_Closed()
         {
             var coordinates = new List<GeographicPosition>
