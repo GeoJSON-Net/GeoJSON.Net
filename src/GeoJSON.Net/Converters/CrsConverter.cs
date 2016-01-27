@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using GeoJSON.Net.CoordinateReferenceSystem;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -19,7 +20,7 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-            return typeof(ICRSObject).IsAssignableFrom(objectType);
+            return typeof(ICRSObject).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
         }
 
         /// <summary>

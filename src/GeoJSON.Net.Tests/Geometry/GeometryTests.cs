@@ -9,7 +9,7 @@ namespace GeoJSON.Net.Tests.Geometry
     [TestFixture]
     public class GeometryTests : TestBase
     {
-        public IEnumerable<IGeometryObject> Geometries
+        public static IEnumerable<IGeometryObject> Geometries
         {
             get
             {
@@ -112,7 +112,7 @@ namespace GeoJSON.Net.Tests.Geometry
         }
 
         [Test]
-        [TestCaseSource("Geometries")]
+        [TestCaseSource(typeof(GeometryTests), nameof(Geometries))]
         public void Can_Serialize_And_Deserialize_Geometry(IGeometryObject geometry)
         {
             var json = JsonConvert.SerializeObject(geometry);
@@ -123,7 +123,7 @@ namespace GeoJSON.Net.Tests.Geometry
         }
 
         [Test]
-        [TestCaseSource("Geometries")]
+        [TestCaseSource(typeof(GeometryTests), nameof(Geometries))]
         public void Serialization_Observes_Indenting_Setting_Of_Serializer(IGeometryObject geometry)
         {
             var json = JsonConvert.SerializeObject(geometry, Formatting.Indented);
@@ -131,7 +131,7 @@ namespace GeoJSON.Net.Tests.Geometry
         }
 
         [Test]
-        [TestCaseSource("Geometries")]
+        [TestCaseSource(typeof(GeometryTests), nameof(Geometries))]
         public void Serialization_Observes_No_Indenting_Setting_Of_Serializer(IGeometryObject geometry)
         {
             var json = JsonConvert.SerializeObject(geometry, Formatting.None);
@@ -140,7 +140,7 @@ namespace GeoJSON.Net.Tests.Geometry
         }
 
         [Test]
-        [TestCaseSource("Geometries")]
+        [TestCaseSource(typeof(GeometryTests), nameof(Geometries))]
         public void Can_Serialize_And_Deserialize_Geometry_As_Object_Property(IGeometryObject geometry)
         {
             var classWithGeometry = new ClassWithGeometryProperty(geometry);

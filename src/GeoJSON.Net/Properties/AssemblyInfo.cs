@@ -15,7 +15,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Joerg Battermann")]
 [assembly: AssemblyProduct("GeoJSON.Net")]
-[assembly: AssemblyCopyright("Copyright © Joerg Battermann 2014")]
+[assembly: AssemblyCopyright("Copyright © Joerg Battermann and Contributor, 2014 - 2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

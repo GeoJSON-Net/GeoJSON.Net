@@ -57,9 +57,9 @@ namespace GeoJSON.Net.Feature
             }
             else
             {
-                Properties = properties.GetType()
-                    .GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                    .ToDictionary(prop => prop.Name, prop => prop.GetValue(properties, null));
+                Properties = properties.GetType().GetTypeInfo().DeclaredProperties
+                    .Where(propertyInfo => propertyInfo.GetMethod.IsPublic)
+                    .ToDictionary(propertyInfo => propertyInfo.Name, propertyInfo => propertyInfo.GetValue(properties, null));
             }
 
             Type = GeoJSONObjectType.Feature;
