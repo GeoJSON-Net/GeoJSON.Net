@@ -13,11 +13,11 @@
         <language>en-US</language>
         <tags>geojson geo json geolocation</tags>
         <dependencies>
-            <dependency id="Newtonsoft.Json" />
+            <dependency id="Newtonsoft.Json" version="[8.0.2,]"  />
         </dependencies>
     </metadata>
     <files>
-        <file src="lib\GeoJSON.Net.dll" target="lib\GeoJSON.Net.dll" />
-        <file src="lib\GeoJSON.Net.XML" target="lib\GeoJSON.Net.XML" />
+        <file src="src\GeoJSON.Net\bin\Release\GeoJSON.Net.dll" target="lib\portable-net40+sl5+wp80+win8+wpa81\GeoJSON.Net.dll" />
+        <file src="src\GeoJSON.Net\bin\Release\GeoJSON.Net.XML" target="lib\portable-net40+sl5+wp80+win8+wpa81\GeoJSON.Net.XML" />
     </files>
 </package>
