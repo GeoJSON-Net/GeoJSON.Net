@@ -9,11 +9,11 @@
         <projectUrl>https://github.com/GeoJSON-Net/GeoJSON.Net</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>.Net library for GeoJSON types and corresponding Json.Net (de)serializers.</description>
-        <releaseNotes>Updated Json.Net to 8.x and library itself to PCL Profile259.</releaseNotes>
+        <releaseNotes>Downgraded Json.Net to earliest compatible version (7.0.1).</releaseNotes>
         <language>en-US</language>
         <tags>geojson geo json geolocation</tags>
         <dependencies>
-            <dependency id="Newtonsoft.Json" version="[8.0.2,]"  />
+            <dependency id="Newtonsoft.Json" version="7.0.1"  />
         </dependencies>
     </metadata>
     <files>
