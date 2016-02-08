@@ -56,47 +56,46 @@ namespace GeoJSON.Net.Converters
         /// <param name="serializer">The calling serializer.</param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            var polygons = (List<Polygon>)value;
-            
-            writer.WriteStartArray();
-            
-            if (polygons != null && polygons.Count > 0)
+            var polygons = value as List<Polygon>;
+
+            if (polygons != null)
             {
-                for (int i = 0; i < polygons.Count; i++)
+                writer.WriteStartArray();
+                foreach (var polygon in polygons)
                 {
-                    var polygon = polygons[i];
-                    
                     // start of polygon
                     writer.WriteStartArray();
 
-                    for (int j = 0; j < polygon.Coordinates.Count; j++)
+                    foreach (var lineString in polygon.Coordinates ?? new List<LineString>())
                     {
-                        var lineString = polygon.Coordinates[j];
-                        var coordinateElements = lineString.Coordinates.OfType<GeographicPosition>();
-                        if (coordinateElements.Any())
+                        var coordinateElements = (lineString.Coordinates ?? new List<IPosition>())
+                            .OfType<GeographicPosition>()
+                            .ToList();
+
+                        if (coordinateElements.Count == 0)
+                            continue;
+
+                        // start linear rings of polygon
+                        writer.WriteStartArray();
+
+                        foreach (var position in coordinateElements)
                         {
-                            // start linear rings of polygon
+                            var coordinates = position;
+
                             writer.WriteStartArray();
 
-                            foreach (var position in coordinateElements)
+                            writer.WriteValue(coordinates.Longitude);
+                            writer.WriteValue(coordinates.Latitude);
+
+                            if (coordinates.Altitude.HasValue)
                             {
-                                var coordinates = position;
-
-                                writer.WriteStartArray();
-
-                                writer.WriteValue(coordinates.Longitude);
-                                writer.WriteValue(coordinates.Latitude);
-
-                                if (coordinates.Altitude.HasValue)
-                                {
-                                    writer.WriteValue(coordinates.Altitude.Value);
-                                }
-
-                                writer.WriteEndArray();
+                                writer.WriteValue(coordinates.Altitude.Value);
                             }
 
                             writer.WriteEndArray();
                         }
+
+                        writer.WriteEndArray();
                     }
 
                     writer.WriteEndArray();
