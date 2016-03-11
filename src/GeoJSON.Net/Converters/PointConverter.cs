@@ -61,22 +61,33 @@ namespace GeoJSON.Net.Converters
                 throw new JsonReaderException("coordinates cannot be null");
             }
 
-            if (coordinates.Length != 2 && coordinates.Length != 3)
+            if (coordinates.Length <= 2)
             {
                 throw new JsonReaderException(
-                    string.Format("Expected 2 or 3 coordinates but received {0}", coordinates));
+                    string.Format("Expected at least 2 coordinates but received {0}", coordinates));
             }
 
             var longitude = coordinates[0];
             var latitude = coordinates[1];
             double? altitude = null;
+            double?[] m = null;
 
             if (coordinates.Length == 3)
             {
                 altitude = coordinates[2];
             }
+            if (coordinates.Length > 3)
+            {
+                m = new double?[coordinates.Length - 3];
+                int mIndex = 0;
+                for (int i = 3; i < coordinates.Length; i++)
+                {
+                    m[mIndex] = coordinates[i];
+                    mIndex++;
+                }
+            }
 
-            return new GeographicPosition(latitude, longitude, altitude);
+            return new GeographicPosition(latitude, longitude, altitude, m);
         }
 
         /// <summary>
@@ -98,6 +109,13 @@ namespace GeoJSON.Net.Converters
                 if (coordinates.Altitude.HasValue)
                 {
                     writer.WriteValue(coordinates.Altitude.Value);
+                }
+                if (coordinates.M != null && coordinates.M.Length > 0)
+                {
+                    foreach (var m in coordinates.M)
+                    {
+                        writer.WriteValue(m);
+                    }
                 }
 
                 writer.WriteEndArray();

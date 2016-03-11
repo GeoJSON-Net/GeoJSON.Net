@@ -27,12 +27,14 @@ namespace GeoJSON.Net.Geometry
         /// <param name="latitude">The latitude.</param>
         /// <param name="longitude">The longitude.</param>
         /// <param name="altitude">The altitude in m(eter).</param>
-        public GeographicPosition(double latitude, double longitude, double? altitude = null)
-            : this()
+        /// <param name="m">Additional values.</param>
+        public GeographicPosition(double latitude, double longitude, double? altitude = null, double?[] m = null)
+    : this()
         {
             Latitude = latitude;
             Longitude = longitude;
             Altitude = altitude;
+            M = m;
         }
 
         /// <summary>
@@ -41,7 +43,8 @@ namespace GeoJSON.Net.Geometry
         /// <param name="latitude">The latitude, e.g. '38.889722'.</param>
         /// <param name="longitude">The longitude, e.g. '-77.008889'.</param>
         /// <param name="altitude">The altitude in m(eters).</param>
-        public GeographicPosition(string latitude, string longitude, string altitude = null)
+        /// <param name="m">Additional values.</param>
+        public GeographicPosition(string latitude, string longitude, string altitude = null, string[] m = null)
             : this()
         {
             if (latitude == null)
@@ -90,12 +93,28 @@ namespace GeoJSON.Net.Geometry
 
                 Altitude = alt;
             }
+
+            if (m != null)
+            {
+                double[] mVal = new double[m.Length];
+                int index = 0;
+                foreach (string val in m)
+                {
+                    if (!double.TryParse(val, NumberStyles.Float, CultureInfo.InvariantCulture, out mVal[index]))
+                    {
+                        throw new ArgumentOutOfRangeException("m", "M Values must be a proper double value) value, e.g. '6500'.");
+                    }
+
+                    M[index] = mVal[index];
+                    index++;
+                }
+            }
         }
 
         /// <summary>
         ///     Prevents a default instance of the <see cref="GeographicPosition" /> class from being created.
         /// </summary>
-        private GeographicPosition()
+        private GeographicPosition(double?[] m = null)
         {
             Coordinates = new double?[3];
         }
@@ -128,6 +147,12 @@ namespace GeoJSON.Net.Geometry
             get { return Coordinates[1].GetValueOrDefault(); }
             private set { Coordinates[1] = value; }
         }
+
+        /// <summary>
+        ///     Gets the longitude.
+        /// </summary>
+        /// <value>The longitude.</value>
+        public double?[] M { get; set; }
 
         /// <summary>
         ///     Gets or sets the coordinates, is a 2-size array

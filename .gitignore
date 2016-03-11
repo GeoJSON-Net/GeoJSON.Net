@@ -2,3 +2,4 @@
 packages/
 *.nupkg
 lib/*
+src/GeoJSON.Net/geoJson.pfx
