@@ -42,13 +42,24 @@ namespace GeoJSON.Net.Converters
                     var longitude = coordinate[0];
                     var latitude = coordinate[1];
                     double? altitude = null;
+                    double?[] m = null;
 
                     if (coordinate.Length == 3)
                     {
                         altitude = coordinate[2];
                     }
+                    if (coordinate.Length > 3)
+                    {
+                        m = new double?[coordinate.Length - 3];
+                        int mIndex = 0;
+                        for (int i = 3; i < coordinate.Length; i++)
+                        {
+                            m[mIndex] = coordinate[i];
+                            mIndex++;
+                        }
+                    }
 
-                    positions.Add(new Point(new GeographicPosition(latitude, longitude, altitude)));
+                    positions.Add(new Point(new GeographicPosition(latitude, longitude, altitude,m)));
                 }
 
                 return positions;
