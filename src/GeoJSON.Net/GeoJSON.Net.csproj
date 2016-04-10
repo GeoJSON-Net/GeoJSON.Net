@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Converters\CrsConverter.cs" />
+    <Compile Include="Converters\GeoJsonConverter.cs" />
     <Compile Include="Converters\GeometryConverter.cs" />
     <Compile Include="Converters\MultiPointConverter.cs" />
     <Compile Include="Converters\MultiPolygonConverter.cs" />
