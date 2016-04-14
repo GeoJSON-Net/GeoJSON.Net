@@ -34,7 +34,7 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
             var collection = new FeatureCollection() { CRS = new NamedCRS("EPSG:31370") };
             var actualJson = JsonConvert.SerializeObject(collection);
 
-            JsonAssert.Contains("{\"properties\":{\"name\":\"EPSG:31370\"},\"type\":\"Name\"}", actualJson);
+            JsonAssert.Contains("{\"properties\":{\"name\":\"EPSG:31370\"},\"type\":\"name\"}", actualJson);
         }
 
         [Test]
