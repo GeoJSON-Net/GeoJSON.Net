@@ -43,7 +43,7 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
             var collection = new Point(new GeographicPosition(1, 2, 3)) { CRS = new LinkedCRS(Href) };
             var actualJson = JsonConvert.SerializeObject(collection);
 
-            JsonAssert.Contains("{\"properties\":{\"href\":\"http://localhost\"},\"type\":\"Link\"}", actualJson);
+            JsonAssert.Contains("{\"properties\":{\"href\":\"http://localhost\"},\"type\":\"link\"}", actualJson);
         }
 
         [Test]
