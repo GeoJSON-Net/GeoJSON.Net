@@ -91,7 +91,14 @@ namespace GeoJSON.Net.Converters
                             {
                                 writer.WriteValue(coordinates.Altitude.Value);
                             }
-
+                            if (coordinates.M != null && coordinates.M.Length > 0)
+                            {
+                                foreach (var m in coordinates.M)
+                                {
+                                    writer.WriteValue(m);
+                                }
+                            }
+                            
                             writer.WriteEndArray();
                         }
 
