@@ -1,18 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoJSON.Net", "GeoJSON.Net\GeoJSON.Net.csproj", "{7C0D45ED-681E-4DEC-9910-BAE1211E4889}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{22966EF8-71BC-4488-B2D5-8829451F7D40}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7AFBD129-E5A1-48D0-B7F6-7CCD6D06AF17}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1B0DD1AF-600C-451B-8542-8BDFFC320D8D}"
 	ProjectSection(SolutionItems) = preProject
-		..\GeoJSON.Net.nuspec = ..\GeoJSON.Net.nuspec
-		LICENSE = LICENSE
-		README = README
+		global.json = global.json
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoJSON.Net.Tests", "GeoJSON.Net.Tests\GeoJSON.Net.Tests.csproj", "{6C93B314-9208-4684-B873-172F7EC81689}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "GeoJSON.Net", "src\GeoJSON.Net\GeoJSON.Net.xproj", "{ACB5B2D2-5344-46C4-847E-38255D296847}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{888F78A7-C482-4129-BCB0-DB4CAE55B56E}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "GeoJSON.Net.Tests", "test\GeoJSON.Net.Tests\GeoJSON.Net.Tests.xproj", "{15A09995-21E9-4DFA-B6F7-E0FEA843A8BC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,16 +22,20 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7C0D45ED-681E-4DEC-9910-BAE1211E4889}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7C0D45ED-681E-4DEC-9910-BAE1211E4889}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7C0D45ED-681E-4DEC-9910-BAE1211E4889}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7C0D45ED-681E-4DEC-9910-BAE1211E4889}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6C93B314-9208-4684-B873-172F7EC81689}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6C93B314-9208-4684-B873-172F7EC81689}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6C93B314-9208-4684-B873-172F7EC81689}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6C93B314-9208-4684-B873-172F7EC81689}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACB5B2D2-5344-46C4-847E-38255D296847}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACB5B2D2-5344-46C4-847E-38255D296847}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACB5B2D2-5344-46C4-847E-38255D296847}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACB5B2D2-5344-46C4-847E-38255D296847}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15A09995-21E9-4DFA-B6F7-E0FEA843A8BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15A09995-21E9-4DFA-B6F7-E0FEA843A8BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15A09995-21E9-4DFA-B6F7-E0FEA843A8BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15A09995-21E9-4DFA-B6F7-E0FEA843A8BC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{ACB5B2D2-5344-46C4-847E-38255D296847} = {22966EF8-71BC-4488-B2D5-8829451F7D40}
+		{15A09995-21E9-4DFA-B6F7-E0FEA843A8BC} = {888F78A7-C482-4129-BCB0-DB4CAE55B56E}
 	EndGlobalSection
 EndGlobal
