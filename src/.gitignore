@@ -32,3 +32,6 @@ _ReSharper*/
 **/StyleCop.Cache
 *.dotCover
 StyleCop.Cache
+
+# VS2015 specifics
+.vs/
