@@ -3,7 +3,7 @@
 
   "buildOptions": {
     "copyToOutput": {
-      "include": "Feature/*.json"
+      "include": "**/*.json"
     }
   },
 
