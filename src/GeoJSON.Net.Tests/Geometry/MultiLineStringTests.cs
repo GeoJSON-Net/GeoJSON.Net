@@ -59,5 +59,53 @@ namespace GeoJSON.Net.Tests.Geometry
 
             JsonAssert.AreEqual(expectedJson, actualJson);
         }
+
+        private LineString GetLineString(double offset = 0.0)
+        {
+            var coordinates = new List<IPosition>
+            {
+                new GeographicPosition(52.379790828551016 + offset, 5.3173828125 + offset),
+                new GeographicPosition(52.36721467920585 + offset, 5.456085205078125 + offset),
+                new GeographicPosition(52.303440474272755 + offset, 5.386047363281249 + offset, 4.23 + offset)
+            };
+            var lineString = new LineString(coordinates);
+            return lineString;
+        }
+
+        [Test]
+        public void Equals_GetHashCode_Contract()
+        {
+            var rnd = new System.Random();
+            var offset = rnd.NextDouble() * 60;
+            if (rnd.NextDouble() < 0.5)
+            {
+                offset *= -1;
+            }
+
+            var leftLine = new List<LineString>();
+            leftLine.Add(GetLineString(offset + 1));
+            leftLine.Add(GetLineString(offset + 2));
+
+            var left = new MultiLineString(leftLine);
+
+            var rightLine = new List<LineString>();
+            rightLine.Add(GetLineString(offset + 1));
+            rightLine.Add(GetLineString(offset + 2));
+
+            var right = new MultiLineString(rightLine);
+
+            Assert.AreEqual(left, right);
+            Assert.AreEqual(right, left);
+
+            Assert.IsTrue(left.Equals(right));
+            Assert.IsTrue(left.Equals(left));
+            Assert.IsTrue(right.Equals(left));
+            Assert.IsTrue(right.Equals(right));
+
+            Assert.IsTrue(left == right);
+            Assert.IsTrue(right == left);
+
+            Assert.AreEqual(left.GetHashCode(), right.GetHashCode());
+        }
     }
 }

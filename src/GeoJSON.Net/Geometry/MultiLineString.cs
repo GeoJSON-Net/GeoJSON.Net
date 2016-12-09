@@ -11,19 +11,21 @@ using System.Collections.Generic;
 using System.Linq;
 using GeoJSON.Net.Converters;
 using Newtonsoft.Json;
+using System;
 
 namespace GeoJSON.Net.Geometry
 {
     /// <summary>
     ///     Defines the <see cref="http://geojson.org/geojson-spec.html#multilinestring">MultiLineString</see> type.
     /// </summary>
-    public class MultiLineString : GeoJSONObject, IGeometryObject
+    public class MultiLineString : GeoJSONObject, IGeometryObject, IEqualityComparer<MultiLineString>, IEquatable<MultiLineString>
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="MultiLineString" /> class.
         /// </summary>
         /// <param name="coordinates">The coordinates.</param>
         public MultiLineString(List<LineString> coordinates)
+            : base()
         {
             Coordinates = coordinates ?? new List<LineString>();
             Type = GeoJSONObjectType.MultiLineString;
@@ -37,44 +39,81 @@ namespace GeoJSON.Net.Geometry
         [JsonConverter(typeof(PolygonConverter))]
         public List<LineString> Coordinates { get; private set; }
 
+        #region IEqualityComparer, IEquatable
+
+        /// <summary>
+        /// Determines whether the specified object is equal to the current object
+        /// </summary>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
-            {
-                return false;
-            }
+            return Equals(this, obj as MultiLineString);
+        }
 
-            if (ReferenceEquals(this, obj))
+        /// <summary>
+        /// Determines whether the specified object is equal to the current object
+        /// </summary>
+        public bool Equals(MultiLineString other)
+        {
+            return Equals(this, other);
+        }
+
+        /// <summary>
+        /// Determines whether the specified object instances are considered equal
+        /// </summary>
+        public bool Equals(MultiLineString left, MultiLineString right)
+        {
+            if (base.Equals(left, right))
+            {
+                return left.Coordinates.SequenceEqual(right.Coordinates);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Determines whether the specified object instances are considered equal
+        /// </summary>
+        public static bool operator ==(MultiLineString left, MultiLineString right)
+        {
+            if (ReferenceEquals(left, right))
             {
                 return true;
             }
-
-            if (obj.GetType() != GetType())
+            if (ReferenceEquals(null, right))
             {
                 return false;
             }
-
-            return Equals((MultiLineString)obj);
+            return left.Equals(right);
         }
 
-        public override int GetHashCode()
-        {
-            return Coordinates.GetHashCode();
-        }
-
-        public static bool operator ==(MultiLineString left, MultiLineString right)
-        {
-            return Equals(left, right);
-        }
-
+        /// <summary>
+        /// Determines whether the specified object instances are not considered equal
+        /// </summary>
         public static bool operator !=(MultiLineString left, MultiLineString right)
         {
-            return !Equals(left, right);
+            return !(left == right);
         }
 
-        protected bool Equals(MultiLineString other)
+        /// <summary>
+        /// Returns the hash code for this instance
+        /// </summary>
+        public override int GetHashCode()
         {
-            return base.Equals(other) && Coordinates.SequenceEqual(other.Coordinates);
+            int hash = base.GetHashCode();
+            foreach (var item in Coordinates)
+            {
+                hash = (hash * 397) ^ item.GetHashCode();
+            }
+            return hash;
         }
+
+        /// <summary>
+        /// Returns the hash code for the specified object
+        /// </summary>
+        public int GetHashCode(MultiLineString other)
+        {
+            return other.GetHashCode();
+        }
+
+        #endregion
     }
 }

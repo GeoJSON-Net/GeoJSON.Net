@@ -152,6 +152,31 @@ namespace GeoJSON.Net.Tests.Geometry
             Assert.AreEqual(classWithGeometry, deserializedClassWithGeometry);
         }
 
+        [Test]
+        [TestCaseSource(typeof(GeometryTests), nameof(Geometries))]
+        public void Serialized_And_Deserialized_Equals_And_Share_HashCode(IGeometryObject geometry)
+        {
+            var classWithGeometry = new ClassWithGeometryProperty(geometry);
+
+            var json = JsonConvert.SerializeObject(classWithGeometry);
+
+            var deserializedClassWithGeometry = JsonConvert.DeserializeObject<ClassWithGeometryProperty>(json);
+
+            var actual = classWithGeometry;
+            var expected = deserializedClassWithGeometry;
+            
+            Assert.IsTrue(actual.Equals(expected));
+            Assert.IsTrue(actual.Equals(actual));
+
+            Assert.IsTrue(expected.Equals(actual));
+            Assert.IsTrue(expected.Equals(expected));
+
+            Assert.IsTrue(classWithGeometry == deserializedClassWithGeometry);
+            Assert.IsTrue(deserializedClassWithGeometry == classWithGeometry);
+
+            Assert.AreEqual(actual.GetHashCode(), expected.GetHashCode());
+        }
+
         private class ClassWithGeometryProperty
         {
             public ClassWithGeometryProperty(IGeometryObject geometry)

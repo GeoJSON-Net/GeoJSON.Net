@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GeoJSON.Net.Converters;
 using Newtonsoft.Json;
+using System;
 
 namespace GeoJSON.Net.Geometry
 {
@@ -18,13 +19,14 @@ namespace GeoJSON.Net.Geometry
     ///     Contains an array of <see cref="Point" />s.
     /// </summary>
     /// <seealso cref="http://geojson.org/geojson-spec.html#multipoint" />
-    public class MultiPoint : GeoJSONObject, IGeometryObject
+    public class MultiPoint : GeoJSONObject, IGeometryObject, IEqualityComparer<MultiPoint>, IEquatable<MultiPoint>
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="MultiPoint" /> class.
         /// </summary>
         /// <param name="coordinates">The coordinates.</param>
         public MultiPoint(List<Point> coordinates = null)
+            : base()
         {
             this.Coordinates = coordinates ?? new List<Point>();
             this.Type = GeoJSONObjectType.MultiPoint;
@@ -38,41 +40,81 @@ namespace GeoJSON.Net.Geometry
         [JsonConverter(typeof(MultiPointConverter))]
         public List<Point> Coordinates { get; private set; }
 
+        #region IEqualityComparer, IEquatable
+
+        /// <summary>
+        /// Determines whether the specified object is equal to the current object
+        /// </summary>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
+            return Equals(this, obj as MultiPoint);
+        }
+
+        /// <summary>
+        /// Determines whether the specified object is equal to the current object
+        /// </summary>
+        public bool Equals(MultiPoint other)
+        {
+            return Equals(this, other);
+        }
+
+        /// <summary>
+        /// Determines whether the specified object instances are considered equal
+        /// </summary>
+        public bool Equals(MultiPoint left, MultiPoint right)
+        {
+            if (base.Equals(left, right))
             {
-                return false;
+                return left.Coordinates.SequenceEqual(right.Coordinates);
             }
-            if (ReferenceEquals(this, obj))
+            return false;
+        }
+
+        /// <summary>
+        /// Determines whether the specified object instances are considered equal
+        /// </summary>
+        public static bool operator ==(MultiPoint left, MultiPoint right)
+        {
+            if (ReferenceEquals(left, right))
             {
                 return true;
             }
-            if (obj.GetType() != this.GetType())
+            if (ReferenceEquals(null, right))
             {
                 return false;
             }
-            return Equals((MultiPoint)obj);
+            return left.Equals(right);
         }
 
-        public override int GetHashCode()
-        {
-            return Coordinates.GetHashCode();
-        }
-
-        public static bool operator ==(MultiPoint left, MultiPoint right)
-        {
-            return Equals(left, right);
-        }
-
+        /// <summary>
+        /// Determines whether the specified object instances are not considered equal
+        /// </summary>
         public static bool operator !=(MultiPoint left, MultiPoint right)
         {
-            return !Equals(left, right);
+            return !(left == right);
         }
 
-        protected bool Equals(MultiPoint other)
+        /// <summary>
+        /// Returns the hash code for this instance
+        /// </summary>
+        public override int GetHashCode()
         {
-            return base.Equals(other) && Coordinates.SequenceEqual(other.Coordinates);
+            int hash = base.GetHashCode();
+            foreach (var item in Coordinates)
+            {
+                hash = (hash * 397) ^ item.GetHashCode();
+            }
+            return hash;
         }
+
+        /// <summary>
+        /// Returns the hash code for the specified object
+        /// </summary>
+        public int GetHashCode(MultiPoint other)
+        {
+            return other.GetHashCode();
+        }
+
+        #endregion
     }
 }

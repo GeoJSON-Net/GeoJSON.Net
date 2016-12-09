@@ -48,5 +48,40 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
         {
             Assert.Throws<ArgumentException>(() => { var collection = new FeatureCollection() { CRS = new NamedCRS(string.Empty) }; });
         }
+
+        [Test]
+        public void Equals_GetHashCode_Contract()
+        {
+            var name = "EPSG:31370";
+
+            var left = new NamedCRS(name);
+            var right = new NamedCRS(name);
+
+            Assert.AreEqual(left, right);
+
+            Assert.IsTrue(left == right);
+            Assert.IsTrue(right == left);
+
+            Assert.IsTrue(left.Equals(right));
+            Assert.IsTrue(right.Equals(left));
+
+            Assert.IsTrue(left.Equals(left));
+            Assert.IsTrue(right.Equals(right));
+
+            Assert.AreEqual(left.GetHashCode(), right.GetHashCode());
+
+            name = "EPSG:25832";
+            right = new NamedCRS(name);
+
+            Assert.AreNotEqual(left, right);
+
+            Assert.IsFalse(left == right);
+            Assert.IsFalse(right == left);
+
+            Assert.IsFalse(left.Equals(right));
+            Assert.IsFalse(right.Equals(left));
+
+            Assert.AreNotEqual(left.GetHashCode(), right.GetHashCode());
+        }
     }
 }

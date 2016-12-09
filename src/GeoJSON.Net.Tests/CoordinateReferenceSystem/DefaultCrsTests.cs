@@ -28,5 +28,30 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
 
             Assert.IsInstanceOf<DefaultCRS>(point.CRS);
         }
+
+        [Test]
+        public void Equals_GetHashCode_Contract()
+        {
+            var json = "{\"coordinates\":[90.65464646,53.2455662,200.4567],\"type\":\"Point\"}";
+
+            var point = JsonConvert.DeserializeObject<Point>(json);
+
+            var expected = DefaultCRS.Instance;
+            var actual = point.CRS;
+
+            Assert.AreEqual(expected, actual);
+
+            Assert.IsTrue(expected.Equals(actual));
+            Assert.IsTrue(actual.Equals(expected));
+
+            Assert.IsTrue(actual.Equals(actual));
+            Assert.IsTrue(expected.Equals(expected));
+
+            Assert.IsTrue(expected == actual);
+            Assert.IsTrue(actual == expected);
+
+            Assert.AreEqual(expected.GetHashCode(), actual.GetHashCode());
+
+        }
     }
 }

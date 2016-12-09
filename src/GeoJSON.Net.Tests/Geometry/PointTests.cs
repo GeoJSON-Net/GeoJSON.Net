@@ -54,5 +54,23 @@ namespace GeoJSON.Net.Tests.Geometry
 
             Assert.AreEqual(expectedPoint, actualPoint);
         }
+
+        [Test]
+        public void Equals_GetHashCode_Contract()
+        {
+            var json = "{\"coordinates\":[90.65464646,53.2455662],\"type\":\"Point\"}";
+
+            var expectedPoint = new Point(new GeographicPosition(53.2455662, 90.65464646));
+
+            var actualPoint = JsonConvert.DeserializeObject<Point>(json);
+
+            Assert.AreEqual(expectedPoint, actualPoint);
+            Assert.IsTrue(expectedPoint.Equals(actualPoint));
+            Assert.IsTrue(actualPoint.Equals(expectedPoint));
+
+            Assert.AreEqual(expectedPoint.GetHashCode(), actualPoint.GetHashCode());
+            Assert.Inconclusive("GetHashCode test is inconclusive because the coordinates are not readonly");
+        }
+
     }
 }
