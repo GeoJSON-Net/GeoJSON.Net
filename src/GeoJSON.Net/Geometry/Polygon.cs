@@ -54,7 +54,7 @@ namespace GeoJSON.Net.Geometry
         /// </summary>
         [JsonProperty(PropertyName = "coordinates", Required = Required.Always)]
         [JsonConverter(typeof(PolygonConverter))]
-        public List<LineString> Coordinates { get; set; }
+        public List<LineString> Coordinates { get; private set; }
 
         #region IEqualityComparer, IEquatable
 
