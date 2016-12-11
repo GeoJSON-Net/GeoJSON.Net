@@ -19,7 +19,7 @@ namespace GeoJSON.Net.Geometry
     ///     Defines the <see cref="http://geojson.org/geojson-spec.html#linestring">LineString</see> type.
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
-    public class LineString : GeoJSONObject, IGeometryObject
+    public class LineString : GeoJSONObject, IGeometryObject, IEqualityComparer<LineString>, IEquatable<LineString>
     {
         [JsonConstructor]
         protected internal LineString()
@@ -58,7 +58,7 @@ namespace GeoJSON.Net.Geometry
         /// <value>The Positions.</value>
         [JsonProperty(PropertyName = "coordinates", Required = Required.Always)]
         [JsonConverter(typeof(LineStringConverter))]
-        public List<IPosition> Coordinates { get; set; }
+        public List<IPosition> Coordinates { get; private set; }
 
         /// <summary>
         ///     Determines whether this instance has its first and last coordinate at the same position and thereby is closed.

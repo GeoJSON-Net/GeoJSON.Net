@@ -69,7 +69,6 @@ namespace GeoJSON.Net.Tests.Geometry
             Assert.IsTrue(actualPoint.Equals(expectedPoint));
 
             Assert.AreEqual(expectedPoint.GetHashCode(), actualPoint.GetHashCode());
-            Assert.Inconclusive("GetHashCode test is inconclusive because the coordinates are not readonly");
         }
 
     }

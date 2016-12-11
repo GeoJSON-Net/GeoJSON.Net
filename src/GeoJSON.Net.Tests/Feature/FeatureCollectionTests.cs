@@ -39,13 +39,13 @@ namespace GeoJSON.Net.Tests.Feature
             {
                 var geom = new LineString(new[]
                 {
-                    new GeographicPosition(51.010, -1.034), 
+                    new GeographicPosition(51.010, -1.034),
                     new GeographicPosition(51.010, -0.034)
                 });
 
                 var props = new Dictionary<string, object>
                 {
-                    { "test1", "1" }, 
+                    { "test1", "1" },
                     { "test2", 2 }
                 };
 
@@ -59,5 +59,107 @@ namespace GeoJSON.Net.Tests.Feature
 
             Assert.IsFalse(string.IsNullOrEmpty(actualJson));
         }
+
+        private FeatureCollection GetFeatureCollection()
+        {
+            var model = new FeatureCollection();
+            for (var i = 10; i-- > 0;)
+            {
+                var geom = new LineString(new[]
+                {
+                    new GeographicPosition(51.010, -1.034),
+                    new GeographicPosition(51.010, -0.034)
+                });
+
+                var props = FeatureTests.GetPropertiesInRandomOrder();
+
+                var feature = new Net.Feature.Feature(geom, props);
+                model.Features.Add(feature);
+            }
+            return model;
+        }
+
+        private void Assert_Are_Equal(FeatureCollection left, FeatureCollection right)
+        {
+            Assert.AreEqual(left, right);
+
+            Assert.IsTrue(left.Equals(right));
+            Assert.IsTrue(right.Equals(left));
+
+            Assert.IsTrue(left.Equals(left));
+            Assert.IsTrue(right.Equals(right));
+
+            Assert.IsTrue(left == right);
+            Assert.IsTrue(right == left);
+
+            Assert.IsFalse(left != right);
+            Assert.IsFalse(right != left);
+
+            Assert.AreEqual(left.GetHashCode(), right.GetHashCode());
+        }
+
+        [Test]
+        public void FeatureCollection_Equals_GetHashCode_Contract()
+        {
+            var left = GetFeatureCollection();
+            var right = GetFeatureCollection();
+
+            Assert_Are_Equal(left, right);
+        }
+
+        [Test]
+        public void Serialized_And_Deserialized_FeatureCollection_Equals_And_Share_HashCode()
+        {
+            var leftFc = GetFeatureCollection();
+            var leftJson = JsonConvert.SerializeObject(leftFc);
+            var left = JsonConvert.DeserializeObject<FeatureCollection>(leftJson);
+
+            var rightFc = GetFeatureCollection();
+            var rightJson = JsonConvert.SerializeObject(rightFc);
+            var right = JsonConvert.DeserializeObject<FeatureCollection>(rightJson);
+
+            Assert_Are_Equal(left, right);
+        }
+
+        [Test]
+        public void FeatureCollection_Test_IndexOf()
+        {
+            var model = new FeatureCollection();
+            var expectedIds = new List<string>();
+            var expectedIndexes = new List<int>();
+
+            for (var i = 0; i < 10; i++)
+            {
+                var id = "id" + i.ToString();
+
+                expectedIds.Add(id);
+                expectedIndexes.Add(i);
+
+                var geom = new LineString(new[]
+                {
+                    new GeographicPosition(51.010, -1.034),
+                    new GeographicPosition(51.010, -0.034)
+                });
+
+                var props = FeatureTests.GetPropertiesInRandomOrder();
+
+                var feature = new Net.Feature.Feature(geom, props, id);
+                model.Features.Add(feature);
+            }
+
+            for (var i = 0; i < 10; i++)
+            {
+                var actualFeature = model.Features[i];
+                var actualId = actualFeature.Id;
+                var actualIndex = model.Features.IndexOf(actualFeature);
+
+                var expectedId = expectedIds[i];
+                var expectedIndex = expectedIndexes[i];
+
+                Assert.AreEqual(expectedId, actualId);
+                Assert.AreEqual(expectedIndex, actualIndex);
+            }
+        }
+
     }
 }

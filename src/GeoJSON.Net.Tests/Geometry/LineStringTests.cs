@@ -115,7 +115,6 @@ namespace GeoJSON.Net.Tests.Geometry
             Assert.IsTrue(right == left);
 
             Assert.AreEqual(left.GetHashCode(), right.GetHashCode());
-            Assert.Inconclusive("GetHashCode test is inconclusive because the coordinates are not readonly");
         }
     }
 }
