@@ -23,6 +23,7 @@ namespace GeoJSON.Net.Geometry
     {
         [JsonConstructor]
         protected internal LineString()
+            : base()
         {
         }
 
@@ -31,6 +32,7 @@ namespace GeoJSON.Net.Geometry
         /// </summary>
         /// <param name="coordinates">The coordinates.</param>
         public LineString(IEnumerable<IPosition> coordinates)
+            : base()
         {
             if (coordinates == null)
             {
@@ -57,31 +59,6 @@ namespace GeoJSON.Net.Geometry
         [JsonProperty(PropertyName = "coordinates", Required = Required.Always)]
         [JsonConverter(typeof(LineStringConverter))]
         public List<IPosition> Coordinates { get; set; }
-
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj))
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (obj.GetType() != GetType())
-            {
-                return false;
-            }
-
-            return Equals((LineString)obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return Coordinates.GetHashCode();
-        }
 
         /// <summary>
         ///     Determines whether this instance has its first and last coordinate at the same position and thereby is closed.
@@ -117,19 +94,81 @@ namespace GeoJSON.Net.Geometry
             return Coordinates.Count >= 4 && IsClosed();
         }
 
+        #region IEqualityComparer, IEquatable
+
+        /// <summary>
+        /// Determines whether the specified object is equal to the current object
+        /// </summary>
+        public override bool Equals(object obj)
+        {
+            return Equals(this, obj as LineString);
+        }
+
+        /// <summary>
+        /// Determines whether the specified object is equal to the current object
+        /// </summary>
+        public bool Equals(LineString other)
+        {
+            return Equals(this, other);
+        }
+
+        /// <summary>
+        /// Determines whether the specified object instances are considered equal
+        /// </summary>
+        public bool Equals(LineString left, LineString right)
+        {
+            if (base.Equals(left, right))
+            {
+                return left.Coordinates.SequenceEqual(right.Coordinates);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Determines whether the specified object instances are considered equal
+        /// </summary>
         public static bool operator ==(LineString left, LineString right)
         {
-            return Equals(left, right);
+            if (ReferenceEquals(left, right))
+            {
+                return true;
+            }
+            if (ReferenceEquals(null, right))
+            {
+                return false;
+            }
+            return left.Equals(right);
         }
 
+        /// <summary>
+        /// Determines whether the specified object instances are not considered equal
+        /// </summary>
         public static bool operator !=(LineString left, LineString right)
         {
-            return !Equals(left, right);
+            return !(left == right);
         }
 
-        protected bool Equals(LineString other)
+        /// <summary>
+        /// Returns the hash code for this instance
+        /// </summary>
+        public override int GetHashCode()
         {
-            return base.Equals(other) && Coordinates.SequenceEqual(other.Coordinates);
+            int hash = base.GetHashCode();
+            foreach (var item in Coordinates)
+            {
+                hash = (hash * 397) ^ item.GetHashCode();
+            }
+            return hash;
         }
+
+        /// <summary>
+        /// Returns the hash code for the specified object
+        /// </summary>
+        public int GetHashCode(LineString other)
+        {
+            return other.GetHashCode();
+        }
+
+        #endregion
     }
 }

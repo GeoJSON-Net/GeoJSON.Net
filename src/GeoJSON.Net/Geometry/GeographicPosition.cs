@@ -8,6 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
@@ -17,7 +18,7 @@ namespace GeoJSON.Net.Geometry
     ///     Defines the Geographic Position type a.k.a.
     ///     <see cref="http://geojson.org/geojson-spec.html#positions">Geographic Coordinate Reference System</see>.
     /// </summary>
-    public class GeographicPosition : Position
+    public class GeographicPosition : Position, IEqualityComparer<GeographicPosition>, IEquatable<GeographicPosition>
     {
         private static readonly NullableDoubleTenDecimalPlaceComparer DoubleComparer = new NullableDoubleTenDecimalPlaceComparer();
 
@@ -96,6 +97,7 @@ namespace GeoJSON.Net.Geometry
         ///     Prevents a default instance of the <see cref="GeographicPosition" /> class from being created.
         /// </summary>
         private GeographicPosition()
+            : base()
         {
             Coordinates = new double?[3];
         }
@@ -136,71 +138,7 @@ namespace GeoJSON.Net.Geometry
         ///     The coordinates.
         /// </value>
         private double?[] Coordinates { get; set; }
-
-        /// <summary>
-        /// Determines whether the specified <see cref="System.Object" />, is equal to this instance.
-        /// </summary>
-        /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
-        /// <returns>
-        ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
-        /// </returns>
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj))
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            if (obj.GetType() != GetType())
-            {
-                return false;
-            }
-
-            return Equals((GeographicPosition)obj);
-        }
-
-        /// <summary>
-        /// Returns a hash code for this instance.
-        /// </summary>
-        /// <returns>
-        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
-        /// </returns>
-        public override int GetHashCode()
-        {
-            return Coordinates != null ? Coordinates.GetHashCode() : 0;
-        }
-
-        /// <summary>
-        /// Implements the operator ==.
-        /// </summary>
-        /// <param name="left">The left.</param>
-        /// <param name="right">The right.</param>
-        /// <returns>
-        /// The result of the operator.
-        /// </returns>
-        public static bool operator ==(GeographicPosition left, GeographicPosition right)
-        {
-            return Equals(left, right);
-        }
-
-        /// <summary>
-        /// Implements the operator !=.
-        /// </summary>
-        /// <param name="left">The left.</param>
-        /// <param name="right">The right.</param>
-        /// <returns>
-        /// The result of the operator.
-        /// </returns>
-        public static bool operator !=(GeographicPosition left, GeographicPosition right)
-        {
-            return !Equals(left, right);
-        }
-
+        
         /// <summary>
         ///     Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
@@ -214,16 +152,78 @@ namespace GeoJSON.Net.Geometry
                 : string.Format(CultureInfo.InvariantCulture, "Latitude: {0}, Longitude: {1}, Altitude: {2}", Latitude, Longitude, Altitude);
         }
 
+        #region IEqualityComparer, IEquatable
+
         /// <summary>
-        /// Determines whether the specified <see cref="GeographicPosition" />, is equal to this instance.
+        /// Determines whether the specified object is equal to the current object
         /// </summary>
-        /// <param name="other">The <see cref="GeographicPosition" /> to compare with this instance.</param>
-        /// <returns>
-        ///   <c>true</c> if the specified <see cref="GeographicPosition" /> is equal to this instance; otherwise, <c>false</c>.
-        /// </returns>
-        protected bool Equals(GeographicPosition other)
+        public override bool Equals(object obj)
         {
-            return Coordinates.SequenceEqual(other.Coordinates, DoubleComparer);
+            return (this == (obj as GeographicPosition));
         }
+
+        /// <summary>
+        /// Determines whether the specified object is equal to the current object
+        /// </summary>
+        public bool Equals(GeographicPosition other)
+        {
+            return (this == other);
+        }
+
+        /// <summary>
+        /// Determines whether the specified object instances are considered equal
+        /// </summary>
+        public bool Equals(GeographicPosition left, GeographicPosition right)
+        {
+            return (left == right);
+        }
+
+        /// <summary>
+        /// Determines whether the specified object instances are considered equal
+        /// </summary>
+        public static bool operator ==(GeographicPosition left, GeographicPosition right)
+        {
+            if (ReferenceEquals(left, right))
+            {
+                return true;
+            }
+            if (ReferenceEquals(null, right))
+            {
+                return false;
+            }
+            return left.Coordinates.SequenceEqual(right.Coordinates, DoubleComparer);
+        }
+
+        /// <summary>
+        /// Determines whether the specified object instances are considered equal
+        /// </summary>
+        public static bool operator !=(GeographicPosition left, GeographicPosition right)
+        {
+            return !(left == right);
+        }
+
+        /// <summary>
+        /// Returns the hash code for this instance
+        /// </summary>
+        public override int GetHashCode()
+        {
+            int hash = 1;
+            foreach (var item in Coordinates)
+            {
+                hash = (hash * 397) ^ item.GetHashCode();
+            }
+            return hash;
+        }
+
+        /// <summary>
+        /// Returns the hash code for the specified object
+        /// </summary>
+        public int GetHashCode(GeographicPosition other)
+        {
+            return other.GetHashCode();
+        }
+
+        #endregion
+
     }
 }

@@ -56,44 +56,81 @@ namespace GeoJSON.Net.Geometry
         [JsonConverter(typeof(PolygonConverter))]
         public List<LineString> Coordinates { get; set; }
 
+        #region IEqualityComparer, IEquatable
+
+        /// <summary>
+        /// Determines whether the specified object is equal to the current object
+        /// </summary>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
-            {
-                return false;
-            }
+            return Equals(this, obj as Polygon);
+        }
 
-            if (ReferenceEquals(this, obj))
+        /// <summary>
+        /// Determines whether the specified object is equal to the current object
+        /// </summary>
+        public bool Equals(Polygon other)
+        {
+            return Equals(this, other);
+        }
+
+        /// <summary>
+        /// Determines whether the specified object instances are considered equal
+        /// </summary>
+        public bool Equals(Polygon left, Polygon right)
+        {
+            if (base.Equals(left, right))
+            {
+                return left.Coordinates.SequenceEqual(right.Coordinates);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Determines whether the specified object instances are considered equal
+        /// </summary>
+        public static bool operator ==(Polygon left, Polygon right)
+        {
+            if (ReferenceEquals(left, right))
             {
                 return true;
             }
-
-            if (obj.GetType() != GetType())
+            if (ReferenceEquals(null, right))
             {
                 return false;
             }
-
-            return Equals((Polygon)obj);
+            return left.Equals(right);
         }
 
-        public override int GetHashCode()
-        {
-            return Coordinates.GetHashCode();
-        }
-
-        public static bool operator ==(Polygon left, Polygon right)
-        {
-            return Equals(left, right);
-        }
-
+        /// <summary>
+        /// Determines whether the specified object instances are not considered equal
+        /// </summary>
         public static bool operator !=(Polygon left, Polygon right)
         {
-            return !Equals(left, right);
+            return !(left == right);
         }
 
-        protected bool Equals(Polygon other)
+        /// <summary>
+        /// Returns the hash code for this instance
+        /// </summary>
+        public override int GetHashCode()
         {
-            return base.Equals(other) && Coordinates.SequenceEqual(other.Coordinates);
+            int hash = base.GetHashCode();
+            foreach (var item in Coordinates)
+            {
+                hash = (hash * 397) ^ item.GetHashCode();
+            }
+            return hash;
         }
+
+        /// <summary>
+        /// Returns the hash code for the specified object
+        /// </summary>
+        public int GetHashCode(Polygon other)
+        {
+            return other.GetHashCode();
+        }
+
+        #endregion
     }
 }

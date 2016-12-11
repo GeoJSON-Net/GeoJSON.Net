@@ -76,5 +76,46 @@ namespace GeoJSON.Net.Tests.Geometry
 
             Assert.AreEqual(expectedLineString, actualLineString);
         }
+
+        private LineString GetLineString(double offset = 0.0)
+        {
+            var coordinates = new List<GeographicPosition>
+            {
+                new GeographicPosition(52.370725881211314 + offset, 4.889259338378906 + offset),
+                new GeographicPosition(52.3711451105601 + offset, 4.895267486572266 + offset),
+                new GeographicPosition(52.36931095278263 + offset, 4.892091751098633 + offset),
+                new GeographicPosition(52.370725881211314 + offset, 4.889259338378906 + offset)
+            };
+            var lineString = new LineString(coordinates);
+            return lineString;
+        }
+
+        [Test]
+        public void Equals_GetHashCode_Contract()
+        {
+            var rnd = new System.Random();
+            var offset = rnd.NextDouble() * 60;
+            if (rnd.NextDouble() < 0.5)
+            {
+                offset *= -1;
+            }
+
+            var left = GetLineString(offset);
+            var right = GetLineString(offset);
+
+            Assert.AreEqual(left, right);
+            Assert.AreEqual(right, left);
+
+            Assert.IsTrue(left.Equals(right));
+            Assert.IsTrue(left.Equals(left));
+            Assert.IsTrue(right.Equals(left));
+            Assert.IsTrue(right.Equals(right));
+
+            Assert.IsTrue(left == right);
+            Assert.IsTrue(right == left);
+
+            Assert.AreEqual(left.GetHashCode(), right.GetHashCode());
+            Assert.Inconclusive("GetHashCode test is inconclusive because the coordinates are not readonly");
+        }
     }
 }

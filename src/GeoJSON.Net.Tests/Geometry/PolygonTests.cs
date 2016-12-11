@@ -262,5 +262,49 @@ namespace GeoJSON.Net.Tests.Geometry
 
             Assert.AreEqual(expectedPolygon, actualPolygon);
         }
+
+        private Polygon GetPolygon(double offset = 0.0)
+        {
+            var polygon = new Polygon(new List<LineString>
+            {
+                new LineString(new List<GeographicPosition>
+                {
+                    new GeographicPosition(52.379790828551016 + offset, 5.3173828125 + offset),
+                    new GeographicPosition(52.36721467920585 + offset, 5.456085205078125 + offset),
+                    new GeographicPosition(52.303440474272755 + offset, 5.386047363281249 + offset, 4.23 + offset),
+                    new GeographicPosition(52.379790828551016 + offset, 5.3173828125 + offset),
+                })
+            });
+            return polygon;
+        }
+
+        [Test]
+        public void Equals_GetHashCode_Contract()
+        {
+            var rnd = new System.Random();
+            var offset = rnd.NextDouble() * 60;
+            if (rnd.NextDouble() < 0.5)
+            {
+                offset *= -1;
+            }
+
+            var left = GetPolygon(offset);
+            var right = GetPolygon(offset);
+
+            Assert.AreEqual(left, right);
+            Assert.AreEqual(right, left);
+
+            Assert.IsTrue(left.Equals(right));
+            Assert.IsTrue(left.Equals(left));
+            Assert.IsTrue(right.Equals(left));
+            Assert.IsTrue(right.Equals(right));
+
+            Assert.IsTrue(left == right);
+            Assert.IsTrue(right == left);
+
+            Assert.AreEqual(left.GetHashCode(), right.GetHashCode());
+            Assert.Inconclusive("GetHashCode test is inconclusive because the coordinates are not readonly");
+        }
+
     }
 }

@@ -34,5 +34,25 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
 
             Assert.IsInstanceOf<UnspecifiedCRS>(featureCollection.CRS);
         }
+
+        [Test]
+        public void Equals_GetHashCode_Contract()
+        {
+            var left = new UnspecifiedCRS();
+            var right = new UnspecifiedCRS();
+
+            Assert.AreEqual(left, right);
+
+            Assert.IsTrue(left == right);
+            Assert.IsTrue(right == left);
+
+            Assert.IsTrue(left.Equals(right));
+            Assert.IsTrue(right.Equals(left));
+
+            Assert.IsTrue(left.Equals(left));
+            Assert.IsTrue(right.Equals(right));
+
+            Assert.AreEqual(left.GetHashCode(), right.GetHashCode());
+        }
     }
 }

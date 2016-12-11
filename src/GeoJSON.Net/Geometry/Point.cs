@@ -10,6 +10,7 @@
 using System;
 using GeoJSON.Net.Converters;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace GeoJSON.Net.Geometry
 {
@@ -17,16 +18,20 @@ namespace GeoJSON.Net.Geometry
     ///     In geography, a point refers to a Position on a map, expressed in latitude and longitude.
     /// </summary>
     /// <seealso cref="http://geojson.org/geojson-spec.html#point" />
-    public class Point : GeoJSONObject, IGeometryObject
+    public class Point : GeoJSONObject, IGeometryObject, IEqualityComparer<Point>, IEquatable<Point>
     {
         [JsonConstructor]
-        private Point() { }
+        private Point()
+                : base()
+        {
+        }
 
         /// <summary>
         ///     Initializes a new instance of the <see cref="Point" /> class.
         /// </summary>
         /// <param name="coordinates">The Position.</param>
         public Point(IPosition coordinates)
+            : this()
         {
             if (coordinates == null)
             {
@@ -45,44 +50,78 @@ namespace GeoJSON.Net.Geometry
         [JsonConverter(typeof(PointConverter))]
         public IPosition Coordinates { get; set; }
 
+        #region IEqualityComparer, IEquatable
+
+        /// <summary>
+        /// Determines whether the specified object is equal to the current object
+        /// </summary>
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj))
-            {
-                return false;
-            }
+            return Equals(this, obj as Point);
+        }
 
-            if (ReferenceEquals(this, obj))
+        /// <summary>
+        /// Determines whether the specified object is equal to the current object
+        /// </summary>
+        public bool Equals(Point other)
+        {
+            return Equals(this, other);
+        }
+
+        /// <summary>
+        /// Determines whether the specified object instances are considered equal
+        /// </summary>
+        public bool Equals(Point left, Point right)
+        {
+            if (base.Equals(left, right))
+            {
+                return left.Coordinates.Equals(right.Coordinates);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Determines whether the specified object instances are considered equal
+        /// </summary>
+        public static bool operator ==(Point left, Point right)
+        {
+            if (ReferenceEquals(left, right))
             {
                 return true;
             }
-
-            if (obj.GetType() != GetType())
+            if (ReferenceEquals(null, right))
             {
                 return false;
             }
-
-            return Equals((Point)obj);
+            return left.Equals(right);
         }
 
-        public override int GetHashCode()
-        {
-            return Coordinates.GetHashCode();
-        }
-
-        public static bool operator ==(Point left, Point right)
-        {
-            return Equals(left, right);
-        }
-
+        /// <summary>
+        /// Determines whether the specified object instances are not considered equal
+        /// </summary>
         public static bool operator !=(Point left, Point right)
         {
-            return !Equals(left, right);
+            return !(left == right);
+        }
+        
+        /// <summary>
+        /// Returns the hash code for this instance
+        /// </summary>
+        public override int GetHashCode()
+        {
+            int hash = base.GetHashCode();
+            hash = (hash * 397) ^ Coordinates.GetHashCode();
+            return hash;
         }
 
-        protected bool Equals(Point other)
+        /// <summary>
+        /// Returns the hash code for the specified object
+        /// </summary>
+        public int GetHashCode(Point other)
         {
-            return base.Equals(other) && Coordinates.Equals(other.Coordinates);
+            return other.GetHashCode();
         }
+
+        #endregion
     }
 }
