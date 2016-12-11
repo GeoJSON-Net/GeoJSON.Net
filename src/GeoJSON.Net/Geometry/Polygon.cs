@@ -23,7 +23,7 @@ namespace GeoJSON.Net.Geometry
     ///     represent interior rings (or holes).
     /// </summary>
     /// <seealso cref="http://geojson.org/geojson-spec.html#polygon" />
-    public class Polygon : GeoJSONObject, IGeometryObject
+    public class Polygon : GeoJSONObject, IGeometryObject, IEqualityComparer<Polygon>, IEquatable<Polygon>
     {
         /// <summary>
         ///     Initializes a new instance of the <see cref="Polygon" /> class.
