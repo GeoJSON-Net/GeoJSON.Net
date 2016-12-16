@@ -81,7 +81,7 @@ namespace GeoJSON.Net.Feature
         /// </summary>
         /// <value>The handle.</value>
         [JsonProperty(PropertyName = "id", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
-        public string Id { get; private set; }
+        public string Id { get; set; }
 
         /// <summary>
         ///     Gets the properties.
