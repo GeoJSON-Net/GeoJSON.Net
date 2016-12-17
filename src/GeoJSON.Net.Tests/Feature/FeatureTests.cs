@@ -357,16 +357,6 @@ namespace GeoJSON.Net.Tests.Feature
 
             Assert_Are_Not_Equal(left, right); // different geometries
 
-            left = new Net.Feature.Feature(new Point(
-                geometry_10),
-                leftDictionary,
-                "abc");
-            right = new Net.Feature.Feature(new Point(
-                geometry_20),
-                rightDictionary,
-                "xyz"); // different geometries and ids
-
-            Assert_Are_Not_Equal(left, right);
 
             left = new Net.Feature.Feature(new Point(
                 geometry_10),
@@ -375,44 +365,10 @@ namespace GeoJSON.Net.Tests.Feature
             right = new Net.Feature.Feature(new Point(
                 geometry_10),
                 rightDictionary,
-                "abc"); // identical except properties are in random order
+                "abc"); // identical geometries, different ids and or properties or not compared
 
             Assert_Are_Equal(left, right);
 
-            left = new Net.Feature.Feature(new Point(
-                geometry_10),
-                leftDictionary,
-                "abc");
-            right = new Net.Feature.Feature(new Point(
-                geometry_10),
-                rightDictionary,
-                "xyz"); // different ids
-
-            Assert_Are_Not_Equal(left, right);
-
-            leftDictionary.Add("Guid", Guid.NewGuid().ToString());
-
-            left = new Net.Feature.Feature(new Point(
-                geometry_10),
-                leftDictionary,
-                "abc");
-            right = new Net.Feature.Feature(new Point(
-                geometry_10),
-                rightDictionary,
-                "abc"); // different properties
-
-            Assert_Are_Not_Equal(left, right);
-
-            left = new Net.Feature.Feature(new Point(
-               geometry_10),
-               null,
-               "abc");
-            right = new Net.Feature.Feature(new Point(
-                geometry_10),
-                rightDictionary,
-                "abc"); // different properties
-
-            Assert_Are_Not_Equal(left, right);
         }
 
         [Test]
@@ -428,7 +384,7 @@ namespace GeoJSON.Net.Tests.Feature
             var rightJson = JsonConvert.SerializeObject(rightFeature);
             var right = JsonConvert.DeserializeObject<Net.Feature.Feature>(rightJson);
 
-            Assert_Are_Equal(left, right);
+            Assert_Are_Equal(left, right); 
 
             leftFeature = new Net.Feature.Feature(geometry, GetPropertiesInRandomOrder(), null);
             leftJson = JsonConvert.SerializeObject(leftFeature);
@@ -438,7 +394,17 @@ namespace GeoJSON.Net.Tests.Feature
             rightJson = JsonConvert.SerializeObject(rightFeature);
             right = JsonConvert.DeserializeObject<Net.Feature.Feature>(rightJson);
 
-            Assert_Are_Equal(left, right);
+            Assert_Are_Equal(left, right); // assert properties doesn't influence comparison and hashcode
+
+            leftFeature = new Net.Feature.Feature(geometry, null, "abc_abc");
+            leftJson = JsonConvert.SerializeObject(leftFeature);
+            left = JsonConvert.DeserializeObject<Net.Feature.Feature>(leftJson);
+            
+            rightFeature = new Net.Feature.Feature(geometry, null, "xyz_XYZ");
+            rightJson = JsonConvert.SerializeObject(rightFeature);
+            right = JsonConvert.DeserializeObject<Net.Feature.Feature>(rightJson);
+
+            Assert_Are_Equal(left, right); // assert id's doesn't influence comparison and hashcode
 
             leftFeature = new Net.Feature.Feature(geometry, GetPropertiesInRandomOrder(), "abc");
             leftJson = JsonConvert.SerializeObject(leftFeature);
@@ -448,7 +414,9 @@ namespace GeoJSON.Net.Tests.Feature
             rightJson = JsonConvert.SerializeObject(rightFeature);
             right = JsonConvert.DeserializeObject<Net.Feature.Feature>(rightJson);
 
-            Assert_Are_Equal(left, right);
+            Assert_Are_Equal(left, right); // assert id's + properties doesn't influence comparison and hashcode
+
+
 
         }
 
