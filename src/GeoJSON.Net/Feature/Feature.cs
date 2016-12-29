@@ -154,14 +154,6 @@ namespace GeoJSON.Net.Feature
             {
                 hash = (hash * 397) ^ Geometry.GetHashCode();
             }
-            if (Properties != null && Properties.Count > 0)
-            {
-                hash = (hash * 397) ^ GetPropertiesHashCode(Properties);
-            }
-            if (Id != null)
-            {
-                hash = (hash * 397) ^ Id.GetHashCode();
-            }
             return hash;
         }
 
@@ -171,21 +163,6 @@ namespace GeoJSON.Net.Feature
         public int GetHashCode(Feature obj)
         {
             return obj.GetHashCode();
-        }
-
-        private int GetPropertiesHashCode(Dictionary<string, object> properties)
-        {
-            var keys = properties.Keys.OrderBy(k => k).ToList();
-            int hash = 1;
-            string hashString;
-            object value;
-            foreach (var key in keys)
-            {
-                value = properties[key];
-                hashString = (value == null) ? key : key + value.ToString();
-                hash = (hash * 397) ^ hashString.GetHashCode();
-            }
-            return hash;
         }
 
         #endregion

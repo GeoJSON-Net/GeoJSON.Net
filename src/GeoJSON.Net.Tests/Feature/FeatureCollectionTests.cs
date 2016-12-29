@@ -158,7 +158,13 @@ namespace GeoJSON.Net.Tests.Feature
 
                 Assert.AreEqual(expectedId, actualId);
                 Assert.AreEqual(expectedIndex, actualIndex);
+
+                Assert.Inconclusive("not supported. the Feature.Id is optional. " + 
+                    " create a new class that inherits from" +
+                    " Feature and then override Equals and GetHashCode");
+
             }
+
         }
 
     }
