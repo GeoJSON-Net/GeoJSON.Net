@@ -70,7 +70,7 @@ namespace GeoJSON.Net
         /// <value>
         ///     The type of the object.
         /// </value>
-        [JsonProperty(PropertyName = "type", Required = Required.Always)]
+        [JsonProperty(PropertyName = "type", Required = Required.Always, DefaultValueHandling = DefaultValueHandling.Include)]
         [JsonConverter(typeof(StringEnumConverter))]
         public GeoJSONObjectType Type { get; internal set; }
 
