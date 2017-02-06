@@ -71,5 +71,16 @@ namespace GeoJSON.Net.Tests.Geometry
             Assert.AreEqual(expectedPoint.GetHashCode(), actualPoint.GetHashCode());
         }
 
+        [Test]
+        public void Can_Serialize_With_Lat_Lon_Alt_DefaultValueHandling_Ignore()
+        {
+            var point = new Point(new GeographicPosition(53.2455662, 90.65464646, 200.4567));
+
+            var expectedJson = "{\"coordinates\":[90.65464646,53.2455662,200.4567],\"type\":\"Point\"}";
+
+            var actualJson = JsonConvert.SerializeObject(point, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+
+            JsonAssert.AreEqual(expectedJson, actualJson);
+        }
     }
 }

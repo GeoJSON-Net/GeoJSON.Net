@@ -35,7 +35,7 @@ namespace GeoJSON.Net.Geometry
         {
             if (coordinates == null)
             {
-                throw new ArgumentNullException("coordinates");
+                throw new ArgumentNullException(nameof(coordinates));
             }
 
             Coordinates = coordinates;
@@ -93,7 +93,7 @@ namespace GeoJSON.Net.Geometry
             {
                 return false;
             }
-            return left.Equals(right);
+            return left != null && left.Equals(right);
         }
 
         /// <summary>
