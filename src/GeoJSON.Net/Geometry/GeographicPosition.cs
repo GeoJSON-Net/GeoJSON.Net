@@ -3,7 +3,7 @@
 //   Copyright © Joerg Battermann 2014
 // </copyright>
 // <summary>
-//   Defines the Geographic Position type a.k.a. <see cref="http://geojson.org/geojson-spec.html#positions">Geographic Coordinate Reference System</see>.
+//   Defines the Geographic Position type <see cref="https://tools.ietf.org/html/rfc7946#section-3.1.1">GeographicPosition</see>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
