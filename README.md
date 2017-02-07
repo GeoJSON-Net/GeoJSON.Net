@@ -10,7 +10,7 @@ Well all you basically have to do is install the [GeoJSON.Net](https://www.nuget
 
 To deserialize a json string:
 
-'var geoJsonObject = JsonConvert.DeserializeObject<Point>(json);'
+`var geoJsonObject = JsonConvert.DeserializeObject<Point>(json);`
 
 That's all there is. Really. From there on you can go ahead and (De-)Serialize GeoJSON using the provided [converters](https://github.com/GeoJSON-Net/GeoJSON.Net/tree/master/src/GeoJSON.Net/Converters) - see [the Tests for example usage](https://github.com/GeoJSON-Net/GeoJSON.Net/tree/master/src/GeoJSON.Net.Tests).
 
