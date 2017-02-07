@@ -1,4 +1,4 @@
-#GeoJSON.NET [![NuGet Version](http://img.shields.io/nuget/v/GeoJSON.NET.svg?style=flat)](https://www.nuget.org/packages/GeoJSON.NET/) [![Build status](https://ci.appveyor.com/api/projects/status/lfxlj13sa5vk0l3y)](https://ci.appveyor.com/project/jbattermann/geojson-net)
+#GeoJSON.NET [![NuGet Version](http://img.shields.io/nuget/v/GeoJSON.NET.svg?style=flat)](https://www.nuget.org/packages/GeoJSON.NET/) [![Build status](https://ci.appveyor.com/api/projects/status/i5afnui06gqco0wi)](https://ci.appveyor.com/project/GeojsonNet/geojson-net)
 
 GeoJSON.Net is a .NET library for the [GeoJSON v1.0 specificaton](http://geojson.org/geojson-spec.html) and it uses and provides [Newtonsoft Json.NET](http://json.codeplex.com) converters for serialization and deserialization of GeoJSON data.
 
