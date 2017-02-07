@@ -11,7 +11,6 @@ using System.Linq;
 using System.Runtime.Serialization;
 using GeoJSON.Net.Converters;
 using GeoJSON.Net.CoordinateReferenceSystem;
-using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System.Collections.Generic;
@@ -34,7 +33,7 @@ namespace GeoJSON.Net
 
         /// <summary>
         ///     Gets or sets the (optional)
-        ///     <see cref="http://geojson.org/geojson-spec.html#coordinate-reference-system-objects">Bounding Boxes</see>.
+        ///     <see cref="https://tools.ietf.org/html/rfc7946#section-5">Bounding Boxes</see>.
         /// </summary>
         /// <value>
         ///     The value of <see cref="BoundingBoxes" /> must be a 2*n array where n is the number of dimensions represented in
@@ -49,7 +48,7 @@ namespace GeoJSON.Net
 
         /// <summary>
         ///     Gets or sets the (optional)
-        ///     <see cref="http://geojson.org/geojson-spec.html#coordinate-reference-system-objects">
+        ///     <see cref="https://tools.ietf.org/html/rfc7946#section-4">
         ///         Coordinate Reference System
         ///         Object.
         ///     </see>
@@ -65,7 +64,7 @@ namespace GeoJSON.Net
 
         /// <summary>
         ///     Gets the (mandatory) type of the
-        ///     <see cref="http://geojson.org/geojson-spec.html#geojson-objects">GeoJSON Object</see>.
+        ///     <see cref="https://tools.ietf.org/html/rfc7946#section-3">GeoJSON Object</see>.
         /// </summary>
         /// <value>
         ///     The type of the object.

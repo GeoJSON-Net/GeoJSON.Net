@@ -3,7 +3,8 @@
 //   Copyright © Joerg Battermann 2014
 // </copyright>
 // <summary>
-//   Defines the <see cref="http://geojson.org/geojson-spec.html#named-crs">Linked CRS type</see>.
+// Defines the <see cref="http://geojson.org/geojson-spec.html#named-crs">Linked CRS type</see>.
+// The current spec <see cref="https://tools.ietf.org/html/rfc7946#section-4" removes the CRS type, but allows to be left in for backwards compatibility. 
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -21,24 +22,22 @@ namespace GeoJSON.Net.CoordinateReferenceSystem
         ///     Initializes a new instance of the <see cref="LinkedCRS" /> class.
         /// </summary>
         /// <param name="href">
-        ///     The mandatory <see cref="http://geojson.org/geojson-spec.html#linked-crs">href</see> member must be
-        ///     a dereferenceable URI.
+        ///     The mandatory href member must be a dereferenceable URI.
         /// </param>
         /// <param name="type">
-        ///     The optional type member will be put in the properties Dictionary as specified in the
-        ///     <see cref="http://geojson.org/geojson-spec.html#linked-crs">GeoJSON spec</see>.
+        ///     The optional type member will be put in the properties Dictionary
         /// </param>
         public LinkedCRS(string href, string type = "")
         {
             if (href == null)
             {
-                throw new ArgumentNullException("href");
+                throw new ArgumentNullException(nameof(href));
             }
 
             Uri uri;
             if (href.Length == 0 || !Uri.TryCreate(href, UriKind.RelativeOrAbsolute, out uri))
             {
-                throw new ArgumentException("must be a dereferenceable URI", "href");
+                throw new ArgumentException("must be a dereferenceable URI", nameof(href));
             }
 
             Properties = new Dictionary<string, object> { { "href", href } };
@@ -55,12 +54,10 @@ namespace GeoJSON.Net.CoordinateReferenceSystem
         ///     Initializes a new instance of the <see cref="LinkedCRS" /> class.
         /// </summary>
         /// <param name="href">
-        ///     The mandatory <see cref="http://geojson.org/geojson-spec.html#linked-crs">href</see> member must be
-        ///     a dereferenceable URI.
+        ///     The mandatory href member must be a dereferenceable URI.
         /// </param>
         /// <param name="type">
-        ///     The optional type member will be put in the properties Dictionary as specified in the
-        ///     <see cref="http://geojson.org/geojson-spec.html#linked-crs">GeoJSON spec</see>.
+        ///     The optional type member will be put in the properties Dictionary
         /// </param>
         public LinkedCRS(Uri href, string type = "") : this(href != null ? href.ToString() : null, type)
         {

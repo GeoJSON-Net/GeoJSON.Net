@@ -3,7 +3,7 @@
 //   Copyright © Joerg Battermann 2014
 // </copyright>
 // <summary>
-//   Defines the <see cref="http://geojson.org/geojson-spec.html#linestring">LineString</see> type.
+//   Defines the <see cref="https://tools.ietf.org/html/rfc7946#section-3.1.4">LineString</see> type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,11 +16,14 @@ using Newtonsoft.Json;
 namespace GeoJSON.Net.Geometry
 {
     /// <summary>
-    ///     Defines the <see cref="http://geojson.org/geojson-spec.html#linestring">LineString</see> type.
+    ///     Defines the <see cref="https://tools.ietf.org/html/rfc7946#section-3.1.4">LineString</see> type.
     /// </summary>
     [JsonObject(MemberSerialization.OptIn)]
     public class LineString : GeoJSONObject, IGeometryObject, IEqualityComparer<LineString>, IEquatable<LineString>
     {
+        /// <summary>
+        /// LineString
+        /// </summary>
         [JsonConstructor]
         protected internal LineString()
             : base()
@@ -36,7 +39,7 @@ namespace GeoJSON.Net.Geometry
         {
             if (coordinates == null)
             {
-                throw new ArgumentNullException("coordinates");
+                throw new ArgumentNullException(nameof(coordinates));
             }
 
             var coordsList = coordinates.ToList();
@@ -44,7 +47,7 @@ namespace GeoJSON.Net.Geometry
             if (coordsList.Count < 2)
             {
                 throw new ArgumentOutOfRangeException(
-                    "coordinates", 
+                    nameof(coordinates), 
                     "According to the GeoJSON v1.0 spec a LineString must have at least two or more positions.");
             }
 
@@ -84,7 +87,7 @@ namespace GeoJSON.Net.Geometry
 
         /// <summary>
         ///     Determines whether this LineString is a
-        ///     <see cref="http://geojson.org/geojson-spec.html#linestring">LinearRing</see>.
+        ///     <see cref="https://tools.ietf.org/html/rfc7946#section-3.1.1">LinearRing</see>.
         /// </summary>
         /// <returns>
         ///     <c>true</c> if it is a linear ring; otherwise, <c>false</c>.

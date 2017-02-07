@@ -15,8 +15,8 @@ using System.Linq;
 namespace GeoJSON.Net.Geometry
 {
     /// <summary>
-    ///     Defines the Geographic Position type a.k.a.
-    ///     <see cref="http://geojson.org/geojson-spec.html#positions">Geographic Coordinate Reference System</see>.
+    ///     Defines the Geographic Position type
+    ///     <see cref="https://tools.ietf.org/html/rfc7946#section-3.1.1">Position</see>.
     /// </summary>
     public class GeographicPosition : Position, IEqualityComparer<GeographicPosition>, IEquatable<GeographicPosition>
     {
@@ -140,10 +140,10 @@ namespace GeoJSON.Net.Geometry
         private double?[] Coordinates { get; set; }
         
         /// <summary>
-        ///     Returns a <see cref="System.String" /> that represents this instance.
+        ///     Returns a <see cref="string" /> that represents this instance.
         /// </summary>
         /// <returns>
-        ///     A <see cref="System.String" /> that represents this instance.
+        ///     A <see cref="string" /> that represents this instance.
         /// </returns>
         public override string ToString()
         {

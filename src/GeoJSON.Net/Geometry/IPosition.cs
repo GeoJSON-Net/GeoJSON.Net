@@ -1,7 +1,8 @@
-﻿using Newtonsoft.Json;
-namespace GeoJSON.Net.Geometry
+﻿namespace GeoJSON.Net.Geometry
 {
-    //[JsonArray]
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IPosition
     {
     }

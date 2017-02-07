@@ -3,7 +3,7 @@
 //   Copyright © Joerg Battermann 2014
 // </copyright>
 // <summary>
-//   Defines the <see cref="http://geojson.org/geojson-spec.html#geometry-collection">GeometryCollection</see> type.
+//   Defines the <see cref="https://tools.ietf.org/html/rfc7946#section-3.1.8">GeometryCollection</see> type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,7 +16,7 @@ using Newtonsoft.Json;
 namespace GeoJSON.Net.Geometry
 {
     /// <summary>
-    ///     Defines the <see cref="http://geojson.org/geojson-spec.html#geometry-collection">GeometryCollection</see> type.
+    ///     Defines the <see cref="https://tools.ietf.org/html/rfc7946#section-3.1.8">GeometryCollection</see> type.
     /// </summary>
     public class GeometryCollection : GeoJSONObject, IGeometryObject, IEqualityComparer<GeometryCollection>, IEquatable<GeometryCollection>
     {
@@ -36,7 +36,7 @@ namespace GeoJSON.Net.Geometry
         {
             if (geometries == null)
             {
-                throw new ArgumentNullException("geometries");
+                throw new ArgumentNullException(nameof(geometries));
             }
 
             Geometries = geometries;

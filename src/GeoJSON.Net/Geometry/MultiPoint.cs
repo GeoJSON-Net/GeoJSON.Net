@@ -18,7 +18,7 @@ namespace GeoJSON.Net.Geometry
     /// <summary>
     ///     Contains an array of <see cref="Point" />s.
     /// </summary>
-    /// <seealso cref="http://geojson.org/geojson-spec.html#multipoint" />
+    /// <seealso cref="https://tools.ietf.org/html/rfc7946#section-3.1.3" />
     public class MultiPoint : GeoJSONObject, IGeometryObject, IEqualityComparer<MultiPoint>, IEquatable<MultiPoint>
     {
         /// <summary>
@@ -28,8 +28,8 @@ namespace GeoJSON.Net.Geometry
         public MultiPoint(List<Point> coordinates = null)
             : base()
         {
-            this.Coordinates = coordinates ?? new List<Point>();
-            this.Type = GeoJSONObjectType.MultiPoint;
+            Coordinates = coordinates ?? new List<Point>();
+            Type = GeoJSONObjectType.MultiPoint;
         }
 
         /// <summary>

@@ -3,7 +3,7 @@
 //   Copyright © Joerg Battermann 2014
 // </copyright>
 // <summary>
-//   Defines the Projected Position type a.k.a. <see cref="http://geojson.org/geojson-spec.html#positions">Projected Coordinate Reference System</see>.
+//   Defines the Projected Position type a.k.a. <see cref="https://tools.ietf.org/html/rfc7946#section-3.1.1">Projected Coordinate Reference System</see>.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -13,7 +13,7 @@ namespace GeoJSON.Net.Geometry
     using System.Globalization;
 
     /// <summary>
-    /// Defines the Projected Position type a.k.a. <see cref="http://geojson.org/geojson-spec.html#positions">Projected Coordinate Reference System</see>.
+    /// Defines the Projected Position type a.k.a. <see cref="https://tools.ietf.org/html/rfc7946#section-3.1.1">Projected Coordinate Reference System</see>.
     /// </summary>
     public class ProjectedPosition : Position
     {
@@ -85,14 +85,16 @@ namespace GeoJSON.Net.Geometry
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// Returns a <see cref="string"/> that represents this instance.
         /// </summary>
         /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
+        /// A <see cref="string"/> that represents this instance.
         /// </returns>
         public override string ToString()
         {
-            return this.Altitude == null ? string.Format(CultureInfo.InvariantCulture, "Easting: {0}, Northing: {1}", this.Easting, this.Northing) : string.Format(CultureInfo.InvariantCulture, "Easting: {0}, Northing: {1}, Altitude: {2}", this.Easting, this.Northing, this.Altitude);
+            return Altitude == null 
+                ? string.Format(CultureInfo.InvariantCulture, "Easting: {0}, Northing: {1}", Easting, Northing) 
+                : string.Format(CultureInfo.InvariantCulture, "Easting: {0}, Northing: {1}, Altitude: {2}", Easting, Northing, Altitude);
         }
     }
 }

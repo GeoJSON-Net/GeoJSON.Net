@@ -18,7 +18,7 @@ using System;
 namespace GeoJSON.Net.Feature
 {
     /// <summary>
-    ///     A GeoJSON <see cref="http://geojson.org/geojson-spec.html#feature-objects">Feature Object</see>.
+    ///     A GeoJSON <see cref="https://tools.ietf.org/html/rfc7946#section-3.2">Feature Object</see>.
     /// </summary>
     public class Feature : GeoJSONObject, IEqualityComparer<Feature>, IEquatable<Feature>
     {
