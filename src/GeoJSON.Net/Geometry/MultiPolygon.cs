@@ -3,7 +3,7 @@
 //   Copyright © Joerg Battermann 2014
 // </copyright>
 // <summary>
-//   Defines the <see cref="http://geojson.org/geojson-spec.html#multipolygon">MultiPolygon</see> type.
+//   Defines the <see cref="https://tools.ietf.org/html/rfc7946#section-3.1.7">MultiPolygon</see> type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,10 +16,13 @@ using Newtonsoft.Json;
 namespace GeoJSON.Net.Geometry
 {
     /// <summary>
-    ///     Defines the <see cref="http://geojson.org/geojson-spec.html#multipolygon">MultiPolygon</see> type.
+    ///     Defines the <see cref="https://tools.ietf.org/html/rfc7946#section-3.1.7">MultiPolygon</see> type.
     /// </summary>
     public class MultiPolygon : GeoJSONObject, IGeometryObject, IEqualityComparer<MultiPolygon>, IEquatable<MultiPolygon>
     {
+        /// <summary>
+        /// MultiPolygon
+        /// </summary>
         public MultiPolygon() : this(new List<Polygon>())
         {
         }
@@ -33,7 +36,7 @@ namespace GeoJSON.Net.Geometry
         {
             if (polygons == null)
             {
-                throw new ArgumentNullException("polygons");
+                throw new ArgumentNullException(nameof(polygons));
             }
 
             Coordinates = polygons;

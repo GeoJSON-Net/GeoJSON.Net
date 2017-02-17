@@ -136,7 +136,7 @@ namespace GeoJSON.Net.CoordinateReferenceSystem
                     }
                     else
                     {
-                        toString = $"{item.Key}:{item.Value.ToString()}";
+                        toString = $"{item.Key}:{item.Value}";
                     }
                     hashCode = (hashCode * 397) ^ toString.GetHashCode();
                 }
