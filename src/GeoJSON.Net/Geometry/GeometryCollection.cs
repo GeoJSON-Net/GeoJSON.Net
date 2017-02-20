@@ -3,7 +3,8 @@
 //   Copyright © Joerg Battermann 2014
 // </copyright>
 // <summary>
-//   Defines the <see cref="https://tools.ietf.org/html/rfc7946#section-3.1.8">GeometryCollection</see> type.
+//   Defines the GeometryCollection type.
+//   See https://tools.ietf.org/html/rfc7946#section-3.1.8
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,23 +17,25 @@ using Newtonsoft.Json;
 namespace GeoJSON.Net.Geometry
 {
     /// <summary>
-    ///     Defines the <see cref="https://tools.ietf.org/html/rfc7946#section-3.1.8">GeometryCollection</see> type.
+    /// Defines the GeometryCollection type.
     /// </summary>
+    /// <remarks>
+    /// See https://tools.ietf.org/html/rfc7946#section-3.1.8
+    /// </remarks>
     public class GeometryCollection : GeoJSONObject, IGeometryObject, IEqualityComparer<GeometryCollection>, IEquatable<GeometryCollection>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="GeometryCollection" /> class.
+        /// Initializes a new instance of the <see cref="GeometryCollection" /> class.
         /// </summary>
         public GeometryCollection() : this(new List<IGeometryObject>())
         {
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="GeometryCollection" /> class.
+        /// Initializes a new instance of the <see cref="GeometryCollection" /> class.
         /// </summary>
         /// <param name="geometries">The geometries contained in this GeometryCollection.</param>
         public GeometryCollection(List<IGeometryObject> geometries)
-            : base()
         {
             if (geometries == null)
             {
@@ -44,7 +47,7 @@ namespace GeoJSON.Net.Geometry
         }
 
         /// <summary>
-        ///     Gets the list of Polygons enclosed in this MultiPolygon.
+        /// Gets the list of Polygons enclosed in this MultiPolygon.
         /// </summary>
         [JsonProperty(PropertyName = "geometries", Required = Required.Always)]
         [JsonConverter(typeof(GeometryConverter))]
@@ -93,7 +96,7 @@ namespace GeoJSON.Net.Geometry
             {
                 return false;
             }
-            return left.Equals(right);
+            return left != null && left.Equals(right);
         }
 
         /// <summary>

@@ -3,60 +3,87 @@
 //   Copyright © Joerg Battermann 2014
 // </copyright>
 // <summary>
-//   Defines the GeoJSON Objects types as defined in the <see cref="https://tools.ietf.org/html/rfc7946#section-3">RFC 7946</see>.
+//   Defines the GeoJSON Objects types as defined in RFC 7946 https://tools.ietf.org/html/rfc7946#section-3
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace GeoJSON.Net
 {
     /// <summary>
-    /// Defines the GeoJSON Objects types as defined in the <see cref="https://tools.ietf.org/html/rfc7946#section-3">RFC 7946</see>.
+    /// Defines the GeoJSON Objects types.
     /// </summary>
     public enum GeoJSONObjectType
     {
         /// <summary>
-        /// Defines the <see cref="https://tools.ietf.org/html/rfc7946#section-3.1.2">Point</see> type.
+        /// Defines the Point type.
         /// </summary>
+        /// <remarks>
+        /// See https://tools.ietf.org/html/rfc7946#section-3.1.2
+        /// </remarks>
         Point,
 
         /// <summary>
-        /// Defines the <see cref="https://tools.ietf.org/html/rfc7946#section-3.1.3">MultiPoint</see> type.
+        /// Defines the MultiPoint type.
         /// </summary>
+        /// <remarks>
+        /// See https://tools.ietf.org/html/rfc7946#section-3.1.3
+        /// </remarks>
         MultiPoint,
 
         /// <summary>
-        /// Defines the <see cref="https://tools.ietf.org/html/rfc7946#section-3.1.4">LineString</see> type.
+        /// Defines the LineString type.
         /// </summary>
+        /// <remarks>
+        /// See https://tools.ietf.org/html/rfc7946#section-3.1.4
+        /// </remarks>
         LineString,
 
         /// <summary>
-        /// Defines the <see chref="https://tools.ietf.org/html/rfc7946#section-3.1.5">MultiLineString</see> type.
+        /// Defines the MultiLineString type.
         /// </summary>
+        /// <remarks>
+        /// See https://tools.ietf.org/html/rfc7946#section-3.1.5
+        /// </remarks>
         MultiLineString,
 
         /// <summary>
-        /// Defines the <see cref="https://tools.ietf.org/html/rfc7946#section-3.1.6">Polygon</see> type.
+        /// Defines the Polygon type.
         /// </summary>
+        /// <remarks>
+        /// See https://tools.ietf.org/html/rfc7946#section-3.1.6
+        /// </remarks> 
         Polygon,
 
         /// <summary>
-        /// Defines the <see cref="https://tools.ietf.org/html/rfc7946#section-3.1.7">MultiPolygon</see> type.
+        /// Defines the MultiPolygon type.
         /// </summary>
+        /// <remarks>
+        /// See https://tools.ietf.org/html/rfc7946#section-3.1.7
+        /// </remarks>
         MultiPolygon,
 
         /// <summary>
-        /// Defines the <see cref="https://tools.ietf.org/html/rfc7946#section-3.1.8">GeometryCollection</see> type.
+        /// Defines the GeometryCollection type.
         /// </summary>
+        /// <remarks>
+        /// See https://tools.ietf.org/html/rfc7946#section-3.1.8
+        /// </remarks>
         GeometryCollection,
 
         /// <summary>
-        /// Defines the <see cref="https://tools.ietf.org/html/rfc7946#section-3.2">Feature</see> type.
+        /// Defines the Feature type.
         /// </summary>
+        /// <remarks>
+        /// See https://tools.ietf.org/html/rfc7946#section-3.2
+        /// </remarks>
         Feature,
 
         /// <summary>
-        /// Defines the <see cref="https://tools.ietf.org/html/rfc7946#section-3.3">FeatureCollection</see> type.
+        /// Defines the FeatureCollection type.
         /// </summary>
+        /// <remarks>
+        /// See https://tools.ietf.org/html/rfc7946#section-3.3
+        /// </remarks>
         FeatureCollection
     }
 }

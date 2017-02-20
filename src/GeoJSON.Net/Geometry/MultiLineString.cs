@@ -2,9 +2,6 @@
 // <copyright file="MultiLineString.cs" company="Joerg Battermann">
 //   Copyright © Joerg Battermann 2014
 // </copyright>
-// <summary>
-//   Defines the <see cref="https://tools.ietf.org/html/rfc7946#section-3.1.5">MultiLineString</see> type.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
@@ -15,24 +12,27 @@ using System;
 
 namespace GeoJSON.Net.Geometry
 {
+    
     /// <summary>
-    ///     Defines the <see cref="https://tools.ietf.org/html/rfc7946#section-3.1.5">MultiLineString</see> type.
+    /// Defines the MultiLineString type.
     /// </summary>
+    /// <remarks>
+    /// See https://tools.ietf.org/html/rfc7946#section-3.1.5
+    /// </remarks>
     public class MultiLineString : GeoJSONObject, IGeometryObject, IEqualityComparer<MultiLineString>, IEquatable<MultiLineString>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="MultiLineString" /> class.
+        /// Initializes a new instance of the <see cref="MultiLineString" /> class.
         /// </summary>
         /// <param name="coordinates">The coordinates.</param>
         public MultiLineString(List<LineString> coordinates)
-            : base()
         {
             Coordinates = coordinates ?? new List<LineString>();
             Type = GeoJSONObjectType.MultiLineString;
         }
 
         /// <summary>
-        ///     Gets the Coordinates.
+        /// Gets the Coordinates.
         /// </summary>
         /// <value>The Coordinates.</value>
         [JsonProperty(PropertyName = "coordinates", Required = Required.Always)]
@@ -82,7 +82,7 @@ namespace GeoJSON.Net.Geometry
             {
                 return false;
             }
-            return left.Equals(right);
+            return left != null && left.Equals(right);
         }
 
         /// <summary>

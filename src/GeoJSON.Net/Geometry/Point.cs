@@ -2,10 +2,7 @@
 // <copyright file="Point.cs" company="Joerg Battermann">
 //   Copyright © Joerg Battermann 2014
 // </copyright>
-// <summary>
-//   Defines the Point type.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------
 
 using System;
 using GeoJSON.Net.Converters;
@@ -15,19 +12,21 @@ using System.Collections.Generic;
 namespace GeoJSON.Net.Geometry
 {
     /// <summary>
-    ///     In geography, a point refers to a Position on a map, expressed in latitude and longitude.
+    /// Defines the Point type.
+    /// In geography, a point refers to a Position on a map, expressed in latitude and longitude.
     /// </summary>
-    /// <seealso cref="https://tools.ietf.org/html/rfc7946#section-3.1.2" />
+    /// <remarks>
+    /// See https://tools.ietf.org/html/rfc7946#section-3.1.2
+    /// </remarks>
     public class Point : GeoJSONObject, IGeometryObject, IEqualityComparer<Point>, IEquatable<Point>
     {
         [JsonConstructor]
         private Point()
-                : base()
         {
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="Point" /> class.
+        /// Initializes a new instance of the <see cref="Point" /> class.
         /// </summary>
         /// <param name="coordinates">The Position.</param>
         public Point(IPosition coordinates)
@@ -43,7 +42,7 @@ namespace GeoJSON.Net.Geometry
         }
 
         /// <summary>
-        ///     Gets or sets the Coordinate(s).
+        /// Gets or sets the Coordinate(s).
         /// </summary>
         /// <value>The Coordinates.</value>
         [JsonProperty(PropertyName = "coordinates", Required = Required.Always)]

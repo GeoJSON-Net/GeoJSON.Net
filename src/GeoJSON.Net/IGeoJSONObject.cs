@@ -15,24 +15,33 @@ namespace GeoJSON.Net
     public interface IGeoJSONObject
     {
         /// <summary>
-        /// Gets the (mandatory) type of the <see cref="https://tools.ietf.org/html/rfc7946#section-3">GeoJSON Object</see>.
+        /// Gets the (mandatory) type of the GeoJSON Object.
         /// </summary>
+        /// <remarks>
+        /// See https://tools.ietf.org/html/rfc7946#section-3
+        /// </remarks>
         /// <value>
         /// The type of the object.
         /// </value>
         GeoJSONObjectType Type { get; }
 
         /// <summary>
-        /// Gets the (optional) <see cref="https://tools.ietf.org/html/rfc7946#section-4">Coordinate Reference System Object</see>.
+        /// Gets the (optional) Coordinate Reference System Object.
         /// </summary>
+        /// <remarks>
+        /// See https://tools.ietf.org/html/rfc7946#section-4
+        /// </remarks>
         /// <value>
         /// The Coordinate Reference System Objects.
         /// </value>
         CoordinateReferenceSystem.ICRSObject CRS { get; }
 
         /// <summary>
-        /// Gets or sets the (optional) <see cref="https://tools.ietf.org/html/rfc7946#section-5">Bounding Boxes</see>.
+        /// Gets or sets the (optional) Bounding Boxes.
         /// </summary>
+        /// <remarks>
+        /// See https://tools.ietf.org/html/rfc7946#section-5
+        /// </remarks>
         /// <value>
         /// The value of the bbox member must be a 2*n array where n is the number of dimensions represented in the
         /// contained geometries, with the lowest values for all axes followed by the highest values.

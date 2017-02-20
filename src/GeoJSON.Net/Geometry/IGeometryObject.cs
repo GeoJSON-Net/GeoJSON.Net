@@ -2,9 +2,6 @@
 // <copyright file="IGeometryObject.cs" company="Joerg Battermann">
 //   Copyright © Joerg Battermann 2014
 // </copyright>
-// <summary>
-//   Defines the IGeometryObject type.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace GeoJSON.Net.Geometry
@@ -15,10 +12,13 @@ namespace GeoJSON.Net.Geometry
     public interface IGeometryObject
     {
         /// <summary>
-        /// Gets the (mandatory) type of the <see cref="https://tools.ietf.org/html/rfc7946#section-3.1">GeoJSON Object</see>.
-        /// However, for <see cref="https://tools.ietf.org/html/rfc7946#section-3.1">GeoJSON Objects</see> only
-        /// the 'Point', 'MultiPoint', 'LineString', 'MultiLineString', 'Polygon', 'MultiPolygon', or 'GeometryCollection' types are allowed.
+        /// Gets the (mandatory) type of the GeoJSON Object.
+        /// However, for GeoJSON Objects only the 'Point', 'MultiPoint', 'LineString', 'MultiLineString', 
+        /// 'Polygon', 'MultiPolygon', or 'GeometryCollection' types are allowed.
         /// </summary>
+        /// <remarks>
+        /// See https://tools.ietf.org/html/rfc7946#section-3.1
+        /// </remarks>
         /// <value>
         /// The type of the object.
         /// </value>

@@ -2,9 +2,6 @@
 // <copyright file="MultiPolygon.cs" company="Joerg Battermann">
 //   Copyright © Joerg Battermann 2014
 // </copyright>
-// <summary>
-//   Defines the <see cref="https://tools.ietf.org/html/rfc7946#section-3.1.7">MultiPolygon</see> type.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -16,8 +13,11 @@ using Newtonsoft.Json;
 namespace GeoJSON.Net.Geometry
 {
     /// <summary>
-    ///     Defines the <see cref="https://tools.ietf.org/html/rfc7946#section-3.1.7">MultiPolygon</see> type.
+    /// Defines the MultiPolygon type.
     /// </summary>
+    /// <remarks>
+    /// See https://tools.ietf.org/html/rfc7946#section-3.1.7
+    /// </remarks>
     public class MultiPolygon : GeoJSONObject, IGeometryObject, IEqualityComparer<MultiPolygon>, IEquatable<MultiPolygon>
     {
         /// <summary>
@@ -28,11 +28,10 @@ namespace GeoJSON.Net.Geometry
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="MultiPolygon" /> class.
+        /// Initializes a new instance of the <see cref="MultiPolygon" /> class.
         /// </summary>
         /// <param name="polygons">The polygons contained in this MultiPolygon.</param>
         public MultiPolygon(List<Polygon> polygons)
-            : base()
         {
             if (polygons == null)
             {
@@ -44,7 +43,7 @@ namespace GeoJSON.Net.Geometry
         }
 
         /// <summary>
-        ///     Gets the list of Polygons enclosed in this MultiPolygon.
+        /// Gets the list of Polygons enclosed in this MultiPolygon.
         /// </summary>
         [JsonProperty(PropertyName = "coordinates", Required = Required.Always)]
         [JsonConverter(typeof(MultiPolygonConverter))]
@@ -93,7 +92,7 @@ namespace GeoJSON.Net.Geometry
             {
                 return false;
             }
-            return left.Equals(right);
+            return left != null && left.Equals(right);
         }
 
         /// <summary>

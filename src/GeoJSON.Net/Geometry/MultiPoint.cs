@@ -2,9 +2,6 @@
 // <copyright file="MultiPoint.cs" company="Joerg Battermann">
 //   Copyright © Joerg Battermann 2014
 // </copyright>
-// <summary>
-//   Defines the MultiPoint type.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
@@ -16,24 +13,25 @@ using System;
 namespace GeoJSON.Net.Geometry
 {
     /// <summary>
-    ///     Contains an array of <see cref="Point" />s.
+    /// Contains an array of <see cref="Point" />.
     /// </summary>
-    /// <seealso cref="https://tools.ietf.org/html/rfc7946#section-3.1.3" />
+    /// <remarks>
+    /// See https://tools.ietf.org/html/rfc7946#section-3.1.3
+    /// </remarks>
     public class MultiPoint : GeoJSONObject, IGeometryObject, IEqualityComparer<MultiPoint>, IEquatable<MultiPoint>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="MultiPoint" /> class.
+        /// Initializes a new instance of the <see cref="MultiPoint" /> class.
         /// </summary>
         /// <param name="coordinates">The coordinates.</param>
         public MultiPoint(List<Point> coordinates = null)
-            : base()
         {
             Coordinates = coordinates ?? new List<Point>();
             Type = GeoJSONObjectType.MultiPoint;
         }
 
         /// <summary>
-        ///     Gets the Coordinates.
+        /// Gets the Coordinates.
         /// </summary>
         /// <value>The Coordinates.</value>
         [JsonProperty(PropertyName = "coordinates", Required = Required.Always)]
@@ -83,7 +81,7 @@ namespace GeoJSON.Net.Geometry
             {
                 return false;
             }
-            return left.Equals(right);
+            return left != null && left.Equals(right);
         }
 
         /// <summary>

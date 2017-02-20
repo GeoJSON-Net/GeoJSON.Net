@@ -2,9 +2,6 @@
 // <copyright file="Polygon.cs" company="Joerg Battermann">
 //   Copyright © Joerg Battermann 2014
 // </copyright>
-// <summary>
-//   Defines the <see cref="https://tools.ietf.org/html/rfc7946#section-3.1.6">Polygon</see> type.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -16,11 +13,13 @@ using Newtonsoft.Json;
 namespace GeoJSON.Net.Geometry
 {
     /// <summary>
-    /// Defines the <see cref="https://tools.ietf.org/html/rfc7946#section-3.1.6">Polygon</see> type.
+    /// Defines the Polygon type.
     /// Coordinates of a Polygon are a list of linear rings coordinate arrays. The first element in 
     /// the array represents the exterior ring. Any subsequent elements represent interior rings (or holes).
     /// </summary>
-    /// <seealso cref="https://tools.ietf.org/html/rfc7946#section-3.1.6" />
+    /// <remarks>
+    /// See https://tools.ietf.org/html/rfc7946#section-3.1.6
+    /// </remarks>
     public class Polygon : GeoJSONObject, IGeometryObject, IEqualityComparer<Polygon>, IEquatable<Polygon>
     {
         /// <summary>
@@ -48,7 +47,7 @@ namespace GeoJSON.Net.Geometry
         }
 
         /// <summary>
-        ///     Gets the list of points outlining this Polygon.
+        /// Gets the list of points outlining this Polygon.
         /// </summary>
         [JsonProperty(PropertyName = "coordinates", Required = Required.Always)]
         [JsonConverter(typeof(PolygonConverter))]
@@ -97,7 +96,7 @@ namespace GeoJSON.Net.Geometry
             {
                 return false;
             }
-            return left.Equals(right);
+            return left != null && left.Equals(right);
         }
 
         /// <summary>
