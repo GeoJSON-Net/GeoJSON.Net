@@ -2,10 +2,6 @@
 // <copyright file="LinkedCRS.cs" company="Joerg Battermann">
 //   Copyright © Joerg Battermann 2014
 // </copyright>
-// <summary>
-// Defines the <see cref="http://geojson.org/geojson-spec.html#named-crs">Linked CRS type</see>.
-// The current spec <see cref="https://tools.ietf.org/html/rfc7946#section-4" removes the CRS type, but allows to be left in for backwards compatibility. 
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -14,18 +10,23 @@ using System.Collections.Generic;
 namespace GeoJSON.Net.CoordinateReferenceSystem
 {
     /// <summary>
-    ///     Defines the <see cref="http://geojson.org/geojson-spec.html#linked-crs">Linked CRS type</see>.
+    /// Defines the Linked CRS type.
     /// </summary>
+    /// <remarks>
+    /// This was originally defined in the spec http://geojson.org/geojson-spec.html#named-crs
+    /// The current RFC removes the CRS type, but allows to be left in for backwards compatibility. 
+    /// See https://tools.ietf.org/html/rfc7946#section-4
+    /// </remarks>
     public class LinkedCRS : CRSBase, ICRSObject
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="LinkedCRS" /> class.
+        /// Initializes a new instance of the <see cref="LinkedCRS" /> class.
         /// </summary>
         /// <param name="href">
-        ///     The mandatory href member must be a dereferenceable URI.
+        /// The mandatory href member must be a dereferenceable URI.
         /// </param>
         /// <param name="type">
-        ///     The optional type member will be put in the properties Dictionary
+        /// The optional type member will be put in the properties Dictionary
         /// </param>
         public LinkedCRS(string href, string type = "")
         {
@@ -51,13 +52,13 @@ namespace GeoJSON.Net.CoordinateReferenceSystem
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="LinkedCRS" /> class.
+        /// Initializes a new instance of the <see cref="LinkedCRS" /> class.
         /// </summary>
         /// <param name="href">
-        ///     The mandatory href member must be a dereferenceable URI.
+        /// The mandatory href member must be a dereferenceable URI.
         /// </param>
         /// <param name="type">
-        ///     The optional type member will be put in the properties Dictionary
+        /// The optional type member will be put in the properties Dictionary
         /// </param>
         public LinkedCRS(Uri href, string type = "") : this(href != null ? href.ToString() : null, type)
         {

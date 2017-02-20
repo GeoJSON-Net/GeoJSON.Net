@@ -54,7 +54,7 @@
             {
                 return false;
             }
-            return left.Equals(right);
+            return left != null && left.Equals(right);
         }
 
         /// <summary>

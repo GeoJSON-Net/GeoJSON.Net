@@ -2,9 +2,6 @@
 // <copyright file="ParsingException.cs" company="Joerg Battermann">
 //   Copyright © Joerg Battermann 2014
 // </copyright>
-// <summary>
-//   Defines the ParsingException type.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace GeoJSON.Net.Exceptions

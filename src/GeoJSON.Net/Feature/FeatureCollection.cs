@@ -2,9 +2,6 @@
 // <copyright file="FeatureCollection.cs" company="Joerg Battermann">
 //   Copyright © Joerg Battermann 2014
 // </copyright>
-// <summary>
-//   Defines the FeatureCollection type.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -15,26 +12,26 @@ using System.Linq;
 namespace GeoJSON.Net.Feature
 {
     /// <summary>
-    ///     Defines the FeatureCollection type.
+    /// Defines the FeatureCollection type.
     /// </summary>
     public class FeatureCollection : GeoJSONObject, IEqualityComparer<FeatureCollection>, IEquatable<FeatureCollection>
     {
         /// <summary>
-        ///     Initializes a new instance of the <see cref="FeatureCollection" /> class.
+        /// Initializes a new instance of the <see cref="FeatureCollection" /> class.
         /// </summary>
         public FeatureCollection() : this(new List<Feature>())
         {
         }
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="FeatureCollection" /> class.
+        /// Initializes a new instance of the <see cref="FeatureCollection" /> class.
         /// </summary>
         /// <param name="features">The features.</param>
         public FeatureCollection(List<Feature> features)
         {
             if (features == null)
             {
-                throw new ArgumentNullException("features");
+                throw new ArgumentNullException(nameof(features));
             }
 
             Features = features;
@@ -42,7 +39,7 @@ namespace GeoJSON.Net.Feature
         }
 
         /// <summary>
-        ///     Gets the features.
+        /// Gets the features.
         /// </summary>
         /// <value>The features.</value>
         [JsonProperty(PropertyName = "features", Required = Required.Always)]
@@ -91,7 +88,7 @@ namespace GeoJSON.Net.Feature
             {
                 return false;
             }
-            return left.Equals(right);
+            return left != null && left.Equals(right);
         }
 
         /// <summary>
@@ -124,6 +121,5 @@ namespace GeoJSON.Net.Feature
         }
 
         #endregion
-
     }
 }
