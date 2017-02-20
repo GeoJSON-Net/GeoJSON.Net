@@ -2,9 +2,6 @@
 // <copyright file="PolygonConverter.cs" company="Joerg Battermann">
 //   Copyright © Joerg Battermann 2014
 // </copyright>
-// <summary>
-//   Defines the LineString type.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
@@ -16,7 +13,7 @@ using Newtonsoft.Json.Linq;
 namespace GeoJSON.Net.Converters
 {
     /// <summary>
-    ///     Converter to read and write the <see cref="LineString" /> type.
+    /// Converter to read and write the <see cref="LineString" /> type.
     /// </summary>
     public class LineStringConverter : JsonConverter
     {

@@ -2,9 +2,6 @@
 // <copyright file="GeometryConverter.cs" company="Joerg Battermann">
 //   Copyright © Joerg Battermann 2014
 // </copyright>
-// <summary>
-//   Defines the GeometryConverter type.
-// </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;

@@ -8,10 +8,11 @@ using Newtonsoft.Json;
 namespace GeoJSON.Net.Converters
 {
     /// <summary>
-    /// 
+    /// Converter to read and write the <see cref="MultiPoint" /> type.
     /// </summary>
     public class MultiPointConverter : JsonConverter
     {
+        /// <inheritdoc />
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             var points = (List<Point>)value;
@@ -31,6 +32,7 @@ namespace GeoJSON.Net.Converters
             }
         }
 
+        /// <inheritdoc />
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var coordinates = serializer.Deserialize<double[][]>(reader);
@@ -59,6 +61,7 @@ namespace GeoJSON.Net.Converters
             }
         }
 
+        /// <inheritdoc />
         public override bool CanConvert(Type objectType)
         {
             return objectType == typeof(MultiPoint);
