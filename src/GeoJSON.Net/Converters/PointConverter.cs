@@ -25,7 +25,7 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-            return typeof(GeographicPosition).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
+            return typeof(Position).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace GeoJSON.Net.Converters
                 altitude = coordinates[2];
             }
 
-            return new GeographicPosition(latitude, longitude, altitude);
+            return new Position(latitude, longitude, altitude);
         }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace GeoJSON.Net.Converters
         /// <param name="serializer">The calling serializer.</param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            var coordinates = value as GeographicPosition;
+            var coordinates = value as Position;
             if (coordinates != null)
             {
                 writer.WriteStartArray();

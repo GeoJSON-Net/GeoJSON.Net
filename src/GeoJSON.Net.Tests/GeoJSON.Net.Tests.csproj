@@ -53,6 +53,8 @@
     <Compile Include="CoordinateReferenceSystem\UnspecifiedCRSTests.cs" />
     <Compile Include="Feature\FeatureCollectionTests.cs" />
     <Compile Include="Feature\FeatureTests.cs" />
+    <Compile Include="Feature\TestFeatureEnum.cs" />
+    <Compile Include="Feature\TestFeatureProperty.cs" />
     <Compile Include="Geometry\GeometryTests.cs" />
     <Compile Include="Geometry\LineStringTests.cs" />
     <Compile Include="Geometry\MultiLineStringTests.cs" />
