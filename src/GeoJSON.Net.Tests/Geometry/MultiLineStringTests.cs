@@ -17,15 +17,15 @@ namespace GeoJSON.Net.Tests.Geometry
             {
                 new LineString(new List<IPosition>
                 {
-                    new GeographicPosition(52.379790828551016, 5.3173828125),
-                    new GeographicPosition(52.36721467920585, 5.456085205078125),
-                    new GeographicPosition(52.303440474272755, 5.386047363281249, 4.23)
+                    new Position(52.379790828551016, 5.3173828125),
+                    new Position(52.36721467920585, 5.456085205078125),
+                    new Position(52.303440474272755, 5.386047363281249, 4.23)
                 }),
                 new LineString(new List<IPosition>
                 {
-                    new GeographicPosition(52.379790828551016, 5.3273828125),
-                    new GeographicPosition(52.36721467920585, 5.486085205078125),
-                    new GeographicPosition(52.303440474272755, 5.426047363281249, 4.23)
+                    new Position(52.379790828551016, 5.3273828125),
+                    new Position(52.36721467920585, 5.486085205078125),
+                    new Position(52.303440474272755, 5.426047363281249, 4.23)
                 })
             });
 
@@ -42,15 +42,15 @@ namespace GeoJSON.Net.Tests.Geometry
             {
                 new LineString(new List<IPosition>
                 {
-                    new GeographicPosition(52.379790828551016, 5.3173828125),
-                    new GeographicPosition(52.36721467920585, 5.456085205078125),
-                    new GeographicPosition(52.303440474272755, 5.386047363281249, 4.23)
+                    new Position(52.379790828551016, 5.3173828125),
+                    new Position(52.36721467920585, 5.456085205078125),
+                    new Position(52.303440474272755, 5.386047363281249, 4.23)
                 }),
                 new LineString(new List<IPosition>
                 {
-                    new GeographicPosition(52.379790828551016, 5.3273828125),
-                    new GeographicPosition(52.36721467920585, 5.486085205078125),
-                    new GeographicPosition(52.303440474272755, 5.426047363281249, 4.23)
+                    new Position(52.379790828551016, 5.3273828125),
+                    new Position(52.36721467920585, 5.486085205078125),
+                    new Position(52.303440474272755, 5.426047363281249, 4.23)
                 })
             });
 
@@ -64,9 +64,9 @@ namespace GeoJSON.Net.Tests.Geometry
         {
             var coordinates = new List<IPosition>
             {
-                new GeographicPosition(52.379790828551016 + offset, 5.3173828125 + offset),
-                new GeographicPosition(52.36721467920585 + offset, 5.456085205078125 + offset),
-                new GeographicPosition(52.303440474272755 + offset, 5.386047363281249 + offset, 4.23 + offset)
+                new Position(52.379790828551016 + offset, 5.3173828125 + offset),
+                new Position(52.36721467920585 + offset, 5.456085205078125 + offset),
+                new Position(52.303440474272755 + offset, 5.386047363281249 + offset, 4.23 + offset)
             };
             var lineString = new LineString(coordinates);
             return lineString;
@@ -82,15 +82,19 @@ namespace GeoJSON.Net.Tests.Geometry
                 offset *= -1;
             }
 
-            var leftLine = new List<LineString>();
-            leftLine.Add(GetLineString(offset + 1));
-            leftLine.Add(GetLineString(offset + 2));
+            var leftLine = new List<LineString>
+            {
+                GetLineString(offset + 1),
+                GetLineString(offset + 2)
+            };
 
             var left = new MultiLineString(leftLine);
 
-            var rightLine = new List<LineString>();
-            rightLine.Add(GetLineString(offset + 1));
-            rightLine.Add(GetLineString(offset + 2));
+            var rightLine = new List<LineString>
+            {
+                GetLineString(offset + 1),
+                GetLineString(offset + 2)
+            };
 
             var right = new MultiLineString(rightLine);
 

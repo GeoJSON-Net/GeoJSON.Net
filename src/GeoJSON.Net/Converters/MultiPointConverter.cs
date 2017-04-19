@@ -16,7 +16,6 @@ namespace GeoJSON.Net.Converters
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
             var points = (List<Point>)value;
-
             if (points.Any())
             {
                 var converter = new PointConverter();
@@ -50,7 +49,7 @@ namespace GeoJSON.Net.Converters
                         altitude = coordinate[2];
                     }
 
-                    positions.Add(new Point(new GeographicPosition(latitude, longitude, altitude)));
+                    positions.Add(new Point(new Position(latitude, longitude, altitude)));
                 }
 
                 return positions;

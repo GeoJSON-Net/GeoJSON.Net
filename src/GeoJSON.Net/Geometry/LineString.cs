@@ -69,11 +69,11 @@ namespace GeoJSON.Net.Geometry
         /// </returns>
         public bool IsClosed()
         {
-            var firstCoordinate = Coordinates[0] as GeographicPosition;
+            var firstCoordinate = Coordinates[0] as Position;
 
             if (firstCoordinate != null)
             {
-                var lastCoordinate = Coordinates[Coordinates.Count - 1] as GeographicPosition;
+                var lastCoordinate = Coordinates[Coordinates.Count - 1] as Position;
                
                 return firstCoordinate.Latitude == lastCoordinate.Latitude
                        && firstCoordinate.Longitude == lastCoordinate.Longitude

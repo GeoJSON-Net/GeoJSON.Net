@@ -14,7 +14,10 @@ namespace GeoJSON.Net.Tests.Feature
         [Test]
         public void Ctor_Throws_ArgumentNullException_When_Features_Is_Null()
         {
-            Assert.Throws<ArgumentNullException>(() => { var collection = new FeatureCollection(null); });
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                var featureCollection = new FeatureCollection(null);
+            });
         }
 
         [Test]
@@ -39,8 +42,8 @@ namespace GeoJSON.Net.Tests.Feature
             {
                 var geom = new LineString(new[]
                 {
-                    new GeographicPosition(51.010, -1.034),
-                    new GeographicPosition(51.010, -0.034)
+                    new Position(51.010, -1.034),
+                    new Position(51.010, -0.034)
                 });
 
                 var props = new Dictionary<string, object>
@@ -59,45 +62,7 @@ namespace GeoJSON.Net.Tests.Feature
 
             Assert.IsFalse(string.IsNullOrEmpty(actualJson));
         }
-
-        private FeatureCollection GetFeatureCollection()
-        {
-            var model = new FeatureCollection();
-            for (var i = 10; i-- > 0;)
-            {
-                var geom = new LineString(new[]
-                {
-                    new GeographicPosition(51.010, -1.034),
-                    new GeographicPosition(51.010, -0.034)
-                });
-
-                var props = FeatureTests.GetPropertiesInRandomOrder();
-
-                var feature = new Net.Feature.Feature(geom, props);
-                model.Features.Add(feature);
-            }
-            return model;
-        }
-
-        private void Assert_Are_Equal(FeatureCollection left, FeatureCollection right)
-        {
-            Assert.AreEqual(left, right);
-
-            Assert.IsTrue(left.Equals(right));
-            Assert.IsTrue(right.Equals(left));
-
-            Assert.IsTrue(left.Equals(left));
-            Assert.IsTrue(right.Equals(right));
-
-            Assert.IsTrue(left == right);
-            Assert.IsTrue(right == left);
-
-            Assert.IsFalse(left != right);
-            Assert.IsFalse(right != left);
-
-            Assert.AreEqual(left.GetHashCode(), right.GetHashCode());
-        }
-
+        
         [Test]
         public void FeatureCollection_Equals_GetHashCode_Contract()
         {
@@ -130,15 +95,15 @@ namespace GeoJSON.Net.Tests.Feature
 
             for (var i = 0; i < 10; i++)
             {
-                var id = "id" + i.ToString();
+                var id = "id" + i;
 
                 expectedIds.Add(id);
                 expectedIndexes.Add(i);
 
                 var geom = new LineString(new[]
                 {
-                    new GeographicPosition(51.010, -1.034),
-                    new GeographicPosition(51.010, -0.034)
+                    new Position(51.010, -1.034),
+                    new Position(51.010, -0.034)
                 });
 
                 var props = FeatureTests.GetPropertiesInRandomOrder();
@@ -167,5 +132,43 @@ namespace GeoJSON.Net.Tests.Feature
 
         }
 
+
+        private FeatureCollection GetFeatureCollection()
+        {
+            var model = new FeatureCollection();
+            for (var i = 10; i-- > 0;)
+            {
+                var geom = new LineString(new[]
+                {
+                    new Position(51.010, -1.034),
+                    new Position(51.010, -0.034)
+                });
+
+                var props = FeatureTests.GetPropertiesInRandomOrder();
+
+                var feature = new Net.Feature.Feature(geom, props);
+                model.Features.Add(feature);
+            }
+            return model;
+        }
+
+        private void Assert_Are_Equal(FeatureCollection left, FeatureCollection right)
+        {
+            Assert.AreEqual(left, right);
+
+            Assert.IsTrue(left.Equals(right));
+            Assert.IsTrue(right.Equals(left));
+
+            Assert.IsTrue(left.Equals(left));
+            Assert.IsTrue(right.Equals(right));
+
+            Assert.IsTrue(left == right);
+            Assert.IsTrue(right == left);
+
+            Assert.IsFalse(left != right);
+            Assert.IsFalse(right != left);
+
+            Assert.AreEqual(left.GetHashCode(), right.GetHashCode());
+        }
     }
 }
