@@ -1,19 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+<package xmlns="http://schemas.microsoft.com/packaging/2011/10/nuspec.xsd">
     <metadata>
         <id>GeoJSON.Net</id>
-        <version>$version$</version>
-        <authors>Joerg Battermann</authors>
-        <owners>Joerg Battermann and GeoJSON.Net contributors.</owners>
-        <licenseUrl>https://github.com/GeoJSON-Net/GeoJSON.Net/blob/master/LICENSE</licenseUrl>
+        <version>$version$-alpha</version>
+        <authors>Matt Hunt, Joerg Battermann</authors>
+        <owners>Matt Hunt, Joerg Battermann and GeoJSON.Net contributors.</owners>
+        <licenseUrl>https://github.com/GeoJSON-Net/GeoJSON.Net/blob/master/LICENSE.md</licenseUrl>
         <projectUrl>https://github.com/GeoJSON-Net/GeoJSON.Net</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>.Net library for GeoJSON types and corresponding Json.Net (de)serializers.</description>
-        <releaseNotes>Downgraded Json.Net to earliest compatible version (7.0.1).</releaseNotes>
+        <releaseNotes>Fully RFC 7946 compliant. Deprecating GeographicPosition in favour of Position to match RFC</releaseNotes>
         <language>en-US</language>
         <tags>geojson geo json geolocation</tags>
         <dependencies>
-            <dependency id="Newtonsoft.Json" version="7.0.1"  />
+            <dependency id="Newtonsoft.Json" version="7.0.1" />
         </dependencies>
     </metadata>
     <files>

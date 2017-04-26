@@ -75,6 +75,10 @@ namespace GeoJSON.Net.Tests.Geometry
             var actualLineString = JsonConvert.DeserializeObject<LineString>(json);
 
             Assert.AreEqual(expectedLineString, actualLineString);
+
+            Assert.AreEqual(4, actualLineString.Coordinates.Count);
+            Assert.AreEqual(expectedLineString.Coordinates[0].Latitude, actualLineString.Coordinates[0].Latitude);
+            Assert.AreEqual(expectedLineString.Coordinates[0].Longitude, actualLineString.Coordinates[0].Longitude);
         }
 
         private LineString GetLineString(double offset = 0.0)
