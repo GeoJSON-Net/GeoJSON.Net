@@ -13,7 +13,7 @@ namespace GeoJSON.Net.Tests.Feature
         [Test]
         public void Can_Deserialize_Point_Feature()
         {
-            var json = GetExpectedJson();
+            var json = GetExpectedJson("Can_Deserialize_Point_Feature");
 
             var feature = JsonConvert.DeserializeObject<Net.Feature.Feature>(json);
 
@@ -57,7 +57,7 @@ namespace GeoJSON.Net.Tests.Feature
 
             Console.WriteLine(actualJson);
 
-            var expectedJson = GetExpectedJson();
+            var expectedJson = GetExpectedJson("Can_Serialize_LineString_Feature");
 
             JsonAssert.AreEqual(expectedJson, actualJson);
         }
@@ -83,7 +83,7 @@ namespace GeoJSON.Net.Tests.Feature
                 })
             });
 
-            var expectedJson = GetExpectedJson();
+            var expectedJson = GetExpectedJson("Can_Serialize_MultiLineString_Feature");
 
             var actualJson = JsonConvert.SerializeObject(new Net.Feature.Feature(geometry));
 
@@ -94,7 +94,7 @@ namespace GeoJSON.Net.Tests.Feature
         public void Can_Serialize_Point_Feature()
         {
             var geometry = new Point(new Position(1, 2));
-            var expectedJson = GetExpectedJson();
+            var expectedJson = GetExpectedJson("Can_Serialize_Point_Feature");
 
             var actualJson = JsonConvert.SerializeObject(new Net.Feature.Feature(geometry));
 
@@ -116,7 +116,7 @@ namespace GeoJSON.Net.Tests.Feature
             var properties = new Dictionary<string, object> { { "Name", "Foo" } };
             var feature = new Net.Feature.Feature(polygon, properties);
 
-            var expectedJson = GetExpectedJson();
+            var expectedJson = GetExpectedJson("Can_Serialize_Polygon_Feature");
             var actualJson = JsonConvert.SerializeObject(feature);
 
             JsonAssert.AreEqual(expectedJson, actualJson);
@@ -161,7 +161,7 @@ namespace GeoJSON.Net.Tests.Feature
 
             var feature = new Net.Feature.Feature(multiPolygon);
 
-            var expectedJson = GetExpectedJson();
+            var expectedJson = GetExpectedJson("Can_Serialize_MultiPolygon_Feature");
             var actualJson = JsonConvert.SerializeObject(feature);
 
             JsonAssert.AreEqual(expectedJson, actualJson);

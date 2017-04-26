@@ -22,7 +22,7 @@ namespace GeoJSON.Net.Tests.Geometry
                 })
             });
 
-            var expectedJson = GetExpectedJson();
+            var expectedJson = GetExpectedJson("Can_Serialize");
             var actualJson = JsonConvert.SerializeObject(polygon);
 
             JsonAssert.AreEqual(expectedJson, actualJson);
@@ -31,7 +31,7 @@ namespace GeoJSON.Net.Tests.Geometry
         [Test]
         public void Can_Deserialize_With_Exterior_And_Inner_Rings()
         {
-            var json = GetExpectedJson();
+            var json = GetExpectedJson("Can_Deserialize_With_Exterior_And_Inner_Rings");
 
             var expectedPolygon = new Polygon(new List<LineString>
             {
@@ -245,7 +245,7 @@ namespace GeoJSON.Net.Tests.Geometry
         [Test]
         public void Can_Deserialize()
         {
-            var json = GetExpectedJson();
+            var json = GetExpectedJson("Can_Deserialize");
 
             var expectedPolygon = new Polygon(new List<LineString>
             {

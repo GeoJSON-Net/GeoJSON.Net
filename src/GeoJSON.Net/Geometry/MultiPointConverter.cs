@@ -18,7 +18,7 @@ namespace GeoJSON.Net.Geometry
 
             if (points.Any())
             {
-                var converter = new PointConverter();
+                var converter = new PositionConverter();
 
                 writer.WriteStartArray();
 

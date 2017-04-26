@@ -11,7 +11,7 @@ namespace GeoJSON.Net.Tests.Geometry
         [Test]
         public void Can_Deserialize()
         {
-            var json = GetExpectedJson();
+            var json = GetExpectedJson("Can_Deserialize");
 
             var expectedMultiLineString = new MultiLineString(new List<LineString>
             {
@@ -54,7 +54,7 @@ namespace GeoJSON.Net.Tests.Geometry
                 })
             });
 
-            var expectedJson = GetExpectedJson();
+            var expectedJson = GetExpectedJson("Can_Serialize");
             var actualJson = JsonConvert.SerializeObject(expectedMultiLineString);
 
             JsonAssert.AreEqual(expectedJson, actualJson);

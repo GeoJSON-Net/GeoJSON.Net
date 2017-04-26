@@ -17,7 +17,7 @@
         </dependencies>
     </metadata>
     <files>
-        <file src="src\GeoJSON.Net\bin\Release\GeoJSON.Net.dll" target="lib\portable-net40+sl5+wp80+win8+wpa81\GeoJSON.Net.dll" />
-        <file src="src\GeoJSON.Net\bin\Release\GeoJSON.Net.XML" target="lib\portable-net40+sl5+wp80+win8+wpa81\GeoJSON.Net.XML" />
+      <file src="src\GeoJSON.Net\bin\Release\GeoJSON.Net.dll" target="lib\portable-net40+sl5+win8+wpa81+wp8\GeoJSON.Net.dll" />
+        <file src="src\GeoJSON.Net\bin\Release\GeoJSON.Net.XML" target="lib\portable-net40+sl5+win8+wpa81+wp8\GeoJSON.Net.XML" />
     </files>
 </package>

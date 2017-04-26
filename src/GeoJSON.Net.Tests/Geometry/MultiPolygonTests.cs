@@ -11,7 +11,7 @@ namespace GeoJSON.Net.Tests.Geometry
         [Test]
         public void Can_Deserialize()
         {
-            var json = GetExpectedJson();
+            var json = GetExpectedJson("Can_Deserialize");
 
             var expectMultiPolygon = GetMultiPolygon();
 
@@ -98,7 +98,7 @@ namespace GeoJSON.Net.Tests.Geometry
             });
 
             var multiPolygon = new MultiPolygon(new List<Polygon> { polygon1, polygon2 });
-            var expectedJson = GetExpectedJson();
+            var expectedJson = GetExpectedJson("Can_Serialize");
 
             // Act
             var actualJson = JsonConvert.SerializeObject(multiPolygon);

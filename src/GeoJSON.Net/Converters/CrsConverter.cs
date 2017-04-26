@@ -20,7 +20,11 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
+#if (NET40 || PORTABLE40)
+            return typeof(ICRSObject).IsAssignableFrom(objectType);
+#else
             return typeof(ICRSObject).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
+#endif
         }
 
         /// <summary>

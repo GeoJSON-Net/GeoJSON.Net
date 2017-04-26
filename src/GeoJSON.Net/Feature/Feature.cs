@@ -5,12 +5,12 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using GeoJSON.Net.Converters;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 using System;
+using System.Linq;
+using System.Reflection;
 
 namespace GeoJSON.Net.Feature
 {
@@ -58,9 +58,16 @@ namespace GeoJSON.Net.Feature
             }
             else
             {
+#if (NET40 || PORTABLE40)
+                Properties = properties.GetType().GetProperties()
+                    .Where(propertyInfo => propertyInfo.GetGetMethod().IsPublic)
+                    .ToDictionary(propertyInfo => propertyInfo.Name,
+                        propertyInfo => propertyInfo.GetValue(properties, null));
+#else
                 Properties = properties.GetType().GetTypeInfo().DeclaredProperties
                     .Where(propertyInfo => propertyInfo.GetMethod.IsPublic)
                     .ToDictionary(propertyInfo => propertyInfo.Name, propertyInfo => propertyInfo.GetValue(properties, null));
+#endif
             }
 
             Type = GeoJSONObjectType.Feature;
@@ -90,7 +97,7 @@ namespace GeoJSON.Net.Feature
         [JsonProperty(PropertyName = "properties", Required = Required.AllowNull)]
         public Dictionary<string, object> Properties { get; private set; }
 
-        #region IEqualityComparer, IEquatable
+#region IEqualityComparer, IEquatable
 
         /// <summary>
         /// Determines whether the specified object is equal to the current object
@@ -165,7 +172,7 @@ namespace GeoJSON.Net.Feature
             return obj.GetHashCode();
         }
 
-        #endregion
+#endregion
 
     }
 }

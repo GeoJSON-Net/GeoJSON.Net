@@ -1,0 +1,56 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks Condition="'$(LibraryFrameworks)'==''">net45;net40;portable-net45+win8+wpa81+wp8;portable-net40+win8+wpa81+wp8+sl5</TargetFrameworks>
+    <TargetFrameworks Condition="'$(LibraryFrameworks)'!=''">$(LibraryFrameworks)</TargetFrameworks>
+    <VersionPrefix>1.0.0.0</VersionPrefix>
+    <VersionSuffix>alpha</VersionSuffix>
+    <Authors>Matt Hunt</Authors>
+    <Company>GeoJSON.Net</Company>
+    <AssemblyTitle>GeoJSON.Net</AssemblyTitle>
+    <Description>.Net library for GeoJSON types and corresponding Json.Net (de)serializers.</Description>
+    <Copyright>Copyright © Matt Hunt, Jörg Battermann 2017</Copyright>
+    <Summary>.Net library for GeoJSON types and corresponding Json.Net (de)serializers.</Summary>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <PackageId>GeoJSON.Net</PackageId>
+    <PackageTags>geojson geo json geolocation</PackageTags>    
+    <PackageProjectUrl>https://github.com/GeoJSON-Net/GeoJSON.Net</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/GeoJSON-Net/GeoJSON.Net/blob/master/LICENSE.md</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/GeoJSON-Net/GeoJSON.Net</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <RootNamespace>GeoJSON.Net</RootNamespace>
+    <AssemblyName>GeoJSON.Net</AssemblyName>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <NetStandardImplicitPackageVersion>1.6.1</NetStandardImplicitPackageVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="..\..\LICENSE.md" Pack="true" PackagePath="LICENSE.md" />
+    <None Include="..\..\Build\install.ps1" Pack="true" PackagePath="tools\install.ps1" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="7.0.1" />
+  </ItemGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='net45'">
+    <AssemblyTitle>GeoJSON.Net</AssemblyTitle>
+    <DefineConstants>NET45;$(AdditionalConstants)</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='net40'">
+    <DefineConstants>NET40;$(AdditionalConstants)</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'portable-net40+win8+wpa81+wp8+sl5'">
+    <DefineConstants>PORTABLE40;$(AdditionalConstants)</DefineConstants>
+    <TargetFrameworkIdentifier>.NETPortable</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile328</TargetFrameworkProfile>
+    <NugetTargetMoniker>.NETPortable,Version=v0.0,Profile=Profile328</NugetTargetMoniker>
+    <LanguageTargets>$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets</LanguageTargets>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetFramework)' == 'portable-net45+win8+wpa81+wp8'">
+    <DefineConstants>PORTABLE45;$(AdditionalConstants)</DefineConstants>
+    <TargetFrameworkIdentifier>.NETPortable</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
+    <NugetTargetMoniker>.NETPortable,Version=v0.0,Profile=Profile259</NugetTargetMoniker>
+    <LanguageTargets>$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets</LanguageTargets>
+  </PropertyGroup>
+</Project>

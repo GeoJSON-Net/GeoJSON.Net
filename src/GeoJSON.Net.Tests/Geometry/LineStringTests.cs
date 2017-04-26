@@ -55,7 +55,7 @@ namespace GeoJSON.Net.Tests.Geometry
 
             var actualJson = JsonConvert.SerializeObject(lineString);
 
-            JsonAssert.AreEqual(GetExpectedJson(), actualJson);
+            JsonAssert.AreEqual(GetExpectedJson("Can_Serialize"), actualJson);
         }
 
         [Test]
@@ -71,7 +71,7 @@ namespace GeoJSON.Net.Tests.Geometry
 
             var expectedLineString = new LineString(coordinates);
 
-            var json = GetExpectedJson();
+            var json = GetExpectedJson("Can_Deserialize");
             var actualLineString = JsonConvert.DeserializeObject<LineString>(json);
 
             Assert.AreEqual(expectedLineString, actualLineString);
