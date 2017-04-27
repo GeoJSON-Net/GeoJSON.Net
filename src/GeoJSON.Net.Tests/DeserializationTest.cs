@@ -1,20 +1,20 @@
 ﻿using GeoJSON.Net.Feature;
 using GeoJSON.Net.Geometry;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
-using System.Linq;
+using System.Drawing;
+using NUnit.Framework;
 
 namespace GeoJSON.Net.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class DeserializationTest
     {
-		[TestClass]
+		[TestFixture]
 		public class DeserializationOfFeatureTest
 		{
-			[TestMethod]
+			[Test]
 			public void CanDeserializeFeature()
 			{
 				#region GeoJSON
@@ -46,10 +46,10 @@ namespace GeoJSON.Net.Tests
 			}
 		}
 
-		[TestClass]
+		[TestFixture]
 		public class DeserializationOfFeatureCollectionTest
 		{
-			[TestMethod]
+			[Test]
 			public void CanDeserializeFeatureCollection()
 			{
 				#region GeoJSON
@@ -100,7 +100,7 @@ namespace GeoJSON.Net.Tests
 			}
 		}
 
-		[TestMethod]
+		[Test]
 		public void MultiPolygonDeserialization()
 		{
 			#region geoJsonText
@@ -214,7 +214,7 @@ namespace GeoJSON.Net.Tests
 			Assert.IsTrue(Math.Abs(lastPoint.Longitude - -2.69628632041613) < 0.0001);
 		}
 
-        [TestMethod]
+        [Test]
         public void PolygonDeserialization()
         {
             #region geoJsonText
@@ -262,7 +262,7 @@ namespace GeoJSON.Net.Tests
 
         }
 
-        [TestMethod]
+        [Test]
         public void PolygonDeserialization1()
         {
             #region geoJsonText
@@ -299,7 +299,7 @@ namespace GeoJSON.Net.Tests
             Assert.IsTrue(!firstPoint.Altitude.HasValue);
         }
 
-        [TestMethod]
+        [Test]
         public void PointDeserialization()
         {
             #region data
@@ -320,7 +320,7 @@ namespace GeoJSON.Net.Tests
             Assert.IsTrue(coordinates.Latitude + 52.379790828551016 < 0.0001);
         }
 
-        [TestMethod]
+        [Test]
         public void MultiLineStringDeserialization()
         {
             #region geoJsonText
@@ -383,7 +383,7 @@ namespace GeoJSON.Net.Tests
             Assert.AreEqual(4.23, thirdPoint.Altitude.Value, 0.0001);
         }
 
-        [TestMethod]
+        [Test]
         public void FeatureCollectionDeserialization()
         {
             const string geoJsonText = @"{'type': 'FeatureCollection', 'crs': {'type': 'name','properties': {'name': 'urn:ogc:def:crs:OGC:1.3:CRS84'}},

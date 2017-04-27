@@ -2,16 +2,16 @@ using System.Collections.Generic;
 using System.Linq;
 using GeoJSON.Net.Feature;
 using GeoJSON.Net.Geometry;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using NUnit.Framework;
 
 namespace GeoJSON.Net.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class FeatureTests : TestBase
     {
-        [TestMethod]
+        [Test]
         public void FeatureSerialization()
         {
             var coordinates = new[]
@@ -51,7 +51,7 @@ namespace GeoJSON.Net.Tests
         /// <summary>
         ///     Serializes the whole Polygon with properties
         /// </summary>
-        [TestMethod]
+        [Test]
         public void PointFeatureSerialization()
         {
             var point = new Point(new GeographicPosition(45.79012, 15.94107));
@@ -62,7 +62,7 @@ namespace GeoJSON.Net.Tests
             Assert.IsFalse(serializedData.Contains("longitude"));
         }
 
-        [TestMethod]
+        [Test]
         public void PolygonFeatureSerialization()
         {
             var coordinates = new List<GeographicPosition>
@@ -81,10 +81,10 @@ namespace GeoJSON.Net.Tests
         }
     }
 
-    [TestClass]
+    [TestFixture]
     public class FeatureCollectionTests : TestBase
     {
-        [TestMethod]
+        [Test]
         public void FeatureCollectionSerialization()
         {
             var model = new FeatureCollection(null);

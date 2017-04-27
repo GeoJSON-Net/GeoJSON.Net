@@ -1,18 +1,18 @@
 ﻿using GeoJSON.Net.Geometry;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NUnit.Framework;
 
 namespace GeoJSON.Net.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class MiscTest
     {
         /// <summary>
         /// Test that the last coordinate must be the same as the first to complete the polygon
         /// </summary>
-        [TestMethod]
+        [Test]
         public void LineStringIsClosed()
         {
             var coordinates = new List<GeographicPosition> 
@@ -27,7 +27,7 @@ namespace GeoJSON.Net.Tests
         }
 
 
-        [TestMethod]
+        [Test]
         public void ComparePolygons()
         {
             var coordinates = new List<GeographicPosition> 
@@ -67,7 +67,7 @@ namespace GeoJSON.Net.Tests
 
         }
 
-        [TestMethod]
+        [Test]
         public void TestFeatureFromClass()
         {
             var testObject = new MyTestClass()
@@ -103,7 +103,5 @@ namespace GeoJSON.Net.Tests
             public bool BooleanProperty { get; set; }
             public MyTestEnum EnumProperty { get; set; }
         }
-
-
     }
 }

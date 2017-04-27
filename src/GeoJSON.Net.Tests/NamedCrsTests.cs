@@ -1,22 +1,22 @@
 using System;
 using GeoJSON.Net.CoordinateReferenceSystem;
 using GeoJSON.Net.Feature;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using NUnit.Framework;
 
 namespace GeoJSON.Net.Tests
 {
-    [TestClass]
+    [TestFixture]
     public class NamedCrsTests : TestBase
     {
-        [TestMethod]
+        [Test]
         public void NamedCrsHasCorrectType()
         {
             var collection = new FeatureCollection(null) { CRS = new NamedCRS("EPSG:31370") };
             Assert.AreEqual(CRSType.Name, collection.CRS.Type);
         }
 
-        [TestMethod]
+        [Test]
         public void NamedCrsSerializationWithValue()
         {
             var collection = new FeatureCollection(null) { CRS = new NamedCRS("EPSG:31370") };
@@ -24,21 +24,19 @@ namespace GeoJSON.Net.Tests
             Assert.IsTrue(serializedData.Contains("\"crs\":{\"type\":\"Name\",\"properties\":{\"name\":\"EPSG:31370\"}}"));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
+        [Test]
         public void NamedCrsSerializationNull()
         {
-            var collection = new FeatureCollection(null) { CRS = new NamedCRS(null) };
+            Assert.Throws<ArgumentNullException>(() => new FeatureCollection(null) {CRS = new NamedCRS(null)});
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Test]
         public void NamedCrsSerializationEmpty()
         {
-            var collection = new FeatureCollection(null) { CRS = new NamedCRS("") };
+            Assert.Throws<ArgumentOutOfRangeException>(() => new FeatureCollection(null) { CRS = new NamedCRS("") });
         }
 
-        [TestMethod]
+        [Test]
         public void NamedCrsSerializationNotSet()
         {
             var collection = new FeatureCollection(null);

@@ -11,7 +11,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoJSON.Net.Roslyn", "GeoJSON.Net\GeoJSON.Net.Roslyn.csproj", "{1DAE5309-C536-435E-9D9C-3BE089A3C404}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoJSON.Net.Tests.Roslyn", "GeoJSON.Net.Tests\GeoJSON.Net.Tests.Roslyn.csproj", "{013362C7-A5F4-4EB7-BA78-90512A74018F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoJSON.Net.Tests.Roslyn", "GeoJSON.Net.Tests\GeoJSON.Net.Tests.Roslyn.csproj", "{013362C7-A5F4-4EB7-BA78-90512A74018F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -26,6 +26,9 @@ namespace GeoJSON.Net
     {
         internal static readonly DoubleTenDecimalPlaceComparer DoubleComparer = new DoubleTenDecimalPlaceComparer();
 
+        /// <summary>
+        /// 
+        /// </summary>
         protected GeoJSONObject()
         {
             CRS = DefaultCRS.Instance;

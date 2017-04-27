@@ -1,6 +1,10 @@
+using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NUnit.Framework;
+using GeoJSON.Net.Geometry;
 
 namespace GeoJSON.Net.Tests
 {
@@ -60,6 +64,54 @@ namespace GeoJSON.Net.Tests
             }
 
             return result;
+        }
+
+        public static void AssertCoordinates(string geojson, int expectedNesting, IEnumerable<object> coords)
+        {
+            var coordMatch = Regex.Matches(geojson, "\"coordinates\":(.+?)(,\\s*\"|})");
+            Assert.AreEqual(1, coordMatch.Count);
+            var deserializedCoords = JsonConvert.DeserializeObject<JArray>(coordMatch[0].Groups[1].Value);
+            AssertCoordInternal(deserializedCoords, expectedNesting, coords);
+        }
+
+        public static void AssertCoordInternal(JArray coords, int expectedNesting, IEnumerable<object> expectedCoords)
+        {
+            Assert.IsTrue(expectedNesting >= 0);
+
+            if (expectedNesting == 0)
+            {
+                AssertCoordinate((GeographicPosition)expectedCoords.First(), coords);
+            }
+            else
+            {
+                var enumerator = expectedCoords.GetEnumerator();
+                var moveNext = enumerator.MoveNext();
+                var i = 0;
+
+                foreach (var deserializedCoord in coords)
+                {
+                    Assert.IsTrue(moveNext);
+                    var array = deserializedCoord as JArray;
+                    if (array != null && array.Count > 0 && !(array[0] is JValue))
+                    {
+                        AssertCoordInternal(array, expectedNesting - 1, (IEnumerable<object>)enumerator.Current);
+                    }
+                    else if (array != null)
+                    {
+                        var expectedCoord = (GeographicPosition)enumerator.Current;
+                        AssertCoordinate(expectedCoord, array);
+                    }
+
+                    moveNext = enumerator.MoveNext();
+                    i++;
+                }
+            }
+        }
+
+        public static void AssertCoordinate(GeographicPosition expectedCoord, JArray array)
+        {
+            Assert.AreEqual(expectedCoord.Latitude, (double)array[1], 1e-6);
+            Assert.AreEqual(expectedCoord.Longitude, (double)array[0], 1e-6);
         }
     }
 }

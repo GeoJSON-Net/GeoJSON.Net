@@ -120,6 +120,22 @@ function GetMsBuildPath()
   return join-path $path 'MSBuild\15.0\Bin\MSBuild.exe'
 }
 
+function GetVersion($majorVersion)
+{
+    $now = [DateTime]::Now
+    
+    $year = $now.Year - 2000
+    $month = $now.Month
+    $totalMonthsSince2000 = ($year * 12) + $month
+    $day = $now.Day
+    $minor = "{0}{1:00}" -f $totalMonthsSince2000, $day
+    
+    $hour = $now.Hour
+    $minute = $now.Minute
+    $revision = "{0:00}{1:00}" -f $hour, $minute
+    
+    return $majorVersion + "." + $minor
+}
 
 function NetCliBuild()
 {
@@ -138,4 +154,46 @@ function NetCliBuild()
   Write-Host
 
   exec { & $script:msBuildPath "/t:build" $projectPath "/p:Configuration=Release" "/p:LibraryFrameworks=`"$libraryFrameworks`"" "/p:TestFrameworks=`"$testFrameworks`"" "/p:AssemblyOriginatorKeyFile=$signKeyPath" "/p:SignAssembly=$signAssemblies" "/p:TreatWarningsAsErrors=$treatWarningsAsErrors" "/p:AdditionalConstants=$additionalConstants" }
+}
+
+function Execute-Command($command) {
+    $currentRetry = 0
+    $success = $false
+    do {
+        try
+        {
+            & $command
+            $success = $true
+        }
+        catch [System.Exception]
+        {
+            if ($currentRetry -gt 5) {
+                throw $_.Exception.ToString()
+            } else {
+                write-host "Retry $currentRetry"
+                Start-Sleep -s 1
+            }
+            $currentRetry = $currentRetry + 1
+        }
+    } while (!$success)
+}
+
+function Update-AssemblyInfoFiles ([string] $workingSourceDir, [string] $assemblyVersionNumber, [string] $fileVersionNumber)
+{
+    $assemblyVersionPattern = 'AssemblyVersion\("[0-9]+(\.([0-9]+|\*)){1,3}"\)'
+    $fileVersionPattern = 'AssemblyFileVersion\("[0-9]+(\.([0-9]+|\*)){1,3}"\)'
+    $assemblyVersion = 'AssemblyVersion("' + $assemblyVersionNumber + '")';
+    $fileVersion = 'AssemblyFileVersion("' + $fileVersionNumber + '")';
+    
+    Get-ChildItem -Path $workingSourceDir -r -filter AssemblyInfo.cs | ForEach-Object {
+        
+        $filename = $_.Directory.ToString() + '\' + $_.Name
+        Write-Host $filename
+        $filename + ' -> ' + $version
+    
+        (Get-Content $filename) | ForEach-Object {
+            % {$_ -replace $assemblyVersionPattern, $assemblyVersion } |
+            % {$_ -replace $fileVersionPattern, $fileVersion }
+        } | Set-Content $filename
+    }
 }
