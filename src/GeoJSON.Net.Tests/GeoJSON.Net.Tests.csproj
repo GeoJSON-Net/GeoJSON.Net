@@ -31,6 +31,67 @@
     <PackageReference Include="NUnit" Version="3.6.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.7.0" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Features\FeatureCollectionTests.cs">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Features\FeatureCollectionTests_Can_Deserialize.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\FeatureTests_Can_Deserialize_Point_Feature.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\FeatureTests_Can_Serialize_LineString_Feature.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\FeatureTests_Can_Serialize_MultiLineString_Feature.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\FeatureTests_Can_Serialize_MultiPolygon_Feature.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\FeatureTests_Can_Serialize_Point_Feature.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Features\FeatureTests_Can_Serialize_Polygon_Feature.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Geometries\LineStringTests_Can_Deserialize.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Geometries\LineStringTests_Can_Serialize.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Geometries\MultiLineStringTests_Can_Deserialize.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Geometries\MultiLineStringTests_Can_Serialize.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Geometries\MultiPointTests_Can_Deserialize.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Geometries\MultiPointTests_Can_Serialize.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Geometries\MultiPolygonTests_Can_Deserialize.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Geometries\MultiPolygonTests_Can_Serialize.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Geometries\PolygonTests_Can_Deserialize.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Geometries\PolygonTests_Can_Deserialize_With_Exterior_And_Inner_Rings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Geometries\PolygonTests_Can_Serialize.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
    <PropertyGroup Condition="'$(TargetFramework)'=='net35'">
     <DefineConstants>NET35;$(AdditionalConstants)</DefineConstants>
   </PropertyGroup>
