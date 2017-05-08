@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using GeoJSON.Net.Feature;
+using GeoJSON.Net.Features;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
-namespace GeoJSON.Net.Tests.Feature
+namespace GeoJSON.Net.Tests.Features
 {
     [TestFixture]
     public class FeatureCollectionTests : TestBase
@@ -52,7 +52,7 @@ namespace GeoJSON.Net.Tests.Feature
                     { "test2", 2 }
                 };
 
-                var feature = new Net.Feature.Feature(geom, props);
+                var feature = new Feature(geom, props);
                 model.Features.Add(feature);
             }
 
@@ -108,7 +108,7 @@ namespace GeoJSON.Net.Tests.Feature
 
                 var props = FeatureTests.GetPropertiesInRandomOrder();
 
-                var feature = new Net.Feature.Feature(geom, props, id);
+                var feature = new Feature(geom, props, id);
                 model.Features.Add(feature);
             }
 
@@ -146,7 +146,7 @@ namespace GeoJSON.Net.Tests.Feature
 
                 var props = FeatureTests.GetPropertiesInRandomOrder();
 
-                var feature = new Net.Feature.Feature(geom, props);
+                var feature = new Feature(geom, props);
                 model.Features.Add(feature);
             }
             return model;

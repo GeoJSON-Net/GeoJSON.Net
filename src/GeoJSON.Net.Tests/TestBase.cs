@@ -36,6 +36,22 @@ namespace GeoJSON.Net.Tests
 
             return File.ReadAllText(path);
         }
+#elif (NET35)
+        protected string GetExpectedJson(string name = null)
+        {
+            var type = GetType().Name;
+            var projectFolder = GetType().Namespace.Substring(AssemblyName.Length + 1);
+            var path = Path.Combine(AssemblyDirectory, @".\");
+            path = Path.Combine(path, projectFolder);
+            path = Path.Combine(path, type + "_" + name + ".json");
+
+            if (!File.Exists(path))
+            {
+                throw new FileNotFoundException("file not found at " + path);
+            }
+
+            return File.ReadAllText(path);
+        }
 #else
         protected string GetExpectedJson(string name = null)
         {

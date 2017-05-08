@@ -1,5 +1,5 @@
 using GeoJSON.Net.CoordinateReferenceSystem;
-using GeoJSON.Net.Feature;
+using GeoJSON.Net.Features;
 using Newtonsoft.Json;
 using NUnit.Framework;
 

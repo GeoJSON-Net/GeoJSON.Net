@@ -2,3 +2,5 @@
 packages/
 *.nupkg
 lib/*
+bin/*
+obj/*

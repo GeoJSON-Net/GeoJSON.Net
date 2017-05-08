@@ -1,97 +1,75 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{7C0D45ED-681E-4DEC-9910-BAE1211E4889}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <TargetFrameworks Condition="'$(LibraryFrameworks)'==''">net35;net45;net40;portable-net40+win8+wpa81+wp8+sl5;portable-net45+win8+wpa81+wp8</TargetFrameworks>
+    <TargetFrameworks Condition="'$(LibraryFrameworks)'!=''">$(LibraryFrameworks)</TargetFrameworks>
+    <VersionPrefix>1.0.1</VersionPrefix>
+    <VersionSuffix>alpha</VersionSuffix>
+    <Authors>Matt Hunt, Joerg Battermann</Authors>
+    <Company>GeoJSON.Net</Company>
+    <AssemblyTitle>GeoJSON.Net</AssemblyTitle>
+    <Description>.Net library for GeoJSON types and corresponding Json.Net (de)serializers.</Description>
+    <Copyright>Copyright © Matt Hunt, Joerg Battermann 2017</Copyright>
+    <Summary>.Net library for GeoJSON types and corresponding Json.Net (de)serializers.</Summary>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <PackageId>GeoJSON.Net</PackageId>
+    <PackageTags>geojson geo json geolocation</PackageTags>
+    <PackageProjectUrl>https://github.com/GeoJSON-Net/GeoJSON.Net</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/GeoJSON-Net/GeoJSON.Net/blob/master/LICENSE.md</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/GeoJSON-Net/GeoJSON.Net</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
     <RootNamespace>GeoJSON.Net</RootNamespace>
     <AssemblyName>GeoJSON.Net</AssemblyName>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)'=='net35'">
+    <DefineConstants>NET35;</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)'=='net40'">
+    <DefineConstants>NET40;</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)'=='net45'">
+    <DefineConstants>NET45;</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'portable-net40+win8+wpa81+wp8+sl5'">
+    <DefineConstants>PORTABLE40;</DefineConstants>
+    <TargetFrameworkIdentifier>.NETPortable</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>Profile328</TargetFrameworkProfile>
+    <NugetTargetMoniker>.NETPortable,Version=v0.0,Profile=Profile328</NugetTargetMoniker>
+    <LanguageTargets>$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets</LanguageTargets>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\GeoJSON.Net.XML</DocumentationFile>
+
+  <PropertyGroup Condition="'$(TargetFramework)' == 'portable-net45+win8+wpa81+wp8'">
+    <DefineConstants>PORTABLE45;</DefineConstants>
+    <TargetFrameworkIdentifier>.NETPortable</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
+    <NugetTargetMoniker>.NETPortable,Version=v0.0,Profile=Profile259</NugetTargetMoniker>
+    <LanguageTargets>$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets</LanguageTargets>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\GeoJSON.Net.XML</DocumentationFile>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="Microsoft.CSharp" />
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net35'">
+    <PackageReference Include="newtonsoft.json" Version="7.0.1" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Converters\CrsConverter.cs" />
-    <Compile Include="Converters\GeoJsonConverter.cs" />
-    <Compile Include="Converters\GeometryConverter.cs" />
-    <Compile Include="Converters\MultiPointConverter.cs" />
-    <Compile Include="Converters\MultiPolygonConverter.cs" />
-    <Compile Include="Converters\PositionConverter.cs" />
-    <Compile Include="Converters\LineStringConverter.cs" />
-    <Compile Include="Converters\PolygonConverter.cs" />
-    <Compile Include="CoordinateReferenceSystem\DefaultCRS.cs" />
-    <Compile Include="CoordinateReferenceSystem\LinkedCRS.cs" />
-    <Compile Include="CoordinateReferenceSystem\CRSBase.cs" />
-    <Compile Include="CoordinateReferenceSystem\CRSType.cs" />
-    <Compile Include="CoordinateReferenceSystem\ICRSObject.cs" />
-    <Compile Include="CoordinateReferenceSystem\NamedCRS.cs" />
-    <Compile Include="CoordinateReferenceSystem\UnspecifiedCRS.cs" />
-    <Compile Include="DoubleTenDecimalPlaceComparer.cs" />
-    <Compile Include="GeoJSONObject.cs" />
-    <Compile Include="Geometry\GeometryCollection.cs" />
-    <Compile Include="Geometry\IPosition.cs" />
-    <Compile Include="Geometry\MultiLineString.cs" />
-    <Compile Include="Geometry\LineString.cs" />
-    <Compile Include="Geometry\MultiPoint.cs" />
-    <Compile Include="GeoJSONObjectType.cs" />
-    <Compile Include="Geometry\GeographicPosition.cs" />
-    <Compile Include="Exceptions\ParsingException.cs" />
-    <Compile Include="Feature\Feature.cs" />
-    <Compile Include="Feature\FeatureCollection.cs" />
-    <Compile Include="Geometry\IGeometryObject.cs" />
-    <Compile Include="Geometry\MultiPolygon.cs" />
-    <Compile Include="Geometry\Point.cs" />
-    <Compile Include="Geometry\Polygon.cs" />
-    <Compile Include="Geometry\Position.cs" />
-    <Compile Include="IGeoJSONObject.cs" />
-    <Compile Include="NullableDoubleTenDecimalPlaceComparer.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+  
+  <ItemGroup Condition="'$(TargetFramework)' == 'net40'">
+    <PackageReference Include="newtonsoft.json" Version="7.0.1" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
+    <PackageReference Include="newtonsoft.json" Version="7.0.1" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>copy $(SolutionDir)$(ProjectName)\$(OutDir)$(TargetName).xml $(SolutionDir)..\lib
-copy $(SolutionDir)$(ProjectName)\$(OutDir)$(TargetName).dll $(SolutionDir)..\lib</PostBuildEvent>
-  </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'portable-net40+win8+wpa81+wp8+sl5'">
+    <PackageReference Include="newtonsoft.json" Version="7.0.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'portable-net45+win8+wpa81+wp8'">
+    <PackageReference Include="newtonsoft.json" Version="7.0.1" />
+  </ItemGroup>
 </Project>

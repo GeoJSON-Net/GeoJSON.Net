@@ -1,0 +1,37 @@
+﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
+  <PropertyGroup>
+    <TargetFrameworks Condition="'$(TestFrameworks)'==''">net45;net40;net35;</TargetFrameworks>
+    <TargetFrameworks Condition="'$(TestFrameworks)'!=''">$(TestFrameworks)</TargetFrameworks>
+    <VersionPrefix>1.0</VersionPrefix>
+    <Authors>Matt Hunt</Authors>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <Copyright>Copyright © Matt Hunt 2017</Copyright>
+    <AssemblyName>GeoJSON.Net.Tests</AssemblyName>
+    <RootNamespace>GeoJSON.Net.Tests</RootNamespace>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <ProjectGuid>{9390ECC0-9FF1-4BD2-8D36-1C72EE0AA5BF}</ProjectGuid>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GeoJSON.Net\GeoJSON.Net.csproj" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)'=='net45'">
+    <PackageReference Include="NUnit" Version="3.6.1" />
+  </ItemGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='net45'">
+    <DefineConstants>NET45;HAVE_BENCHMARKS;$(AdditionalConstants)</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(TargetFramework)'=='net40'">
+    <PackageReference Include="NUnit" Version="3.6.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.7.0" />
+  </ItemGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='net40'">
+    <DefineConstants>NET40;$(AdditionalConstants)</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(TargetFramework)'=='net35'">
+    <PackageReference Include="NUnit" Version="3.6.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.7.0" />
+  </ItemGroup>
+   <PropertyGroup Condition="'$(TargetFramework)'=='net35'">
+    <DefineConstants>NET35;$(AdditionalConstants)</DefineConstants>
+  </PropertyGroup>
+</Project>

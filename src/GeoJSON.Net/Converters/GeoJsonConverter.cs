@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using GeoJSON.Net.Feature;
+using GeoJSON.Net.Features;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -23,10 +23,10 @@ namespace GeoJSON.Net.Converters
 		/// </returns>
 		public override bool CanConvert(Type objectType)
 		{
-#if (NET40 || PORTABLE40)
-            return typeof(IGeoJSONObject).IsAssignableFrom(objectType);
-#else
+#if (NET45 || PORTABLE45)
             return typeof(IGeoJSONObject).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
+#else
+            return typeof(IGeoJSONObject).IsAssignableFrom(objectType);
 #endif
         }
 
@@ -93,11 +93,21 @@ namespace GeoJSON.Net.Converters
 			}
 
 			GeoJSONObjectType geoJsonType;
-
-			if (!Enum.TryParse(token.Value<string>(), true, out geoJsonType))
+#if (NET35)
+            try
+            {
+                geoJsonType = (GeoJSONObjectType)Enum.Parse(typeof(GeoJSONObjectType), token.Value<string>(), true);
+            }
+            catch(Exception)
+            {
+                throw new JsonReaderException("Type must be a valid geojson object type");
+            }                
+#else
+            if (!Enum.TryParse(token.Value<string>(), true, out geoJsonType))
 			{
-				throw new JsonReaderException("type must be a valid geojson object type");
+				throw new JsonReaderException("Type must be a valid geojson object type");
 			}
+#endif
 
 			switch (geoJsonType)
 			{
@@ -116,7 +126,7 @@ namespace GeoJSON.Net.Converters
 				case GeoJSONObjectType.GeometryCollection:
 					return value.ToObject<GeometryCollection>();
 				case GeoJSONObjectType.Feature:
-					return value.ToObject<Feature.Feature>();
+					return value.ToObject<Feature>();
 				case GeoJSONObjectType.FeatureCollection:
 					return value.ToObject<FeatureCollection>();
 				default:

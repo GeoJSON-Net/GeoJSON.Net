@@ -48,7 +48,7 @@ namespace GeoJSON.Net.Geometry
                         altitude = coordinate[2];
                     }
 
-                    positions.Add(new Point(new GeographicPosition(latitude, longitude, altitude)));
+                    positions.Add(new Point(new Position(latitude, longitude, altitude)));
                 }
 
                 return positions;

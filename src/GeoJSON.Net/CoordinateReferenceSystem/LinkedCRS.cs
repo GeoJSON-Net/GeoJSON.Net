@@ -43,7 +43,7 @@ namespace GeoJSON.Net.CoordinateReferenceSystem
 
             Properties = new Dictionary<string, object> { { "href", href } };
 
-            if (!string.IsNullOrWhiteSpace(type))
+            if (!string.IsNullOrEmpty(type))
             {
                 Properties.Add("type", type);
             }
