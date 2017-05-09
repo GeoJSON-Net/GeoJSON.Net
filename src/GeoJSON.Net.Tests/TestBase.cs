@@ -26,7 +26,7 @@ namespace GeoJSON.Net.Tests
         protected string GetExpectedJson([CallerMemberName] string name = null)
         {
             var type = GetType().Name;
-            var projectFolder = GetType().Namespace.Substring(AssemblyName.Length + 1);
+            var projectFolder = GetType().Namespace?.Substring(AssemblyName.Length + 1);
             var path = Path.Combine(AssemblyDirectory, @".\", projectFolder, type + "_" + name + ".json");
 
             if (!File.Exists(path))

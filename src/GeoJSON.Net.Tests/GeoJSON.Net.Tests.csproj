@@ -18,7 +18,7 @@
     <PackageReference Include="NUnit" Version="3.6.1" />
   </ItemGroup>
   <PropertyGroup Condition="'$(TargetFramework)'=='net45'">
-    <DefineConstants>NET45;HAVE_BENCHMARKS;$(AdditionalConstants)</DefineConstants>
+    <DefineConstants>NET45;$(AdditionalConstants)</DefineConstants>
   </PropertyGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net40'">
     <PackageReference Include="NUnit" Version="3.6.0" />
@@ -31,11 +31,10 @@
     <PackageReference Include="NUnit" Version="3.6.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.7.0" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Features\FeatureCollectionTests.cs">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </Compile>
-  </ItemGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='net35'">
+    <DefineConstants>NET35;$(AdditionalConstants)</DefineConstants>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Update="Features\FeatureCollectionTests_Can_Deserialize.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -92,7 +91,23 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-   <PropertyGroup Condition="'$(TargetFramework)'=='net35'">
-    <DefineConstants>NET35;$(AdditionalConstants)</DefineConstants>
+
+
+  <ItemGroup Condition="'$(TargetFramework)'=='net451'">
+    <PackageReference Include="NUnit" Version="3.6.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.7.0" />
+  </ItemGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='net451'">
+    <ReferringTargetFrameworkForProjectReferences>.NETPortable,Version=v0.0,Profile=Profile328</ReferringTargetFrameworkForProjectReferences>
+    <DefineConstants>PORTABLE40;$(AdditionalConstants)</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)'=='net452'">
+    <PackageReference Include="NUnit" Version="3.6.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.7.0" />
+  </ItemGroup>
+  <PropertyGroup Condition="'$(TargetFramework)'=='net452'">
+    <ReferringTargetFrameworkForProjectReferences>.NETPortable,Version=v0.0,Profile=Profile259</ReferringTargetFrameworkForProjectReferences>
+    <DefineConstants>PORTABLE45;$(AdditionalConstants)</DefineConstants>
   </PropertyGroup>
 </Project>

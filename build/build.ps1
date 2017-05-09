@@ -28,9 +28,9 @@
   $builds = @(
     @{Framework = "net35"; TestsFunction = "NUnitTests"; NUnitFramework="net-2.0"; Enabled=$true},
     @{Framework = "net45"; TestsFunction = "NUnitTests"; NUnitFramework="net-4.0"; Enabled=$true},
-    @{Framework = "net40"; TestsFunction = "NUnitTests"; NUnitFramework="net-4.0"; Enabled=$true}
-    #@{Framework = "portable-net40+win8+wpa81+wp8+sl5"; TestsFunction = "NUnitTests"; TestFramework = "net451"; NUnitFramework="net-4.0"; Enabled=$true},
-    #@{Framework = "portable-net45+win8+wpa81+wp8"; TestsFunction = "NUnitTests"; TestFramework = "net452"; NUnitFramework="net-4.0"; Enabled=$true}
+    @{Framework = "net40"; TestsFunction = "NUnitTests"; NUnitFramework="net-4.0"; Enabled=$true},
+    @{Framework = "portable-net40+win8+wpa81+wp8+sl5"; TestsFunction = "NUnitTests"; TestFramework = "net451"; NUnitFramework="net-4.0"; Enabled=$true},
+    @{Framework = "portable-net45+win8+wpa81+wp8"; TestsFunction = "NUnitTests"; TestFramework = "net452"; NUnitFramework="net-4.0"; Enabled=$true}
   )
 }
 
@@ -70,9 +70,7 @@ task Build -depends Clean {
 
   Write-Host "Copying source to working source directory $workingSourceDir"
   robocopy $sourceDir $workingSourceDir /MIR /NP /XD bin obj TestResults AppPackages $packageDirs .vs artifacts /XF *.suo *.user *.lock.json | Out-Default
-  Copy-Item -Path $baseDir\LICENSE.md -Destination $workingDir\
-  mkdir "$workingDir\Build" -Force
-  
+
   Write-Host -ForegroundColor Green "Updating assembly version"
   Write-Host
   Update-AssemblyInfoFiles $workingSourceDir ($majorVersion + '.0.0') $version
@@ -107,23 +105,10 @@ task Package -depends Build {
     mkdir $workingDir\NuGet
     move -Path $workingSourceDir\GeoJSON.Net\bin\Release\*.nupkg -Destination $workingDir\NuGet
   }
-     
-  robocopy $workingSourceDir $workingDir\Package\Source\Src /MIR /NFL /NDL /NJS /NC /NS /NP /XD bin obj TestResults AppPackages .vs artifacts /XF *.suo *.user *.lock.json | Out-Default
-  robocopy $buildDir $workingDir\Package\Source\Build /MIR /NFL /NDL /NJS /NC /NS /NP /XD Temp /XF runbuild.txt | Out-Default
-  robocopy $docDir $workingDir\Package\Source\Doc /MIR /NFL /NDL /NJS /NC /NS /NP | Out-Default
-  robocopy $toolsDir $workingDir\Package\Source\Tools /MIR /NFL /NDL /NJS /NC /NS /NP | Out-Default
-  
-  Compress-Archive -Path $workingDir\Package\* -DestinationPath $workingDir\$zipFileName
-}
-
-
-# Unzip package to a location
-task Deploy -depends Package {
-  Expand-Archive -Path $workingDir\$zipFileName -DestinationPath "$workingDir\Deployed" 
 }
 
 # Run tests on deployed files
-task Test -depends Deploy {
+task Test -depends Package {
   foreach ($build in $script:enabledBuilds)
   {
     Write-Host "Calling $($build.TestsFunction)"
@@ -138,7 +123,47 @@ task Test -depends Deploy {
 
 
 
+function NetCliBuild()
+{
+  $projectPath = "$workingSourceDir\GeoJSON.Net.sln"
+  $libraryFrameworks = ($script:enabledBuilds | Select-Object @{Name="Framework";Expression={$_.Framework}} | select -expand Framework) -join ";"
+  $testFrameworks = ($script:enabledBuilds | Select-Object @{Name="Resolved";Expression={if ($_.TestFramework -ne $null) { $_.TestFramework } else { $_.Framework }}} | select -expand Resolved) -join ";"
 
+  $additionalConstants = switch($signAssemblies) { $true { "SIGNED" } default { "" } }
+
+  Write-Host -ForegroundColor Green "Restoring packages for $libraryFrameworks in $projectPath"
+  Write-Host
+
+  exec { & $script:msBuildPath "/t:restore" "/p:Configuration=Release" "/p:LibraryFrameworks=`"$libraryFrameworks`"" "/p:TestFrameworks=`"$testFrameworks`"" $projectPath | Out-Default } "Error restoring $projectPath"
+      
+  Write-Host -ForegroundColor Green "Building $libraryFrameworks in $projectPath"
+  Write-Host
+
+  exec { & $script:msBuildPath "/t:build" $projectPath "/p:Configuration=Release" "/p:LibraryFrameworks=`"$libraryFrameworks`"" "/p:TestFrameworks=`"$testFrameworks`"" "/p:AssemblyOriginatorKeyFile=$signKeyPath" "/p:SignAssembly=$signAssemblies" "/p:TreatWarningsAsErrors=$treatWarningsAsErrors" "/p:AdditionalConstants=$additionalConstants" }
+}
+
+function NUnitTests($build)
+{
+  $testDir = if ($build.TestFramework -ne $null) { $build.TestFramework } else { $build.Framework }
+  $framework = $build.NUnitFramework
+  $testRunDir = "$workingDir\Test\Bin\$($build.Framework)"
+
+  Write-Host -ForegroundColor Green "Copying test assembly $testDir to deployed directory"
+  Write-Host
+  robocopy "$workingSourceDir\GeoJSON.Net.Tests\bin\Release\$testDir" $testRunDir /MIR /NFL /NDL /NJS /NC /NS /NP /XO | Out-Default
+
+  Write-Host -ForegroundColor Green "Running NUnit tests $testDir"
+  Write-Host
+  try
+  {
+    Set-Location $testRunDir
+    exec { & $nunitConsolePath\tools\nunit3-console.exe "$testRunDir\GeoJSON.Net.Tests.dll" --framework=$framework --result=$workingDir\Test\$testDir.xml | Out-Default } "Error running $testDir tests"
+  }
+  finally
+  {
+    Set-Location $baseDir
+  }
+}
 
 
 function EnsureNuGetExists()
@@ -185,25 +210,6 @@ function GetVersion($majorVersion)
     return $majorVersion + "." + $minor
 }
 
-function NetCliBuild()
-{
-  $projectPath = "$workingSourceDir\GeoJSON.Net.sln"
-  $libraryFrameworks = ($script:enabledBuilds | Select-Object @{Name="Framework";Expression={$_.Framework}} | select -expand Framework) -join ";"
-  $testFrameworks = ($script:enabledBuilds | Select-Object @{Name="Resolved";Expression={if ($_.TestFramework -ne $null) { $_.TestFramework } else { $_.Framework }}} | select -expand Resolved) -join ";"
-
-  $additionalConstants = switch($signAssemblies) { $true { "SIGNED" } default { "" } }
-
-  Write-Host -ForegroundColor Green "Restoring packages for $libraryFrameworks in $projectPath"
-  Write-Host
-
-  exec { & $script:msBuildPath "/t:restore" "/p:Configuration=Release" "/p:LibraryFrameworks=`"$libraryFrameworks`"" "/p:TestFrameworks=`"$testFrameworks`"" $projectPath | Out-Default } "Error restoring $projectPath"
-      
-  Write-Host -ForegroundColor Green "Building $libraryFrameworks in $projectPath"
-  Write-Host
-
-  exec { & $script:msBuildPath "/t:build" $projectPath "/p:Configuration=Release" "/p:LibraryFrameworks=`"$libraryFrameworks`"" "/p:TestFrameworks=`"$testFrameworks`"" "/p:AssemblyOriginatorKeyFile=$signKeyPath" "/p:SignAssembly=$signAssemblies" "/p:TreatWarningsAsErrors=$treatWarningsAsErrors" "/p:AdditionalConstants=$additionalConstants" }
-}
-
 function Execute-Command($command) {
     $currentRetry = 0
     $success = $false
@@ -246,25 +252,3 @@ function Update-AssemblyInfoFiles ([string] $workingSourceDir, [string] $assembl
     }
 }
 
-function NUnitTests($build)
-{
-  $testDir = if ($build.TestFramework -ne $null) { $build.TestFramework } else { $build.Framework }
-  $framework = $build.NUnitFramework
-  $testRunDir = "$workingDir\Deployed\Bin\$($build.Framework)"
-
-  Write-Host -ForegroundColor Green "Copying test assembly $testDir to deployed directory"
-  Write-Host
-  robocopy "$workingSourceDir\GeoJSON.Net.Tests\bin\Release\$testDir" $testRunDir /MIR /NFL /NDL /NJS /NC /NS /NP /XO | Out-Default
-
-  Write-Host -ForegroundColor Green "Running NUnit tests $testDir"
-  Write-Host
-  try
-  {
-    Set-Location $testRunDir
-    exec { & $nunitConsolePath\tools\nunit3-console.exe "$testRunDir\GeoJSON.Net.Tests.dll" --framework=$framework --result=$workingDir\$testDir.xml | Out-Default } "Error running $testDir tests"
-  }
-  finally
-  {
-    Set-Location $baseDir
-  }
-}

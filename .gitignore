@@ -36,3 +36,6 @@ _ReSharper*/
 *.dotCover
 StyleCop.Cache
 .vs/*
+/src/.vs/config
+/working
+/build/Temp

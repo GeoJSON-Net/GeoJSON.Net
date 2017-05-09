@@ -20,7 +20,7 @@
     <RootNamespace>GeoJSON.Net</RootNamespace>
     <AssemblyName>GeoJSON.Net</AssemblyName>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)'=='net35'">

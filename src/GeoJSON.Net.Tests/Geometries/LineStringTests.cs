@@ -3,7 +3,7 @@ using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
-namespace GeoJSON.Net.Tests.Geometry
+namespace GeoJSON.Net.Tests.Geometries
 {
     [TestFixture]
     public class LineStringTests : TestBase
