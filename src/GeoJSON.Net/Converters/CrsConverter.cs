@@ -1,5 +1,5 @@
 ﻿using System;
-#if (NET45 || PORTABLE45)
+#if (NETSTANDARD1_0)
 using System.Reflection;
 #endif
 using GeoJSON.Net.CoordinateReferenceSystem;
@@ -22,7 +22,7 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-#if (NET45 || PORTABLE45)
+#if (NETSTANDARD1_0)
             return typeof(ICRSObject).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
 #else
             return typeof(ICRSObject).IsAssignableFrom(objectType);

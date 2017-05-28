@@ -23,7 +23,7 @@ namespace GeoJSON.Net.Converters
 		/// </returns>
 		public override bool CanConvert(Type objectType)
 		{
-#if (NET45 || PORTABLE45)
+#if (NETSTANDARD1_0)
             return typeof(IGeoJSONObject).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
 #else
             return typeof(IGeoJSONObject).IsAssignableFrom(objectType);

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using GeoJSON.Net.Converters;
 using GeoJSON.Net.Geometry;
@@ -127,7 +128,7 @@ namespace GeoJSON.Net.Tests.Geometries
         public void Serialization_Observes_Indenting_Setting_Of_Serializer(IGeometryObject geometry)
         {
             var json = JsonConvert.SerializeObject(geometry, Formatting.Indented);
-            Assert.IsTrue(json.Contains("\r\n"));
+            Assert.IsTrue(json.Contains(Environment.NewLine));
         }
 
         [Test]
@@ -135,7 +136,7 @@ namespace GeoJSON.Net.Tests.Geometries
         public void Serialization_Observes_No_Indenting_Setting_Of_Serializer(IGeometryObject geometry)
         {
             var json = JsonConvert.SerializeObject(geometry, Formatting.None);
-            Assert.IsFalse(json.Contains("\r\n"));
+            Assert.IsFalse(json.Contains(Environment.NewLine));
             Assert.IsFalse(json.Contains(" "));
         }
 

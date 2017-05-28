@@ -7,7 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-#if (NET45 || PORTABLE45)
+#if (NETSTANDARD1_0)
 using System.Reflection;
 #endif
 using GeoJSON.Net.Geometry;
@@ -30,7 +30,7 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-#if (NET45 || PORTABLE45)
+#if (NETSTANDARD1_0)
             return typeof(IGeometryObject).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
 #else
             return typeof(IGeometryObject).IsAssignableFrom(objectType);

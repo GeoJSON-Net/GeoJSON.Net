@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup>
-    <TargetFrameworks Condition="'$(TestFrameworks)'==''">net45;net40;net35;</TargetFrameworks>
+    <TargetFrameworks Condition="'$(TestFrameworks)'==''">netcoreapp1.1;net45;net40;net35;</TargetFrameworks>
     <TargetFrameworks Condition="'$(TestFrameworks)'!=''">$(TestFrameworks)</TargetFrameworks>
     <VersionPrefix>1.0</VersionPrefix>
     <Authors>Matt Hunt</Authors>
@@ -13,101 +13,18 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\GeoJSON.Net\GeoJSON.Net.csproj" />
-  </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)'=='net45'">
     <PackageReference Include="NUnit" Version="3.6.1" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.8.0-alpha1" />
   </ItemGroup>
-  <PropertyGroup Condition="'$(TargetFramework)'=='net45'">
-    <DefineConstants>NET45;$(AdditionalConstants)</DefineConstants>
-  </PropertyGroup>
-  <ItemGroup Condition="'$(TargetFramework)'=='net40'">
-    <PackageReference Include="NUnit" Version="3.6.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.7.0" />
+  <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp1.1'">
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
   </ItemGroup>
-  <PropertyGroup Condition="'$(TargetFramework)'=='net40'">
-    <DefineConstants>NET40;$(AdditionalConstants)</DefineConstants>
-  </PropertyGroup>
-  <ItemGroup Condition="'$(TargetFramework)'=='net35'">
-    <PackageReference Include="NUnit" Version="3.6.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.7.0" />
-  </ItemGroup>
-  <PropertyGroup Condition="'$(TargetFramework)'=='net35'">
-    <DefineConstants>NET35;$(AdditionalConstants)</DefineConstants>
-  </PropertyGroup>
-
   <ItemGroup>
-    <None Update="Features\FeatureCollectionTests_Can_Deserialize.json">
+    <None Update="Features\*.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Features\FeatureTests_Can_Deserialize_Point_Feature.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Features\FeatureTests_Can_Serialize_LineString_Feature.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Features\FeatureTests_Can_Serialize_MultiLineString_Feature.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Features\FeatureTests_Can_Serialize_MultiPolygon_Feature.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Features\FeatureTests_Can_Serialize_Point_Feature.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Features\FeatureTests_Can_Serialize_Polygon_Feature.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Geometries\LineStringTests_Can_Deserialize.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Geometries\LineStringTests_Can_Serialize.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Geometries\MultiLineStringTests_Can_Deserialize.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Geometries\MultiLineStringTests_Can_Serialize.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Geometries\MultiPointTests_Can_Deserialize.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Geometries\MultiPointTests_Can_Serialize.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Geometries\MultiPolygonTests_Can_Deserialize.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Geometries\MultiPolygonTests_Can_Serialize.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Geometries\PolygonTests_Can_Deserialize.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Geometries\PolygonTests_Can_Deserialize_With_Exterior_And_Inner_Rings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Geometries\PolygonTests_Can_Serialize.json">
+    <None Update="Geometries\*.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
-
-  <ItemGroup Condition="'$(TargetFramework)'=='net451'">
-    <PackageReference Include="NUnit" Version="3.6.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.7.0" />
-  </ItemGroup>
-  <PropertyGroup Condition="'$(TargetFramework)'=='net451'">
-    <ReferringTargetFrameworkForProjectReferences>.NETPortable,Version=v0.0,Profile=Profile328</ReferringTargetFrameworkForProjectReferences>
-    <DefineConstants>PORTABLE40;$(AdditionalConstants)</DefineConstants>
-  </PropertyGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)'=='net452'">
-    <PackageReference Include="NUnit" Version="3.6.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.7.0" />
-  </ItemGroup>
-  <PropertyGroup Condition="'$(TargetFramework)'=='net452'">
-    <ReferringTargetFrameworkForProjectReferences>.NETPortable,Version=v0.0,Profile=Profile259</ReferringTargetFrameworkForProjectReferences>
-    <DefineConstants>PORTABLE45;$(AdditionalConstants)</DefineConstants>
-  </PropertyGroup>
 </Project>

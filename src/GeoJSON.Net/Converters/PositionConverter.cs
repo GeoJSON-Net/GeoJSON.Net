@@ -25,7 +25,7 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-#if (NET45 || PORTABLE45)
+#if (NETSTANDARD1_0)
             return typeof(Position).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());       
 #else            
             return typeof(Position).IsAssignableFrom(objectType);

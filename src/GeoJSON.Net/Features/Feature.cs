@@ -10,7 +10,7 @@ using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
-#if (NET45 || PORTABLE45)
+#if (NETSTANDARD1_0)
 using System.Reflection;
 #endif
 
@@ -60,7 +60,7 @@ namespace GeoJSON.Net.Features
             }
             else
             {
-#if (NET45 || PORTABLE45)
+#if (NETSTANDARD1_0)
                 Properties = properties.GetType().GetTypeInfo().DeclaredProperties
                     .Where(propertyInfo => propertyInfo.GetMethod.IsPublic)
                     .ToDictionary(propertyInfo => propertyInfo.Name, propertyInfo => propertyInfo.GetValue(properties, null));
