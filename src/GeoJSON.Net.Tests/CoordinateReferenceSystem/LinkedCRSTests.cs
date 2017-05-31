@@ -63,7 +63,7 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
         {
             System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
             var argumentExpection = Assert.Throws<ArgumentException>(() => { var crs = new LinkedCRS("http://not-a-valid-<>-url"); });
-            Assert.AreEqual("must be a dereferenceable URI\r\nParameter name: href", argumentExpection.Message);
+            Assert.AreEqual($"must be a dereferenceable URI{Environment.NewLine}Parameter name: href", argumentExpection.Message);
         }
 
         [Test]
