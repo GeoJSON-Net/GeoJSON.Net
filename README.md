@@ -19,7 +19,7 @@ That's all there is. Really. From there on you can go ahead and (De-)Serialize G
 
 
 ## News
-It's probably best to check out the [commits] and the [issues](https://github.com/GeoJSON-Net/GeoJSON.Net/commits/master) what has been added over time.
+It's probably best to check out the [commits](https://github.com/GeoJSON-Net/GeoJSON.Net/commits/master) and the [issues](https://github.com/GeoJSON-Net/GeoJSON.Net/issues) what has been added over time.
 
 ## Contributing
 Highly welcome! Just fork away and send a pull request.
