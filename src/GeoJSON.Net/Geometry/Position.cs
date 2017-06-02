@@ -1,4 +1,6 @@
-﻿using System;
+﻿// Copyright © Joerg Battermann 2014, Matt Hunt 2017
+
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -51,12 +53,12 @@ namespace GeoJSON.Net.Geometry
                 throw new ArgumentNullException(nameof(longitude));
             }
 
-            if (string.IsNullOrWhiteSpace(latitude))
+            if (string.IsNullOrEmpty(latitude))
             {
                 throw new ArgumentOutOfRangeException(nameof(latitude), "May not be empty.");
             }
 
-            if (string.IsNullOrWhiteSpace(longitude))
+            if (string.IsNullOrEmpty(longitude))
             {
                 throw new ArgumentOutOfRangeException(nameof(longitude), "May not be empty.");
             }

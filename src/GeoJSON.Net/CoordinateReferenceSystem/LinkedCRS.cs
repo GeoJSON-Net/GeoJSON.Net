@@ -1,8 +1,4 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="LinkedCRS.cs" company="Joerg Battermann">
-//   Copyright © Joerg Battermann 2014
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿// Copyright © Joerg Battermann 2014, Matt Hunt 2017
 
 using System;
 using System.Collections.Generic;
@@ -43,7 +39,7 @@ namespace GeoJSON.Net.CoordinateReferenceSystem
 
             Properties = new Dictionary<string, object> { { "href", href } };
 
-            if (!string.IsNullOrWhiteSpace(type))
+            if (!string.IsNullOrEmpty(type))
             {
                 Properties.Add("type", type);
             }

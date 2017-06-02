@@ -1,14 +1,10 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="MultiPoint.cs" company="Joerg Battermann">
-//   Copyright © Joerg Battermann 2014
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿// Copyright © Joerg Battermann 2014, Matt Hunt 2017
 
 using System.Collections.Generic;
 using System.Linq;
-using GeoJSON.Net.Converters;
 using Newtonsoft.Json;
 using System;
+using GeoJSON.Net.Converters;
 
 namespace GeoJSON.Net.Geometry
 {

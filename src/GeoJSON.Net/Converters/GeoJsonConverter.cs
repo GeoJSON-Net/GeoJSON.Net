@@ -1,7 +1,11 @@
-﻿using System;
+﻿// Copyright © Joerg Battermann 2014, Matt Hunt 2017
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
+#if (!NET35 || !NET40)
 using System.Reflection;
+#endif
 using GeoJSON.Net.Feature;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
@@ -23,7 +27,11 @@ namespace GeoJSON.Net.Converters
 		/// </returns>
 		public override bool CanConvert(Type objectType)
 		{
+#if (NET35 || NET40)
+            return typeof(IGeoJSONObject).IsAssignableFrom(objectType);
+#else
 			return typeof(IGeoJSONObject).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
+#endif
 		}
 
 		/// <summary>
@@ -89,13 +97,23 @@ namespace GeoJSON.Net.Converters
 			}
 
 			GeoJSONObjectType geoJsonType;
-
-			if (!Enum.TryParse(token.Value<string>(), true, out geoJsonType))
+#if (NET35)
+            try
+            {
+                geoJsonType = (GeoJSONObjectType)Enum.Parse(typeof(GeoJSONObjectType), token.Value<string>(), true);
+            }
+            catch(Exception)
+            {
+                throw new JsonReaderException("Type must be a valid geojson object type");
+            }                
+#else
+            if (!Enum.TryParse(token.Value<string>(), true, out geoJsonType))
 			{
 				throw new JsonReaderException("type must be a valid geojson object type");
 			}
+#endif
 
-			switch (geoJsonType)
+            switch (geoJsonType)
 			{
 				case GeoJSONObjectType.Point:
 					return value.ToObject<Point>();

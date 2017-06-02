@@ -3,8 +3,8 @@
     <metadata>
         <id>GeoJSON.Net</id>
         <version>$version$-alpha</version>
-        <authors>Matt Hunt, Joerg Battermann</authors>
-        <owners>Matt Hunt, Joerg Battermann and GeoJSON.Net contributors.</owners>
+        <authors>Matt Hunt,Joerg Battermann</authors>
+        <owners>Matt Hunt,Joerg Battermann and GeoJSON.Net contributors.</owners>
         <licenseUrl>https://github.com/GeoJSON-Net/GeoJSON.Net/blob/master/LICENSE.md</licenseUrl>
         <projectUrl>https://github.com/GeoJSON-Net/GeoJSON.Net</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -13,11 +13,16 @@
         <language>en-US</language>
         <tags>geojson geo json geolocation</tags>
         <dependencies>
-            <dependency id="Newtonsoft.Json" version="7.0.1" />
+            <dependency id="Newtonsoft.Json" version="10.0.1" />
         </dependencies>
     </metadata>
     <files>
-        <file src="src\GeoJSON.Net\bin\Release\GeoJSON.Net.dll" target="lib\portable-net40+sl5+wp80+win8+wpa81\GeoJSON.Net.dll" />
-        <file src="src\GeoJSON.Net\bin\Release\GeoJSON.Net.XML" target="lib\portable-net40+sl5+wp80+win8+wpa81\GeoJSON.Net.XML" />
+        <file src="src\GeoJSON.Net\bin\Release\net35\GeoJSON.Net.dll" target="lib\net35\GeoJSON.Net.dll" />
+        <file src="src\GeoJSON.Net\bin\Release\net40\GeoJSON.Net.dll" target="lib\net40\GeoJSON.Net.dll" />
+        <file src="src\GeoJSON.Net\bin\Release\net45\GeoJSON.Net.dll" target="lib\net45\GeoJSON.Net.dll" />
+        <file src="src\GeoJSON.Net\bin\Release\netstandard1.0\GeoJSON.Net.dll" target="lib\netstandard1.0\GeoJSON.Net.dll" />
+        <file src="src\GeoJSON.Net\bin\Release\netstandard1.1\GeoJSON.Net.dll" target="lib\netstandard1.1\GeoJSON.Net.dll" />
+        <file src="LICENSE.md" target="LICENSE.md" />
+        <file src="README.md" target="README.md" />
     </files>
 </package>

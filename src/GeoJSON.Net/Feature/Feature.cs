@@ -1,12 +1,10 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Feature.cs" company="Joerg Battermann">
-//   Copyright © Joerg Battermann 2014
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿// Copyright © Joerg Battermann 2014, Matt Hunt 2017
 
 using System.Collections.Generic;
-using System.Linq;
+#if (!NET35 || !NET40)
 using System.Reflection;
+using System.Linq;
+#endif
 using GeoJSON.Net.Converters;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
@@ -58,9 +56,16 @@ namespace GeoJSON.Net.Feature
             }
             else
             {
+#if(NET35 || NET40)
+                Properties = properties.GetType().GetProperties()
+                    .Where(propertyInfo => propertyInfo.GetGetMethod().IsPublic)
+                    .ToDictionary(propertyInfo => propertyInfo.Name,
+                        propertyInfo => propertyInfo.GetValue(properties, null));
+#else
                 Properties = properties.GetType().GetTypeInfo().DeclaredProperties
                     .Where(propertyInfo => propertyInfo.GetMethod.IsPublic)
                     .ToDictionary(propertyInfo => propertyInfo.Name, propertyInfo => propertyInfo.GetValue(properties, null));
+#endif
             }
 
             Type = GeoJSONObjectType.Feature;
@@ -90,7 +95,7 @@ namespace GeoJSON.Net.Feature
         [JsonProperty(PropertyName = "properties", Required = Required.AllowNull)]
         public Dictionary<string, object> Properties { get; private set; }
 
-        #region IEqualityComparer, IEquatable
+#region IEqualityComparer, IEquatable
 
         /// <summary>
         /// Determines whether the specified object is equal to the current object
@@ -165,7 +170,7 @@ namespace GeoJSON.Net.Feature
             return obj.GetHashCode();
         }
 
-        #endregion
+#endregion
 
     }
 }

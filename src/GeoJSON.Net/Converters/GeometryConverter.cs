@@ -1,13 +1,11 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="GeometryConverter.cs" company="Joerg Battermann">
-//   Copyright © Joerg Battermann 2014
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿// Copyright © Joerg Battermann 2014, Matt Hunt 2017
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
+#if (!NET35 || !NET40)
 using System.Reflection;
+#endif
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -28,7 +26,11 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
+#if (NET35 || NET40)
+            return typeof(IGeometryObject).IsAssignableFrom(objectType);
+#else
             return typeof(IGeometryObject).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
+#endif
         }
 
         /// <summary>
@@ -95,10 +97,21 @@ namespace GeoJSON.Net.Converters
 
             GeoJSONObjectType geoJsonType;
 
+#if (NET35)
+            try
+            {
+                geoJsonType = (GeoJSONObjectType)Enum.Parse(typeof(GeoJSONObjectType), token.Value<string>(), true);
+            }
+            catch (Exception)
+            {
+                throw new JsonReaderException("Type must be a valid geojson object type");
+            }
+#else
             if (!Enum.TryParse(token.Value<string>(), true, out geoJsonType))
             {
                 throw new JsonReaderException("type must be a valid geojson geometry object type");
             }
+#endif
 
             switch (geoJsonType)
             {

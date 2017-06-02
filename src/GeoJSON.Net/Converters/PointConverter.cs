@@ -1,11 +1,9 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="PositionConverter.cs" company="Joerg Battermann">
-//   Copyright © Joerg Battermann 2014
-// </copyright>
-// --------------------------------------------------------------------------------------------------------------------
+﻿// Copyright © Joerg Battermann 2014, Matt Hunt 2017
 
 using System;
+#if (!NET35 || !NET40)
 using System.Reflection;
+#endif
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 
@@ -25,7 +23,11 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
+#if (NET35 || NET40)
+            return typeof(Point).IsAssignableFrom(objectType);
+#else
             return typeof(Position).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
+#endif
         }
 
         /// <summary>

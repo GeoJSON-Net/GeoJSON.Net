@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.1</TargetFramework>
+    <TargetFrameworks>netstandard1.0;netstandard1.1;net35;net40;net45;</TargetFrameworks>
     <AssemblyName>GeoJSON.Net</AssemblyName>
-    <AssemblyVersion>0.0.0.7</AssemblyVersion>
-    <FileVersion>0.0.0.7</FileVersion>
-    <Description>.Net types for the GeoJSON 1.0 specs to be used with Json.Net</Description>
+    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <FileVersion>1.0.0</FileVersion>
+    <Description>.Net types for the GeoJSON RFC to be used with Json.Net</Description>
     <Authors></Authors>
-    <Company>Joerg Battermann</Company>
-    <Copyright>Copyright © Joerg Battermann and Contributor, 2014 - 2016</Copyright>
+    <Company>GeoJSON.Net</Company>
+    <Copyright>Copyright © Matt Hunt, Joerg Battermann and Contributor, 2014 - 2017</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
