@@ -5,3 +5,4 @@ lib/*
 
 #OSX
 .DS_Store
+/.vs
