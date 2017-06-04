@@ -23,11 +23,7 @@ namespace GeoJSON.Net.Converters
 		/// </returns>
 		public override bool CanConvert(Type objectType)
 		{
-#if (NETSTANDARD1_0)
             return typeof(IGeoJSONObject).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
-#else
-            return typeof(IGeoJSONObject).IsAssignableFrom(objectType);
-#endif
         }
 
         /// <summary>
@@ -85,31 +81,18 @@ namespace GeoJSON.Net.Converters
 		/// </exception>
 		private static IGeoJSONObject ReadGeoJson(JObject value)
 		{
-			JToken token;
 
-			if (!value.TryGetValue("type", StringComparison.OrdinalIgnoreCase, out token))
-			{
-				throw new JsonReaderException("json must contain a \"type\" property");
-			}
-
-			GeoJSONObjectType geoJsonType;
-#if (NET35)
-            try
+            if (!value.TryGetValue("type", StringComparison.OrdinalIgnoreCase, out var token))
             {
-                geoJsonType = (GeoJSONObjectType)Enum.Parse(typeof(GeoJSONObjectType), token.Value<string>(), true);
+                throw new JsonReaderException("json must contain a \"type\" property");
             }
-            catch(Exception)
+
+            if (!Enum.TryParse(token.Value<string>(), true, out GeoJSONObjectType geoJsonType))
             {
                 throw new JsonReaderException("Type must be a valid geojson object type");
-            }                
-#else
-            if (!Enum.TryParse(token.Value<string>(), true, out geoJsonType))
-			{
-				throw new JsonReaderException("Type must be a valid geojson object type");
-			}
-#endif
+            }
 
-			switch (geoJsonType)
+            switch (geoJsonType)
 			{
 				case GeoJSONObjectType.Point:
 					return value.ToObject<Point>();

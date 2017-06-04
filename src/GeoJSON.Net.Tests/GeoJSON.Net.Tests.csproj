@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk" ToolsVersion="15.0">
   <PropertyGroup>
-    <TargetFrameworks Condition="'$(TestFrameworks)'==''">netcoreapp1.1;net45;net40;net35;</TargetFrameworks>
-    <TargetFrameworks Condition="'$(TestFrameworks)'!=''">$(TestFrameworks)</TargetFrameworks>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
     <VersionPrefix>1.0</VersionPrefix>
     <Authors>Matt Hunt</Authors>
     <NeutralLanguage>en-US</NeutralLanguage>
@@ -26,5 +25,8 @@
     <None Update="Geometries\*.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>
 </Project>

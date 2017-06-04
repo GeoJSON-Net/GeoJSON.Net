@@ -6,7 +6,8 @@ namespace GeoJSON.Net.Tests
 {
     public abstract class TestBase
     {
-        private static readonly string AssemblyName = typeof(TestBase).GetTypeInfo().Assembly.GetName().Name;
+        private static readonly string AssemblyName = typeof(TestBase)
+            .GetTypeInfo().Assembly.GetName().Name;
 
         public static string AssemblyDirectory
         {
@@ -23,7 +24,7 @@ namespace GeoJSON.Net.Tests
         {
             var type = GetType().Name;
             var projectFolder = GetType().Namespace.Substring(AssemblyName.Length + 1);
-            var path = Path.Combine(AssemblyDirectory, projectFolder, $"{type}_{name}.json");
+            var path = Path.Combine(Path.Combine(AssemblyDirectory, projectFolder), $"{type}_{name}.json");
 
             if (!File.Exists(path))
             {

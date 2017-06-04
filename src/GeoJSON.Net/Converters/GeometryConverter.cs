@@ -7,9 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-#if (NETSTANDARD1_0)
 using System.Reflection;
-#endif
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -30,11 +28,7 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-#if (NETSTANDARD1_0)
             return typeof(IGeometryObject).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
-#else
-            return typeof(IGeometryObject).IsAssignableFrom(objectType);
-#endif
         }
 
         /// <summary>
@@ -92,30 +86,15 @@ namespace GeoJSON.Net.Converters
         /// </exception>
         private static IGeometryObject ReadGeoJson(JObject value)
         {
-            JToken token;
 
-            if (!value.TryGetValue("type", StringComparison.OrdinalIgnoreCase, out token))
+            if (!value.TryGetValue("type", StringComparison.OrdinalIgnoreCase, out var token))
             {
                 throw new JsonReaderException("json must contain a \"type\" property");
             }
-
-            GeoJSONObjectType geoJsonType;
-
-#if (NET35)
-            try
-            {
-                geoJsonType = (GeoJSONObjectType)Enum.Parse(typeof(GeoJSONObjectType), token.Value<string>(), true);
-            }
-            catch(Exception)
-            {
-                throw new JsonReaderException("Type must be a valid geojson object type");
-            }                
-#else
-            if (!Enum.TryParse(token.Value<string>(), true, out geoJsonType))
+            if (!Enum.TryParse(token.Value<string>(), true, out GeoJSONObjectType geoJsonType))
             {
                 throw new JsonReaderException("Type must be a valid geojson geometry object type");
             }
-#endif
 
             switch (geoJsonType)
             {

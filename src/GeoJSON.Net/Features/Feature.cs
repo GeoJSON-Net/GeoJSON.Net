@@ -10,9 +10,7 @@ using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
-#if (NETSTANDARD1_0)
 using System.Reflection;
-#endif
 
 namespace GeoJSON.Net.Features
 {
@@ -59,17 +57,10 @@ namespace GeoJSON.Net.Features
                 Properties = new Dictionary<string, object>();
             }
             else
-            {
-#if (NETSTANDARD1_0)
+            { 
                 Properties = properties.GetType().GetTypeInfo().DeclaredProperties
                     .Where(propertyInfo => propertyInfo.GetMethod.IsPublic)
                     .ToDictionary(propertyInfo => propertyInfo.Name, propertyInfo => propertyInfo.GetValue(properties, null));
-#else
-                Properties = properties.GetType().GetProperties()
-                    .Where(propertyInfo => propertyInfo.GetGetMethod().IsPublic)
-                    .ToDictionary(propertyInfo => propertyInfo.Name,
-                        propertyInfo => propertyInfo.GetValue(properties, null));
-#endif
             }
 
             Type = GeoJSONObjectType.Feature;

@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks Condition="'$(LibraryFrameworks)'==''">net35;netstandard10</TargetFrameworks>
-    <TargetFrameworks Condition="'$(LibraryFrameworks)'!=''">$(LibraryFrameworks)</TargetFrameworks>
+    <TargetFramework>netstandard10</TargetFramework>
     <VersionPrefix>1.0.1</VersionPrefix>
     <VersionSuffix>alpha</VersionSuffix>
     <Authors>Matt Hunt, Joerg Battermann</Authors>
