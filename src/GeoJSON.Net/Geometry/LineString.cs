@@ -41,7 +41,7 @@ namespace GeoJSON.Net.Geometry
             if (coordsList.Count < 2)
             {
                 throw new ArgumentOutOfRangeException(
-                    nameof(coordinates), 
+                    nameof(coordinates),
                     "According to the GeoJSON v1.0 spec a LineString must have at least two or more positions.");
             }
 
@@ -65,12 +65,12 @@ namespace GeoJSON.Net.Geometry
         /// </returns>
         public bool IsClosed()
         {
-            var firstCoordinate = Coordinates[0] as Position;
+            var firstCoordinate = Coordinates[0] as IPosition;
 
             if (firstCoordinate != null)
             {
-                var lastCoordinate = Coordinates[Coordinates.Count - 1] as Position;
-               
+                var lastCoordinate = Coordinates[Coordinates.Count - 1] as IPosition;
+
                 return firstCoordinate.Latitude == lastCoordinate.Latitude
                        && firstCoordinate.Longitude == lastCoordinate.Longitude
                        && firstCoordinate.Altitude == lastCoordinate.Altitude;
