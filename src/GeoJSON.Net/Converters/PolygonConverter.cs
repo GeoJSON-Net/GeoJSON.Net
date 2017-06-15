@@ -61,7 +61,7 @@ namespace GeoJSON.Net.Converters
             var coordinateElements = value as List<LineString>;
             if (coordinateElements != null && coordinateElements.Count > 0)
             {
-                if (coordinateElements[0].Coordinates[0] is Position)
+                if (coordinateElements[0].Coordinates[0] is IPosition)
                 {
                     writer.WriteStartArray();
 
