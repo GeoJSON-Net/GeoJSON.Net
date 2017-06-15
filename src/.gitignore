@@ -32,3 +32,4 @@ _ReSharper*/
 **/StyleCop.Cache
 *.dotCover
 StyleCop.Cache
+*.GhostDoc.xml
