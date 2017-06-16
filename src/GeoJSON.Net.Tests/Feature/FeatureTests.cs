@@ -24,9 +24,9 @@ namespace GeoJSON.Net.Tests.Feature
             Assert.IsTrue(feature.Properties.ContainsKey("name"));
             Assert.AreEqual(feature.Properties["name"], "Dinagat Islands");
 
-            Assert.AreEqual(feature.Id, "test-id");
+            Assert.AreEqual("test-id", feature.Id);
 
-            Assert.AreEqual(feature.Geometry.Type, GeoJSONObjectType.Point);
+            Assert.AreEqual(GeoJSONObjectType.Point, feature.Geometry.Type);
         }
 
         [Test]

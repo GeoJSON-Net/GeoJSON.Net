@@ -18,8 +18,29 @@ namespace GeoJSON.Net.Feature
     /// <remarks>
     /// See https://tools.ietf.org/html/rfc7946#section-3.2
     /// </remarks>
-    public class Feature : GeoJSONObject, IEqualityComparer<Feature>, IEquatable<Feature>
+    public class Feature : Feature<IGeometryObject>
     {
+        [JsonConstructor]
+        public Feature(IGeometryObject geometry, Dictionary<string, object> properties = null, string id = null) 
+            : base(geometry, properties, id)
+        {
+        }
+
+        public Feature(IGeometryObject geometry, object properties, string id = null) 
+            : base(geometry, properties, id)
+        {
+        }
+    }
+
+
+    /// <summary>
+    /// Typed GeoJSON Feature class
+    /// </summary>
+    /// <remarks>Returns correctly typed Geometry property</remarks>
+    /// <typeparam name="TGeometry"></typeparam>
+    public class Feature<TGeometry> : GeoJSONObject, IEqualityComparer<Feature<TGeometry>>, IEquatable<Feature<TGeometry>> where TGeometry : IGeometryObject
+    {
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Feature" /> class.
         /// </summary>
@@ -27,7 +48,7 @@ namespace GeoJSON.Net.Feature
         /// <param name="properties">The properties.</param>
         /// <param name="id">The (optional) identifier.</param>
         [JsonConstructor]
-        public Feature(IGeometryObject geometry, Dictionary<string, object> properties = null, string id = null)
+        public Feature(TGeometry geometry, Dictionary<string, object> properties = null, string id = null)
         {
             Geometry = geometry;
             Properties = properties ?? new Dictionary<string, object>();
@@ -45,7 +66,7 @@ namespace GeoJSON.Net.Feature
         /// properties
         /// </param>
         /// <param name="id">The (optional) identifier.</param>
-        public Feature(IGeometryObject geometry, object properties, string id = null)
+        public Feature(TGeometry geometry, object properties, string id = null)
         {
             Geometry = geometry;
             Id = id;
@@ -79,7 +100,7 @@ namespace GeoJSON.Net.Feature
         /// </value>
         [JsonProperty(PropertyName = "geometry", Required = Required.AllowNull)]
         [JsonConverter(typeof(GeometryConverter))]
-        public IGeometryObject Geometry { get; private set; }
+        public TGeometry Geometry { get; private set; }
 
         /// <summary>
         ///     Gets or sets the id.
@@ -95,20 +116,21 @@ namespace GeoJSON.Net.Feature
         [JsonProperty(PropertyName = "properties", Required = Required.AllowNull)]
         public Dictionary<string, object> Properties { get; private set; }
 
-#region IEqualityComparer, IEquatable
+
+        #region IEqualityComparer, IEquatable
 
         /// <summary>
         /// Determines whether the specified object is equal to the current object
         /// </summary>
         public override bool Equals(object obj)
         {
-            return Equals(this, obj as Feature);
+            return Equals(this, obj as Feature<TGeometry>);
         }
 
         /// <summary>
         /// Determines whether the specified object is equal to the current object
         /// </summary>
-        public bool Equals(Feature other)
+        public bool Equals(Feature<TGeometry> other)
         {
             return Equals(this, other);
         }
@@ -116,11 +138,11 @@ namespace GeoJSON.Net.Feature
         /// <summary>
         /// Determines whether the specified object instances are considered equal
         /// </summary>
-        public bool Equals(Feature left, Feature right)
+        public bool Equals(Feature<TGeometry> left, Feature<TGeometry> right)
         {
             if (base.Equals(left, right))
             {
-                return GetHashCode(left) == GetHashCode(right); 
+                return GetHashCode(left) == GetHashCode(right);
             }
             return false;
         }
@@ -128,7 +150,7 @@ namespace GeoJSON.Net.Feature
         /// <summary>
         /// Determines whether the specified object instances are considered equal
         /// </summary>
-        public static bool operator ==(Feature left, Feature right)
+        public static bool operator ==(Feature<TGeometry> left, Feature<TGeometry> right)
         {
             if (ReferenceEquals(left, right))
             {
@@ -144,7 +166,7 @@ namespace GeoJSON.Net.Feature
         /// <summary>
         /// Determines whether the specified object instances are not considered equal
         /// </summary>
-        public static bool operator !=(Feature left, Feature right)
+        public static bool operator !=(Feature<TGeometry> left, Feature<TGeometry> right)
         {
             return !(left == right);
         }
@@ -165,12 +187,12 @@ namespace GeoJSON.Net.Feature
         /// <summary>
         /// Returns the hash code for the specified object
         /// </summary>
-        public int GetHashCode(Feature obj)
+        public int GetHashCode(Feature<TGeometry> obj)
         {
             return obj.GetHashCode();
         }
 
-#endregion
+        #endregion
 
     }
 }
