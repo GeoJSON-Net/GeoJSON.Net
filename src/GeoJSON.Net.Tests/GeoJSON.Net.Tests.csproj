@@ -51,6 +51,7 @@
     <Compile Include="CoordinateReferenceSystem\UnspecifiedCRSTests.cs" />
     <Compile Include="Feature\FeatureCollectionTests.cs" />
     <Compile Include="Feature\FeatureTests.cs" />
+    <Compile Include="Feature\GenericFeatureTests.cs" />
     <Compile Include="Feature\TestFeatureEnum.cs" />
     <Compile Include="Feature\TestFeatureProperty.cs" />
     <Compile Include="Geometry\GeometryTests.cs" />
@@ -72,7 +73,7 @@
     <Content Include="Feature\FeatureTests_Can_Deserialize_Point_Feature.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-	<Content Include="Feature\FeatureTests_Can_Deserialize_Typed_Point_Feature.json">
+    <Content Include="Feature\GenericFeatureTests_Can_Deserialize_Typed_Point_Feature.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Feature\FeatureTests_Can_Serialize_LineString_Feature.json">
@@ -87,7 +88,7 @@
     <Content Include="Feature\FeatureTests_Can_Serialize_Point_Feature.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-	<Content Include="Feature\FeatureTests_Can_Serialize_Typed_Point_Feature.json">
+    <Content Include="Feature\GenericFeatureTests_Can_Serialize_Typed_Point_Feature.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Feature\FeatureTests_Can_Serialize_Polygon_Feature.json">
