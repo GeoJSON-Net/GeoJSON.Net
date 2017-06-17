@@ -28,6 +28,8 @@ namespace GeoJSON.Net.Feature
             Geometry = geometry;
             Properties = properties;
             Id = id;
+
+            Type = GeoJSONObjectType.Feature;
         }
         
         [JsonProperty(PropertyName = "id", NullValueHandling = NullValueHandling.Ignore)]

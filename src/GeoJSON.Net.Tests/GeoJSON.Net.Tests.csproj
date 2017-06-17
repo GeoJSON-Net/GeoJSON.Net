@@ -72,6 +72,9 @@
     <Content Include="Feature\FeatureTests_Can_Deserialize_Point_Feature.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+	<Content Include="Feature\FeatureTests_Can_Deserialize_Typed_Point_Feature.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Feature\FeatureTests_Can_Serialize_LineString_Feature.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -82,6 +85,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Feature\FeatureTests_Can_Serialize_Point_Feature.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+	<Content Include="Feature\FeatureTests_Can_Serialize_Typed_Point_Feature.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Feature\FeatureTests_Can_Serialize_Polygon_Feature.json">

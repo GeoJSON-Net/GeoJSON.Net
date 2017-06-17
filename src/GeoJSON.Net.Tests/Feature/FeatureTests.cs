@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using GeoJSON.Net.Feature;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -41,7 +42,7 @@ namespace GeoJSON.Net.Tests.Feature
         public void Can_Deserialize_Typed_Point_Feature()
         {
             var json = GetExpectedJson();
-            var feature = JsonConvert.DeserializeObject<Net.Feature.Feature<Point, TypedFeatureProps>>(json);
+            var feature = JsonConvert.DeserializeObject<Feature<Point, TypedFeatureProps>>(json);
 
             Assert.IsNotNull(feature);
 
@@ -122,6 +123,23 @@ namespace GeoJSON.Net.Tests.Feature
             var expectedJson = GetExpectedJson();
 
             var actualJson = JsonConvert.SerializeObject(new Net.Feature.Feature(geometry));
+
+            JsonAssert.AreEqual(expectedJson, actualJson);
+        }
+
+        [Test]
+        public void Can_Serialize_Typed_Point_Feature()
+        {
+            var geometry = new Point(new Position(1, 2));
+            var props = new TypedFeatureProps
+            {
+                Name = "no name here",
+                Value = 1.337
+            };
+            var feature = new Feature<Point, TypedFeatureProps>(geometry, props, "no id there");
+
+            var expectedJson = GetExpectedJson();
+            var actualJson = JsonConvert.SerializeObject(feature);
 
             JsonAssert.AreEqual(expectedJson, actualJson);
         }
