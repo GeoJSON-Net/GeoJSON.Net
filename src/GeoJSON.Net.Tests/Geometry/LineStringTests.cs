@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
@@ -39,6 +40,7 @@ namespace GeoJSON.Net.Tests.Geometry
 
             Assert.IsFalse(lineString.IsClosed());
         }
+        
 
         [Test]
         public void Can_Serialize()
@@ -79,6 +81,19 @@ namespace GeoJSON.Net.Tests.Geometry
             Assert.AreEqual(4, actualLineString.Coordinates.Count);
             Assert.AreEqual(expectedLineString.Coordinates[0].Latitude, actualLineString.Coordinates[0].Latitude);
             Assert.AreEqual(expectedLineString.Coordinates[0].Longitude, actualLineString.Coordinates[0].Longitude);
+        }
+
+        [Test]
+        public void Constructor_No_Coordinates_Throws_Exception()
+        {
+            var coordinates = new List<IPosition>();
+            Assert.Throws<ArgumentOutOfRangeException>(() => new LineString(coordinates));
+        }
+
+        [Test]
+        public void Constructor_Null_Coordinates_Throws_Exception()
+        {
+            Assert.Throws<ArgumentNullException>(() => new LineString(null));
         }
 
         private LineString GetLineString(double offset = 0.0)

@@ -65,18 +65,12 @@ namespace GeoJSON.Net.Geometry
         /// </returns>
         public bool IsClosed()
         {
-            var firstCoordinate = Coordinates[0] as Position;
+            var firstCoordinate = Coordinates[0];
+            var lastCoordinate = Coordinates[Coordinates.Count - 1];
 
-            if (firstCoordinate != null)
-            {
-                var lastCoordinate = Coordinates[Coordinates.Count - 1] as Position;
-               
-                return firstCoordinate.Latitude == lastCoordinate.Latitude
-                       && firstCoordinate.Longitude == lastCoordinate.Longitude
-                       && firstCoordinate.Altitude == lastCoordinate.Altitude;
-            }
-
-            return Coordinates[0].Equals(Coordinates[Coordinates.Count - 1]);
+            return firstCoordinate.Longitude.Equals(lastCoordinate.Longitude)
+                   && firstCoordinate.Latitude.Equals(lastCoordinate.Latitude)
+                   && firstCoordinate.Altitude.Equals(lastCoordinate.Altitude);
         }
 
         /// <summary>
