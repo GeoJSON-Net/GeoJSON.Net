@@ -46,8 +46,9 @@ namespace GeoJSON.Net.Geometry
             }
 
             Coordinates = coordsList;
-            Type = GeoJSONObjectType.LineString;
         }
+
+        public override GeoJSONObjectType Type => GeoJSONObjectType.LineString;
 
         /// <summary>
         /// Gets the Positions.

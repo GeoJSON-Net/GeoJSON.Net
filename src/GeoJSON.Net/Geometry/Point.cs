@@ -34,8 +34,9 @@ namespace GeoJSON.Net.Geometry
             }
 
             Coordinates = coordinates;
-            Type = GeoJSONObjectType.Point;
         }
+
+        public override GeoJSONObjectType Type => GeoJSONObjectType.Point;
 
         /// <summary>
         /// Gets or sets the Coordinate(s).

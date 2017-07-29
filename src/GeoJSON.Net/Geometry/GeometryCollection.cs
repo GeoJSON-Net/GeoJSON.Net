@@ -35,8 +35,9 @@ namespace GeoJSON.Net.Geometry
             }
 
             Geometries = geometries;
-            Type = GeoJSONObjectType.GeometryCollection;
         }
+
+        public override GeoJSONObjectType Type => GeoJSONObjectType.GeometryCollection;
 
         /// <summary>
         /// Gets the list of Polygons enclosed in this MultiPolygon.

@@ -39,8 +39,9 @@ namespace GeoJSON.Net.Geometry
             }
 
             Coordinates = coordinates;
-            Type = GeoJSONObjectType.Polygon;
         }
+
+        public override GeoJSONObjectType Type => GeoJSONObjectType.Polygon;
 
         /// <summary>
         /// Gets the list of points outlining this Polygon.

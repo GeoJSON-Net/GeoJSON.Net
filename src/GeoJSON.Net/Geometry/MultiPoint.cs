@@ -23,8 +23,9 @@ namespace GeoJSON.Net.Geometry
         public MultiPoint(List<Point> coordinates = null)
         {
             Coordinates = coordinates ?? new List<Point>();
-            Type = GeoJSONObjectType.MultiPoint;
         }
+
+        public override GeoJSONObjectType Type => GeoJSONObjectType.MultiPoint;
 
         /// <summary>
         /// Gets the Coordinates.

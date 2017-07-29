@@ -24,8 +24,9 @@ namespace GeoJSON.Net.Geometry
         public MultiLineString(List<LineString> coordinates)
         {
             Coordinates = coordinates ?? new List<LineString>();
-            Type = GeoJSONObjectType.MultiLineString;
         }
+
+        public override GeoJSONObjectType Type => GeoJSONObjectType.MultiLineString;
 
         /// <summary>
         /// Gets the Coordinates.

@@ -56,15 +56,12 @@ namespace GeoJSON.Net
         public ICRSObject CRS { get; set; }
 
         /// <summary>
-        ///     Gets the (mandatory) type of the
+        ///     The (mandatory) type of the
         ///     <see cref="https://tools.ietf.org/html/rfc7946#section-3">GeoJSON Object</see>.
         /// </summary>
-        /// <value>
-        ///     The type of the object.
-        /// </value>
         [JsonProperty(PropertyName = "type", Required = Required.Always, DefaultValueHandling = DefaultValueHandling.Include)]
         [JsonConverter(typeof(StringEnumConverter))]
-        public GeoJSONObjectType Type { get; internal set; }
+        public abstract GeoJSONObjectType Type { get; }
 
         /// <summary>
         ///     Called when [deserialized].

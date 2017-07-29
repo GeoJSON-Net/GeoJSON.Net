@@ -31,8 +31,9 @@ namespace GeoJSON.Net.Feature
             }
 
             Features = features;
-            Type = GeoJSONObjectType.FeatureCollection;
         }
+
+        public override GeoJSONObjectType Type => GeoJSONObjectType.FeatureCollection;
 
         /// <summary>
         /// Gets the features.

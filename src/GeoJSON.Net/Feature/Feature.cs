@@ -28,9 +28,9 @@ namespace GeoJSON.Net.Feature
             Geometry = geometry;
             Properties = properties;
             Id = id;
-
-            Type = GeoJSONObjectType.Feature;
         }
+
+        public override GeoJSONObjectType Type => GeoJSONObjectType.Feature;
         
         [JsonProperty(PropertyName = "id", NullValueHandling = NullValueHandling.Ignore)]
         public string Id { get; }
@@ -137,8 +137,6 @@ namespace GeoJSON.Net.Feature
             Geometry = geometry;
             Properties = properties ?? new Dictionary<string, object>();
             Id = id;
-
-            Type = GeoJSONObjectType.Feature;
         }
 
         /// <summary>
@@ -172,9 +170,9 @@ namespace GeoJSON.Net.Feature
                     .ToDictionary(propertyInfo => propertyInfo.Name, propertyInfo => propertyInfo.GetValue(properties, null));
 #endif
             }
-
-            Type = GeoJSONObjectType.Feature;
         }
+
+        public override GeoJSONObjectType Type => GeoJSONObjectType.Feature;
 
         /// <summary>
         /// Gets or sets the geometry.
