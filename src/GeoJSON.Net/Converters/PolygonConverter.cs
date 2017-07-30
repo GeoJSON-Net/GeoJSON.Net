@@ -2,6 +2,9 @@
 
 using System;
 using System.Collections.Generic;
+#if (!NET35 || !NET40)
+using System.Reflection;
+#endif
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 
@@ -23,7 +26,11 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(Polygon);
+            #if (NET35 || NET40)
+            return typeof(IEnumerable<LineString>).IsAssignableFrom(objectType);
+#else
+			return typeof(IEnumerable<LineString>).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
+#endif
         }
 
         /// <summary>
@@ -43,7 +50,7 @@ namespace GeoJSON.Net.Converters
 
             foreach (var ring in rings)
             {
-                var positions = (IEnumerable<IPosition>)LineStringConverter.ReadJson(reader, typeof(LineString), ring, serializer);
+                var positions = (IEnumerable<IPosition>)LineStringConverter.ReadJson(reader, typeof(IEnumerable<IPosition>), ring, serializer);
                 lineStrings.Add(new LineString(positions));
             }
 
@@ -58,8 +65,7 @@ namespace GeoJSON.Net.Converters
         /// <param name="serializer">The calling serializer.</param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            var coordinateElements = value as List<LineString>;
-            if (coordinateElements != null && coordinateElements.Count > 0)
+            if (value is IReadOnlyList<LineString> coordinateElements && coordinateElements.Count > 0)
             {
                 if (coordinateElements[0].Coordinates[0] is Position)
                 {

@@ -25,7 +25,7 @@ namespace GeoJSON.Net.Geometry
         /// The linear rings with the first element in the array representing the exterior ring. 
         /// Any subsequent elements represent interior rings (or holes).
         /// </param>
-        public Polygon(List<LineString> coordinates)
+        public Polygon(IEnumerable<LineString> coordinates)
         {
             if (coordinates == null)
             {
@@ -38,17 +38,24 @@ namespace GeoJSON.Net.Geometry
                                             " (see GeoJSON spec at 'https://tools.ietf.org/html/rfc7946#section-3.1.6').", nameof(coordinates));
             }
 
-            Coordinates = coordinates;
+            Coordinates = coordinates.ToArray();
+        }
+
+        [JsonConstructor]
+        public Polygon(IEnumerable<IEnumerable<IEnumerable<double>>> coordinates)
+            : this(coordinates?.Select(line => new LineString(line)
+              ?? throw new ArgumentNullException(nameof(coordinates))))
+        {
         }
 
         public override GeoJSONObjectType Type => GeoJSONObjectType.Polygon;
 
         /// <summary>
-        /// Gets the list of points outlining this Polygon.
+        /// Gets the list of linestrings defining this <see cref={Polygon}/>.
         /// </summary>
-        [JsonProperty(PropertyName = "coordinates", Required = Required.Always)]
+        [JsonProperty("coordinates", Required = Required.Always)]
         [JsonConverter(typeof(PolygonConverter))]
-        public List<LineString> Coordinates { get; private set; }
+        public IReadOnlyList<LineString> Coordinates { get; }
 
         #region IEqualityComparer, IEquatable
 

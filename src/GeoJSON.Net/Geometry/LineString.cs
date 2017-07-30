@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using GeoJSON.Net.Converters;
+using GeoJSON.Net;
 using Newtonsoft.Json;
 
 namespace GeoJSON.Net.Geometry
@@ -21,7 +22,9 @@ namespace GeoJSON.Net.Geometry
         /// LineString
         /// </summary>
         [JsonConstructor]
-        protected internal LineString()
+        public LineString(IEnumerable<IEnumerable<double>> coordinates)
+        : this(coordinates?.Select(latLongAlt => latLongAlt.ToPosition())
+               ?? throw new ArgumentException(nameof(coordinates)))
         {
         }
 
@@ -36,27 +39,26 @@ namespace GeoJSON.Net.Geometry
                 throw new ArgumentNullException(nameof(coordinates));
             }
 
-            var coordsList = coordinates.ToList();
+            var coordsArray = coordinates.ToArray();
 
-            if (coordsList.Count < 2)
+            if (coordsArray.Length < 2)
             {
                 throw new ArgumentOutOfRangeException(
-                    nameof(coordinates), 
+                    nameof(coordinates),
                     "According to the GeoJSON v1.0 spec a LineString must have at least two or more positions.");
             }
 
-            Coordinates = coordsList;
+            Coordinates = coordsArray;
         }
 
         public override GeoJSONObjectType Type => GeoJSONObjectType.LineString;
 
         /// <summary>
-        /// Gets the Positions.
+        /// The positions of the line string.
         /// </summary>
-        /// <value>The Positions.</value>
-        [JsonProperty(PropertyName = "coordinates", Required = Required.Always)]
+        [JsonProperty("coordinates", Required = Required.Always)]
         [JsonConverter(typeof(LineStringConverter))]
-        public List<IPosition> Coordinates { get; private set; }
+        public IReadOnlyList<IPosition> Coordinates { get; }
 
         /// <summary>
         /// Determines whether this instance has its first and last coordinate at the same position and thereby is closed.

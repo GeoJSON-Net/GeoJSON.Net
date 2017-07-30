@@ -93,7 +93,7 @@ namespace GeoJSON.Net.Tests.Geometry
         [Test]
         public void Constructor_Null_Coordinates_Throws_Exception()
         {
-            Assert.Throws<ArgumentNullException>(() => new LineString(null));
+            Assert.Throws<ArgumentNullException>(() => new LineString((IEnumerable<IPosition>)null));
         }
 
         private LineString GetLineString(double offset = 0.0)
