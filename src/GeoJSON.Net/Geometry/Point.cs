@@ -29,9 +29,8 @@ namespace GeoJSON.Net.Geometry
         public override GeoJSONObjectType Type => GeoJSONObjectType.Point;
 
         /// <summary>
-        /// Gets or sets the Coordinate(s).
+        /// The <see cref="IPosition" /> underlying this point.
         /// </summary>
-        /// <value>The Coordinates.</value>
         [JsonProperty("coordinates", Required = Required.Always)]
         [JsonConverter(typeof(PositionConverter))]
         public IPosition Coordinates { get; }

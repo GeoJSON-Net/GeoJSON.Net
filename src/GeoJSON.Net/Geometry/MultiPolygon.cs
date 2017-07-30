@@ -26,6 +26,10 @@ namespace GeoJSON.Net.Geometry
             Coordinates = polygons?.ToArray() ?? throw new ArgumentNullException(nameof(polygons));
         }
 
+        /// <summary>
+        /// Initializes a new <see cref="MultiPolygon" /> from a 4-d array of <see cref="double" />s
+        /// that matches the "coordinates" field in the JSON representation.
+        /// </summary>
         [JsonConstructor]
         public MultiPolygon(IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>> coordinates)
             : this(coordinates?.Select(polygon => new Polygon(polygon))

@@ -18,7 +18,8 @@ namespace GeoJSON.Net.Geometry
     public class LineString : GeoJSONObject, IGeometryObject, IEqualityComparer<LineString>, IEquatable<LineString>
     {
         /// <summary>
-        /// LineString
+        /// Initializes a new <see cref="LineString" /> from a 2-d array of <see cref="double" />s
+        /// that matches the "coordinates" field in the JSON representation.
         /// </summary>
         [JsonConstructor]
         public LineString(IEnumerable<IEnumerable<double>> coordinates)

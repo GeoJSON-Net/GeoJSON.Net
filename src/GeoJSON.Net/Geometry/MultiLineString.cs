@@ -26,6 +26,10 @@ namespace GeoJSON.Net.Geometry
             Coordinates = coordinates?.ToArray() ?? new LineString[0];
         }
 
+        /// <summary>
+        /// Initializes a new <see cref="PolMultiLineString" /> from a 3-d array
+        /// of <see cref="double" />s that matches the "coordinates" field in the JSON representation.
+        /// </summary>
         [JsonConstructor]
         public MultiLineString(IEnumerable<IEnumerable<IEnumerable<double>>> coordinates)
             : this(coordinates?.Select(line => new LineString(line))
