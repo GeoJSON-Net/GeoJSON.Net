@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 
 namespace GeoJSON.Net.Geometry
 {
@@ -16,9 +15,7 @@ namespace GeoJSON.Net.Geometry
     /// </summary>
     public class Position : IPosition, IEqualityComparer<Position>, IEquatable<Position>
     {
-        private static readonly NullableDoubleTenDecimalPlaceComparer DoubleComparer = new NullableDoubleTenDecimalPlaceComparer();
-
-        private readonly double?[] _coordinates;
+        private static readonly DoubleTenDecimalPlaceComparer DoubleComparer = new DoubleTenDecimalPlaceComparer();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Position" /> class.
@@ -27,7 +24,6 @@ namespace GeoJSON.Net.Geometry
         /// <param name="longitude">The longitude.</param>
         /// <param name="altitude">The altitude in m(eter).</param>
         public Position(double latitude, double longitude, double? altitude = null)
-            : this()
         {
             Latitude = latitude;
             Longitude = longitude;
@@ -41,7 +37,6 @@ namespace GeoJSON.Net.Geometry
         /// <param name="longitude">The longitude, e.g. '-77.008889'.</param>
         /// <param name="altitude">The altitude in m(eters).</param>
         public Position(string latitude, string longitude, string altitude = null)
-            : this()
         {
             if (latitude == null)
             {
@@ -90,43 +85,21 @@ namespace GeoJSON.Net.Geometry
                 Altitude = alt;
             }
         }
-
-        /// <summary>
-        /// Prevents a default instance of the <see cref="Position" /> class from being created.
-        /// </summary>
-        private Position()
-        {
-            _coordinates = new double?[3];
-        }
-
+        
         /// <summary>
         /// Gets the altitude.
         /// </summary>
-        public double? Altitude
-        {
-            get { return _coordinates[2]; }
-            private set { _coordinates[2] = value; }
-        }
+        public double? Altitude { get; }
 
         /// <summary>
         /// Gets the latitude.
         /// </summary>
-        /// <value>The latitude.</value>
-        public double Latitude
-        {
-            get { return _coordinates[0].GetValueOrDefault(); }
-            private set { _coordinates[0] = value; }
-        }
+        public double Latitude { get; }
 
         /// <summary>
         /// Gets the longitude.
         /// </summary>
-        /// <value>The longitude.</value>
-        public double Longitude
-        {
-            get { return _coordinates[1].GetValueOrDefault(); }
-            private set { _coordinates[1] = value; }
-        }
+        public double Longitude { get; }
         
         /// <summary>
         /// Returns a <see cref="string" /> that represents this instance.
@@ -177,11 +150,17 @@ namespace GeoJSON.Net.Geometry
             {
                 return true;
             }
-            if (ReferenceEquals(null, right))
+            if (ReferenceEquals(null, right) || ReferenceEquals(null, left))
             {
                 return false;
             }
-            return left != null && left._coordinates.SequenceEqual(right._coordinates, DoubleComparer);
+            if (!DoubleComparer.Equals(left.Latitude, right.Latitude) ||
+                !DoubleComparer.Equals(left.Longitude, right.Longitude))
+            {
+                return false;
+            }
+            return left.Altitude.HasValue == right.Altitude.HasValue &&
+                   (!left.Altitude.HasValue || DoubleComparer.Equals(left.Altitude.Value, right.Altitude.Value));
         }
 
         /// <summary>
@@ -197,11 +176,9 @@ namespace GeoJSON.Net.Geometry
         /// </summary>
         public override int GetHashCode()
         {
-            int hash = 1;
-            foreach (var item in _coordinates)
-            {
-                hash = (hash * 397) ^ item.GetHashCode();
-            }
+            var hash = 397 ^ Latitude.GetHashCode();
+            hash = (hash * 397) ^ Longitude.GetHashCode();
+            hash = (hash * 397) ^ Altitude.GetValueOrDefault().GetHashCode();
             return hash;
         }
 
