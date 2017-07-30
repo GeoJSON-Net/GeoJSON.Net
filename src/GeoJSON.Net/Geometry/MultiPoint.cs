@@ -20,20 +20,26 @@ namespace GeoJSON.Net.Geometry
         /// Initializes a new instance of the <see cref="MultiPoint" /> class.
         /// </summary>
         /// <param name="coordinates">The coordinates.</param>
-        public MultiPoint(List<Point> coordinates = null)
+        public MultiPoint(IEnumerable<Point> coordinates)
         {
-            Coordinates = coordinates ?? new List<Point>();
+            Coordinates = coordinates?.ToArray() ?? new Point[0];
+        }
+        
+        [JsonConstructor]
+        public MultiPoint(IEnumerable<IEnumerable<double>> coordinates)
+        : this(coordinates?.Select(position => new Point(position.ToPosition()))
+               ?? throw new ArgumentNullException(nameof(coordinates)))
+        {
         }
 
         public override GeoJSONObjectType Type => GeoJSONObjectType.MultiPoint;
 
         /// <summary>
-        /// Gets the Coordinates.
+        /// The points contained in this <see cref="MultiPoint"/>.
         /// </summary>
-        /// <value>The Coordinates.</value>
-        [JsonProperty(PropertyName = "coordinates", Required = Required.Always)]
-        [JsonConverter(typeof(MultiPointConverter))]
-        public List<Point> Coordinates { get; private set; }
+        [JsonProperty("coordinates", Required = Required.Always)]
+        [JsonConverter(typeof(PointEnumerableConverter))]
+        public IReadOnlyList<Point> Coordinates { get; }
 
         #region IEqualityComparer, IEquatable
 

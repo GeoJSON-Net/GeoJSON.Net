@@ -10,9 +10,9 @@ using Newtonsoft.Json.Linq;
 namespace GeoJSON.Net.Converters
 {
     /// <summary>
-    /// Converter to read and write the <see cref="MultiPolygon" /> type.
+    /// Converter to read and write the <see cref="IEnumerable{MultiPolygon}" /> type.
     /// </summary>
-    public class MultiPolygonConverter : JsonConverter
+    public class PolygonEnumerableConverter : JsonConverter
     {
         
         private static readonly LineStringEnumerableConverter PolygonConverter = new LineStringEnumerableConverter();
@@ -25,7 +25,7 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(MultiPolygon);
+            return objectType == typeof(IEnumerable<Polygon>);
         }
 
         /// <summary>
@@ -62,52 +62,18 @@ namespace GeoJSON.Net.Converters
         /// <param name="serializer">The calling serializer.</param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            var polygons = value as List<Polygon>;
-
-            if (polygons != null)
+            if (value is IEnumerable<Polygon> polygons)
             {
                 writer.WriteStartArray();
                 foreach (var polygon in polygons)
                 {
-                    // start of polygon
-                    writer.WriteStartArray();
-
-                    foreach (var lineString in polygon.Coordinates ?? new List<LineString>())
-                    {
-                        var coordinateElements = (lineString.Coordinates ?? new List<IPosition>())
-                            .OfType<Position>()
-                            .ToList();
-
-                        if (coordinateElements.Count == 0)
-                            continue;
-
-                        // start linear rings of polygon
-                        writer.WriteStartArray();
-
-                        foreach (var position in coordinateElements)
-                        {
-                            var coordinates = position;
-
-                            writer.WriteStartArray();
-
-                            writer.WriteValue(coordinates.Longitude);
-                            writer.WriteValue(coordinates.Latitude);
-
-                            if (coordinates.Altitude.HasValue)
-                            {
-                                writer.WriteValue(coordinates.Altitude.Value);
-                            }
-
-                            writer.WriteEndArray();
-                        }
-
-                        writer.WriteEndArray();
-                    }
-
-                    writer.WriteEndArray();
+                    PolygonConverter.WriteJson(writer, polygon.Coordinates, serializer);
                 }
-
                 writer.WriteEndArray();
+            }
+            else
+            {
+                throw new ArgumentException($"{nameof(PointEnumerableConverter)}: unsupported value {value}");
             }
         }
     }
