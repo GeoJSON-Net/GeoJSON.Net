@@ -36,10 +36,9 @@ namespace GeoJSON.Net.Geometry
         public override GeoJSONObjectType Type => GeoJSONObjectType.MultiLineString;
 
         /// <summary>
-        /// Gets the Coordinates.
+        /// The collection of line strings of this <see cref="MultiLineString"/>.
         /// </summary>
-        /// <value>The Coordinates.</value>
-        [JsonProperty(PropertyName = "coordinates", Required = Required.Always)]
+        [JsonProperty("coordinates", Required = Required.Always)]
         [JsonConverter(typeof(LineStringEnumerableConverter))]
         public IReadOnlyList<LineString> Coordinates { get; }
 

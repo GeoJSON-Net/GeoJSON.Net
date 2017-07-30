@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 #if (!NET35 || !NET40)
 using System.Reflection;
 #endif
@@ -46,15 +47,12 @@ namespace GeoJSON.Net.Converters
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var rings = serializer.Deserialize<double[][][]>(reader);
-            var lineStrings = new List<LineString>(rings.Length);
-
-            foreach (var ring in rings)
-            {
-                var positions = (IEnumerable<IPosition>)LineStringConverter.ReadJson(reader, typeof(IEnumerable<IPosition>), ring, serializer);
-                lineStrings.Add(new LineString(positions));
-            }
-
-            return lineStrings;
+            return rings.Select(ring => new LineString((IEnumerable<IPosition>) LineStringConverter.ReadJson(
+                    reader,
+                    typeof(IEnumerable<IPosition>),
+                    ring,
+                    serializer)))
+                .ToArray();
         }
 
         /// <summary>
@@ -65,15 +63,13 @@ namespace GeoJSON.Net.Converters
         /// <param name="serializer">The calling serializer.</param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            if (value is IReadOnlyList<LineString> coordinateElements)
+            if (value is IEnumerable<LineString> coordinateElements)
             {
                 writer.WriteStartArray();
-
                 foreach (var subPolygon in coordinateElements)
                 {
                     LineStringConverter.WriteJson(writer, subPolygon.Coordinates, serializer);
                 }
-
                 writer.WriteEndArray();
             }
             else

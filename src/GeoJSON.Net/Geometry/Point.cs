@@ -23,11 +23,7 @@ namespace GeoJSON.Net.Geometry
         /// <param name="coordinates">The Position.</param>
         public Point(IPosition coordinates)
         {
-            if (coordinates == null)
-            {
-                throw new ArgumentNullException(nameof(coordinates));
-            }
-            Coordinates = coordinates;
+            Coordinates = coordinates ?? throw new ArgumentNullException(nameof(coordinates));
         }
 
         public override GeoJSONObjectType Type => GeoJSONObjectType.Point;
