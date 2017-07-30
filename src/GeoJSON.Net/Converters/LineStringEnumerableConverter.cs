@@ -11,11 +11,11 @@ using Newtonsoft.Json;
 namespace GeoJSON.Net.Converters
 {
     /// <summary>
-    /// Converter to read and write the <see cref="Polygon" /> type.
+    /// Converter to read and write the <see cref="IEnumerable{LineString}"> type.
     /// </summary>
-    public class PolygonConverter : JsonConverter
+    public class LineStringEnumerableConverter : JsonConverter
     {
-        private static readonly LineStringConverter LineStringConverter = new LineStringConverter();
+        private static readonly PositionEnumerableConverter LineStringConverter = new PositionEnumerableConverter();
 
         /// <summary>
         /// Determines whether this instance can convert the specified object type.
@@ -65,27 +65,20 @@ namespace GeoJSON.Net.Converters
         /// <param name="serializer">The calling serializer.</param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            if (value is IReadOnlyList<LineString> coordinateElements && coordinateElements.Count > 0)
+            if (value is IReadOnlyList<LineString> coordinateElements)
             {
-                if (coordinateElements[0].Coordinates[0] is Position)
-                {
-                    writer.WriteStartArray();
+                writer.WriteStartArray();
 
-                    foreach (var subPolygon in coordinateElements)
-                    {
-                        LineStringConverter.WriteJson(writer, subPolygon.Coordinates, serializer);
-                    }
-
-                    writer.WriteEndArray();
-                }
-                else
+                foreach (var subPolygon in coordinateElements)
                 {
-                    throw new NotImplementedException();
+                    LineStringConverter.WriteJson(writer, subPolygon.Coordinates, serializer);
                 }
+
+                writer.WriteEndArray();
             }
             else
             {
-                serializer.Serialize(writer, value);
+                throw new ArgumentException($"{nameof(LineStringEnumerableConverter)}: unsupported value type");
             }
         }
     }

@@ -57,7 +57,7 @@ namespace GeoJSON.Net.Geometry
         /// The positions of the line string.
         /// </summary>
         [JsonProperty("coordinates", Required = Required.Always)]
-        [JsonConverter(typeof(LineStringConverter))]
+        [JsonConverter(typeof(PositionEnumerableConverter))]
         public IReadOnlyList<IPosition> Coordinates { get; }
 
         /// <summary>

@@ -10,9 +10,10 @@ using Newtonsoft.Json;
 namespace GeoJSON.Net.Converters
 {
     /// <summary>
-    ///     Converter to read and write the <see cref="Point" /> type.
+    ///     Converter to read and write an <see cref="IPosition" />, that is,
+    ///     the coordinates of a <see cref="Point" />.
     /// </summary>
-    public class PointConverter : JsonConverter
+    public class PointCoordinatesConverter : JsonConverter
     {
         /// <summary>
         ///     Determines whether this instance can convert the specified object type.
@@ -24,9 +25,9 @@ namespace GeoJSON.Net.Converters
         public override bool CanConvert(Type objectType)
         {
 #if (NET35 || NET40)
-            return typeof(Point).IsAssignableFrom(objectType);
+            return typeof(IPosition).IsAssignableFrom(objectType);
 #else
-            return typeof(Position).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
+            return typeof(IPosition).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
 #endif
         }
 
@@ -84,8 +85,7 @@ namespace GeoJSON.Net.Converters
         /// <param name="serializer">The calling serializer.</param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            var coordinates = value as Position;
-            if (coordinates != null)
+            if (value is Position coordinates)
             {
                 writer.WriteStartArray();
 
@@ -101,7 +101,7 @@ namespace GeoJSON.Net.Converters
             }
             else
             {
-                serializer.Serialize(writer, value);
+                throw new NotImplementedException();
             }
         }
     }

@@ -21,9 +21,16 @@ namespace GeoJSON.Net.Geometry
         /// Initializes a new instance of the <see cref="MultiLineString" /> class.
         /// </summary>
         /// <param name="coordinates">The coordinates.</param>
-        public MultiLineString(List<LineString> coordinates)
+        public MultiLineString(IEnumerable<LineString> coordinates)
         {
-            Coordinates = coordinates ?? new List<LineString>();
+            Coordinates = coordinates?.ToArray() ?? new LineString[0];
+        }
+
+        [JsonConstructor]
+        public MultiLineString(IEnumerable<IEnumerable<IEnumerable<double>>> coordinates)
+            : this(coordinates?.Select(line => new LineString(line))
+                   ?? throw new ArgumentNullException(nameof(coordinates)))
+        {
         }
 
         public override GeoJSONObjectType Type => GeoJSONObjectType.MultiLineString;
@@ -33,8 +40,8 @@ namespace GeoJSON.Net.Geometry
         /// </summary>
         /// <value>The Coordinates.</value>
         [JsonProperty(PropertyName = "coordinates", Required = Required.Always)]
-        [JsonConverter(typeof(PolygonConverter))]
-        public List<LineString> Coordinates { get; private set; }
+        [JsonConverter(typeof(LineStringEnumerableConverter))]
+        public IReadOnlyList<LineString> Coordinates { get; }
 
         #region IEqualityComparer, IEquatable
 

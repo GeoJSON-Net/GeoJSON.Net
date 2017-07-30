@@ -27,34 +27,30 @@ namespace GeoJSON.Net.Geometry
         /// </param>
         public Polygon(IEnumerable<LineString> coordinates)
         {
-            if (coordinates == null)
-            {
-                throw new ArgumentNullException(nameof(coordinates));
-            }
-
-            if (coordinates.Any(linearRing => !linearRing.IsLinearRing()))
+            Coordinates = coordinates?.ToArray() ?? throw new ArgumentNullException(nameof(coordinates));
+            if (Coordinates.Any(linearRing => !linearRing.IsLinearRing()))
             {
                 throw new ArgumentException("All elements must be closed LineStrings with 4 or more positions" +
                                             " (see GeoJSON spec at 'https://tools.ietf.org/html/rfc7946#section-3.1.6').", nameof(coordinates));
             }
 
-            Coordinates = coordinates.ToArray();
+            
         }
 
         [JsonConstructor]
         public Polygon(IEnumerable<IEnumerable<IEnumerable<double>>> coordinates)
-            : this(coordinates?.Select(line => new LineString(line)
-              ?? throw new ArgumentNullException(nameof(coordinates))))
+            : this(coordinates?.Select(line => new LineString(line))
+              ?? throw new ArgumentNullException(nameof(coordinates)))
         {
         }
 
         public override GeoJSONObjectType Type => GeoJSONObjectType.Polygon;
 
         /// <summary>
-        /// Gets the list of linestrings defining this <see cref={Polygon}/>.
+        /// Gets the list of linestrings defining this <see cref="Polygon" />.
         /// </summary>
         [JsonProperty("coordinates", Required = Required.Always)]
-        [JsonConverter(typeof(PolygonConverter))]
+        [JsonConverter(typeof(LineStringEnumerableConverter))]
         public IReadOnlyList<LineString> Coordinates { get; }
 
         #region IEqualityComparer, IEquatable

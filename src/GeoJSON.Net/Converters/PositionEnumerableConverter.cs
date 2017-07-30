@@ -12,9 +12,9 @@ using Newtonsoft.Json.Linq;
 namespace GeoJSON.Net.Converters
 {
     /// <summary>
-    /// Converter to read and write the <see cref="LineString" /> type.
+    /// Converter to read and write the <see cref="IEnumerable{IPosition}" /> type.
     /// </summary>
-    public class LineStringConverter : JsonConverter
+    public class PositionEnumerableConverter : JsonConverter
     {
         /// <summary>
         ///     Determines whether this instance can convert the specified object type.
@@ -68,7 +68,7 @@ namespace GeoJSON.Net.Converters
         /// <param name="serializer">The calling serializer.</param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            if (value is IReadOnlyList<IPosition> coordinateElements && coordinateElements.Count > 0)
+            if (value is IReadOnlyList<IPosition> coordinateElements)
             {
                 JArray coordinateArray = new JArray();
                 foreach (var position in coordinateElements)
@@ -84,7 +84,7 @@ namespace GeoJSON.Net.Converters
             }
             else
             {
-                serializer.Serialize(writer, value);
+                throw new ArgumentException($"{nameof(PositionEnumerableConverter)}: unsupported value type");
             }
         }
     }

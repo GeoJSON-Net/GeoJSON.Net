@@ -14,6 +14,8 @@ namespace GeoJSON.Net.Converters
     /// </summary>
     public class MultiPolygonConverter : JsonConverter
     {
+        
+        private static readonly LineStringEnumerableConverter PolygonConverter = new LineStringEnumerableConverter();
         /// <summary>
         ///     Determines whether this instance can convert the specified object type.
         /// </summary>
@@ -39,11 +41,13 @@ namespace GeoJSON.Net.Converters
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var o = serializer.Deserialize<JArray>(reader);
-            var polygonConverter = new PolygonConverter();
             var polygons =
                 o.Select(
                     polygonObject =>
-                        polygonConverter.ReadJson(polygonObject.CreateReader(), typeof(Polygon), polygonObject, serializer) as List<LineString>)
+                        PolygonConverter.ReadJson(
+                            polygonObject.CreateReader(),
+                            typeof(IEnumerable<LineString>),
+                            polygonObject, serializer) as IEnumerable<LineString>)
                     .Select(lines => new Polygon(lines))
                     .ToList();
 

@@ -1,4 +1,4 @@
-// Copyright © Joerg Battermann 2014, Matt Hunt 2017
+// Copyright ï¿½ Joerg Battermann 2014, Matt Hunt 2017
 
 using System;
 using System.Collections.Generic;
@@ -20,7 +20,7 @@ namespace GeoJSON.Net.Converters
             var points = (List<Point>)value;
             if (points.Any())
             {
-                var converter = new PointConverter();
+                var converter = new PointCoordinatesConverter();
 
                 writer.WriteStartArray();
 
