@@ -40,7 +40,7 @@ namespace GeoJSON.Net.Feature
         public TGeometry Geometry { get; }
         
         [JsonProperty(PropertyName = "properties", Required = Required.AllowNull)]
-        public TProps Properties { get;}
+        public TProps Properties { get; }
         
         /// <summary>
         /// Equality comparer.
@@ -122,7 +122,7 @@ namespace GeoJSON.Net.Feature
     /// </summary>
     /// <remarks>Returns correctly typed Geometry property</remarks>
     /// <typeparam name="TGeometry"></typeparam>
-    public class Feature<TGeometry> : GeoJSONObject, IEqualityComparer<Feature<TGeometry>>, IEquatable<Feature<TGeometry>> where TGeometry : IGeometryObject
+    public class Feature<TGeometry> : Feature<TGeometry, Dictionary<string, object>>, IEquatable<Feature<TGeometry>> where TGeometry : IGeometryObject
     {
 
         /// <summary>
@@ -133,10 +133,8 @@ namespace GeoJSON.Net.Feature
         /// <param name="id">The (optional) identifier.</param>
         [JsonConstructor]
         public Feature(TGeometry geometry, Dictionary<string, object> properties = null, string id = null)
+        : base(geometry, properties ?? new Dictionary<string, object>(), id)
         {
-            Geometry = geometry;
-            Properties = properties ?? new Dictionary<string, object>();
-            Id = id;
         }
 
         /// <summary>
@@ -149,132 +147,54 @@ namespace GeoJSON.Net.Feature
         /// </param>
         /// <param name="id">The (optional) identifier.</param>
         public Feature(TGeometry geometry, object properties, string id = null)
+        : this(geometry, GetDictionaryOfPublicProperties(properties), id)
         {
-            Geometry = geometry;
-            Id = id;
+        }
 
+        private static Dictionary<string, object> GetDictionaryOfPublicProperties(object properties)
+        {
             if (properties == null)
             {
-                Properties = new Dictionary<string, object>();
+                return new Dictionary<string, object>();
             }
-            else
-            {
 #if(NET35 || NET40)
-                Properties = properties.GetType().GetProperties()
-                    .Where(propertyInfo => propertyInfo.GetGetMethod().IsPublic)
-                    .ToDictionary(propertyInfo => propertyInfo.Name,
-                        propertyInfo => propertyInfo.GetValue(properties, null));
+            return properties.GetType().GetProperties()
+                .Where(propertyInfo => propertyInfo.GetGetMethod().IsPublic)
+                .ToDictionary(propertyInfo => propertyInfo.Name,
+                    propertyInfo => propertyInfo.GetValue(properties, null));
 #else
-                Properties = properties.GetType().GetTypeInfo().DeclaredProperties
-                    .Where(propertyInfo => propertyInfo.GetMethod.IsPublic)
-                    .ToDictionary(propertyInfo => propertyInfo.Name, propertyInfo => propertyInfo.GetValue(properties, null));
+            return properties.GetType().GetTypeInfo().DeclaredProperties
+                .Where(propertyInfo => propertyInfo.GetMethod.IsPublic)
+                .ToDictionary(propertyInfo => propertyInfo.Name,
+                    propertyInfo => propertyInfo.GetValue(properties, null));
 #endif
-            }
         }
 
-        public override GeoJSONObjectType Type => GeoJSONObjectType.Feature;
-
-        /// <summary>
-        /// Gets or sets the geometry.
-        /// </summary>
-        /// <value>
-        /// The geometry.
-        /// </value>
-        [JsonProperty(PropertyName = "geometry", Required = Required.AllowNull)]
-        [JsonConverter(typeof(GeometryConverter))]
-        public TGeometry Geometry { get; private set; }
-
-        /// <summary>
-        ///     Gets or sets the id.
-        /// </summary>
-        /// <value>The handle.</value>
-        [JsonProperty(PropertyName = "id", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
-        public string Id { get; set; }
-
-        /// <summary>
-        /// Gets the properties.
-        /// </summary>
-        /// <value>The properties.</value>
-        [JsonProperty(PropertyName = "properties", Required = Required.AllowNull)]
-        public Dictionary<string, object> Properties { get; private set; }
-
-
-        #region IEqualityComparer, IEquatable
-
-        /// <summary>
-        /// Determines whether the specified object is equal to the current object
-        /// </summary>
-        public override bool Equals(object obj)
-        {
-            return Equals(this, obj as Feature<TGeometry>);
-        }
-
-        /// <summary>
-        /// Determines whether the specified object is equal to the current object
-        /// </summary>
         public bool Equals(Feature<TGeometry> other)
         {
-            return Equals(this, other);
+            return Geometry.Equals(other.Geometry);
         }
 
-        /// <summary>
-        /// Determines whether the specified object instances are considered equal
-        /// </summary>
-        public bool Equals(Feature<TGeometry> left, Feature<TGeometry> right)
+        public override bool Equals(object obj)
         {
-            if (base.Equals(left, right))
-            {
-                return GetHashCode(left) == GetHashCode(right);
-            }
-            return false;
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            return obj.GetType() == GetType() && Equals((Feature<TGeometry>) obj);
         }
 
-        /// <summary>
-        /// Determines whether the specified object instances are considered equal
-        /// </summary>
-        public static bool operator ==(Feature<TGeometry> left, Feature<TGeometry> right)
-        {
-            if (ReferenceEquals(left, right))
-            {
-                return true;
-            }
-            if (ReferenceEquals(null, left))
-            {
-                return false;
-            }
-            return left.Equals(right);
-        }
-
-        /// <summary>
-        /// Determines whether the specified object instances are not considered equal
-        /// </summary>
-        public static bool operator !=(Feature<TGeometry> left, Feature<TGeometry> right)
-        {
-            return !(left == right);
-        }
-
-        /// <summary>
-        /// Returns the hash code for this instance
-        /// </summary>
         public override int GetHashCode()
         {
-            int hash = base.GetHashCode();
-            if (Geometry != null)
-            {
-                hash = (hash * 397) ^ Geometry.GetHashCode();
-            }
-            return hash;
+            return Geometry.GetHashCode();
         }
 
-        /// <summary>
-        /// Returns the hash code for the specified object
-        /// </summary>
-        public int GetHashCode(Feature<TGeometry> obj)
+        public static bool operator ==(Feature<TGeometry> left, Feature<TGeometry> right)
         {
-            return obj.GetHashCode();
+            return left?.Equals(right) ?? ReferenceEquals(null, right);
         }
 
-        #endregion
-
+        public static bool operator !=(Feature<TGeometry> left, Feature<TGeometry> right)
+        {
+            return !(left?.Equals(right) ?? ReferenceEquals(null, right));
+        }
     }
 }
