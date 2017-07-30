@@ -3,9 +3,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using GeoJSON.Net.Exceptions;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace GeoJSON.Net.Converters
 {
@@ -14,7 +14,7 @@ namespace GeoJSON.Net.Converters
     /// </summary>
     public class PointEnumerableConverter : JsonConverter
     {
-        private static readonly PointCoordinatesConverter PositionConverter = new PointCoordinatesConverter();
+        private static readonly PositionConverter PositionConverter = new PositionConverter();
         /// <inheritdoc />
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
@@ -36,8 +36,8 @@ namespace GeoJSON.Net.Converters
         /// <inheritdoc />
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            var coordinates = serializer.Deserialize<double[][]>(reader);
-            return coordinates.Select(position => new Point(position.ToPosition()));
+            var coordinates = existingValue as JArray ?? serializer.Deserialize<JArray>(reader);
+            return coordinates.Select(position => new Point(position.ToObject<IEnumerable<double>>().ToPosition()));
         }
 
         /// <inheritdoc />

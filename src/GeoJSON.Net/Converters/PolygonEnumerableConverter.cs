@@ -43,11 +43,10 @@ namespace GeoJSON.Net.Converters
             var o = serializer.Deserialize<JArray>(reader);
             var polygons =
                 o.Select(
-                    polygonObject =>
-                        PolygonConverter.ReadJson(
+                    polygonObject => (IEnumerable<LineString>) PolygonConverter.ReadJson(
                             polygonObject.CreateReader(),
                             typeof(IEnumerable<LineString>),
-                            polygonObject, serializer) as IEnumerable<LineString>)
+                            polygonObject, serializer))
                     .Select(lines => new Polygon(lines))
                     .ToList();
 
