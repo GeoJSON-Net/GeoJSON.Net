@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using GeoJSON.Net.Converters;
 using Newtonsoft.Json;
@@ -25,29 +26,38 @@ namespace GeoJSON.Net.Geometry
         /// The linear rings with the first element in the array representing the exterior ring. 
         /// Any subsequent elements represent interior rings (or holes).
         /// </param>
-        public Polygon(List<LineString> coordinates)
+        public Polygon(IEnumerable<LineString> coordinates)
         {
-            if (coordinates == null)
-            {
-                throw new ArgumentNullException(nameof(coordinates));
-            }
-
-            if (coordinates.Any(linearRing => !linearRing.IsLinearRing()))
+            Coordinates = new ReadOnlyCollection<LineString>(
+                coordinates?.ToArray() ?? throw new ArgumentNullException(nameof(coordinates)));
+            if (Coordinates.Any(linearRing => !linearRing.IsLinearRing()))
             {
                 throw new ArgumentException("All elements must be closed LineStrings with 4 or more positions" +
                                             " (see GeoJSON spec at 'https://tools.ietf.org/html/rfc7946#section-3.1.6').", nameof(coordinates));
             }
 
-            Coordinates = coordinates;
-            Type = GeoJSONObjectType.Polygon;
+            
         }
 
         /// <summary>
-        /// Gets the list of points outlining this Polygon.
+        /// Initializes a new <see cref="Polygon" /> from a 3-d array of <see cref="double" />s
+        /// that matches the "coordinates" field in the JSON representation.
         /// </summary>
-        [JsonProperty(PropertyName = "coordinates", Required = Required.Always)]
-        [JsonConverter(typeof(PolygonConverter))]
-        public List<LineString> Coordinates { get; private set; }
+        [JsonConstructor]
+        public Polygon(IEnumerable<IEnumerable<IEnumerable<double>>> coordinates)
+            : this(coordinates?.Select(line => new LineString(line))
+              ?? throw new ArgumentNullException(nameof(coordinates)))
+        {
+        }
+
+        public override GeoJSONObjectType Type => GeoJSONObjectType.Polygon;
+
+        /// <summary>
+        /// Gets the list of linestrings defining this <see cref="Polygon" />.
+        /// </summary>
+        [JsonProperty("coordinates", Required = Required.Always)]
+        [JsonConverter(typeof(LineStringEnumerableConverter))]
+        public ReadOnlyCollection<LineString> Coordinates { get; }
 
         #region IEqualityComparer, IEquatable
 

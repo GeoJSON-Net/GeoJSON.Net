@@ -16,34 +16,24 @@ namespace GeoJSON.Net.Geometry
     /// </remarks>
     public class Point : GeoJSONObject, IGeometryObject, IEqualityComparer<Point>, IEquatable<Point>
     {
-        [JsonConstructor]
-        private Point()
-        {
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Point" /> class.
         /// </summary>
         /// <param name="coordinates">The Position.</param>
         public Point(IPosition coordinates)
-            : this()
         {
-            if (coordinates == null)
-            {
-                throw new ArgumentNullException(nameof(coordinates));
-            }
-
-            Coordinates = coordinates;
-            Type = GeoJSONObjectType.Point;
+            Coordinates = coordinates ?? throw new ArgumentNullException(nameof(coordinates));
         }
 
+        public override GeoJSONObjectType Type => GeoJSONObjectType.Point;
+
         /// <summary>
-        /// Gets or sets the Coordinate(s).
+        /// The <see cref="IPosition" /> underlying this point.
         /// </summary>
-        /// <value>The Coordinates.</value>
-        [JsonProperty(PropertyName = "coordinates", Required = Required.Always)]
-        [JsonConverter(typeof(PointConverter))]
-        public IPosition Coordinates { get; private set; }
+        [JsonProperty("coordinates", Required = Required.Always)]
+        [JsonConverter(typeof(PositionConverter))]
+        public IPosition Coordinates { get; }
 
         #region IEqualityComparer, IEquatable
 

@@ -3,22 +3,16 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 
 namespace GeoJSON.Net.Geometry
 {
     /// <summary>
-    /// A position is the fundamental geometry construct. 
-    /// The "coordinates" member of a geometry object is composed of one position (in the case of a Point geometry)
-    /// , an array of positions (LineString or MultiPoint geometries), 
-    /// an array of arrays of positions (Polygons, MultiLineStrings), 
-    /// or a multidimensional array of positions (MultiPolygon).
+    /// A position is the fundamental geometry construct, consisting of <see cref="Latitude" />,
+    /// <see cref="Longitude" /> and (optionally) <see cref="Altitude" />.
     /// </summary>
     public class Position : IPosition, IEqualityComparer<Position>, IEquatable<Position>
     {
-        private static readonly NullableDoubleTenDecimalPlaceComparer DoubleComparer = new NullableDoubleTenDecimalPlaceComparer();
-
-        private readonly double?[] _coordinates;
+        private static readonly DoubleTenDecimalPlaceComparer DoubleComparer = new DoubleTenDecimalPlaceComparer();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Position" /> class.
@@ -27,7 +21,6 @@ namespace GeoJSON.Net.Geometry
         /// <param name="longitude">The longitude.</param>
         /// <param name="altitude">The altitude in m(eter).</param>
         public Position(double latitude, double longitude, double? altitude = null)
-            : this()
         {
             Latitude = latitude;
             Longitude = longitude;
@@ -41,18 +34,7 @@ namespace GeoJSON.Net.Geometry
         /// <param name="longitude">The longitude, e.g. '-77.008889'.</param>
         /// <param name="altitude">The altitude in m(eters).</param>
         public Position(string latitude, string longitude, string altitude = null)
-            : this()
         {
-            if (latitude == null)
-            {
-                throw new ArgumentNullException(nameof(latitude));
-            }
-
-            if (longitude == null)
-            {
-                throw new ArgumentNullException(nameof(longitude));
-            }
-
             if (string.IsNullOrEmpty(latitude))
             {
                 throw new ArgumentOutOfRangeException(nameof(latitude), "May not be empty.");
@@ -63,15 +45,12 @@ namespace GeoJSON.Net.Geometry
                 throw new ArgumentOutOfRangeException(nameof(longitude), "May not be empty.");
             }
 
-            double lat;
-            double lon;
-
-            if (!double.TryParse(latitude, NumberStyles.Float, CultureInfo.InvariantCulture, out lat) || Math.Abs(lat) > 90)
+            if (!double.TryParse(latitude, NumberStyles.Float, CultureInfo.InvariantCulture, out double lat) || Math.Abs(lat) > 90)
             {
                 throw new ArgumentOutOfRangeException(nameof(latitude), "Latitude must be a proper lat (+/- double) value between -90 and 90.");
             }
 
-            if (!double.TryParse(longitude, NumberStyles.Float, CultureInfo.InvariantCulture, out lon) || Math.Abs(lon) > 180)
+            if (!double.TryParse(longitude, NumberStyles.Float, CultureInfo.InvariantCulture, out double lon) || Math.Abs(lon) > 180)
             {
                 throw new ArgumentOutOfRangeException(nameof(longitude), "Longitude must be a proper lon (+/- double) value between -180 and 180.");
             }
@@ -81,8 +60,7 @@ namespace GeoJSON.Net.Geometry
 
             if (altitude != null)
             {
-                double alt;
-                if (!double.TryParse(altitude, NumberStyles.Float, CultureInfo.InvariantCulture, out alt))
+                if (!double.TryParse(altitude, NumberStyles.Float, CultureInfo.InvariantCulture, out double alt))
                 {
                     throw new ArgumentOutOfRangeException(nameof(altitude), "Altitude must be a proper altitude (m(eter) as double) value, e.g. '6500'.");
                 }
@@ -90,43 +68,21 @@ namespace GeoJSON.Net.Geometry
                 Altitude = alt;
             }
         }
-
-        /// <summary>
-        /// Prevents a default instance of the <see cref="Position" /> class from being created.
-        /// </summary>
-        private Position()
-        {
-            _coordinates = new double?[3];
-        }
-
+        
         /// <summary>
         /// Gets the altitude.
         /// </summary>
-        public double? Altitude
-        {
-            get { return _coordinates[2]; }
-            private set { _coordinates[2] = value; }
-        }
+        public double? Altitude { get; }
 
         /// <summary>
         /// Gets the latitude.
         /// </summary>
-        /// <value>The latitude.</value>
-        public double Latitude
-        {
-            get { return _coordinates[0].GetValueOrDefault(); }
-            private set { _coordinates[0] = value; }
-        }
+        public double Latitude { get; }
 
         /// <summary>
         /// Gets the longitude.
         /// </summary>
-        /// <value>The longitude.</value>
-        public double Longitude
-        {
-            get { return _coordinates[1].GetValueOrDefault(); }
-            private set { _coordinates[1] = value; }
-        }
+        public double Longitude { get; }
         
         /// <summary>
         /// Returns a <see cref="string" /> that represents this instance.
@@ -177,11 +133,17 @@ namespace GeoJSON.Net.Geometry
             {
                 return true;
             }
-            if (ReferenceEquals(null, right))
+            if (ReferenceEquals(null, right) || ReferenceEquals(null, left))
             {
                 return false;
             }
-            return left != null && left._coordinates.SequenceEqual(right._coordinates, DoubleComparer);
+            if (!DoubleComparer.Equals(left.Latitude, right.Latitude) ||
+                !DoubleComparer.Equals(left.Longitude, right.Longitude))
+            {
+                return false;
+            }
+            return left.Altitude.HasValue == right.Altitude.HasValue &&
+                   (!left.Altitude.HasValue || DoubleComparer.Equals(left.Altitude.Value, right.Altitude.Value));
         }
 
         /// <summary>
@@ -197,11 +159,9 @@ namespace GeoJSON.Net.Geometry
         /// </summary>
         public override int GetHashCode()
         {
-            int hash = 1;
-            foreach (var item in _coordinates)
-            {
-                hash = (hash * 397) ^ item.GetHashCode();
-            }
+            var hash = 397 ^ Latitude.GetHashCode();
+            hash = (hash * 397) ^ Longitude.GetHashCode();
+            hash = (hash * 397) ^ Altitude.GetValueOrDefault().GetHashCode();
             return hash;
         }
 

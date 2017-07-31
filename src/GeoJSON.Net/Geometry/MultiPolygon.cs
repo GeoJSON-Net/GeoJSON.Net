@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using GeoJSON.Net.Converters;
 using Newtonsoft.Json;
@@ -16,34 +17,36 @@ namespace GeoJSON.Net.Geometry
     /// </remarks>
     public class MultiPolygon : GeoJSONObject, IGeometryObject, IEqualityComparer<MultiPolygon>, IEquatable<MultiPolygon>
     {
-        /// <summary>
-        /// MultiPolygon
-        /// </summary>
-        public MultiPolygon() : this(new List<Polygon>())
-        {
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MultiPolygon" /> class.
         /// </summary>
         /// <param name="polygons">The polygons contained in this MultiPolygon.</param>
-        public MultiPolygon(List<Polygon> polygons)
+        public MultiPolygon(IEnumerable<Polygon> polygons)
         {
-            if (polygons == null)
-            {
-                throw new ArgumentNullException(nameof(polygons));
-            }
-
-            Coordinates = polygons;
-            Type = GeoJSONObjectType.MultiPolygon;
+            Coordinates = new ReadOnlyCollection<Polygon>(
+                polygons?.ToArray() ?? throw new ArgumentNullException(nameof(polygons)));
         }
 
         /// <summary>
-        /// Gets the list of Polygons enclosed in this MultiPolygon.
+        /// Initializes a new <see cref="MultiPolygon" /> from a 4-d array of <see cref="double" />s
+        /// that matches the "coordinates" field in the JSON representation.
         /// </summary>
-        [JsonProperty(PropertyName = "coordinates", Required = Required.Always)]
-        [JsonConverter(typeof(MultiPolygonConverter))]
-        public List<Polygon> Coordinates { get; private set; }
+        [JsonConstructor]
+        public MultiPolygon(IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>> coordinates)
+            : this(coordinates?.Select(polygon => new Polygon(polygon))
+                   ?? throw new ArgumentNullException(nameof(coordinates)))
+        {
+        }
+
+        public override GeoJSONObjectType Type => GeoJSONObjectType.MultiPolygon;
+
+        /// <summary>
+        /// The list of Polygons enclosed in this <see cref="MultiPolygon"/>.
+        /// </summary>
+        [JsonProperty("coordinates", Required = Required.Always)]
+        [JsonConverter(typeof(PolygonEnumerableConverter))]
+        public ReadOnlyCollection<Polygon> Coordinates { get; }
 
         #region IEqualityComparer, IEquatable
 

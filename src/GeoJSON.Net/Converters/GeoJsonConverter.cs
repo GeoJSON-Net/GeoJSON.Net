@@ -3,9 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-#if (!NET35 || !NET40)
-using System.Reflection;
-#endif
 using GeoJSON.Net.Feature;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
@@ -27,11 +24,7 @@ namespace GeoJSON.Net.Converters
 		/// </returns>
 		public override bool CanConvert(Type objectType)
 		{
-#if (NET35 || NET40)
-            return typeof(IGeoJSONObject).IsAssignableFrom(objectType);
-#else
-			return typeof(IGeoJSONObject).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
-#endif
+			return typeof(IGeoJSONObject).IsAssignableFromType(objectType);
 		}
 
 		/// <summary>

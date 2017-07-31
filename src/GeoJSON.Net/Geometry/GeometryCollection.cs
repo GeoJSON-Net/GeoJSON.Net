@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using GeoJSON.Net.Converters;
 using Newtonsoft.Json;
@@ -19,7 +20,7 @@ namespace GeoJSON.Net.Geometry
         /// <summary>
         /// Initializes a new instance of the <see cref="GeometryCollection" /> class.
         /// </summary>
-        public GeometryCollection() : this(new List<IGeometryObject>())
+        public GeometryCollection() : this(new IGeometryObject[0])
         {
         }
 
@@ -27,23 +28,20 @@ namespace GeoJSON.Net.Geometry
         /// Initializes a new instance of the <see cref="GeometryCollection" /> class.
         /// </summary>
         /// <param name="geometries">The geometries contained in this GeometryCollection.</param>
-        public GeometryCollection(List<IGeometryObject> geometries)
+        public GeometryCollection(IEnumerable<IGeometryObject> geometries)
         {
-            if (geometries == null)
-            {
-                throw new ArgumentNullException(nameof(geometries));
-            }
-
-            Geometries = geometries;
-            Type = GeoJSONObjectType.GeometryCollection;
+            Geometries = new ReadOnlyCollection<IGeometryObject>(
+                geometries?.ToArray() ?? throw new ArgumentNullException(nameof(geometries)));
         }
+
+        public override GeoJSONObjectType Type => GeoJSONObjectType.GeometryCollection;
 
         /// <summary>
         /// Gets the list of Polygons enclosed in this MultiPolygon.
         /// </summary>
-        [JsonProperty(PropertyName = "geometries", Required = Required.Always)]
+        [JsonProperty("geometries", Required = Required.Always)]
         [JsonConverter(typeof(GeometryConverter))]
-        public List<IGeometryObject> Geometries { get; private set; }
+        public ReadOnlyCollection<IGeometryObject> Geometries { get; private set; }
 
         #region IEqualityComparer, IEquatable
 

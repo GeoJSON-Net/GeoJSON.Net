@@ -1,9 +1,6 @@
 ﻿// Copyright © Joerg Battermann 2014, Matt Hunt 2017
 
 using System;
-#if (!NET35 || !NET40)
-using System.Reflection;
-#endif
 using GeoJSON.Net.CoordinateReferenceSystem;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -24,11 +21,7 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-#if (NET35 || NET40)
-            return typeof(ICRSObject).IsAssignableFrom(objectType);
-#else
-            return typeof(ICRSObject).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
-#endif
+            return typeof(ICRSObject).IsAssignableFromType(objectType);
         }
 
         /// <summary>

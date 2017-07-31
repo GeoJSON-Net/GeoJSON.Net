@@ -1,18 +1,16 @@
 ﻿// Copyright © Joerg Battermann 2014, Matt Hunt 2017
 
 using System;
-#if (!NET35 || !NET40)
-using System.Reflection;
-#endif
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 
 namespace GeoJSON.Net.Converters
 {
     /// <summary>
-    ///     Converter to read and write the <see cref="Point" /> type.
+    ///     Converter to read and write an <see cref="IPosition" />, that is,
+    ///     the coordinates of a <see cref="Point" />.
     /// </summary>
-    public class PointConverter : JsonConverter
+    public class PositionConverter : JsonConverter
     {
         /// <summary>
         ///     Determines whether this instance can convert the specified object type.
@@ -23,11 +21,7 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-#if (NET35 || NET40)
-            return typeof(Point).IsAssignableFrom(objectType);
-#else
-            return typeof(Position).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
-#endif
+            return typeof(IPosition).IsAssignableFromType(objectType);
         }
 
         /// <summary>
@@ -52,28 +46,7 @@ namespace GeoJSON.Net.Converters
             {
                 throw new JsonReaderException("error parsing coordinates", e);
             }
-
-            if (coordinates == null)
-            {
-                throw new JsonReaderException("coordinates cannot be null");
-            }
-
-            if (coordinates.Length != 2 && coordinates.Length != 3)
-            {
-                throw new JsonReaderException(
-                    string.Format("Expected 2 or 3 coordinates but received {0}", coordinates));
-            }
-
-            var longitude = coordinates[0];
-            var latitude = coordinates[1];
-            double? altitude = null;
-
-            if (coordinates.Length == 3)
-            {
-                altitude = coordinates[2];
-            }
-
-            return new Position(latitude, longitude, altitude);
+            return coordinates?.ToPosition() ?? throw new JsonReaderException("coordinates cannot be null");
         }
 
         /// <summary>
@@ -84,8 +57,7 @@ namespace GeoJSON.Net.Converters
         /// <param name="serializer">The calling serializer.</param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            var coordinates = value as Position;
-            if (coordinates != null)
+            if (value is Position coordinates)
             {
                 writer.WriteStartArray();
 
@@ -101,7 +73,7 @@ namespace GeoJSON.Net.Converters
             }
             else
             {
-                serializer.Serialize(writer, value);
+                throw new NotImplementedException();
             }
         }
     }

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -9,10 +10,12 @@ using Newtonsoft.Json.Linq;
 namespace GeoJSON.Net.Converters
 {
     /// <summary>
-    /// Converter to read and write the <see cref="LineString" /> type.
+    /// Converter to read and write the <see cref="IEnumerable{IPosition}" /> type.
     /// </summary>
-    public class LineStringConverter : JsonConverter
+    public class PositionEnumerableConverter : JsonConverter
     {
+        private static readonly PositionConverter PositionConverter = new PositionConverter();
+        
         /// <summary>
         ///     Determines whether this instance can convert the specified object type.
         /// </summary>
@@ -22,7 +25,7 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(LineString);
+            return typeof(IEnumerable<IPosition>).IsAssignableFromType(objectType);
         }
 
         /// <summary>
@@ -37,20 +40,12 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            double[][] coordinates = existingValue == null
-                ? serializer.Deserialize<double[][]>(reader)
-                : (double[][])existingValue;
-
-            IList<IPosition> positions = new List<IPosition>(coordinates.Length);
-
-            foreach (var coordinate in coordinates)
-            {
-                positions.Add(coordinate.Length == 3
-                    ? new Position(coordinate[1], coordinate[0], coordinate[2])
-                    : new Position(coordinate[1], coordinate[0]));
-            }
-
-            return positions;
+            var coordinates = existingValue as JArray ?? serializer.Deserialize<JArray>(reader);
+            return coordinates.Select(pos => PositionConverter.ReadJson(pos.CreateReader(),
+                typeof(IPosition),
+                pos,
+                serializer
+            )).Cast<IPosition>();
         }
 
         /// <summary>
@@ -61,25 +56,18 @@ namespace GeoJSON.Net.Converters
         /// <param name="serializer">The calling serializer.</param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            var coordinateElements = value as List<IPosition>;
-            if (coordinateElements != null && coordinateElements.Count > 0)
+            if (value is IEnumerable<IPosition> coordinateElements)
             {
-                JArray coordinateArray = new JArray();
-
+                writer.WriteStartArray();
                 foreach (var position in coordinateElements)
                 {
-                    JArray coordinateElement = position.Altitude.HasValue 
-                        ? new JArray(position.Longitude, position.Latitude, position.Altitude) :
-                        new JArray(position.Longitude, position.Latitude);
-
-                    coordinateArray.Add(coordinateElement);
+                    PositionConverter.WriteJson(writer, position, serializer);
                 }
-
-                serializer.Serialize(writer, coordinateArray);
+                writer.WriteEndArray();
             }
             else
             {
-                serializer.Serialize(writer, value);
+                throw new ArgumentException($"{nameof(PositionEnumerableConverter)}: unsupported value type");
             }
         }
     }

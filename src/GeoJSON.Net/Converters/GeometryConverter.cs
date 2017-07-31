@@ -2,10 +2,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-#if (!NET35 || !NET40)
-using System.Reflection;
-#endif
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -26,11 +24,7 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-#if (NET35 || NET40)
-            return typeof(IGeometryObject).IsAssignableFrom(objectType);
-#else
-            return typeof(IGeometryObject).GetTypeInfo().IsAssignableFrom(objectType.GetTypeInfo());
-#endif
+            return typeof(IGeometryObject).IsAssignableFromType(objectType);
         }
 
         /// <summary>
@@ -54,8 +48,8 @@ namespace GeoJSON.Net.Converters
                     return ReadGeoJson(value);
                 case JsonToken.StartArray:
                     var values = JArray.Load(reader);
-                    var geometries = new List<IGeometryObject>(values.Count);
-                    geometries.AddRange(values.Cast<JObject>().Select(ReadGeoJson));
+                    var geometries = new ReadOnlyCollection<IGeometryObject>(
+                        values.Cast<JObject>().Select(ReadGeoJson).ToArray());
                     return geometries;
             }
 

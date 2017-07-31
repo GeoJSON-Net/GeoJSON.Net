@@ -5,6 +5,7 @@ using System.Linq;
 using GeoJSON.Net.Converters;
 using Newtonsoft.Json;
 using System;
+using System.Collections.ObjectModel;
 
 namespace GeoJSON.Net.Geometry
 {
@@ -21,19 +22,31 @@ namespace GeoJSON.Net.Geometry
         /// Initializes a new instance of the <see cref="MultiLineString" /> class.
         /// </summary>
         /// <param name="coordinates">The coordinates.</param>
-        public MultiLineString(List<LineString> coordinates)
+        public MultiLineString(IEnumerable<LineString> coordinates)
         {
-            Coordinates = coordinates ?? new List<LineString>();
-            Type = GeoJSONObjectType.MultiLineString;
+            Coordinates =new ReadOnlyCollection<LineString>(
+                coordinates?.ToArray() ?? new LineString[0]);
         }
 
         /// <summary>
-        /// Gets the Coordinates.
+        /// Initializes a new <see cref="MultiLineString" /> from a 3-d array
+        /// of <see cref="double" />s that matches the "coordinates" field in the JSON representation.
         /// </summary>
-        /// <value>The Coordinates.</value>
-        [JsonProperty(PropertyName = "coordinates", Required = Required.Always)]
-        [JsonConverter(typeof(PolygonConverter))]
-        public List<LineString> Coordinates { get; private set; }
+        [JsonConstructor]
+        public MultiLineString(IEnumerable<IEnumerable<IEnumerable<double>>> coordinates)
+            : this(coordinates?.Select(line => new LineString(line))
+                   ?? throw new ArgumentNullException(nameof(coordinates)))
+        {
+        }
+
+        public override GeoJSONObjectType Type => GeoJSONObjectType.MultiLineString;
+
+        /// <summary>
+        /// The collection of line strings of this <see cref="MultiLineString"/>.
+        /// </summary>
+        [JsonProperty("coordinates", Required = Required.Always)]
+        [JsonConverter(typeof(LineStringEnumerableConverter))]
+        public ReadOnlyCollection<LineString> Coordinates { get; }
 
         #region IEqualityComparer, IEquatable
 

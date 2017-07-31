@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using GeoJSON.Net.Converters;
 using Newtonsoft.Json;
@@ -18,10 +19,13 @@ namespace GeoJSON.Net.Geometry
     public class LineString : GeoJSONObject, IGeometryObject, IEqualityComparer<LineString>, IEquatable<LineString>
     {
         /// <summary>
-        /// LineString
+        /// Initializes a new <see cref="LineString" /> from a 2-d array of <see cref="double" />s
+        /// that matches the "coordinates" field in the JSON representation.
         /// </summary>
         [JsonConstructor]
-        protected internal LineString()
+        public LineString(IEnumerable<IEnumerable<double>> coordinates)
+        : this(coordinates?.Select(latLongAlt => (IPosition)latLongAlt.ToPosition())
+               ?? throw new ArgumentException(nameof(coordinates)))
         {
         }
 
@@ -31,31 +35,25 @@ namespace GeoJSON.Net.Geometry
         /// <param name="coordinates">The coordinates.</param>
         public LineString(IEnumerable<IPosition> coordinates)
         {
-            if (coordinates == null)
-            {
-                throw new ArgumentNullException(nameof(coordinates));
-            }
+            Coordinates = new ReadOnlyCollection<IPosition>(
+                coordinates?.ToArray() ?? throw new ArgumentNullException(nameof(coordinates)));
 
-            var coordsList = coordinates.ToList();
-
-            if (coordsList.Count < 2)
+            if (Coordinates.Count < 2)
             {
                 throw new ArgumentOutOfRangeException(
-                    nameof(coordinates), 
+                    nameof(coordinates),
                     "According to the GeoJSON v1.0 spec a LineString must have at least two or more positions.");
             }
-
-            Coordinates = coordsList;
-            Type = GeoJSONObjectType.LineString;
         }
 
+        public override GeoJSONObjectType Type => GeoJSONObjectType.LineString;
+
         /// <summary>
-        /// Gets the Positions.
+        /// The positions of the line string.
         /// </summary>
-        /// <value>The Positions.</value>
-        [JsonProperty(PropertyName = "coordinates", Required = Required.Always)]
-        [JsonConverter(typeof(LineStringConverter))]
-        public List<IPosition> Coordinates { get; private set; }
+        [JsonProperty("coordinates", Required = Required.Always)]
+        [JsonConverter(typeof(PositionEnumerableConverter))]
+        public ReadOnlyCollection<IPosition> Coordinates { get; }
 
         /// <summary>
         /// Determines whether this instance has its first and last coordinate at the same position and thereby is closed.
