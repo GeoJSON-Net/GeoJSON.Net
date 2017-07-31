@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using GeoJSON.Net.Converters;
 using Newtonsoft.Json;
@@ -23,7 +24,8 @@ namespace GeoJSON.Net.Geometry
         /// <param name="polygons">The polygons contained in this MultiPolygon.</param>
         public MultiPolygon(IEnumerable<Polygon> polygons)
         {
-            Coordinates = polygons?.ToArray() ?? throw new ArgumentNullException(nameof(polygons));
+            Coordinates = new ReadOnlyCollection<Polygon>(
+                polygons?.ToArray() ?? throw new ArgumentNullException(nameof(polygons)));
         }
 
         /// <summary>
@@ -44,7 +46,7 @@ namespace GeoJSON.Net.Geometry
         /// </summary>
         [JsonProperty("coordinates", Required = Required.Always)]
         [JsonConverter(typeof(PolygonEnumerableConverter))]
-        public IReadOnlyList<Polygon> Coordinates { get; }
+        public ReadOnlyCollection<Polygon> Coordinates { get; }
 
         #region IEqualityComparer, IEquatable
 

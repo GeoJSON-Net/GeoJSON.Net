@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
 using System;
+using System.Collections.ObjectModel;
 using GeoJSON.Net.Converters;
 
 namespace GeoJSON.Net.Geometry
@@ -22,7 +23,7 @@ namespace GeoJSON.Net.Geometry
         /// <param name="coordinates">The coordinates.</param>
         public MultiPoint(IEnumerable<Point> coordinates)
         {
-            Coordinates = coordinates?.ToArray() ?? new Point[0];
+            Coordinates = new ReadOnlyCollection<Point>(coordinates?.ToArray() ?? new Point[0]);
         }
         
         [JsonConstructor]
@@ -39,7 +40,7 @@ namespace GeoJSON.Net.Geometry
         /// </summary>
         [JsonProperty("coordinates", Required = Required.Always)]
         [JsonConverter(typeof(PointEnumerableConverter))]
-        public IReadOnlyList<Point> Coordinates { get; }
+        public ReadOnlyCollection<Point> Coordinates { get; }
 
         #region IEqualityComparer, IEquatable
 

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using GeoJSON.Net.Converters;
 using Newtonsoft.Json;
@@ -19,7 +20,7 @@ namespace GeoJSON.Net.Geometry
         /// <summary>
         /// Initializes a new instance of the <see cref="GeometryCollection" /> class.
         /// </summary>
-        public GeometryCollection() : this(new List<IGeometryObject>())
+        public GeometryCollection() : this(new IGeometryObject[0])
         {
         }
 
@@ -29,7 +30,8 @@ namespace GeoJSON.Net.Geometry
         /// <param name="geometries">The geometries contained in this GeometryCollection.</param>
         public GeometryCollection(IEnumerable<IGeometryObject> geometries)
         {
-            Geometries = geometries?.ToArray() ?? throw new ArgumentNullException(nameof(geometries));
+            Geometries = new ReadOnlyCollection<IGeometryObject>(
+                geometries?.ToArray() ?? throw new ArgumentNullException(nameof(geometries)));
         }
 
         public override GeoJSONObjectType Type => GeoJSONObjectType.GeometryCollection;
@@ -39,7 +41,7 @@ namespace GeoJSON.Net.Geometry
         /// </summary>
         [JsonProperty("geometries", Required = Required.Always)]
         [JsonConverter(typeof(GeometryConverter))]
-        public IReadOnlyList<IGeometryObject> Geometries { get; private set; }
+        public ReadOnlyCollection<IGeometryObject> Geometries { get; private set; }
 
         #region IEqualityComparer, IEquatable
 

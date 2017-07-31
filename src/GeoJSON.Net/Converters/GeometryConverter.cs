@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
@@ -47,8 +48,8 @@ namespace GeoJSON.Net.Converters
                     return ReadGeoJson(value);
                 case JsonToken.StartArray:
                     var values = JArray.Load(reader);
-                    var geometries = new List<IGeometryObject>(values.Count);
-                    geometries.AddRange(values.Cast<JObject>().Select(ReadGeoJson));
+                    var geometries = new ReadOnlyCollection<IGeometryObject>(
+                        values.Cast<JObject>().Select(ReadGeoJson).ToArray());
                     return geometries;
             }
 

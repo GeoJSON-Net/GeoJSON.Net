@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using GeoJSON.Net.Converters;
 using Newtonsoft.Json;
@@ -23,7 +24,7 @@ namespace GeoJSON.Net.Geometry
         /// </summary>
         [JsonConstructor]
         public LineString(IEnumerable<IEnumerable<double>> coordinates)
-        : this(coordinates?.Select(latLongAlt => latLongAlt.ToPosition())
+        : this(coordinates?.Select(latLongAlt => (IPosition)latLongAlt.ToPosition())
                ?? throw new ArgumentException(nameof(coordinates)))
         {
         }
@@ -34,21 +35,15 @@ namespace GeoJSON.Net.Geometry
         /// <param name="coordinates">The coordinates.</param>
         public LineString(IEnumerable<IPosition> coordinates)
         {
-            if (coordinates == null)
-            {
-                throw new ArgumentNullException(nameof(coordinates));
-            }
+            Coordinates = new ReadOnlyCollection<IPosition>(
+                coordinates?.ToArray() ?? throw new ArgumentNullException(nameof(coordinates)));
 
-            var coordsArray = coordinates.ToArray();
-
-            if (coordsArray.Length < 2)
+            if (Coordinates.Count < 2)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(coordinates),
                     "According to the GeoJSON v1.0 spec a LineString must have at least two or more positions.");
             }
-
-            Coordinates = coordsArray;
         }
 
         public override GeoJSONObjectType Type => GeoJSONObjectType.LineString;
@@ -58,7 +53,7 @@ namespace GeoJSON.Net.Geometry
         /// </summary>
         [JsonProperty("coordinates", Required = Required.Always)]
         [JsonConverter(typeof(PositionEnumerableConverter))]
-        public IReadOnlyList<IPosition> Coordinates { get; }
+        public ReadOnlyCollection<IPosition> Coordinates { get; }
 
         /// <summary>
         /// Determines whether this instance has its first and last coordinate at the same position and thereby is closed.

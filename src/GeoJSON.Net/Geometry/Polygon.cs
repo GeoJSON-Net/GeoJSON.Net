@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using GeoJSON.Net.Converters;
 using Newtonsoft.Json;
@@ -27,7 +28,8 @@ namespace GeoJSON.Net.Geometry
         /// </param>
         public Polygon(IEnumerable<LineString> coordinates)
         {
-            Coordinates = coordinates?.ToArray() ?? throw new ArgumentNullException(nameof(coordinates));
+            Coordinates = new ReadOnlyCollection<LineString>(
+                coordinates?.ToArray() ?? throw new ArgumentNullException(nameof(coordinates)));
             if (Coordinates.Any(linearRing => !linearRing.IsLinearRing()))
             {
                 throw new ArgumentException("All elements must be closed LineStrings with 4 or more positions" +
@@ -55,7 +57,7 @@ namespace GeoJSON.Net.Geometry
         /// </summary>
         [JsonProperty("coordinates", Required = Required.Always)]
         [JsonConverter(typeof(LineStringEnumerableConverter))]
-        public IReadOnlyList<LineString> Coordinates { get; }
+        public ReadOnlyCollection<LineString> Coordinates { get; }
 
         #region IEqualityComparer, IEquatable
 
