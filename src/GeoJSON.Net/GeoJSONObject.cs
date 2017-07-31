@@ -19,11 +19,6 @@ namespace GeoJSON.Net
     {
         internal static readonly DoubleTenDecimalPlaceComparer DoubleComparer = new DoubleTenDecimalPlaceComparer();
 
-        protected GeoJSONObject()
-        {
-            CRS = DefaultCRS.Instance;
-        }
-
         /// <summary>
         ///     Gets or sets the (optional)
         ///     <see cref="https://tools.ietf.org/html/rfc7946#section-5">Bounding Boxes</see>.
@@ -63,44 +58,6 @@ namespace GeoJSON.Net
         [JsonConverter(typeof(StringEnumConverter))]
         public abstract GeoJSONObjectType Type { get; }
 
-        /// <summary>
-        ///     Called when [deserialized].
-        /// </summary>
-        /// <param name="streamingContext">The streaming context.</param>
-        [OnDeserialized]
-        private void OnDeserialized(StreamingContext streamingContext)
-        {
-            if (CRS == null)
-            {
-                CRS = DefaultCRS.Instance;
-            }
-        }
-
-        /// <summary>
-        ///     Called when [serialized].
-        /// </summary>
-        /// <param name="streamingContext">The streaming context.</param>
-        [OnSerialized]
-        private void OnSerialized(StreamingContext streamingContext)
-        {
-            if (CRS == null)
-            {
-                CRS = DefaultCRS.Instance;
-            }
-        }
-
-        /// <summary>
-        ///     Called when [serializing].
-        /// </summary>
-        /// <param name="streamingContext">The streaming context.</param>
-        [OnSerializing]
-        private void OnSerializing(StreamingContext streamingContext)
-        {
-            if (CRS is DefaultCRS)
-            {
-                CRS = null;
-            }
-        }
 
         #region IEqualityComparer, IEquatable
 
