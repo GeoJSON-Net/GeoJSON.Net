@@ -8,7 +8,7 @@ GeoJSON.Net is a .NET library for the [RFC 7946 The GeoJSON Format](https://tool
 ## Installation & Usage
 
 [GeoJSON.Net NuGet package](https://www.nuget.org/packages/GeoJSON.Net/):
-`Install-Package GeoJSON.Net.Contrib.MsSqlSpatial`
+`Install-Package GeoJSON.Net`
 
 ### Serialization
 
