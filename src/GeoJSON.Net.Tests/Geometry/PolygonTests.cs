@@ -13,7 +13,7 @@ namespace GeoJSON.Net.Tests.Geometry
         {
             var polygon = new Polygon(new List<LineString>
             {
-                new LineString(new List<IPosition>
+                new LineString(new List<Position>
                 {
                     new Position(52.379790828551016, 5.3173828125),
                     new Position(52.36721467920585, 5.456085205078125),
@@ -35,7 +35,7 @@ namespace GeoJSON.Net.Tests.Geometry
 
             var expectedPolygon = new Polygon(new List<LineString>
             {
-                new LineString(new List<IPosition>
+                new LineString(new List<Position>
                 {
                     new Position(34.9895035675793, -84.3228149414063),
                     new Position(35.2198194079344, -84.2912292480469),
@@ -214,7 +214,7 @@ namespace GeoJSON.Net.Tests.Geometry
                     new Position(34.9850031301711, -84.22119140625),
                     new Position(34.9895035675793, -84.3228149414063),
                 }),
-                new LineString(new List<IPosition>
+                new LineString(new List<Position>
                 {
                     new Position(35.7420538306804, -75.6903076171875),
                     new Position(35.7420538306804, -75.5914306640625),
@@ -249,7 +249,7 @@ namespace GeoJSON.Net.Tests.Geometry
 
             var expectedPolygon = new Polygon(new List<LineString>
             {
-                new LineString(new List<IPosition>
+                new LineString(new List<Position>
                 {
                     new Position(52.379790828551016, 5.3173828125),
                     new Position(52.36721467920585, 5.456085205078125),
@@ -295,7 +295,7 @@ namespace GeoJSON.Net.Tests.Geometry
         {
             var polygon = new Polygon(new List<LineString>
             {
-                new LineString(new List<IPosition>
+                new LineString(new List<Position>
                 {
                     new Position(52.379790828551016 + offset, 5.3173828125 + offset),
                     new Position(52.36721467920585 + offset, 5.456085205078125 + offset),

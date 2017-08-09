@@ -10,7 +10,7 @@ using Newtonsoft.Json.Linq;
 namespace GeoJSON.Net.Converters
 {
     /// <summary>
-    /// Converter to read and write the <see cref="IEnumerable{IPosition}" /> type.
+    /// Converter to read and write the <see cref="IEnumerable{Position}" /> type.
     /// </summary>
     public class PositionEnumerableConverter : JsonConverter
     {
@@ -25,7 +25,7 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-            return typeof(IEnumerable<IPosition>).IsAssignableFromType(objectType);
+            return typeof(IEnumerable<Position>).IsAssignableFromType(objectType);
         }
 
         /// <summary>
@@ -42,10 +42,10 @@ namespace GeoJSON.Net.Converters
         {
             var coordinates = existingValue as JArray ?? serializer.Deserialize<JArray>(reader);
             return coordinates.Select(pos => PositionConverter.ReadJson(pos.CreateReader(),
-                typeof(IPosition),
+                typeof(Position),
                 pos,
                 serializer
-            )).Cast<IPosition>();
+            )).Cast<Position>();
         }
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace GeoJSON.Net.Converters
         /// <param name="serializer">The calling serializer.</param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            if (value is IEnumerable<IPosition> coordinateElements)
+            if (value is IEnumerable<Position> coordinateElements)
             {
                 writer.WriteStartArray();
                 foreach (var position in coordinateElements)

@@ -24,7 +24,7 @@ namespace GeoJSON.Net.Geometry
         /// </summary>
         [JsonConstructor]
         public LineString(IEnumerable<IEnumerable<double>> coordinates)
-        : this(coordinates?.Select(latLongAlt => (IPosition)latLongAlt.ToPosition())
+        : this(coordinates?.Select(latLongAlt => (Position)latLongAlt.ToPosition())
                ?? throw new ArgumentException(nameof(coordinates)))
         {
         }
@@ -33,9 +33,9 @@ namespace GeoJSON.Net.Geometry
         /// Initializes a new instance of the <see cref="LineString" /> class.
         /// </summary>
         /// <param name="coordinates">The coordinates.</param>
-        public LineString(IEnumerable<IPosition> coordinates)
+        public LineString(IEnumerable<Position> coordinates)
         {
-            Coordinates = new ReadOnlyCollection<IPosition>(
+            Coordinates = new ReadOnlyCollection<Position>(
                 coordinates?.ToArray() ?? throw new ArgumentNullException(nameof(coordinates)));
 
             if (Coordinates.Count < 2)
@@ -53,7 +53,7 @@ namespace GeoJSON.Net.Geometry
         /// </summary>
         [JsonProperty("coordinates", Required = Required.Always)]
         [JsonConverter(typeof(PositionEnumerableConverter))]
-        public ReadOnlyCollection<IPosition> Coordinates { get; }
+        public ReadOnlyCollection<Position> Coordinates { get; }
 
         /// <summary>
         /// Determines whether this instance has its first and last coordinate at the same position and thereby is closed.

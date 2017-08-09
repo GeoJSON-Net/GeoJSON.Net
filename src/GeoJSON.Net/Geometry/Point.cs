@@ -21,7 +21,7 @@ namespace GeoJSON.Net.Geometry
         /// Initializes a new instance of the <see cref="Point" /> class.
         /// </summary>
         /// <param name="coordinates">The Position.</param>
-        public Point(IPosition coordinates)
+        public Point(Position coordinates)
         {
             Coordinates = coordinates ?? throw new ArgumentNullException(nameof(coordinates));
         }
@@ -29,11 +29,11 @@ namespace GeoJSON.Net.Geometry
         public override GeoJSONObjectType Type => GeoJSONObjectType.Point;
 
         /// <summary>
-        /// The <see cref="IPosition" /> underlying this point.
+        /// The <see cref="Position" /> underlying this point.
         /// </summary>
         [JsonProperty("coordinates", Required = Required.Always)]
         [JsonConverter(typeof(PositionConverter))]
-        public IPosition Coordinates { get; }
+        public Position Coordinates { get; }
 
         #region IEqualityComparer, IEquatable
 
