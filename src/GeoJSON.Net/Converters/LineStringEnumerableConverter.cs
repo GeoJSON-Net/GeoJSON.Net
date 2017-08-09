@@ -41,9 +41,9 @@ namespace GeoJSON.Net.Converters
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var rings = existingValue as JArray ?? serializer.Deserialize<JArray>(reader);
-            return rings.Select(ring => new LineString((IEnumerable<IPosition>) LineStringConverter.ReadJson(
+            return rings.Select(ring => new LineString((IEnumerable<Position>) LineStringConverter.ReadJson(
                     reader,
-                    typeof(IEnumerable<IPosition>),
+                    typeof(IEnumerable<Position>),
                     ring,
                     serializer)))
                 .ToArray();

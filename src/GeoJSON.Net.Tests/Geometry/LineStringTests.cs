@@ -12,7 +12,7 @@ namespace GeoJSON.Net.Tests.Geometry
         [Test]
         public void Is_Closed()
         {
-            var coordinates = new List<IPosition>
+            var coordinates = new List<Position>
             {
                 new Position(52.370725881211314, 4.889259338378906),
                 new Position(52.3711451105601, 4.895267486572266),
@@ -28,7 +28,7 @@ namespace GeoJSON.Net.Tests.Geometry
         [Test]
         public void Is_Not_Closed()
         {
-            var coordinates = new List<IPosition>
+            var coordinates = new List<Position>
             {
                 new Position(52.370725881211314, 4.889259338378906),
                 new Position(52.3711451105601, 4.895267486572266),
@@ -45,7 +45,7 @@ namespace GeoJSON.Net.Tests.Geometry
         [Test]
         public void Can_Serialize()
         {
-            var coordinates = new List<IPosition>
+            var coordinates = new List<Position>
             {
                 new Position(52.370725881211314, 4.889259338378906),
                 new Position(52.3711451105601, 4.895267486572266),
@@ -63,7 +63,7 @@ namespace GeoJSON.Net.Tests.Geometry
         [Test]
         public void Can_Deserialize()
         {
-            var coordinates = new List<IPosition>
+            var coordinates = new List<Position>
             {
                 new Position(52.370725881211314, 4.889259338378906),
                 new Position(52.3711451105601, 4.895267486572266),
@@ -86,19 +86,19 @@ namespace GeoJSON.Net.Tests.Geometry
         [Test]
         public void Constructor_No_Coordinates_Throws_Exception()
         {
-            var coordinates = new List<IPosition>();
+            var coordinates = new List<Position>();
             Assert.Throws<ArgumentOutOfRangeException>(() => new LineString(coordinates));
         }
 
         [Test]
         public void Constructor_Null_Coordinates_Throws_Exception()
         {
-            Assert.Throws<ArgumentNullException>(() => new LineString((IEnumerable<IPosition>)null));
+            Assert.Throws<ArgumentNullException>(() => new LineString((IEnumerable<Position>)null));
         }
 
         private LineString GetLineString(double offset = 0.0)
         {
-            var coordinates = new List<IPosition>
+            var coordinates = new List<Position>
             {
                 new Position(52.370725881211314 + offset, 4.889259338378906 + offset),
                 new Position(52.3711451105601 + offset, 4.895267486572266 + offset),

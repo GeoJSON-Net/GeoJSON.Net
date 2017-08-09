@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 namespace GeoJSON.Net.Converters
 {
     /// <summary>
-    ///     Converter to read and write an <see cref="IPosition" />, that is,
+    ///     Converter to read and write an <see cref="Position" />, that is,
     ///     the coordinates of a <see cref="Point" />.
     /// </summary>
     public class PositionConverter : JsonConverter
@@ -21,7 +21,7 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-            return typeof(IPosition).IsAssignableFromType(objectType);
+            return typeof(Position).IsAssignableFromType(objectType);
         }
 
         /// <summary>
