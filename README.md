@@ -31,7 +31,18 @@ See the [Tests](https://github.com/GeoJSON-Net/GeoJSON.Net/tree/master/src/GeoJS
 
 
 ## News
-It's probably best to check out the [commits](https://github.com/GeoJSON-Net/GeoJSON.Net/commits/master) 
+
+### Version 2.0.x
+
+Breaking Changes
+- IPosition has been removed as it was deemed as redundant and a left over from the original GeoJSON spec.
+- GeoJSON.Net.Feature namesapce renamed to GeoJSON.Net.Features
+
+General Changes
+- Nothing much yet!
+
+
+Also check out the [commits](https://github.com/GeoJSON-Net/GeoJSON.Net/commits/master) 
 and the [issues](https://github.com/GeoJSON-Net/GeoJSON.Net/issues) what has been added over time.
 
 ## Contributing

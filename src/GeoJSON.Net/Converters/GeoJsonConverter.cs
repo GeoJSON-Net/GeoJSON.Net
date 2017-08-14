@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using GeoJSON.Net.Feature;
+using GeoJSON.Net.Features;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -123,7 +123,7 @@ namespace GeoJSON.Net.Converters
 				case GeoJSONObjectType.GeometryCollection:
 					return value.ToObject<GeometryCollection>();
 				case GeoJSONObjectType.Feature:
-					return value.ToObject<Feature.Feature>();
+					return value.ToObject<Feature>();
 				case GeoJSONObjectType.FeatureCollection:
 					return value.ToObject<FeatureCollection>();
 				default:

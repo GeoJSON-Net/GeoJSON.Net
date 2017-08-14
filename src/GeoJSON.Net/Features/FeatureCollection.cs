@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Linq;
 
-namespace GeoJSON.Net.Feature
+namespace GeoJSON.Net.Features
 {
     /// <summary>
     /// Defines the FeatureCollection type.
