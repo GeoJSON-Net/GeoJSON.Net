@@ -35,7 +35,7 @@ It's probably best to check out the [commits](https://github.com/GeoJSON-Net/Geo
 and the [issues](https://github.com/GeoJSON-Net/GeoJSON.Net/issues) what has been added over time.
 
 ## Contributing
-Highly welcome! Just fork away and send a pull request. We try and review most pull requests within a couple of days.
+Highly welcome! Just fork away and send a pull request. We try and review most pull requests within a couple of days. There is now a version 2.0.0 branch. I've created this ready for any breaking changes and any extra features and would encourage anything that isn't a bug fix to go in there.
 
 ## Thanks
 This library would be NOTHING without its [contributors](https://github.com/GeoJSON-Net/GeoJSON.Net/graphs/contributors) - thanks so much!!
