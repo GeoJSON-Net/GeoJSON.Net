@@ -196,7 +196,7 @@ namespace GeoJSON.Net.Tests.Feature
             Assert.IsNotNull(feature.Properties);
             CollectionAssert.IsEmpty(feature.Properties);
         }
-        
+
         [Test]
         public void Feature_Equals_GetHashCode_Contract_Properties_Of_Objects()
         {
@@ -309,7 +309,54 @@ namespace GeoJSON.Net.Tests.Feature
             Assert_Are_Equal(left, right); // assert id's + properties doesn't influence comparison and hashcode
         }
 
+        [Test]
+        public void Feature_Equals_Null_Issue94()
+        {
+            bool equal1 = true;
+            bool equal2 = true;
 
+            var feature = new Net.Feature.Feature(new Point(new Position(123, 12)));
+            Assert.DoesNotThrow(() =>
+            {
+                equal1 = feature.Equals(null);
+                equal2 = feature == null;
+            });
+
+            Assert.IsFalse(equal1);
+            Assert.IsFalse(equal2);
+        }
+
+        [Test]
+        public void Feature_Null_Instance_Equals_Null_Issue94()
+        {
+            var equal1 = true;
+
+            Net.Feature.Feature feature = null;
+            Assert.DoesNotThrow(() =>
+            {
+                equal1 = feature != null;
+            });
+
+            Assert.IsFalse(equal1);
+        }
+
+        [Test]
+        public void Feature_Equals_Itself_Issue94()
+        {
+            bool equal1 = false;
+            bool equal2 = false;
+
+            var feature = new Net.Feature.Feature(new Point(new Position(123, 12)));
+            Assert.DoesNotThrow(() =>
+            {
+                equal1 = feature == feature;
+                equal2 = feature.Equals(feature);
+            });
+
+            Assert.IsTrue(equal1);
+            Assert.IsTrue(equal2);
+        }
+        
         private IGeometryObject GetGeometry()
         {
             var coordinates = new List<LineString>

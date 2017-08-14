@@ -172,6 +172,9 @@ namespace GeoJSON.Net.Feature
 
         public bool Equals(Feature<TGeometry> other)
         {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+
             return Geometry.Equals(other.Geometry);
         }
 

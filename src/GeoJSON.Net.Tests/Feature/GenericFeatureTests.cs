@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using GeoJSON.Net.Feature;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
@@ -54,6 +55,31 @@ namespace GeoJSON.Net.Tests.Feature
             //Assert.AreEqual(125.6, feature.Geometry.Coordinates.Longitude);
             //Assert.AreEqual(10.1, feature.Geometry.Coordinates.Latitude);
             //Assert.AreEqual(456, feature.Geometry.Coordinates.Altitude);
+        }
+
+        [Test]
+        public void Feature_Generic_Equals_Null_Issure94()
+        {
+            bool equal1 = true;
+            bool equal2 = true;
+
+            var point = new Point(new Position(123, 34));
+            var properties = new Dictionary<string, string>
+            {
+                {"test1", "test1val"},
+                {"test2", "test2val"}
+            };
+
+            var feature = new Feature<Point, Dictionary<string, string>>(point, properties, "testid");
+
+            Assert.DoesNotThrow(() =>
+            {
+                equal1 = feature == null;
+                equal2 = feature.Equals(null);
+            });
+
+            Assert.IsFalse(equal1);
+            Assert.IsFalse(equal2);
         }
 
         private class TypedFeatureProps
