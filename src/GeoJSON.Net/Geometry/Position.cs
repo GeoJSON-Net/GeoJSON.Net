@@ -10,7 +10,7 @@ namespace GeoJSON.Net.Geometry
     /// A position is the fundamental geometry construct, consisting of <see cref="Latitude" />,
     /// <see cref="Longitude" /> and (optionally) <see cref="Altitude" />.
     /// </summary>
-    public class Position : IPosition, IEqualityComparer<Position>, IEquatable<Position>
+    public class Position : IEqualityComparer<Position>, IEquatable<Position>
     {
         private static readonly DoubleTenDecimalPlaceComparer DoubleComparer = new DoubleTenDecimalPlaceComparer();
 

@@ -26,7 +26,7 @@ namespace GeoJSON.Net.Tests.Geometry
             {
                 new Polygon(new List<LineString>
                 {
-                    new LineString(new List<IPosition>
+                    new LineString(new List<Position>
                     {
                         new Position(52.959676831105995 + offset, -2.6797102391514338 + offset),
                         new Position(52.9608756693609 + offset, -2.6769029474483279 + offset),
@@ -43,7 +43,7 @@ namespace GeoJSON.Net.Tests.Geometry
                 }),
                 new Polygon(new List<LineString>
                 {
-                    new LineString(new List<IPosition>
+                    new LineString(new List<Position>
                     {
                         new Position(52.89610842810761 + offset,-2.69628632041613 + offset),
                         new Position(52.8894641454077 + offset,-2.75901233808515 + offset),
@@ -67,7 +67,7 @@ namespace GeoJSON.Net.Tests.Geometry
             // Arrang
             var polygon1 = new Polygon(new List<LineString>
             {
-                new LineString(new List<IPosition>
+                new LineString(new List<Position>
                 {
                     new Position(0, 0), 
                     new Position(0, 1), 
@@ -79,7 +79,7 @@ namespace GeoJSON.Net.Tests.Geometry
 
             var polygon2 = new Polygon(new List<LineString>
             {
-                new LineString(new List<IPosition>
+                new LineString(new List<Position>
                 {
                     new Position(100, 100), 
                     new Position(100, 101), 
@@ -87,7 +87,7 @@ namespace GeoJSON.Net.Tests.Geometry
                     new Position(101, 100), 
                     new Position(100, 100)
                 }), 
-                new LineString(new List<IPosition>
+                new LineString(new List<Position>
                 {
                     new Position(200, 200), 
                     new Position(200, 201), 

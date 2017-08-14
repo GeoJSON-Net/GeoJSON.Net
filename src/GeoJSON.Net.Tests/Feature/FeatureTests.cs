@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using GeoJSON.Net.Feature;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -35,14 +34,14 @@ namespace GeoJSON.Net.Tests.Feature
         {
             var coordinates = new[]
             {
-                new List<IPosition>
+                new List<Position>
                 {
                     new Position(52.370725881211314, 4.889259338378906),
                     new Position(52.3711451105601, 4.895267486572266),
                     new Position(52.36931095278263, 4.892091751098633),
                     new Position(52.370725881211314, 4.889259338378906)
                 },
-                new List<IPosition>
+                new List<Position>
                 {
                     new Position(52.370725881211314, 4.989259338378906),
                     new Position(52.3711451105601, 4.995267486572266),
@@ -68,14 +67,14 @@ namespace GeoJSON.Net.Tests.Feature
         {
             var geometry = new MultiLineString(new List<LineString>
             {
-                new LineString(new List<IPosition>
+                new LineString(new List<Position>
                 {
                     new Position(52.370725881211314, 4.889259338378906),
                     new Position(52.3711451105601, 4.895267486572266),
                     new Position(52.36931095278263, 4.892091751098633),
                     new Position(52.370725881211314, 4.889259338378906)
                 }),
-                new LineString(new List<IPosition>
+                new LineString(new List<Position>
                 {
                     new Position(52.370725881211314, 4.989259338378906),
                     new Position(52.3711451105601, 4.995267486572266),
@@ -105,7 +104,7 @@ namespace GeoJSON.Net.Tests.Feature
         [Test]
         public void Can_Serialize_Polygon_Feature()
         {
-            var coordinates = new List<IPosition>
+            var coordinates = new List<Position>
             {
                 new Position(52.370725881211314, 4.889259338378906),
                 new Position(52.3711451105601, 4.895267486572266),
@@ -130,7 +129,7 @@ namespace GeoJSON.Net.Tests.Feature
             {
                 new Polygon(new List<LineString>
                 {
-                    new LineString(new List<IPosition>
+                    new LineString(new List<Position>
                     {
                         new Position(0, 0),
                         new Position(0, 1),
@@ -141,7 +140,7 @@ namespace GeoJSON.Net.Tests.Feature
                 }),
                 new Polygon(new List<LineString>
                 {
-                    new LineString(new List<IPosition>
+                    new LineString(new List<Position>
                     {
                         new Position(100, 100),
                         new Position(100, 101),
@@ -149,7 +148,7 @@ namespace GeoJSON.Net.Tests.Feature
                         new Position(101, 100),
                         new Position(100, 100)
                     }),
-                    new LineString(new List<IPosition>
+                    new LineString(new List<Position>
                     {
                         new Position(200, 200),
                         new Position(200, 201),
@@ -361,14 +360,14 @@ namespace GeoJSON.Net.Tests.Feature
         {
             var coordinates = new List<LineString>
             {
-                new LineString(new List<IPosition>
+                new LineString(new List<Position>
                 {
                     new Position(52.370725881211314, 4.889259338378906),
                     new Position(52.3711451105601, 4.895267486572266),
                     new Position(52.36931095278263, 4.892091751098633),
                     new Position(52.370725881211314, 4.889259338378906)
                 }),
-                new LineString(new List<IPosition>
+                new LineString(new List<Position>
                 {
                     new Position(52.370725881211314, 4.989259338378906),
                     new Position(52.3711451105601, 4.995267486572266),
