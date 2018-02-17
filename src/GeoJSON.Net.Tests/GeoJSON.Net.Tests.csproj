@@ -4,14 +4,14 @@
     <ProjectGuid>{6C93B314-9208-4684-B873-172F7EC81689}</ProjectGuid>
     <RootNamespace>GeoJSON.Net.Tests</RootNamespace>
     <AssemblyName>GeoJSON.Net.Tests</AssemblyName>
-    <TargetFrameworks>net45;netcoreapp1.1</TargetFrameworks>
+    <TargetFrameworks>net45;netcoreapp1.1;netcoreapp2.0;</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\GeoJSON.Net\GeoJSON.Net.csproj" />
-    <PackageReference Include="NUnit" Version="3.7.1" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.8.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
+    <PackageReference Include="NUnit" Version="3.9.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.9.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.5.0" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Features\*.json">
