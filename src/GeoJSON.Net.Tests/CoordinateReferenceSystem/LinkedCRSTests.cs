@@ -47,6 +47,18 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
         }
 
         [Test]
+        public void Can_Deserialize_CRS_issue_101()
+        {
+            const string pointJson = "{\"type\":\"Point\",\"coordinates\":[2.0,1.0,3.0],\"crs\":{\"properties\":{\"href\":\"http://localhost\"},\"type\":\"link\"}}";
+            var pointWithCRS = JsonConvert.DeserializeObject<Point>(pointJson);
+            var linkCRS = pointWithCRS.CRS as LinkedCRS;
+
+            Assert.IsNotNull(linkCRS);
+            Assert.AreEqual(CRSType.Link, linkCRS.Type);
+            Assert.AreEqual(Href, linkCRS.Properties["href"]);
+        }
+
+        [Test]
         public void Ctor_Throws_ArgumentNullExpection_When_Href_String_Is_Null()
         {
             Assert.Throws<ArgumentNullException>(() => { var crs = new LinkedCRS((string)null); });
