@@ -22,6 +22,16 @@ namespace GeoJSON.Net.Geometry
         /// <param name="altitude">The altitude in m(eter).</param>
         public Position(double latitude, double longitude, double? altitude = null)
         {
+            if (Math.Abs(latitude) > 90)
+            {
+                throw new ArgumentOutOfRangeException(nameof(latitude), "Latitude must be a proper lat (+/- double) value between -90 and 90.");
+            }
+
+            if (Math.Abs(longitude) > 180)
+            {
+                throw new ArgumentOutOfRangeException(nameof(longitude), "Longitude must be a proper lon (+/- double) value between -180 and 180.");
+            }
+
             Latitude = latitude;
             Longitude = longitude;
             Altitude = altitude;
