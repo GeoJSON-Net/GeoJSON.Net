@@ -63,7 +63,7 @@ namespace GeoJSON.Net.Tests.Feature
             bool equal1 = true;
             bool equal2 = true;
 
-            var point = new Point(new Position(123, 34));
+            var point = new Point(new Position(34, 123));
             var properties = new Dictionary<string, string>
             {
                 {"test1", "test1val"},

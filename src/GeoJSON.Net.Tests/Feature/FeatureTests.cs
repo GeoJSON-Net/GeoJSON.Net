@@ -143,19 +143,19 @@ namespace GeoJSON.Net.Tests.Feature
                 {
                     new LineString(new List<IPosition>
                     {
-                        new Position(100, 100),
-                        new Position(100, 101),
-                        new Position(101, 101),
-                        new Position(101, 100),
-                        new Position(100, 100)
+                        new Position(70, 70),
+                        new Position(70, 71),
+                        new Position(71, 71),
+                        new Position(71, 70),
+                        new Position(70, 70)
                     }),
                     new LineString(new List<IPosition>
                     {
-                        new Position(200, 200),
-                        new Position(200, 201),
-                        new Position(201, 201),
-                        new Position(201, 200),
-                        new Position(200, 200)
+                        new Position(80, 80),
+                        new Position(80, 81),
+                        new Position(81, 81),
+                        new Position(81, 80),
+                        new Position(80, 80)
                     })
                 })
             });
@@ -315,7 +315,7 @@ namespace GeoJSON.Net.Tests.Feature
             bool equal1 = true;
             bool equal2 = true;
 
-            var feature = new Net.Feature.Feature(new Point(new Position(123, 12)));
+            var feature = new Net.Feature.Feature(new Point(new Position(12, 123)));
             Assert.DoesNotThrow(() =>
             {
                 equal1 = feature.Equals(null);
@@ -346,7 +346,7 @@ namespace GeoJSON.Net.Tests.Feature
             bool equal1 = false;
             bool equal2 = false;
 
-            var feature = new Net.Feature.Feature(new Point(new Position(123, 12)));
+            var feature = new Net.Feature.Feature(new Point(new Position(12, 123)));
             Assert.DoesNotThrow(() =>
             {
                 equal1 = feature == feature;

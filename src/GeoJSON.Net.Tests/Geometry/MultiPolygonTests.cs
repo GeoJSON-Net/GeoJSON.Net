@@ -81,19 +81,19 @@ namespace GeoJSON.Net.Tests.Geometry
             {
                 new LineString(new List<IPosition>
                 {
-                    new Position(100, 100), 
-                    new Position(100, 101), 
-                    new Position(101, 101), 
-                    new Position(101, 100), 
-                    new Position(100, 100)
+                    new Position(60, 60), 
+                    new Position(60, 61), 
+                    new Position(61, 61), 
+                    new Position(61, 60), 
+                    new Position(60, 60)
                 }), 
                 new LineString(new List<IPosition>
                 {
-                    new Position(200, 200), 
-                    new Position(200, 201), 
-                    new Position(201, 201), 
-                    new Position(201, 200), 
-                    new Position(200, 200)
+                    new Position(70, 70), 
+                    new Position(71, 70), 
+                    new Position(71, 71), 
+                    new Position(70, 71), 
+                    new Position(70, 70)
                 })
             });
 
