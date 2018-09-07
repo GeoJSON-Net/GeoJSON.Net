@@ -77,9 +77,18 @@ namespace GeoJSON.Net.Converters
             }
             else if (string.Equals("link", crsType, StringComparison.OrdinalIgnoreCase))
             {
-                var linked = new LinkedCRS(string.Empty);
-                serializer.Populate(jObject.CreateReader(), linked);
-                return linked;
+                JObject properties = null;
+                if (jObject.TryGetValue("properties", out token))
+                {
+                    properties = token as JObject;
+                }
+
+                if (properties != null)
+                {
+                    var linked = new LinkedCRS(properties["href"].ToString());
+                    serializer.Populate(jObject.CreateReader(), linked);
+                    return linked;
+                }
             }
 
             return new NotSupportedException(string.Format("Type {0} unexpected.", crsType));
