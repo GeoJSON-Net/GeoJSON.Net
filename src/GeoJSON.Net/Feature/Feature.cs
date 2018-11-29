@@ -175,6 +175,21 @@ namespace GeoJSON.Net.Feature
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
 
+            if (Geometry == null && other.Geometry == null)
+            {
+                return true;
+            }
+
+            if (Geometry == null && other.Geometry != null)
+            {
+                return false;
+            }
+
+            if (Geometry == null)
+            {
+                return false;
+            }
+
             return Geometry.Equals(other.Geometry);
         }
 

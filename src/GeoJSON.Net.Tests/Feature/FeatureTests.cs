@@ -1,10 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using GeoJSON.Net.Feature;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace GeoJSON.Net.Tests.Feature
 {
@@ -356,7 +355,65 @@ namespace GeoJSON.Net.Tests.Feature
             Assert.IsTrue(equal1);
             Assert.IsTrue(equal2);
         }
-        
+
+        [Test]
+        public void Feature_Equals_Geometry_Null_Issue115()
+        {
+            bool equal1 = false;
+            bool equal2 = false;
+
+            var feature1 = new Net.Feature.Feature(null);
+            var feature2 = new Net.Feature.Feature(new Point(new Position(12, 123)));
+
+            Assert.DoesNotThrow(() =>
+            {
+                equal1 = feature1 == feature2;
+                equal2 = feature1.Equals(feature2);
+            });
+
+            Assert.IsFalse(equal1);
+            Assert.IsFalse(equal2);
+        }
+
+        [Test]
+        public void Feature_Equals_Other_Geometry_Null_Issue115()
+        {
+            bool equal1 = false;
+            bool equal2 = false;
+
+            var feature1 = new Net.Feature.Feature(new Point(new Position(12, 123)));
+            var feature2 = new Net.Feature.Feature(null);
+
+            Assert.DoesNotThrow(() =>
+            {
+                equal1 = feature1 == feature2;
+                equal2 = feature1.Equals(feature2);
+            });
+
+            Assert.IsFalse(equal1);
+            Assert.IsFalse(equal2);
+        }
+
+        [Test]
+        public void Feature_Equals_All_Geometry_Null_Issue115()
+        {
+            bool equal1 = false;
+            bool equal2 = false;
+
+            var feature1 = new Net.Feature.Feature(null);
+            var feature2 = new Net.Feature.Feature(null);
+
+            Assert.DoesNotThrow(() =>
+            {
+                equal1 = feature1 == feature2;
+                equal2 = feature1.Equals(feature2);
+            });
+
+            Assert.IsTrue(equal1);
+            Assert.IsTrue(equal2);
+        }
+
+
         private IGeometryObject GetGeometry()
         {
             var coordinates = new List<LineString>
