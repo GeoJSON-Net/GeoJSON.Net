@@ -168,6 +168,28 @@ namespace GeoJSON.Net.Tests.Feature
         }
 
         [Test]
+        public void Can_Serialize_Dictionary_Subclass()
+        {
+            var properties =
+                new TestFeaturePropertyDictionary()
+                {
+                     BooleanProperty = true,
+                     DoubleProperty = 1.2345d,
+                     EnumProperty = TestFeatureEnum.Value1,
+                     IntProperty = -1,
+                     StringProperty = "Hello, GeoJSON !"
+                };
+
+            Net.Feature.Feature feature = new Net.Feature.Feature(new Point(new Position(10, 10)), properties);
+
+            var expectedJson = this.GetExpectedJson();
+            var actualJson = JsonConvert.SerializeObject(feature);
+
+            Assert.False(string.IsNullOrEmpty(expectedJson));
+            JsonAssert.AreEqual(expectedJson, actualJson);
+        }
+
+        [Test]
         public void Ctor_Can_Add_Properties_Using_Object()
         {
             var properties = new TestFeatureProperty
@@ -185,6 +207,31 @@ namespace GeoJSON.Net.Tests.Feature
             Assert.IsNotNull(feature.Properties);
             Assert.IsTrue(feature.Properties.Count > 1);
             Assert.AreEqual(feature.Properties.Count, 6);
+        }
+
+        [Test]
+        public void Ctor_Can_Add_Properties_Using_Object_Inheriting_Dictionary()
+        {
+            int expectedProperties = 6;
+
+            var properties = new TestFeaturePropertyDictionary()
+            {
+                BooleanProperty = true,
+                DateTimeProperty = DateTime.Now,
+                DoubleProperty = 1.2345d,
+                EnumProperty = TestFeatureEnum.Value1,
+                IntProperty = -1,
+                StringProperty = "Hello, GeoJSON !"
+            };
+
+            Net.Feature.Feature feature = new Net.Feature.Feature(new Point(new Position(10, 10)), properties);
+
+            Assert.IsNotNull(feature.Properties);
+            Assert.IsTrue(feature.Properties.Count > 1);
+            Assert.AreEqual(
+                feature.Properties.Count,
+                expectedProperties,
+                $"Expected: {expectedProperties} Actual: {feature.Properties.Count}");
         }
 
         [Test]
@@ -437,7 +484,7 @@ namespace GeoJSON.Net.Tests.Feature
             return multiLine;
         }
 
-        public static Dictionary<string, object> GetPropertiesInRandomOrder()
+        public static IDictionary<string, object> GetPropertiesInRandomOrder()
         {
             var properties = new Dictionary<string, object>()
             {

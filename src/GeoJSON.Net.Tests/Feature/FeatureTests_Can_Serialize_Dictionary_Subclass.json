@@ -1,0 +1,17 @@
+﻿{
+  "type":"Feature",
+  "geometry":{
+    "type":"Point",
+    "coordinates":[
+      10.0,
+      10.0
+    ]
+  },
+  "properties":{
+    "BooleanProperty":true,
+    "DoubleProperty":1.2345,
+    "EnumProperty":1,
+    "IntProperty":-1,
+    "StringProperty":"Hello, GeoJSON !"
+  }
+}
