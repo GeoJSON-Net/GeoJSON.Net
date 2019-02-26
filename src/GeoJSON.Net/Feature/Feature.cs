@@ -105,7 +105,7 @@ namespace GeoJSON.Net.Feature
     public class Feature : Feature<IGeometryObject>
     {
         [JsonConstructor]
-        public Feature(IGeometryObject geometry, Dictionary<string, object> properties = null, string id = null) 
+        public Feature(IGeometryObject geometry, IDictionary<string, object> properties = null, string id = null) 
             : base(geometry, properties, id)
         {
         }
@@ -122,7 +122,7 @@ namespace GeoJSON.Net.Feature
     /// </summary>
     /// <remarks>Returns correctly typed Geometry property</remarks>
     /// <typeparam name="TGeometry"></typeparam>
-    public class Feature<TGeometry> : Feature<TGeometry, Dictionary<string, object>>, IEquatable<Feature<TGeometry>> where TGeometry : IGeometryObject
+    public class Feature<TGeometry> : Feature<TGeometry, IDictionary<string, object>>, IEquatable<Feature<TGeometry>> where TGeometry : IGeometryObject
     {
 
         /// <summary>
@@ -132,7 +132,7 @@ namespace GeoJSON.Net.Feature
         /// <param name="properties">The properties.</param>
         /// <param name="id">The (optional) identifier.</param>
         [JsonConstructor]
-        public Feature(TGeometry geometry, Dictionary<string, object> properties = null, string id = null)
+        public Feature(TGeometry geometry, IDictionary<string, object> properties = null, string id = null)
         : base(geometry, properties ?? new Dictionary<string, object>(), id)
         {
         }
