@@ -4,7 +4,7 @@
         <id>GeoJSON.Net</id>
         <version>$version$</version>
         <authors>Matt Hunt,Joerg Battermann</authors>
-        <owners>Matt Hunt,Joerg Battermann and GeoJSON.Net contributors.</owners>
+        <owners>Matt Hunt,Xavier Fischer,Joerg Battermann and GeoJSON.Net contributors.</owners>
         <licenseUrl>https://github.com/GeoJSON-Net/GeoJSON.Net/blob/master/LICENSE.md</licenseUrl>
         <projectUrl>https://github.com/GeoJSON-Net/GeoJSON.Net</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
