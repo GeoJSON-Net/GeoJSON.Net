@@ -17,22 +17,12 @@ namespace GeoJSON.Net.Geometry
         /// <summary>
         /// Initializes a new instance of the <see cref="Position" /> class.
         /// </summary>
-        /// <param name="latitude">The latitude.</param>
-        /// <param name="longitude">The longitude.</param>
+        /// <param name="latitude">The latitude, or Y coordinate.</param>
+        /// <param name="longitude">The longitude or X coordinate.</param>
         /// <param name="altitude">The altitude in m(eter).</param>
         public Position(double latitude, double longitude, double? altitude = null)
         {
-            // Yes I hate commented out code to, but this needs to go right now
-            //if (Math.Abs(latitude) > 90)
-            //{
-            //    throw new ArgumentOutOfRangeException(nameof(latitude), "Latitude must be a proper lat (+/- double) value between -90 and 90.");
-            //}
-
-            //if (Math.Abs(longitude) > 180)
-            //{
-            //    throw new ArgumentOutOfRangeException(nameof(longitude), "Longitude must be a proper lon (+/- double) value between -180 and 180.");
-            //}
-
+            // TODO Coordinate range validation should be performed only when CRS is supplied
             Latitude = latitude;
             Longitude = longitude;
             Altitude = altitude;
@@ -41,11 +31,12 @@ namespace GeoJSON.Net.Geometry
         /// <summary>
         /// Initializes a new instance of the <see cref="Position" /> class.
         /// </summary>
-        /// <param name="latitude">The latitude, e.g. '38.889722'.</param>
-        /// <param name="longitude">The longitude, e.g. '-77.008889'.</param>
+        /// <param name="latitude">The latitude, or Y coordinate e.g. '38.889722'.</param>
+        /// <param name="longitude">The longitude, or X coordinate e.g. '-77.008889'.</param>
         /// <param name="altitude">The altitude in m(eters).</param>
         public Position(string latitude, string longitude, string altitude = null)
         {
+            // TODO Coordinate range validation should be performed only when CRS is supplied
             if (string.IsNullOrEmpty(latitude))
             {
                 throw new ArgumentOutOfRangeException(nameof(latitude), "May not be empty.");
@@ -56,14 +47,14 @@ namespace GeoJSON.Net.Geometry
                 throw new ArgumentOutOfRangeException(nameof(longitude), "May not be empty.");
             }
 
-            if (!double.TryParse(latitude, NumberStyles.Float, CultureInfo.InvariantCulture, out double lat) || Math.Abs(lat) > 90)
+            if (!double.TryParse(latitude, NumberStyles.Float, CultureInfo.InvariantCulture, out double lat))
             {
-                throw new ArgumentOutOfRangeException(nameof(latitude), "Latitude must be a proper lat (+/- double) value between -90 and 90.");
+                throw new ArgumentOutOfRangeException(nameof(altitude), "Latitude representation must be a numeric.");
             }
 
-            if (!double.TryParse(longitude, NumberStyles.Float, CultureInfo.InvariantCulture, out double lon) || Math.Abs(lon) > 180)
+            if (!double.TryParse(longitude, NumberStyles.Float, CultureInfo.InvariantCulture, out double lon))
             {
-                throw new ArgumentOutOfRangeException(nameof(longitude), "Longitude must be a proper lon (+/- double) value between -180 and 180.");
+                throw new ArgumentOutOfRangeException(nameof(altitude), "Longitude representation must be a numeric.");
             }
 
             Latitude = lat;
@@ -86,12 +77,12 @@ namespace GeoJSON.Net.Geometry
         public double? Altitude { get; }
 
         /// <summary>
-        /// Gets the latitude.
+        /// Gets the latitude or Y coordinate
         /// </summary>
         public double Latitude { get; }
 
         /// <summary>
-        /// Gets the longitude.
+        /// Gets the longitude or X coordinate
         /// </summary>
         public double Longitude { get; }
         

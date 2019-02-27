@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard1.0;netstandard1.1;net35;net40;net45;</TargetFrameworks>
     <AssemblyName>GeoJSON.Net</AssemblyName>
-    <AssemblyVersion>1.0.0</AssemblyVersion>
-    <FileVersion>1.0.0</FileVersion>
+    <AssemblyVersion>1.1.72</AssemblyVersion>
+    <FileVersion>1.1.72</FileVersion>
     <Description>.Net types for the GeoJSON RFC to be used with Json.Net</Description>
     <Authors></Authors>
     <Company>GeoJSON.Net</Company>
