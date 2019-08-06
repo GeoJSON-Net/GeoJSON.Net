@@ -3,12 +3,15 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard1.0;netstandard1.1;net35;net40;net45;</TargetFrameworks>
     <AssemblyName>GeoJSON.Net</AssemblyName>
-    <AssemblyVersion>1.1.72</AssemblyVersion>
-    <FileVersion>1.1.72</FileVersion>
+    <AssemblyVersion>1.1.73</AssemblyVersion>
+    <FileVersion>1.1.73</FileVersion>
     <Description>.Net types for the GeoJSON RFC to be used with Json.Net</Description>
     <Authors></Authors>
     <Company>GeoJSON.Net</Company>
-    <Copyright>Copyright © Matt Hunt, Joerg Battermann and Contributor, 2014 - 2017</Copyright>
+    <Copyright>Copyright © Joerg Battermann, Matt Hunt, Xavier Fischer and Contributors, 2014 - 2019</Copyright>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.1.73</Version>
+    <PackageReleaseNotes>Assembly is now strong named</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
