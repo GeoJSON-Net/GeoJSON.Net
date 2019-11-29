@@ -190,7 +190,7 @@ namespace GeoJSON.Net.Feature
                 return false;
             }
 
-            return Geometry.Equals(other.Geometry);
+            return EqualityComparer<TGeometry>.Default.Equals(Geometry, other.Geometry);
         }
 
         public override bool Equals(object obj)

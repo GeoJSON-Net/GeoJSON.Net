@@ -68,7 +68,7 @@ namespace GeoJSON.Net.Geometry
 
             return firstCoordinate.Longitude.Equals(lastCoordinate.Longitude)
                    && firstCoordinate.Latitude.Equals(lastCoordinate.Latitude)
-                   && firstCoordinate.Altitude.Equals(lastCoordinate.Altitude);
+                   && Nullable.Equals(firstCoordinate.Altitude, lastCoordinate.Altitude);
         }
 
         /// <summary>
