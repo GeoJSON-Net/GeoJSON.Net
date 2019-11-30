@@ -74,11 +74,11 @@ namespace GeoJSON.Net.CoordinateReferenceSystem
 
             foreach (var item in left.Properties)
             {
-                if (!right.Properties.ContainsKey(item.Key))
+                if (!right.Properties.TryGetValue(item.Key, out object rightValue))
                 {
                     return false;
                 }
-                if (!object.Equals(item.Value, right.Properties[item.Key]))
+                if (!object.Equals(item.Value, rightValue))
                 {
                     return false;
                 }
