@@ -1,5 +1,5 @@
 [![Backers on Open Collective](https://opencollective.com/geojson-net/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/geojson-net/sponsors/badge.svg)](#sponsors) [![NuGet Version](http://img.shields.io/nuget/v/GeoJSON.NET.svg?style=flat)](https://www.nuget.org/packages/GeoJSON.NET/) 
-[![Build status](https://boxsauce.visualstudio.com/GeoJSON.Net/_apis/build/status/GeoJSON.Net)](https://boxsauce.visualstudio.com/GeoJSON.Net/_build/latest?definitionId=1)
+[![Build status](https://dev.azure.com/GeoJSON-Net/GeoJSON.Net/_apis/build/status/GeoJSON.Net)](https://dev.azure.com/GeoJSON-Net/GeoJSON.Net/_build/latest?definitionId=1)
 
 # GeoJSON.NET
 GeoJSON.Net is a .NET library for the [RFC 7946 The GeoJSON Format](https://tools.ietf.org/html/rfc7946) and it uses and provides [Newtonsoft Json.NET](http://json.codeplex.com) converters for serialization and deserialization of GeoJSON data.
