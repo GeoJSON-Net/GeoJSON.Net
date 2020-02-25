@@ -1,19 +1,19 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.0;netstandard1.1;net35;net40;net45;</TargetFrameworks>
+    <TargetFrameworks>netstandard1.0;netstandard1.1;netstandard2.0;netstandard2.1;net35;net40;net45;</TargetFrameworks>
     <Description>.Net types for the GeoJSON RFC to be used with Json.Net</Description>
     <Authors>Matt Hunt;Joerg Battermann;Xavier Fischer</Authors>
     <Company>GeoJSON.Net</Company>
     <Copyright>Copyright © Joerg Battermann, Matt Hunt, Xavier Fischer and Contributors, 2014 - 2019</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.2.0</Version>
+    <Version>1.2.15</Version>
     <PackageProjectUrl>https://github.com/GeoJSON-Net/GeoJSON.Net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/GeoJSON-Net/GeoJSON.Net.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>geojson;geo;json;geolocation</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageReleaseNotes>Assembly is now strong named</PackageReleaseNotes>
+    <PackageReleaseNotes>Added support for .Net Standard 2.0 and 2.1</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
