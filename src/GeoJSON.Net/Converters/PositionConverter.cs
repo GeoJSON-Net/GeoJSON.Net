@@ -57,7 +57,7 @@ namespace GeoJSON.Net.Converters
         /// <param name="serializer">The calling serializer.</param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            if (value is Position coordinates)
+            if (value is IPosition coordinates)
             {
                 writer.WriteStartArray();
 
