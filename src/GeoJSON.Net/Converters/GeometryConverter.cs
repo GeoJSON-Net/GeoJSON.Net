@@ -15,6 +15,8 @@ namespace GeoJSON.Net.Converters
     /// </summary>
     public class GeometryConverter : JsonConverter
     {
+        public override bool CanWrite => false;
+
         /// <summary>
         ///     Determines whether this instance can convert the specified object type.
         /// </summary>
@@ -64,7 +66,8 @@ namespace GeoJSON.Net.Converters
         /// <param name="serializer">The calling serializer.</param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            serializer.Serialize(writer, value);
+            // IGeometryObject can be written without a problem
+            throw new NotImplementedException("Unnecessary because CanWrite is false. The type will skip the converter.");
         }
 
         /// <summary>
