@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using GeoJSON.Net.Converters;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -26,6 +27,31 @@ namespace GeoJSON.Net.Tests.Geometry
             var actualJson = JsonConvert.SerializeObject(polygon);
 
             JsonAssert.AreEqual(expectedJson, actualJson);
+        }
+
+        [Test]
+        public void Can_RoundTrip_IGeometryObject()
+        {
+            IGeometryObject polygon = new Polygon(new List<LineString>
+            {
+                new LineString(new List<IPosition>
+                {
+                    new Position(52.379790828551016, 5.3173828125),
+                    new Position(52.36721467920585, 5.456085205078125),
+                    new Position(52.303440474272755, 5.386047363281249, 4.23),
+                    new Position(52.379790828551016, 5.3173828125),
+                })
+            });
+
+            var serializerSettings = new JsonSerializerSettings()
+            {
+                Converters = new List<JsonConverter>() { new GeometryConverter() }
+            };
+
+            var json = JsonConvert.SerializeObject(polygon, serializerSettings);
+            var result = JsonConvert.DeserializeObject<IGeometryObject>(json, serializerSettings);
+
+            Assert.AreEqual(result, polygon);
         }
 
         [Test]
