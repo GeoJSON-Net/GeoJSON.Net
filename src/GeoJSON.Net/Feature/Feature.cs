@@ -90,8 +90,8 @@ namespace GeoJSON.Net.Feature
             return !object.Equals(left, right);
         }
     }
-    
-    
+
+
     /// <summary>
     /// A GeoJSON Feature Object.
     /// </summary>
@@ -100,12 +100,12 @@ namespace GeoJSON.Net.Feature
     /// </remarks>
     public class Feature : Feature<IGeometryObject>
     {
-        public Feature(IGeometryObject geometry, IDictionary<string, object> properties = null, string id = null) 
+        public Feature(IGeometryObject geometry, IDictionary<string, object> properties = null, string id = null)
             : base(geometry, properties, id)
         {
         }
 
-        public Feature(IGeometryObject geometry, object properties, string id = null) 
+        public Feature(IGeometryObject geometry, object properties, string id = null)
             : base(geometry, properties, id)
         {
         }

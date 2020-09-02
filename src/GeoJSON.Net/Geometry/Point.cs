@@ -87,7 +87,7 @@ namespace GeoJSON.Net.Geometry
         {
             return !(left == right);
         }
-        
+
         /// <summary>
         /// Returns the hash code for this instance
         /// </summary>

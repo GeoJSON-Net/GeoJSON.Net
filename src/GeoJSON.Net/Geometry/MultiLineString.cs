@@ -9,7 +9,7 @@ using System.Collections.ObjectModel;
 
 namespace GeoJSON.Net.Geometry
 {
-    
+
     /// <summary>
     /// Defines the MultiLineString type.
     /// </summary>

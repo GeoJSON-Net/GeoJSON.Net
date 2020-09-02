@@ -11,7 +11,7 @@ namespace GeoJSON.Net.Geometry
 {
     /// <summary>
     /// Defines the Polygon type.
-    /// Coordinates of a Polygon are a list of linear rings coordinate arrays. The first element in 
+    /// Coordinates of a Polygon are a list of linear rings coordinate arrays. The first element in
     /// the array represents the exterior ring. Any subsequent elements represent interior rings (or holes).
     /// </summary>
     /// <remarks>
@@ -23,7 +23,7 @@ namespace GeoJSON.Net.Geometry
         /// Initializes a new instance of the <see cref="Polygon" /> class.
         /// </summary>
         /// <param name="coordinates">
-        /// The linear rings with the first element in the array representing the exterior ring. 
+        /// The linear rings with the first element in the array representing the exterior ring.
         /// Any subsequent elements represent interior rings (or holes).
         /// </param>
         public Polygon(IEnumerable<LineString> coordinates)
@@ -36,7 +36,7 @@ namespace GeoJSON.Net.Geometry
                                             " (see GeoJSON spec at 'https://tools.ietf.org/html/rfc7946#section-3.1.6').", nameof(coordinates));
             }
 
-            
+
         }
 
         /// <summary>
