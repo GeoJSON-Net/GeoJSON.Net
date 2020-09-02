@@ -2,8 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace GeoJSON.Net.CoordinateReferenceSystem
 {
