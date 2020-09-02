@@ -51,7 +51,6 @@ namespace GeoJSON.Net
         ///     The (mandatory) type of the
         ///     <see cref="https://tools.ietf.org/html/rfc7946#section-3">GeoJSON Object</see>.
         /// </summary>
-        [JsonConverter(typeof(StringEnumConverter))]
         public abstract GeoJSONObjectType Type { get; }
 
 

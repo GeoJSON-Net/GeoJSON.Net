@@ -21,7 +21,6 @@ namespace GeoJSON.Net.CoordinateReferenceSystem
         /// <summary>
         /// Gets the type of the GeometryObject object.
         /// </summary>
-        [JsonConverter(typeof(StringEnumConverter))]
         public CRSType Type { get; internal set; }
 
         #region IEqualityComparer, IEquatable
