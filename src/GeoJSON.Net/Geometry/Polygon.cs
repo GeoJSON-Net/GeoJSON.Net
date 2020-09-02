@@ -43,7 +43,6 @@ namespace GeoJSON.Net.Geometry
         /// Initializes a new <see cref="Polygon" /> from a 3-d array of <see cref="double" />s
         /// that matches the "coordinates" field in the JSON representation.
         /// </summary>
-        [JsonConstructor]
         public Polygon(IEnumerable<IEnumerable<IEnumerable<double>>> coordinates)
             : this(coordinates?.Select(line => new LineString(line))
               ?? throw new ArgumentNullException(nameof(coordinates)))

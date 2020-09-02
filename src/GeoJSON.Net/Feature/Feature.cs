@@ -22,7 +22,6 @@ namespace GeoJSON.Net.Feature
     public class Feature<TGeometry, TProps> : GeoJSONObject, IEquatable<Feature<TGeometry, TProps>>
         where TGeometry : IGeometryObject
     {
-        [JsonConstructor]
         public Feature(TGeometry geometry, TProps properties, string id = null)
         {
             Geometry = geometry;
@@ -101,7 +100,6 @@ namespace GeoJSON.Net.Feature
     /// </remarks>
     public class Feature : Feature<IGeometryObject>
     {
-        [JsonConstructor]
         public Feature(IGeometryObject geometry, IDictionary<string, object> properties = null, string id = null) 
             : base(geometry, properties, id)
         {
@@ -128,7 +126,6 @@ namespace GeoJSON.Net.Feature
         /// <param name="geometry">The Geometry Object.</param>
         /// <param name="properties">The properties.</param>
         /// <param name="id">The (optional) identifier.</param>
-        [JsonConstructor]
         public Feature(TGeometry geometry, IDictionary<string, object> properties = null, string id = null)
         : base(geometry, properties ?? new Dictionary<string, object>(), id)
         {

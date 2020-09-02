@@ -26,7 +26,6 @@ namespace GeoJSON.Net.Geometry
             Coordinates = new ReadOnlyCollection<Point>(coordinates?.ToArray() ?? new Point[0]);
         }
         
-        [JsonConstructor]
         public MultiPoint(IEnumerable<IEnumerable<double>> coordinates)
         : this(coordinates?.Select(position => new Point(position.ToPosition()))
                ?? throw new ArgumentNullException(nameof(coordinates)))
