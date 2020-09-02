@@ -1,10 +1,8 @@
 ﻿// Copyright © Joerg Battermann 2014, Matt Hunt 2017
 
 using System.Collections.Generic;
-#if (!NET35 || !NET40)
 using System.Reflection;
 using System.Linq;
-#endif
 using GeoJSON.Net.Converters;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
@@ -151,17 +149,10 @@ namespace GeoJSON.Net.Feature
             {
                 return new Dictionary<string, object>();
             }
-#if(NET35 || NET40)
-            return properties.GetType().GetProperties()
-                .Where(propertyInfo => propertyInfo.GetGetMethod().IsPublic)
-                .ToDictionary(propertyInfo => propertyInfo.Name,
-                    propertyInfo => propertyInfo.GetValue(properties, null));
-#else
             return properties.GetType().GetTypeInfo().DeclaredProperties
                 .Where(propertyInfo => propertyInfo.GetMethod.IsPublic)
                 .ToDictionary(propertyInfo => propertyInfo.Name,
                     propertyInfo => propertyInfo.GetValue(properties, null));
-#endif
         }
 
         public bool Equals(Feature<TGeometry> other)

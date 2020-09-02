@@ -1,7 +1,6 @@
 ﻿// Copyright © Joerg Battermann 2014, Matt Hunt 2017
 
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using GeoJSON.Net.Geometry;
@@ -94,21 +93,10 @@ namespace GeoJSON.Net.Converters
 
             GeoJSONObjectType geoJsonType;
 
-#if (NET35)
-            try
-            {
-                geoJsonType = (GeoJSONObjectType)Enum.Parse(typeof(GeoJSONObjectType), token.Value<string>(), true);
-            }
-            catch (Exception)
-            {
-                throw new JsonReaderException("Type must be a valid geojson object type");
-            }
-#else
             if (!Enum.TryParse(token.Value<string>(), true, out geoJsonType))
             {
                 throw new JsonReaderException("type must be a valid geojson geometry object type");
             }
-#endif
 
             switch (geoJsonType)
             {
