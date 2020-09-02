@@ -31,17 +31,14 @@ namespace GeoJSON.Net.Feature
         }
 
         public override GeoJSONObjectType Type => GeoJSONObjectType.Feature;
-        
-        [JsonProperty(PropertyName = "id", NullValueHandling = NullValueHandling.Ignore)]
+
         public string Id { get; }
-        
-        [JsonProperty(PropertyName = "geometry", Required = Required.AllowNull)]
+
         [JsonConverter(typeof(GeometryConverter))]
         public TGeometry Geometry { get; }
-        
-        [JsonProperty(PropertyName = "properties", Required = Required.AllowNull)]
+
         public TProps Properties { get; }
-        
+
         /// <summary>
         /// Equality comparer.
         /// </summary>

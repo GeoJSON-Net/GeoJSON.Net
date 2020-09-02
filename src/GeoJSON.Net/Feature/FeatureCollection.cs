@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using System.Linq;
 
 namespace GeoJSON.Net.Feature
@@ -39,7 +38,6 @@ namespace GeoJSON.Net.Feature
         /// Gets the features.
         /// </summary>
         /// <value>The features.</value>
-        [JsonProperty(PropertyName = "features", Required = Required.Always)]
         public List<Feature> Features { get; private set; }
 
         #region IEqualityComparer, IEquatable

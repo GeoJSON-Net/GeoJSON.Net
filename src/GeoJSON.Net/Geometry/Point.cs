@@ -31,7 +31,6 @@ namespace GeoJSON.Net.Geometry
         /// <summary>
         /// The <see cref="IPosition" /> underlying this point.
         /// </summary>
-        [JsonProperty("coordinates", Required = Required.Always)]
         [JsonConverter(typeof(PositionConverter))]
         public IPosition Coordinates { get; }
 

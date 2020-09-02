@@ -39,7 +39,6 @@ namespace GeoJSON.Net.Geometry
         /// <summary>
         /// Gets the list of Polygons enclosed in this MultiPolygon.
         /// </summary>
-        [JsonProperty("geometries", Required = Required.Always)]
         [JsonConverter(typeof(GeometryConverter))]
         public ReadOnlyCollection<IGeometryObject> Geometries { get; private set; }
 

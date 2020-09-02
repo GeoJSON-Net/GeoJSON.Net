@@ -44,7 +44,6 @@ namespace GeoJSON.Net.Geometry
         /// <summary>
         /// The list of Polygons enclosed in this <see cref="MultiPolygon"/>.
         /// </summary>
-        [JsonProperty("coordinates", Required = Required.Always)]
         [JsonConverter(typeof(PolygonEnumerableConverter))]
         public ReadOnlyCollection<Polygon> Coordinates { get; }
 

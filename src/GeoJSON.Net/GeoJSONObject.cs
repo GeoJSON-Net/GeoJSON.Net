@@ -1,11 +1,9 @@
 ﻿// Copyright © Joerg Battermann 2014, Matt Hunt 2017
 
 using System.Linq;
-using System.Runtime.Serialization;
 using GeoJSON.Net.Converters;
 using GeoJSON.Net.CoordinateReferenceSystem;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System.Text.Json.Serialization;
 using System.Collections.Generic;
 using System;
 
@@ -31,7 +29,7 @@ namespace GeoJSON.Net
         ///     In addition, the coordinate reference system for the bbox is assumed to match the coordinate reference
         ///     system of the GeoJSON object of which it is a member.
         /// </value>
-        [JsonProperty(PropertyName = "bbox", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("bbox")]
         public double[] BoundingBoxes { get; set; }
 
         /// <summary>
@@ -44,8 +42,7 @@ namespace GeoJSON.Net
         /// <value>
         ///     The Coordinate Reference System Objects.
         /// </value>
-        [JsonProperty(PropertyName = "crs", Required = Required.Default, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
-            NullValueHandling = NullValueHandling.Include)]
+        [JsonPropertyName("crs")]
         [JsonConverter(typeof(CrsConverter))]
         //[DefaultValue(typeof(DefaultCRS), "")]
         public ICRSObject CRS { get; set; }
@@ -54,7 +51,6 @@ namespace GeoJSON.Net
         ///     The (mandatory) type of the
         ///     <see cref="https://tools.ietf.org/html/rfc7946#section-3">GeoJSON Object</see>.
         /// </summary>
-        [JsonProperty(PropertyName = "type", Required = Required.Always, DefaultValueHandling = DefaultValueHandling.Include)]
         [JsonConverter(typeof(StringEnumConverter))]
         public abstract GeoJSONObjectType Type { get; }
 

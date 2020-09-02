@@ -16,13 +16,11 @@ namespace GeoJSON.Net.CoordinateReferenceSystem
         /// <summary>
         /// Gets the properties.
         /// </summary>
-        [JsonProperty(PropertyName = "properties", Required = Required.Always)]
         public Dictionary<string, object> Properties { get; internal set; }
 
         /// <summary>
         /// Gets the type of the GeometryObject object.
         /// </summary>
-        [JsonProperty(PropertyName = "type", Required = Required.Always)]
         [JsonConverter(typeof(StringEnumConverter))]
         public CRSType Type { get; internal set; }
 

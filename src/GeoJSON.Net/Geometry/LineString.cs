@@ -22,7 +22,6 @@ namespace GeoJSON.Net.Geometry
         /// Initializes a new <see cref="LineString" /> from a 2-d array of <see cref="double" />s
         /// that matches the "coordinates" field in the JSON representation.
         /// </summary>
-        [JsonConstructor]
         public LineString(IEnumerable<IEnumerable<double>> coordinates)
         : this(coordinates?.Select(latLongAlt => (IPosition)latLongAlt.ToPosition())
                ?? throw new ArgumentException(nameof(coordinates)))
@@ -51,7 +50,6 @@ namespace GeoJSON.Net.Geometry
         /// <summary>
         /// The positions of the line string.
         /// </summary>
-        [JsonProperty("coordinates", Required = Required.Always)]
         [JsonConverter(typeof(PositionEnumerableConverter))]
         public ReadOnlyCollection<IPosition> Coordinates { get; }
 

@@ -38,7 +38,6 @@ namespace GeoJSON.Net.Geometry
         /// <summary>
         /// The points contained in this <see cref="MultiPoint"/>.
         /// </summary>
-        [JsonProperty("coordinates", Required = Required.Always)]
         [JsonConverter(typeof(PointEnumerableConverter))]
         public ReadOnlyCollection<Point> Coordinates { get; }
 

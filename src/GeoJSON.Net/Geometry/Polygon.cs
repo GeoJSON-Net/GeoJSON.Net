@@ -55,7 +55,6 @@ namespace GeoJSON.Net.Geometry
         /// <summary>
         /// Gets the list of linestrings defining this <see cref="Polygon" />.
         /// </summary>
-        [JsonProperty("coordinates", Required = Required.Always)]
         [JsonConverter(typeof(LineStringEnumerableConverter))]
         public ReadOnlyCollection<LineString> Coordinates { get; }
 
