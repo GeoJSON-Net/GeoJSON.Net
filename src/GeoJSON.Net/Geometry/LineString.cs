@@ -15,7 +15,6 @@ namespace GeoJSON.Net.Geometry
     /// <remarks>
     /// See https://tools.ietf.org/html/rfc7946#section-3.1.4
     /// </remarks>
-    [JsonObject(MemberSerialization.OptIn)]
     public class LineString : GeoJSONObject, IGeometryObject, IEqualityComparer<LineString>, IEquatable<LineString>
     {
         /// <summary>

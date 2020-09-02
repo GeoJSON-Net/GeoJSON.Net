@@ -10,7 +10,6 @@ namespace GeoJSON.Net.CoordinateReferenceSystem
     /// <summary>
     /// Base class for all IGeometryObject implementing types
     /// </summary>
-    [JsonObject(MemberSerialization.OptIn)]
     public abstract class CRSBase : IEqualityComparer<CRSBase>, IEquatable<CRSBase>
     {
         /// <summary>

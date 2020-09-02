@@ -12,7 +12,6 @@ namespace GeoJSON.Net
     /// <summary>
     ///     Base class for all IGeometryObject implementing types
     /// </summary>
-    [JsonObject(MemberSerialization.OptIn)]
     public abstract class GeoJSONObject : IGeoJSONObject, IEqualityComparer<GeoJSONObject>, IEquatable<GeoJSONObject>
     {
         internal static readonly DoubleTenDecimalPlaceComparer DoubleComparer = new DoubleTenDecimalPlaceComparer();
