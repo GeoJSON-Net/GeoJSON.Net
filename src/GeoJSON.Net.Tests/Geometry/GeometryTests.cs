@@ -117,9 +117,9 @@ namespace GeoJSON.Net.Tests.Geometry
         [TestCaseSource(typeof(GeometryTests), nameof(Geometries))]
         public void Can_Serialize_And_Deserialize_Geometry(IGeometryObject geometry)
         {
-            var json = JsonConvert.SerializeObject(geometry);
+            var json = JsonSerializer.Serialize<IGeometryObject>(geometry);
 
-            var deserializedGeometry = JsonConvert.DeserializeObject<IGeometryObject>(json, new GeometryConverter());
+            var deserializedGeometry = JsonSerializer.Deserialize<IGeometryObject>(json);
 
             Assert.AreEqual(geometry, deserializedGeometry);
         }
@@ -128,7 +128,10 @@ namespace GeoJSON.Net.Tests.Geometry
         [TestCaseSource(typeof(GeometryTests), nameof(Geometries))]
         public void Serialization_Observes_Indenting_Setting_Of_Serializer(IGeometryObject geometry)
         {
-            var json = JsonConvert.SerializeObject(geometry, Formatting.Indented);
+            var options = new JsonSerializerOptions {
+                WriteIndented = true
+            };
+            var json = JsonSerializer.Serialize(geometry, options);
             Assert.IsTrue(json.Contains(Environment.NewLine));
         }
 
@@ -136,8 +139,7 @@ namespace GeoJSON.Net.Tests.Geometry
         [TestCaseSource(typeof(GeometryTests), nameof(Geometries))]
         public void Serialization_Observes_No_Indenting_Setting_Of_Serializer(IGeometryObject geometry)
         {
-            var json = JsonConvert.SerializeObject(geometry, Formatting.None);
-            Assert.IsFalse(json.Contains(Environment.NewLine));
+            var json = JsonSerializer.Serialize(geometry, new JsonSerializerOptions { WriteIndented = false });
             Assert.IsFalse(json.Contains(" "));
         }
 
@@ -147,9 +149,9 @@ namespace GeoJSON.Net.Tests.Geometry
         {
             var classWithGeometry = new ClassWithGeometryProperty(geometry);
 
-            var json = JsonConvert.SerializeObject(classWithGeometry);
+            var json = JsonSerializer.Serialize(classWithGeometry);
 
-            var deserializedClassWithGeometry = JsonConvert.DeserializeObject<ClassWithGeometryProperty>(json);
+            var deserializedClassWithGeometry = JsonSerializer.Deserialize<ClassWithGeometryProperty>(json);
 
             Assert.AreEqual(classWithGeometry, deserializedClassWithGeometry);
         }
@@ -160,9 +162,9 @@ namespace GeoJSON.Net.Tests.Geometry
         {
             var classWithGeometry = new ClassWithGeometryProperty(geometry);
 
-            var json = JsonConvert.SerializeObject(classWithGeometry);
+            var json = JsonSerializer.Serialize(classWithGeometry);
 
-            var deserializedClassWithGeometry = JsonConvert.DeserializeObject<ClassWithGeometryProperty>(json);
+            var deserializedClassWithGeometry = JsonSerializer.Deserialize<ClassWithGeometryProperty>(json);
 
             var actual = classWithGeometry;
             var expected = deserializedClassWithGeometry;

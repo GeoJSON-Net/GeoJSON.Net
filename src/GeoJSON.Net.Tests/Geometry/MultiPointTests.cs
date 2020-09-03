@@ -21,7 +21,7 @@ namespace GeoJSON.Net.Tests.Geometry
 
             var multiPoint = new MultiPoint(points);
 
-            var actualJson = JsonConvert.SerializeObject(multiPoint);
+            var actualJson = JsonSerializer.Serialize(multiPoint);
 
             JsonAssert.AreEqual(GetExpectedJson(), actualJson);
         }
@@ -38,7 +38,7 @@ namespace GeoJSON.Net.Tests.Geometry
             var expectedMultiPoint = new MultiPoint(points);
 
             var json = GetExpectedJson();
-            var actualMultiPoint = JsonConvert.DeserializeObject<MultiPoint>(json);
+            var actualMultiPoint = JsonSerializer.Deserialize<MultiPoint>(json);
 
             Assert.AreEqual(expectedMultiPoint, actualMultiPoint);
         }

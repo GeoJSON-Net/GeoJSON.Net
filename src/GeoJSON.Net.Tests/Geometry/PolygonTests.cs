@@ -24,7 +24,7 @@ namespace GeoJSON.Net.Tests.Geometry
             });
 
             var expectedJson = GetExpectedJson();
-            var actualJson = JsonConvert.SerializeObject(polygon);
+            var actualJson = JsonSerializer.Serialize<Polygon>(polygon);
 
             JsonAssert.AreEqual(expectedJson, actualJson);
         }
@@ -43,13 +43,11 @@ namespace GeoJSON.Net.Tests.Geometry
                 })
             });
 
-            var serializerSettings = new JsonSerializerSettings()
-            {
-                Converters = new List<JsonConverter>() { new GeometryConverter() }
-            };
+            var serializerSettings = new JsonSerializerOptions();
+            serializerSettings.Converters.Add(new GeometryConverter());
 
-            var json = JsonConvert.SerializeObject(polygon, serializerSettings);
-            var result = JsonConvert.DeserializeObject<IGeometryObject>(json, serializerSettings);
+            var json = JsonSerializer.Serialize(polygon, serializerSettings);
+            var result = JsonSerializer.Deserialize<IGeometryObject>(json, serializerSettings);
 
             Assert.AreEqual(result, polygon);
         }
@@ -264,7 +262,7 @@ namespace GeoJSON.Net.Tests.Geometry
                 })
             });
 
-            var actualPolygon = JsonConvert.DeserializeObject<Polygon>(json);
+            var actualPolygon = JsonSerializer.Deserialize<Polygon>(json);
             Assert.AreEqual(expectedPolygon, actualPolygon);
         }
 
@@ -284,11 +282,11 @@ namespace GeoJSON.Net.Tests.Geometry
                 })
             });
 
-            var actualPolygon = JsonConvert.DeserializeObject<Polygon>(json);
+            var actualPolygon = JsonSerializer.Deserialize<Polygon>(json);
 
             Assert.AreEqual(expectedPolygon, actualPolygon);
         }
-        
+
         [Test]
         public void Equals_GetHashCode_Contract()
         {
@@ -317,7 +315,7 @@ namespace GeoJSON.Net.Tests.Geometry
             Assert.AreEqual(left.GetHashCode(), right.GetHashCode());
         }
 
-        
+
         private Polygon GetPolygon(double offset = 0.0)
         {
             var polygon = new Polygon(new List<LineString>
