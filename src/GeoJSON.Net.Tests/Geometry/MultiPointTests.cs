@@ -11,15 +11,15 @@ namespace GeoJSON.Net.Tests.Geometry
         [Test]
         public void Can_Serialize()
         {
-            var points = new List<Point>
+            var positions = new List<Position>
             {
-                new Point(new Position(52.370725881211314, 4.889259338378906)),
-                new Point(new Position(52.3711451105601, 4.895267486572266)),
-                new Point(new Position(52.36931095278263, 4.892091751098633)),
-                new Point(new Position(52.370725881211314, 4.889259338378906))
+                new Position(52.370725881211314, 4.889259338378906),
+                new Position(52.3711451105601, 4.895267486572266),
+                new Position(52.36931095278263, 4.892091751098633),
+                new Position(52.370725881211314, 4.889259338378906)
             };
 
-            var multiPoint = new MultiPoint(points);
+            var multiPoint = new MultiPoint(positions);
 
             var actualJson = JsonSerializer.Serialize(multiPoint);
 
@@ -29,13 +29,13 @@ namespace GeoJSON.Net.Tests.Geometry
         [Test]
         public void Can_Deserialize()
         {
-            var points = new List<Point>
+            var positions = new List<IPosition>
             {
-                new Point(new Position(39.57422, -105.01621)),
-                new Point(new Position(35.0539943, -80.6665134)),
+                new Position(39.57422, -105.01621),
+                new Position(35.0539943, -80.6665134),
             };
 
-            var expectedMultiPoint = new MultiPoint(points);
+            var expectedMultiPoint = new MultiPoint(positions);
 
             var json = GetExpectedJson();
             var actualMultiPoint = JsonSerializer.Deserialize<MultiPoint>(json);
@@ -43,14 +43,14 @@ namespace GeoJSON.Net.Tests.Geometry
             Assert.AreEqual(expectedMultiPoint, actualMultiPoint);
         }
 
-        private List<Point> GetPoints(double offset)
+        private List<IPosition> GetPositions(double offset)
         {
-            var points = new List<Point>
+            var points = new List<IPosition>
             {
-                new Point(new Position(52.370725881211314 + offset, 4.889259338378906 + offset)),
-                new Point(new Position(52.3711451105601 + offset, 4.895267486572266 + offset)),
-                new Point(new Position(52.36931095278263 + offset, 4.892091751098633 + offset)),
-                new Point(new Position(52.370725881211314 + offset, 4.889259338378906 + offset))
+                new Position(52.370725881211314 + offset, 4.889259338378906 + offset),
+                new Position(52.3711451105601 + offset, 4.895267486572266 + offset),
+                new Position(52.36931095278263 + offset, 4.892091751098633 + offset),
+                new Position(52.370725881211314 + offset, 4.889259338378906 + offset)
             };
             return points;
         }
@@ -65,8 +65,8 @@ namespace GeoJSON.Net.Tests.Geometry
                 offset *= -1;
             }
 
-            var left = new MultiPoint(GetPoints(offset));
-            var right = new MultiPoint(GetPoints(offset));
+            var left = new MultiPoint(GetPositions(offset));
+            var right = new MultiPoint(GetPositions(offset));
 
             Assert.AreEqual(left, right);
             Assert.AreEqual(right, left);

@@ -17,11 +17,11 @@ namespace GeoJSON.Net.Tests.Geometry
             {
                 var point = new Point(new Position(1, 2, 3));
 
-                var multiPoint = new MultiPoint(new List<Point>
+                var multiPoint = new MultiPoint(new List<IPosition>
                 {
-                    new Point(new Position(52.379790828551016, 5.3173828125)),
-                    new Point(new Position(52.36721467920585, 5.456085205078125)),
-                    new Point(new Position(52.303440474272755, 5.386047363281249, 4.23))
+                    new Position(52.379790828551016, 5.3173828125),
+                    new Position(52.36721467920585, 5.456085205078125),
+                    new Position(52.303440474272755, 5.386047363281249, 4.23)
                 });
 
                 var lineString = new LineString(new List<IPosition>
@@ -168,7 +168,7 @@ namespace GeoJSON.Net.Tests.Geometry
 
             var actual = classWithGeometry;
             var expected = deserializedClassWithGeometry;
-            
+
             Assert.IsTrue(actual.Equals(expected));
             Assert.IsTrue(actual.Equals(actual));
 
