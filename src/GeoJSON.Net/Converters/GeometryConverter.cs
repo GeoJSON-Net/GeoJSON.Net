@@ -63,8 +63,35 @@ namespace GeoJSON.Net.Converters
         /// <param name="serializer">The calling serializer.</param>
         public override void Write(Utf8JsonWriter writer, IGeometryObject item, JsonSerializerOptions options)
         {
-            // IGeometryObject can be written without a problem
-            throw new NotImplementedException("Unnecessary because CanWrite is false. The type will skip the converter.");
+            writer.WriteStartObject();
+            writer.WritePropertyName("type");
+            writer.WriteStringValue(item.Type.ToString());
+            writer.WriteStartArray("coordinates");
+
+            switch(item)
+            {
+                case Point point:
+                {
+                    new PositionConverter().Write(writer, point.Coordinates, options);
+                    break;
+                }
+                case MultiPoint multiPoint:
+                {
+                    new PositionEnumerableConverter().Write(writer, multiPoint.Coordinates, options);
+                    break;
+
+                }
+                case LineString line:
+                {
+                    new PositionEnumerableConverter().Write(writer, line.Coordinates, options);
+                    break;
+                }
+                default:
+                    throw new NotImplementedException("Unnecessary because CanWrite is false. The type will skip the converter.");
+            }
+
+            writer.WriteEndArray();
+            writer.WriteEndObject();
         }
 
         /// <summary>
