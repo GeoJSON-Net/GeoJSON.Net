@@ -40,13 +40,14 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            var rings = existingValue as JArray ?? serializer.Deserialize<JArray>(reader);
-            return rings.Select(ring => new LineString((IEnumerable<IPosition>) LineStringConverter.ReadJson(
-                    reader,
-                    typeof(IEnumerable<IPosition>),
-                    ring,
-                    serializer)))
-                .ToArray();
+            // var rings = existingValue as JArray ?? serializer.Deserialize<JArray>(reader);
+            // return rings.Select(ring => new LineString((IEnumerable<IPosition>) LineStringConverter.ReadJson(
+            //         reader,
+            //         typeof(IEnumerable<IPosition>),
+            //         ring,
+            //         serializer)))
+            //     .ToArray();
+            return null;
         }
 
         /// <summary>
@@ -57,19 +58,19 @@ namespace GeoJSON.Net.Converters
         /// <param name="serializer">The calling serializer.</param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            if (value is IEnumerable<LineString> coordinateElements)
-            {
-                writer.WriteStartArray();
-                foreach (var subPolygon in coordinateElements)
-                {
-                    LineStringConverter.WriteJson(writer, subPolygon.Coordinates, serializer);
-                }
-                writer.WriteEndArray();
-            }
-            else
-            {
-                throw new ArgumentException($"{nameof(LineStringEnumerableConverter)}: unsupported value type");
-            }
+            // if (value is IEnumerable<LineString> coordinateElements)
+            // {
+            //     writer.WriteStartArray();
+            //     foreach (var subPolygon in coordinateElements)
+            //     {
+            //         LineStringConverter.WriteJson(writer, subPolygon.Coordinates, serializer);
+            //     }
+            //     writer.WriteEndArray();
+            // }
+            // else
+            // {
+            //     throw new ArgumentException($"{nameof(LineStringEnumerableConverter)}: unsupported value type");
+            // }
         }
     }
 }
