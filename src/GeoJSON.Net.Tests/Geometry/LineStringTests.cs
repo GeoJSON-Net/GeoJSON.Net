@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
@@ -79,8 +80,8 @@ namespace GeoJSON.Net.Tests.Geometry
             Assert.AreEqual(expectedLineString, actualLineString);
 
             Assert.AreEqual(4, actualLineString.Coordinates.Count);
-            Assert.AreEqual(expectedLineString.Coordinates[0].Latitude, actualLineString.Coordinates[0].Latitude);
-            Assert.AreEqual(expectedLineString.Coordinates[0].Longitude, actualLineString.Coordinates[0].Longitude);
+            Assert.AreEqual(expectedLineString.Coordinates.First().Latitude, actualLineString.Coordinates.First().Latitude);
+            Assert.AreEqual(expectedLineString.Coordinates.First().Longitude, actualLineString.Coordinates.First().Longitude);
         }
 
         [Test]

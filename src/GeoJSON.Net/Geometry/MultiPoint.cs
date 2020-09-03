@@ -21,13 +21,13 @@ namespace GeoJSON.Net.Geometry
         /// Initializes a new instance of the <see cref="MultiPoint" /> class.
         /// </summary>
         /// <param name="coordinates">The coordinates.</param>
-        public MultiPoint(IEnumerable<Point> coordinates)
+        public MultiPoint(IEnumerable<IPosition> positions)
         {
-            Coordinates = new ReadOnlyCollection<Point>(coordinates?.ToArray() ?? new Point[0]);
+            Coordinates = new ReadOnlyCollection<IPosition>(positions?.ToArray() ?? Array.Empty<IPosition>());
         }
 
         public MultiPoint(IEnumerable<IEnumerable<double>> coordinates)
-        : this(coordinates?.Select(position => new Point(position.ToPosition()))
+        : this(coordinates?.Select(position => position.ToPosition())
                ?? throw new ArgumentNullException(nameof(coordinates)))
         {
         }
@@ -37,7 +37,7 @@ namespace GeoJSON.Net.Geometry
         /// <summary>
         /// The points contained in this <see cref="MultiPoint"/>.
         /// </summary>
-        public ReadOnlyCollection<Point> Coordinates { get; }
+        public IReadOnlyCollection<IPosition> Coordinates { get; }
 
         #region IEqualityComparer, IEquatable
 

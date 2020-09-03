@@ -49,7 +49,7 @@ namespace GeoJSON.Net.Geometry
         /// <summary>
         /// The positions of the line string.
         /// </summary>
-        public ReadOnlyCollection<IPosition> Coordinates { get; }
+        public IReadOnlyCollection<IPosition> Coordinates { get; }
 
         /// <summary>
         /// Determines whether this instance has its first and last coordinate at the same position and thereby is closed.
@@ -59,8 +59,8 @@ namespace GeoJSON.Net.Geometry
         /// </returns>
         public bool IsClosed()
         {
-            var firstCoordinate = Coordinates[0];
-            var lastCoordinate = Coordinates[Coordinates.Count - 1];
+            var firstCoordinate = Coordinates.First();
+            var lastCoordinate = Coordinates.Last();
 
             return firstCoordinate.Longitude.Equals(lastCoordinate.Longitude)
                    && firstCoordinate.Latitude.Equals(lastCoordinate.Latitude)
