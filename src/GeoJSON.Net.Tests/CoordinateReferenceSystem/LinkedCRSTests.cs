@@ -1,8 +1,8 @@
 using System;
 using GeoJSON.Net.CoordinateReferenceSystem;
 using GeoJSON.Net.Geometry;
-using Newtonsoft.Json;
 using NUnit.Framework;
+using System.Text.Json;
 
 namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
 {
@@ -41,7 +41,7 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
         public void Can_Serialize()
         {
             var collection = new Point(new Position(1, 2, 3)) { CRS = new LinkedCRS(Href) };
-            var actualJson = JsonConvert.SerializeObject(collection);
+            var actualJson = JsonSerializer.Serialize<Point>(collection);
 
             JsonAssert.Contains("{\"properties\":{\"href\":\"http://localhost\"},\"type\":\"link\"}", actualJson);
         }
@@ -50,7 +50,7 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
         public void Can_Deserialize_CRS_issue_101()
         {
             const string pointJson = "{\"type\":\"Point\",\"coordinates\":[2.0,1.0,3.0],\"crs\":{\"properties\":{\"href\":\"http://localhost\"},\"type\":\"link\"}}";
-            var pointWithCRS = JsonConvert.DeserializeObject<Point>(pointJson);
+            var pointWithCRS = JsonSerializer.Deserialize<Point>(pointJson);
             var linkCRS = pointWithCRS.CRS as LinkedCRS;
 
             Assert.IsNotNull(linkCRS);

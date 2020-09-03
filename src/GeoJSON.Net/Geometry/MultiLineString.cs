@@ -3,7 +3,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using GeoJSON.Net.Converters;
-using Newtonsoft.Json;
 using System;
 using System.Collections.ObjectModel;
 
@@ -43,7 +42,6 @@ namespace GeoJSON.Net.Geometry
         /// <summary>
         /// The collection of line strings of this <see cref="MultiLineString"/>.
         /// </summary>
-        [JsonConverter(typeof(LineStringEnumerableConverter))]
         public ReadOnlyCollection<LineString> Coordinates { get; }
 
         #region IEqualityComparer, IEquatable

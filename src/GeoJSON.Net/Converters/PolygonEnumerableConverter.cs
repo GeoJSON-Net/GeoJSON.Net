@@ -3,18 +3,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using GeoJSON.Net.Geometry;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace GeoJSON.Net.Converters
 {
     /// <summary>
     /// Converter to read and write the <see cref="IEnumerable{MultiPolygon}" /> type.
     /// </summary>
-    public class PolygonEnumerableConverter : JsonConverter
+    public class PolygonEnumerableConverter : JsonConverter<IEnumerable<Polygon>>
     {
-        
         private static readonly LineStringEnumerableConverter PolygonConverter = new LineStringEnumerableConverter();
         /// <summary>
         ///     Determines whether this instance can convert the specified object type.
@@ -38,19 +37,21 @@ namespace GeoJSON.Net.Converters
         /// <returns>
         ///     The object value.
         /// </returns>
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override IEnumerable<Polygon> Read(ref Utf8JsonReader reader, Type type, JsonSerializerOptions options)
         {
-            var o = serializer.Deserialize<JArray>(reader);
-            var polygons =
-                o.Select(
-                    polygonObject => (IEnumerable<LineString>) PolygonConverter.ReadJson(
-                            polygonObject.CreateReader(),
-                            typeof(IEnumerable<LineString>),
-                            polygonObject, serializer))
-                    .Select(lines => new Polygon(lines))
-                    .ToList();
+            // var o = serializer.Deserialize<JArray>(reader);
+            // var polygons =
+            //     o.Select(
+            //         polygonObject => (IEnumerable<LineString>) PolygonConverter.ReadJson(
+            //                 polygonObject.CreateReader(),
+            //                 typeof(IEnumerable<LineString>),
+            //                 polygonObject, serializer))
+            //         .Select(lines => new Polygon(lines))
+            //         .ToList();
 
-            return polygons;
+            // return polygons;
+
+            return null;
         }
 
         /// <summary>
@@ -59,21 +60,14 @@ namespace GeoJSON.Net.Converters
         /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
         /// <param name="value">The value.</param>
         /// <param name="serializer">The calling serializer.</param>
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void Write(Utf8JsonWriter writer, IEnumerable<Polygon> value, JsonSerializerOptions options)
         {
-            if (value is IEnumerable<Polygon> polygons)
+            writer.WriteStartArray();
+            foreach (var polygon in value)
             {
-                writer.WriteStartArray();
-                foreach (var polygon in polygons)
-                {
-                    PolygonConverter.WriteJson(writer, polygon.Coordinates, serializer);
-                }
-                writer.WriteEndArray();
+                PolygonConverter.Write(writer, polygon, options);
             }
-            else
-            {
-                throw new ArgumentException($"{nameof(PointEnumerableConverter)}: unsupported value {value}");
-            }
+            writer.WriteEndArray();
         }
     }
 }

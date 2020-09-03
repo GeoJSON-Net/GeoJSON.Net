@@ -1,8 +1,8 @@
 using System;
 using GeoJSON.Net.CoordinateReferenceSystem;
 using GeoJSON.Net.Feature;
-using Newtonsoft.Json;
 using NUnit.Framework;
+using System.Text.Json;
 
 namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
 {
@@ -32,7 +32,7 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
         public void Can_Serialize()
         {
             var collection = new FeatureCollection() { CRS = new NamedCRS("EPSG:31370") };
-            var actualJson = JsonConvert.SerializeObject(collection);
+            var actualJson = JsonSerializer.Serialize<FeatureCollection>(collection);
 
             JsonAssert.Contains("{\"properties\":{\"name\":\"EPSG:31370\"},\"type\":\"name\"}", actualJson);
         }

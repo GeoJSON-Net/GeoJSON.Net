@@ -1,9 +1,7 @@
 ﻿// Copyright © Joerg Battermann 2014, Matt Hunt 2017
 
 using System;
-using GeoJSON.Net.Converters;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 namespace GeoJSON.Net.Geometry
 {

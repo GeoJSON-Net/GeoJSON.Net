@@ -2,17 +2,15 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using GeoJSON.Net.Geometry;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
-namespace GeoJSON.Net.Converters
-{
+namespace GeoJSON.Net.Converters {
     /// <summary>
     /// Converter to read and write the <see cref="IEnumerable{LineString}" /> type.
     /// </summary>
-    public class LineStringEnumerableConverter : JsonConverter
+    public class LineStringEnumerableConverter : JsonConverter<IEnumerable<LineString>>
     {
         private static readonly PositionEnumerableConverter LineStringConverter = new PositionEnumerableConverter();
 
@@ -38,7 +36,7 @@ namespace GeoJSON.Net.Converters
         /// <returns>
         /// The object value.
         /// </returns>
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override IEnumerable<LineString> Read(ref Utf8JsonReader reader, Type type, JsonSerializerOptions options)
         {
             // var rings = existingValue as JArray ?? serializer.Deserialize<JArray>(reader);
             // return rings.Select(ring => new LineString((IEnumerable<IPosition>) LineStringConverter.ReadJson(
@@ -56,7 +54,7 @@ namespace GeoJSON.Net.Converters
         /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
         /// <param name="value">The value.</param>
         /// <param name="serializer">The calling serializer.</param>
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void Write(Utf8JsonWriter writer, IEnumerable<LineString> value, JsonSerializerOptions options)
         {
             // if (value is IEnumerable<LineString> coordinateElements)
             // {
@@ -69,7 +67,7 @@ namespace GeoJSON.Net.Converters
             // }
             // else
             // {
-            //     throw new ArgumentException($"{nameof(LineStringEnumerableConverter)}: unsupported value type");
+                throw new ArgumentException($"{nameof(LineStringEnumerableConverter)}: unsupported value type");
             // }
         }
     }

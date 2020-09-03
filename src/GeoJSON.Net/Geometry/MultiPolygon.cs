@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using GeoJSON.Net.Converters;
-using Newtonsoft.Json;
 
 namespace GeoJSON.Net.Geometry
 {
@@ -43,7 +41,6 @@ namespace GeoJSON.Net.Geometry
         /// <summary>
         /// The list of Polygons enclosed in this <see cref="MultiPolygon"/>.
         /// </summary>
-        [JsonConverter(typeof(PolygonEnumerableConverter))]
         public ReadOnlyCollection<Polygon> Coordinates { get; }
 
         #region IEqualityComparer, IEquatable

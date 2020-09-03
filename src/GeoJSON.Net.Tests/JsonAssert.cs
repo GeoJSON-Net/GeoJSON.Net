@@ -38,7 +38,7 @@ namespace GeoJSON.Net.Tests
         /// <summary>
         ///     Sorts the properties of a JObject
         /// </summary>
-        /// <param name="jObject">The json object whhose properties to sort</param>
+        /// <param name="jObject">The json object whose properties to sort</param>
         /// <returns>A new instance of a <see cref="JObject" /> with sorted properties</returns>
         private static JObject SortProperties(this JObject jObject)
         {

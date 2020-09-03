@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using GeoJSON.Net.Converters;
-using Newtonsoft.Json;
 
 namespace GeoJSON.Net.Geometry
 {
@@ -54,7 +52,6 @@ namespace GeoJSON.Net.Geometry
         /// <summary>
         /// Gets the list of linestrings defining this <see cref="Polygon" />.
         /// </summary>
-        [JsonConverter(typeof(LineStringEnumerableConverter))]
         public ReadOnlyCollection<LineString> Coordinates { get; }
 
         #region IEqualityComparer, IEquatable

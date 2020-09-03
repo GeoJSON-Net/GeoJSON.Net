@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using GeoJSON.Net.Converters;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace GeoJSON.Net.Geometry
 {
@@ -101,7 +101,7 @@ namespace GeoJSON.Net.Geometry
         /// </summary>
         public override int GetHashCode()
         {
-            int hash = base.GetHashCode();
+            var hash = base.GetHashCode();
             foreach (var item in Geometries)
             {
                 hash = (hash * 397) ^ item.GetHashCode();
