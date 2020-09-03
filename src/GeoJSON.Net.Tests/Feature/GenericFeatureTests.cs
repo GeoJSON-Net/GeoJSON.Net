@@ -84,9 +84,7 @@ namespace GeoJSON.Net.Tests.Feature
 
         private class TypedFeatureProps
         {
-            [JsonProperty("name")]
             public string Name { get; set; }
-            [JsonProperty("value")]
             public double Value { get; set; }
         }
 
@@ -120,7 +118,7 @@ namespace GeoJSON.Net.Tests.Feature
             var feature = new Feature<Point, TypedFeatureProps>(geometry, props, "no id there");
 
             var expectedJson = GetExpectedJson();
-            var actualJson = JsonSerializer.Serialize<Feature>(feature);
+            var actualJson = JsonSerializer.Serialize<Feature<Point, TypedFeatureProps>>(feature);
 
             JsonAssert.AreEqual(expectedJson, actualJson);
         }

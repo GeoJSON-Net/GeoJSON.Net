@@ -42,7 +42,7 @@ namespace GeoJSON.Net.Geometry
         /// <summary>
         /// The collection of line strings of this <see cref="MultiLineString"/>.
         /// </summary>
-        public ReadOnlyCollection<LineString> Coordinates { get; }
+        public IReadOnlyCollection<LineString> Coordinates { get; }
 
         #region IEqualityComparer, IEquatable
 

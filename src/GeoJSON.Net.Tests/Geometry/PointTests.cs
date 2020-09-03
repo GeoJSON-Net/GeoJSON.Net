@@ -1,6 +1,8 @@
 using GeoJSON.Net.Geometry;
 using System.Text.Json;
 using NUnit.Framework;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace GeoJSON.Net.Tests.Geometry
 {
@@ -89,7 +91,11 @@ namespace GeoJSON.Net.Tests.Geometry
 
             var expectedJson = "{\"coordinates\":[90.65464646,53.2455662,200.4567],\"type\":\"Point\"}";
 
-            var actualJson = JsonSerializer.Serialize<Point>(point, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+            var options = new JsonSerializerOptions {
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault
+            };
+
+            var actualJson = JsonSerializer.Serialize<Point>(point, options);
 
             JsonAssert.AreEqual(expectedJson, actualJson);
         }

@@ -52,7 +52,7 @@ namespace GeoJSON.Net.Geometry
         /// <summary>
         /// Gets the list of linestrings defining this <see cref="Polygon" />.
         /// </summary>
-        public ReadOnlyCollection<LineString> Coordinates { get; }
+        public IReadOnlyCollection<LineString> Coordinates { get; }
 
         #region IEqualityComparer, IEquatable
 

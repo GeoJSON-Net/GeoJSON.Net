@@ -99,7 +99,7 @@ namespace GeoJSON.Net.Feature
         /// </summary>
         public override int GetHashCode()
         {
-            int hash = base.GetHashCode();
+            var hash = base.GetHashCode();
             foreach (var feature in Features)
             {
                 hash = (hash * 397) ^ feature.GetHashCode();

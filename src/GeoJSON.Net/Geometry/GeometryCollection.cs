@@ -40,7 +40,7 @@ namespace GeoJSON.Net.Geometry
         /// Gets the list of Polygons enclosed in this MultiPolygon.
         /// </summary>
         [JsonConverter(typeof(GeometryConverter))]
-        public ReadOnlyCollection<IGeometryObject> Geometries { get; private set; }
+        public IReadOnlyCollection<IGeometryObject> Geometries { get; private set; }
 
         #region IEqualityComparer, IEquatable
 

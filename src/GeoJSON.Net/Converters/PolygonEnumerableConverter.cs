@@ -65,7 +65,7 @@ namespace GeoJSON.Net.Converters
             writer.WriteStartArray();
             foreach (var polygon in value)
             {
-                PolygonConverter.Write(writer, polygon, options);
+                PolygonConverter.Write(writer, polygon.Coordinates, options);
             }
             writer.WriteEndArray();
         }

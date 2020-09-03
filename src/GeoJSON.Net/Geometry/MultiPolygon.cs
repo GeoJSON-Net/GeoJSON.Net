@@ -41,7 +41,7 @@ namespace GeoJSON.Net.Geometry
         /// <summary>
         /// The list of Polygons enclosed in this <see cref="MultiPolygon"/>.
         /// </summary>
-        public ReadOnlyCollection<Polygon> Coordinates { get; }
+        public IReadOnlyCollection<Polygon> Coordinates { get; }
 
         #region IEqualityComparer, IEquatable
 

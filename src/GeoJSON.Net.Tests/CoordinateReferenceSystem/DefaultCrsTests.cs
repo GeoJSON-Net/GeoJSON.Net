@@ -2,6 +2,7 @@ using GeoJSON.Net.CoordinateReferenceSystem;
 using GeoJSON.Net.Feature;
 using GeoJSON.Net.Geometry;
 using NUnit.Framework;
+using System.Text.Json;
 
 namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
 {
@@ -46,7 +47,7 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
                 "{\"type\":\"Point\",\"coordinates\":[34.56,12.34],\"crs\":{\"properties\":{\"name\":\"TEST NAME\"},\"type\":\"name\"}}";
             var point = new Point(new Position(12.34, 34.56)) { CRS = new NamedCRS("TEST NAME") };
 
-            var json = JsonSerializer.Serialize<point>(point);
+            var json = JsonSerializer.Serialize<Point>(point);
 
             Assert.IsNotNull(json);
             Assert.AreEqual(expected, json);
