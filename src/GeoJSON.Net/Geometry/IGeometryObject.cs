@@ -9,7 +9,7 @@ namespace GeoJSON.Net.Geometry
     {
         /// <summary>
         /// Gets the (mandatory) type of the GeoJSON Object.
-        /// However, for GeoJSON Objects only the 'Point', 'MultiPoint', 'LineString', 'MultiLineString', 
+        /// However, for GeoJSON Objects only the 'Point', 'MultiPoint', 'LineString', 'MultiLineString',
         /// 'Polygon', 'MultiPolygon', or 'GeometryCollection' types are allowed.
         /// </summary>
         /// <remarks>
