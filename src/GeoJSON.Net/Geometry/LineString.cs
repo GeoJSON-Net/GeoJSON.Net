@@ -49,7 +49,6 @@ namespace GeoJSON.Net.Geometry
         /// <summary>
         /// The positions of the line string.
         /// </summary>
-        [JsonConverter(typeof(PositionEnumerableConverter))]
         public ReadOnlyCollection<IPosition> Coordinates { get; }
 
         /// <summary>
