@@ -7,11 +7,7 @@ namespace GeoJSON.Net.Tests
 {
     public abstract class TestBase
     {
-        private static readonly Assembly ThisAssembly = typeof(TestBase)
-#if NETCOREAPP1_1
-        .GetTypeInfo()
-#endif
-        .Assembly;
+        private static readonly Assembly ThisAssembly = typeof(TestBase).GetTypeInfo().Assembly;
         private static readonly string AssemblyName = ThisAssembly.GetName().Name;
 
         public static string AssemblyDirectory
