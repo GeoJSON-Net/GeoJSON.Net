@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace GeoJSON.Net.Tests
 {
@@ -9,6 +11,17 @@ namespace GeoJSON.Net.Tests
     {
         private static readonly Assembly ThisAssembly = typeof(TestBase).GetTypeInfo().Assembly;
         private static readonly string AssemblyName = ThisAssembly.GetName().Name;
+        public static readonly JsonSerializerOptions DefaultSerializerOptions = CreateSerializerOptions();
+
+        private static JsonSerializerOptions CreateSerializerOptions() {
+            var options = new JsonSerializerOptions {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+            };
+            options.Converters.Add(new JsonStringEnumConverter(new GeoJsonNamingPolicy()));
+
+            return options;
+        }
 
         public static string AssemblyDirectory
         {

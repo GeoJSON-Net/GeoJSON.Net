@@ -58,6 +58,7 @@ namespace GeoJSON.Net.Converters
         /// <param name="serializer">The calling serializer.</param>
         public override void Write(Utf8JsonWriter writer, IPosition value, JsonSerializerOptions options)
         {
+            writer.WriteStartArray();
             writer.WriteNumberValue(value.Longitude);
             writer.WriteNumberValue(value.Latitude);
 
@@ -65,6 +66,7 @@ namespace GeoJSON.Net.Converters
             {
                 writer.WriteNumberValue(value.Altitude.Value);
             }
+            writer.WriteEndArray();
         }
     }
 }

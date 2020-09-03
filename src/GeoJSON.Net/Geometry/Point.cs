@@ -2,6 +2,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using GeoJSON.Net.Converters;
 
 namespace GeoJSON.Net.Geometry
 {
@@ -29,6 +31,7 @@ namespace GeoJSON.Net.Geometry
         /// <summary>
         /// The <see cref="IPosition" /> underlying this point.
         /// </summary>
+        [JsonConverter(typeof(PositionConverter))]
         public IPosition Coordinates { get; }
 
         #region IEqualityComparer, IEquatable
