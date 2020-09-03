@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using GeoJSON.Net.Converters;
 using GeoJSON.Net.Geometry;
-using Newtonsoft.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using NUnit.Framework;
 
 namespace GeoJSON.Net.Tests.Geometry

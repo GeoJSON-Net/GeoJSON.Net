@@ -5,8 +5,8 @@ using System.Reflection;
 using System.Linq;
 using GeoJSON.Net.Converters;
 using GeoJSON.Net.Geometry;
-using Newtonsoft.Json;
 using System;
+using System.Text.Json.Serialization;
 
 namespace GeoJSON.Net.Feature
 {

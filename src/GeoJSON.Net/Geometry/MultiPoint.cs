@@ -2,10 +2,8 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
 using System;
 using System.Collections.ObjectModel;
-using GeoJSON.Net.Converters;
 
 namespace GeoJSON.Net.Geometry
 {
