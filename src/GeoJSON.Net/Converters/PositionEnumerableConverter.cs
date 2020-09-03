@@ -11,7 +11,7 @@ namespace GeoJSON.Net.Converters
     /// <summary>
     /// Converter to read and write the <see cref="IEnumerable{IPosition}" /> type.
     /// </summary>
-    public class PositionEnumerableConverter : JsonConverter
+    public class PositionEnumerableConverter : JsonConverter<IEnumerable<IPosition>>
     {
         private static readonly PositionConverter PositionConverter = new PositionConverter();
 
@@ -37,7 +37,7 @@ namespace GeoJSON.Net.Converters
         /// <returns>
         ///     The object value.
         /// </returns>
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override IEnumerable<IPosition> Read(ref Utf8JsonReader reader, Type type, JsonSerializerOptions options)
         {
             // var coordinates = existingValue as JArray ?? serializer.Deserialize<JArray>(reader);
             // return coordinates.Select(pos => PositionConverter.Read(pos.CreateReader(),
@@ -55,21 +55,12 @@ namespace GeoJSON.Net.Converters
         /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
         /// <param name="value">The value.</param>
         /// <param name="serializer">The calling serializer.</param>
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void Write(Utf8JsonWriter writer, IEnumerable<IPosition> value, JsonSerializerOptions options)
         {
-            // if (value is IEnumerable<IPosition> coordinateElements)
-            // {
-            //     writer.WriteStartArray();
-            //     foreach (var position in coordinateElements)
-            //     {
-            //         PositionConverter.Write(writer, position, serializer);
-            //     }
-            //     writer.WriteEndArray();
-            // }
-            // else
-            // {
-            //     throw new ArgumentException($"{nameof(PositionEnumerableConverter)}: unsupported value type");
-            // }
+            foreach (var position in value)
+            {
+                PositionConverter.Write(writer, position, options);
+            }
         }
     }
 }

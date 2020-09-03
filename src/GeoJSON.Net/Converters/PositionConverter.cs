@@ -58,23 +58,12 @@ namespace GeoJSON.Net.Converters
         /// <param name="serializer">The calling serializer.</param>
         public override void Write(Utf8JsonWriter writer, IPosition value, JsonSerializerOptions options)
         {
-            if (value is IPosition coordinates)
+            writer.WriteNumberValue(value.Longitude);
+            writer.WriteNumberValue(value.Latitude);
+
+            if (value.Altitude.HasValue)
             {
-                writer.WriteStartArray();
-
-                writer.WriteNumberValue(coordinates.Longitude);
-                writer.WriteNumberValue(coordinates.Latitude);
-
-                if (coordinates.Altitude.HasValue)
-                {
-                    writer.WriteNumberValue(coordinates.Altitude.Value);
-                }
-
-                writer.WriteEndArray();
-            }
-            else
-            {
-                throw new NotImplementedException();
+                writer.WriteNumberValue(value.Altitude.Value);
             }
         }
     }
