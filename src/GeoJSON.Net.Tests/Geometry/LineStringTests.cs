@@ -41,7 +41,7 @@ namespace GeoJSON.Net.Tests.Geometry
 
             Assert.IsFalse(lineString.IsClosed());
         }
-        
+
 
         [Test]
         public void Can_Serialize()

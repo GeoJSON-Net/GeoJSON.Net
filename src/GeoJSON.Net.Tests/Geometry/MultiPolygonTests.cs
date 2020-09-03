@@ -64,15 +64,15 @@ namespace GeoJSON.Net.Tests.Geometry
         [Test]
         public void Can_Serialize()
         {
-            // Arrang
+            // Arrange
             var polygon1 = new Polygon(new List<LineString>
             {
                 new LineString(new List<IPosition>
                 {
-                    new Position(0, 0), 
-                    new Position(0, 1), 
-                    new Position(1, 1), 
-                    new Position(1, 0), 
+                    new Position(0, 0),
+                    new Position(0, 1),
+                    new Position(1, 1),
+                    new Position(1, 0),
                     new Position(0, 0)
                 })
             });
@@ -81,18 +81,18 @@ namespace GeoJSON.Net.Tests.Geometry
             {
                 new LineString(new List<IPosition>
                 {
-                    new Position(60, 60), 
-                    new Position(60, 61), 
-                    new Position(61, 61), 
-                    new Position(61, 60), 
+                    new Position(60, 60),
+                    new Position(60, 61),
+                    new Position(61, 61),
+                    new Position(61, 60),
                     new Position(60, 60)
-                }), 
+                }),
                 new LineString(new List<IPosition>
                 {
-                    new Position(70, 70), 
-                    new Position(71, 70), 
-                    new Position(71, 71), 
-                    new Position(70, 71), 
+                    new Position(70, 70),
+                    new Position(71, 70),
+                    new Position(71, 71),
+                    new Position(70, 71),
                     new Position(70, 70)
                 })
             });
