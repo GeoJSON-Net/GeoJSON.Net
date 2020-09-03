@@ -68,7 +68,7 @@ namespace GeoJSON.Net.CoordinateReferenceSystem
 
             foreach (var item in left.Properties)
             {
-                if (!right.Properties.TryGetValue(item.Key, out object rightValue))
+                if (!right.Properties.TryGetValue(item.Key, out var rightValue))
                 {
                     return false;
                 }
@@ -110,7 +110,7 @@ namespace GeoJSON.Net.CoordinateReferenceSystem
         /// </summary>
         public override int GetHashCode()
         {
-            int hashCode = ((int)Type).GetHashCode();
+            var hashCode = ((int)Type).GetHashCode();
             if (Properties != null)
             {
                 foreach (var item in Properties)

@@ -116,7 +116,7 @@ namespace GeoJSON.Net.Geometry
         /// </summary>
         public override int GetHashCode()
         {
-            int hash = base.GetHashCode();
+            var hash = base.GetHashCode();
             foreach (var item in Coordinates)
             {
                 hash = (hash * 397) ^ item.GetHashCode();

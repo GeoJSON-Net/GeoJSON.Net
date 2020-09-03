@@ -10,7 +10,7 @@ namespace GeoJSON.Net.CoordinateReferenceSystem
     /// </summary>
     /// <remarks>
     /// This was originally defined in the spec http://geojson.org/geojson-spec.html#named-crs
-    /// The current RFC removes the CRS type, but allows to be left in for backwards compatibility. 
+    /// The current RFC removes the CRS type, but allows to be left in for backwards compatibility.
     /// See https://tools.ietf.org/html/rfc7946#section-4
     /// </remarks>
     public class LinkedCRS : CRSBase, ICRSObject
@@ -31,9 +31,7 @@ namespace GeoJSON.Net.CoordinateReferenceSystem
                 throw new ArgumentNullException(nameof(href));
             }
 
-            Uri uri;
-            if (href.Length == 0 || !Uri.TryCreate(href, UriKind.RelativeOrAbsolute, out uri))
-            {
+            if (href.Length == 0 || !Uri.TryCreate(href, UriKind.RelativeOrAbsolute, out var uri)) {
                 throw new ArgumentException("must be a dereferenceable URI", nameof(href));
             }
 

@@ -92,7 +92,7 @@ namespace GeoJSON.Net.Geometry
         /// </summary>
         public override int GetHashCode()
         {
-            int hash = base.GetHashCode();
+            var hash = base.GetHashCode();
             hash = (hash * 397) ^ Coordinates.GetHashCode();
             return hash;
         }
