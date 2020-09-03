@@ -2,8 +2,8 @@
 
 using System;
 using GeoJSON.Net.Converters;
-using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace GeoJSON.Net.Geometry
 {
