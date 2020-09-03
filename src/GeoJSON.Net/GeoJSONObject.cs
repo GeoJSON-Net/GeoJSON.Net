@@ -41,7 +41,6 @@ namespace GeoJSON.Net
         /// <value>
         ///     The Coordinate Reference System Objects.
         /// </value>
-        [JsonPropertyName("crs")]
         [JsonConverter(typeof(CrsConverter))]
         //[DefaultValue(typeof(DefaultCRS), "")]
         public ICRSObject CRS { get; set; }
