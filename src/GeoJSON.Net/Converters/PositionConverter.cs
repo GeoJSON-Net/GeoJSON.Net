@@ -2,7 +2,8 @@
 
 using System;
 using GeoJSON.Net.Geometry;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace GeoJSON.Net.Converters
 {
@@ -10,7 +11,7 @@ namespace GeoJSON.Net.Converters
     ///     Converter to read and write an <see cref="IPosition" />, that is,
     ///     the coordinates of a <see cref="Point" />.
     /// </summary>
-    public class PositionConverter : JsonConverter
+    public class PositionConverter : JsonConverter<IPosition>
     {
         /// <summary>
         ///     Determines whether this instance can convert the specified object type.
@@ -34,19 +35,19 @@ namespace GeoJSON.Net.Converters
         /// <returns>
         ///     The object value.
         /// </returns>
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override IPosition Read(ref Utf8JsonReader reader, Type type, JsonSerializerOptions options)
         {
             double[] coordinates;
 
             try
             {
-                coordinates = serializer.Deserialize<double[]>(reader);
+                coordinates = JsonSerializer.Deserialize<double[]>(ref reader, options);
             }
             catch (Exception e)
             {
-                throw new JsonReaderException("error parsing coordinates", e);
+                throw new JsonException("error parsing coordinates", e);
             }
-            return coordinates?.ToPosition() ?? throw new JsonReaderException("coordinates cannot be null");
+            return coordinates?.ToPosition() ?? throw new JsonException("coordinates cannot be null");
         }
 
         /// <summary>
@@ -55,18 +56,18 @@ namespace GeoJSON.Net.Converters
         /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
         /// <param name="value">The value.</param>
         /// <param name="serializer">The calling serializer.</param>
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void Write(Utf8JsonWriter writer, IPosition value, JsonSerializerOptions options)
         {
             if (value is IPosition coordinates)
             {
                 writer.WriteStartArray();
 
-                writer.WriteValue(coordinates.Longitude);
-                writer.WriteValue(coordinates.Latitude);
+                writer.WriteNumberValue(coordinates.Longitude);
+                writer.WriteNumberValue(coordinates.Latitude);
 
                 if (coordinates.Altitude.HasValue)
                 {
-                    writer.WriteValue(coordinates.Altitude.Value);
+                    writer.WriteNumberValue(coordinates.Altitude.Value);
                 }
 
                 writer.WriteEndArray();

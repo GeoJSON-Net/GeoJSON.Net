@@ -15,7 +15,7 @@ namespace GeoJSON.Net.Converters
     public class PositionEnumerableConverter : JsonConverter
     {
         private static readonly PositionConverter PositionConverter = new PositionConverter();
-        
+
         /// <summary>
         ///     Determines whether this instance can convert the specified object type.
         /// </summary>
@@ -40,12 +40,14 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            var coordinates = existingValue as JArray ?? serializer.Deserialize<JArray>(reader);
-            return coordinates.Select(pos => PositionConverter.ReadJson(pos.CreateReader(),
-                typeof(IPosition),
-                pos,
-                serializer
-            )).Cast<IPosition>();
+            // var coordinates = existingValue as JArray ?? serializer.Deserialize<JArray>(reader);
+            // return coordinates.Select(pos => PositionConverter.Read(pos.CreateReader(),
+            //     typeof(IPosition),
+            //     pos,
+            //     serializer
+            // )).Cast<IPosition>();
+
+            return null;
         }
 
         /// <summary>
@@ -56,19 +58,19 @@ namespace GeoJSON.Net.Converters
         /// <param name="serializer">The calling serializer.</param>
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            if (value is IEnumerable<IPosition> coordinateElements)
-            {
-                writer.WriteStartArray();
-                foreach (var position in coordinateElements)
-                {
-                    PositionConverter.WriteJson(writer, position, serializer);
-                }
-                writer.WriteEndArray();
-            }
-            else
-            {
-                throw new ArgumentException($"{nameof(PositionEnumerableConverter)}: unsupported value type");
-            }
+            // if (value is IEnumerable<IPosition> coordinateElements)
+            // {
+            //     writer.WriteStartArray();
+            //     foreach (var position in coordinateElements)
+            //     {
+            //         PositionConverter.Write(writer, position, serializer);
+            //     }
+            //     writer.WriteEndArray();
+            // }
+            // else
+            // {
+            //     throw new ArgumentException($"{nameof(PositionEnumerableConverter)}: unsupported value type");
+            // }
         }
     }
 }

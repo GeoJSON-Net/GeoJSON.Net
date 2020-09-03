@@ -3,41 +3,35 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using GeoJSON.Net.Geometry;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+
 
 namespace GeoJSON.Net.Converters
 {
     /// <summary>
     /// Converter to read and write the <see cref="IEnumerable{Point}" /> type.
     /// </summary>
-    public class PointEnumerableConverter : JsonConverter
+    public class PointEnumerableConverter : JsonConverter<IEnumerable<Point>>
     {
         private static readonly PositionConverter PositionConverter = new PositionConverter();
         /// <inheritdoc />
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void Write(Utf8JsonWriter writer, IEnumerable<Point> points, JsonSerializerOptions options)
         {
-            if (value is IEnumerable<Point> points)
+            writer.WriteStartArray();
+            foreach (var point in points)
             {
-                writer.WriteStartArray();
-                foreach (var point in points)
-                {
-                    PositionConverter.WriteJson(writer, point.Coordinates, serializer);
-                }
-                writer.WriteEndArray();
+                PositionConverter.Write(writer, point.Coordinates, options);
             }
-            else
-            {
-                throw new ArgumentException($"{nameof(PointEnumerableConverter)}: unsupported value {value}");
-            }
+            writer.WriteEndArray();
         }
 
         /// <inheritdoc />
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override IEnumerable<Point> Read(ref Utf8JsonReader reader, Type type, JsonSerializerOptions options)
         {
-            var coordinates = existingValue as JArray ?? serializer.Deserialize<JArray>(reader);
-            return coordinates.Select(position => new Point(position.ToObject<IEnumerable<double>>().ToPosition()));
+            var coordinates = JsonSerializer.Deserialize<IEnumerable<Position>>(ref reader, options);
+            return coordinates.Select(position => new Point(position));
         }
 
         /// <inheritdoc />

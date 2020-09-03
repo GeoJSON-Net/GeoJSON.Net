@@ -2,15 +2,15 @@
 
 using System;
 using GeoJSON.Net.CoordinateReferenceSystem;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace GeoJSON.Net.Converters
 {
     /// <summary>
     /// Converts <see cref="ICRSObject"/> types to and from JSON.
     /// </summary>
-    public class CrsConverter : JsonConverter
+    public class CrsConverter : JsonConverter<ICRSObject>
     {
         /// <summary>
         /// Determines whether this instance can convert the specified object type.
@@ -39,59 +39,61 @@ namespace GeoJSON.Net.Converters
         ///     or
         /// CRS must have a "type" property
         /// </exception>
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override ICRSObject Read(ref Utf8JsonReader reader, Type type, JsonSerializerOptions options)
         {
-            if (reader.TokenType == JsonToken.Null)
-            {
-                return new UnspecifiedCRS();
-            }
-            if (reader.TokenType != JsonToken.StartObject)
-            {
-                throw new JsonReaderException("CRS must be null or a json object");
-            }
+            // if (reader.TokenType == JsonToken.Null)
+            // {
+            //     return new UnspecifiedCRS();
+            // }
+            // if (reader.TokenType != JsonToken.StartObject)
+            // {
+            //     throw new JsonReaderException("CRS must be null or a json object");
+            // }
 
-            var jObject = JObject.Load(reader);
+            // var jObject = JObject.Load(reader);
 
-            JToken token;
-            if (!jObject.TryGetValue("type", StringComparison.OrdinalIgnoreCase, out token))
-            {
-                throw new JsonReaderException("CRS must have a \"type\" property");
-            }
+            // JToken token;
+            // if (!jObject.TryGetValue("type", StringComparison.OrdinalIgnoreCase, out token))
+            // {
+            //     throw new JsonReaderException("CRS must have a \"type\" property");
+            // }
 
-            var crsType = token.Value<string>();
+            // var crsType = token.Value<string>();
 
-            if (string.Equals("name", crsType, StringComparison.OrdinalIgnoreCase))
-            {
-                JObject properties = null;
-                if (jObject.TryGetValue("properties", out token))
-                {
-                    properties = token as JObject;
-                }
+            // if (string.Equals("name", crsType, StringComparison.OrdinalIgnoreCase))
+            // {
+            //     JObject properties = null;
+            //     if (jObject.TryGetValue("properties", out token))
+            //     {
+            //         properties = token as JObject;
+            //     }
 
-                if (properties != null)
-                {
-                    var target = new NamedCRS(properties["name"].ToString());
-                    serializer.Populate(jObject.CreateReader(), target);
-                    return target;
-                }
-            }
-            else if (string.Equals("link", crsType, StringComparison.OrdinalIgnoreCase))
-            {
-                JObject properties = null;
-                if (jObject.TryGetValue("properties", out token))
-                {
-                    properties = token as JObject;
-                }
+            //     if (properties != null)
+            //     {
+            //         var target = new NamedCRS(properties["name"].ToString());
+            //         serializer.Populate(jObject.CreateReader(), target);
+            //         return target;
+            //     }
+            // }
+            // else if (string.Equals("link", crsType, StringComparison.OrdinalIgnoreCase))
+            // {
+            //     JObject properties = null;
+            //     if (jObject.TryGetValue("properties", out token))
+            //     {
+            //         properties = token as JObject;
+            //     }
 
-                if (properties != null)
-                {
-                    var linked = new LinkedCRS(properties["href"].ToString());
-                    serializer.Populate(jObject.CreateReader(), linked);
-                    return linked;
-                }
-            }
+            //     if (properties != null)
+            //     {
+            //         var linked = new LinkedCRS(properties["href"].ToString());
+            //         serializer.Populate(jObject.CreateReader(), linked);
+            //         return linked;
+            //     }
+            // }
 
-            return new NotSupportedException(string.Format("Type {0} unexpected.", crsType));
+            // return new NotSupportedException(string.Format("Type {0} unexpected.", crsType));
+
+            return null;
         }
 
         /// <summary>
@@ -101,20 +103,18 @@ namespace GeoJSON.Net.Converters
         /// <param name="value">The value.</param>
         /// <param name="serializer">The calling serializer.</param>
         /// <exception cref="System.ArgumentOutOfRangeException"></exception>
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void Write(Utf8JsonWriter writer, ICRSObject value, JsonSerializerOptions options)
         {
-            var crsObject = (ICRSObject)value;
-
-            switch (crsObject.Type)
+            switch (value.Type)
             {
                 case CRSType.Name:
-                    serializer.Serialize(writer, value);
+                    JsonSerializer.Serialize(writer, value, options);
                     break;
                 case CRSType.Link:
-                    serializer.Serialize(writer, value);
+                    JsonSerializer.Serialize(writer, value, options);
                     break;
                 case CRSType.Unspecified:
-                    writer.WriteNull();
+                    writer.WriteNull("crs");
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
