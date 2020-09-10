@@ -13,6 +13,8 @@ namespace GeoJSON.Net.Converters
     /// </summary>
     public class PositionEnumerableConverter : JsonConverter<IEnumerable<IPosition>>
     {
+        private static readonly PositionConverter Converter = new PositionConverter();
+
         /// <summary>
         ///     Determines whether this instance can convert the specified object type.
         /// </summary>
@@ -24,8 +26,6 @@ namespace GeoJSON.Net.Converters
         {
             return typeof(IEnumerable<IPosition>).IsAssignableFromType(objectType);
         }
-
-        private static readonly PositionConverter PositionConverter = new PositionConverter();
 
         /// <summary>
         ///     Reads the JSON representation of the object.
@@ -50,7 +50,7 @@ namespace GeoJSON.Net.Converters
             {
                 if (reader.TokenType == JsonTokenType.StartArray)
                 {
-                    positions.Add(new PositionConverter().Read(ref reader, typeof(IPosition), options));
+                    positions.Add(Converter.Read(ref reader, typeof(IPosition), options));
                 }
                 else if (reader.TokenType == JsonTokenType.EndArray)
                 {
@@ -73,7 +73,7 @@ namespace GeoJSON.Net.Converters
 
             foreach (var position in value)
             {
-                PositionConverter.Write(writer, position, options);
+                Converter.Write(writer, position, options);
             }
 
             writer.WriteEndArray();

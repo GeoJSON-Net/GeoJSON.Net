@@ -14,7 +14,7 @@ namespace GeoJSON.Net.Converters
     /// </summary>
     public class PolygonConverter : JsonConverter<Polygon>
     {
-        private readonly LineStringEnumerableConverter Converter = new LineStringEnumerableConverter();
+        private static readonly LineStringEnumerableConverter Converter = new LineStringEnumerableConverter();
 
         /// <summary>
         ///     Reads the JSON representation of the object.
@@ -50,8 +50,7 @@ namespace GeoJSON.Net.Converters
                     reader.Read();
 
                     // must real all json. cannot exit early
-                    polygon = new Polygon(new LineStringEnumerableConverter()
-                        .Read(ref reader, typeof(IEnumerable<LineString>), options));
+                    polygon = new Polygon(Converter.Read(ref reader, typeof(IEnumerable<LineString>), options));
                 }
             }
 

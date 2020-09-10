@@ -14,7 +14,7 @@ namespace GeoJSON.Net.Converters
     /// </summary>
     public class LineStringConverter : JsonConverter<LineString>
     {
-        private readonly PositionEnumerableConverter PositionConverter = new PositionEnumerableConverter();
+        private static readonly PositionEnumerableConverter Converter = new PositionEnumerableConverter();
 
         /// <summary>
         ///     Reads the JSON representation of the object.
@@ -46,8 +46,7 @@ namespace GeoJSON.Net.Converters
                     reader.Read();
 
                     // must real all json. cannot exit early
-                    lineString = new LineString(new PositionEnumerableConverter()
-                                    .Read(ref reader, typeof(IEnumerable<Position>), options));
+                    lineString = new LineString(Converter.Read(ref reader, typeof(IEnumerable<Position>), options));
                 }
             }
 
@@ -64,7 +63,7 @@ namespace GeoJSON.Net.Converters
         {
             writer.WriteStartObject();
             writer.WritePropertyName("coordinates");
-            PositionConverter.Write(writer, value.Positions, options);
+            Converter.Write(writer, value.Positions, options);
             writer.WritePropertyName("type");
             writer.WriteStringValue("LineString");
             writer.WriteEndObject();
