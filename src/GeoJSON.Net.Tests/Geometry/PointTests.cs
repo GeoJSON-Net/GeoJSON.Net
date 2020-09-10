@@ -1,7 +1,6 @@
 using GeoJSON.Net.Geometry;
 using System.Text.Json;
 using NUnit.Framework;
-using System.Text.Json.Serialization;
 
 namespace GeoJSON.Net.Tests.Geometry {
     [TestFixture]
