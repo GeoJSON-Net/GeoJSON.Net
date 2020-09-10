@@ -44,6 +44,7 @@ namespace GeoJSON.Net.Geometry
         /// <summary>
         /// The collection of line strings of this <see cref="MultiLineString"/>.
         /// </summary>
+        [JsonConverter(typeof(LineStringEnumerableConverter))]
         public IReadOnlyCollection<LineString> Coordinates { get; }
 
         #region IEqualityComparer, IEquatable
