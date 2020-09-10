@@ -13,8 +13,6 @@ namespace GeoJSON.Net.Converters
     /// </summary>
     public class PositionEnumerableConverter : JsonConverter<IEnumerable<IPosition>>
     {
-        private static readonly PositionConverter PositionConverter = new PositionConverter();
-
         /// <summary>
         ///     Determines whether this instance can convert the specified object type.
         /// </summary>
@@ -26,6 +24,8 @@ namespace GeoJSON.Net.Converters
         {
             return typeof(IEnumerable<IPosition>).IsAssignableFromType(objectType);
         }
+
+        private static readonly PositionConverter PositionConverter = new PositionConverter();
 
         /// <summary>
         ///     Reads the JSON representation of the object.
@@ -39,14 +39,26 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override IEnumerable<IPosition> Read(ref Utf8JsonReader reader, Type type, JsonSerializerOptions options)
         {
-            // var coordinates = existingValue as JArray ?? serializer.Deserialize<JArray>(reader);
-            // return coordinates.Select(pos => PositionConverter.Read(pos.CreateReader(),
-            //     typeof(IPosition),
-            //     pos,
-            //     serializer
-            // )).Cast<IPosition>();
+            if (reader.TokenType != JsonTokenType.StartArray)
+            {
+                throw new JsonException();
+            }
 
-            return null;
+            var positions = new List<IPosition>();
+
+            while (reader.Read())
+            {
+                if (reader.TokenType == JsonTokenType.StartArray)
+                {
+                    positions.Add(new PositionConverter().Read(ref reader, typeof(IPosition), options));
+                }
+                else if (reader.TokenType == JsonTokenType.EndArray)
+                {
+                    break;
+                }
+            }
+
+            return positions;
         }
 
         /// <summary>
@@ -57,10 +69,14 @@ namespace GeoJSON.Net.Converters
         /// <param name="serializer">The calling serializer.</param>
         public override void Write(Utf8JsonWriter writer, IEnumerable<IPosition> value, JsonSerializerOptions options)
         {
+            writer.WriteStartArray();
+
             foreach (var position in value)
             {
                 PositionConverter.Write(writer, position, options);
             }
+
+            writer.WriteEndArray();
         }
     }
 }

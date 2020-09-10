@@ -12,7 +12,7 @@ namespace GeoJSON.Net.Converters {
     /// </summary>
     public class LineStringEnumerableConverter : JsonConverter<IEnumerable<LineString>>
     {
-        private static readonly PositionEnumerableConverter LineStringConverter = new PositionEnumerableConverter();
+        private static readonly PositionEnumerableConverter Converter = new PositionEnumerableConverter();
 
         /// <summary>
         /// Determines whether this instance can convert the specified object type.
@@ -25,7 +25,6 @@ namespace GeoJSON.Net.Converters {
         {
             return typeof(IEnumerable<LineString>).IsAssignableFromType(objectType);
         }
-
         /// <summary>
         /// Reads the JSON representation of the object.
         /// </summary>
@@ -38,14 +37,25 @@ namespace GeoJSON.Net.Converters {
         /// </returns>
         public override IEnumerable<LineString> Read(ref Utf8JsonReader reader, Type type, JsonSerializerOptions options)
         {
-            // var rings = existingValue as JArray ?? serializer.Deserialize<JArray>(reader);
-            // return rings.Select(ring => new LineString((IEnumerable<IPosition>) LineStringConverter.ReadJson(
-            //         reader,
-            //         typeof(IEnumerable<IPosition>),
-            //         ring,
-            //         serializer)))
-            //     .ToArray();
-            return null;
+            if (reader.TokenType != JsonTokenType.StartArray)
+            {
+                throw new JsonException();
+            }
+
+            var lineStrings = new List<LineString>();
+
+            while (reader.Read())
+            {
+                if (reader.TokenType == JsonTokenType.StartArray)
+                {
+                    lineStrings.Add(new LineString(Converter.Read(ref reader, type, options)));
+                } else if (reader.TokenType == JsonTokenType.EndArray)
+                {
+                    break;
+                }
+            }
+
+            return lineStrings;
         }
 
         /// <summary>
@@ -56,19 +66,12 @@ namespace GeoJSON.Net.Converters {
         /// <param name="serializer">The calling serializer.</param>
         public override void Write(Utf8JsonWriter writer, IEnumerable<LineString> value, JsonSerializerOptions options)
         {
-            // if (value is IEnumerable<LineString> coordinateElements)
-            // {
-            //     writer.WriteStartArray();
-            //     foreach (var subPolygon in coordinateElements)
-            //     {
-            //         LineStringConverter.WriteJson(writer, subPolygon.Coordinates, serializer);
-            //     }
-            //     writer.WriteEndArray();
-            // }
-            // else
-            // {
-                throw new ArgumentException($"{nameof(LineStringEnumerableConverter)}: unsupported value type");
-            // }
+            writer.WriteStartArray();
+            foreach (var lineString in value)
+            {
+                Converter.Write(writer, lineString.Positions, options);
+            }
+            writer.WriteEndArray();
         }
     }
 }
