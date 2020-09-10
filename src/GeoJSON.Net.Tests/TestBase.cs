@@ -18,7 +18,6 @@ namespace GeoJSON.Net.Tests
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                 DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
                 PropertyNameCaseInsensitive = true,
-
             };
             options.Converters.Add(new JsonStringEnumConverter());
 

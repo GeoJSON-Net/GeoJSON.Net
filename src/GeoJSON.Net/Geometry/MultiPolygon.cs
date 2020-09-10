@@ -15,6 +15,7 @@ namespace GeoJSON.Net.Geometry
     /// <remarks>
     /// See https://tools.ietf.org/html/rfc7946#section-3.1.7
     /// </remarks>
+    [JsonConverter(typeof(MultiPolygonConverter))]
     public class MultiPolygon : GeoJSONObject, IGeometryObject, IEqualityComparer<MultiPolygon>, IEquatable<MultiPolygon>
     {
 
@@ -24,7 +25,7 @@ namespace GeoJSON.Net.Geometry
         /// <param name="polygons">The polygons contained in this MultiPolygon.</param>
         public MultiPolygon(IEnumerable<Polygon> polygons)
         {
-            Coordinates = new ReadOnlyCollection<Polygon>(
+            Polygons = new ReadOnlyCollection<Polygon>(
                 polygons?.ToArray() ?? throw new ArgumentNullException(nameof(polygons)));
         }
 
@@ -41,11 +42,12 @@ namespace GeoJSON.Net.Geometry
 
         public override GeoJSONObjectType Type => GeoJSONObjectType.MultiPolygon;
 
+        public IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>> Coordinates { get; set; }
         /// <summary>
         /// The list of Polygons enclosed in this <see cref="MultiPolygon"/>.
         /// </summary>
         [JsonConverter(typeof(PolygonEnumerableConverter))]
-        public IReadOnlyCollection<Polygon> Coordinates { get; }
+        public IReadOnlyCollection<Polygon> Polygons { get; }
 
         #region IEqualityComparer, IEquatable
 
@@ -72,7 +74,7 @@ namespace GeoJSON.Net.Geometry
         {
             if (base.Equals(left, right))
             {
-                return left.Coordinates.SequenceEqual(right.Coordinates);
+                return left.Polygons.SequenceEqual(right.Polygons);
             }
             return false;
         }
@@ -107,7 +109,7 @@ namespace GeoJSON.Net.Geometry
         public override int GetHashCode()
         {
             var hash = base.GetHashCode();
-            foreach (var item in Coordinates)
+            foreach (var item in Polygons)
             {
                 hash = (hash * 397) ^ item.GetHashCode();
             }

@@ -15,7 +15,7 @@ namespace GeoJSON.Net.Tests.Geometry
 
             var expectMultiPolygon = GetMultiPolygon();
 
-            var actualMultiPolygon = JsonSerializer.Deserialize<MultiPolygon>(json);
+            var actualMultiPolygon = JsonSerializer.Deserialize<MultiPolygon>(json, DefaultSerializerOptions);
 
             Assert.AreEqual(expectMultiPolygon, actualMultiPolygon);
         }
@@ -101,7 +101,7 @@ namespace GeoJSON.Net.Tests.Geometry
             var expectedJson = GetExpectedJson();
 
             // Act
-            var actualJson = JsonSerializer.Serialize<MultiPolygon>(multiPolygon);
+            var actualJson = JsonSerializer.Serialize(multiPolygon, DefaultSerializerOptions);
 
             // Assert
             JsonAssert.AreEqual(expectedJson, actualJson);

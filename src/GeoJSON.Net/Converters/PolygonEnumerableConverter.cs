@@ -2,30 +2,17 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using GeoJSON.Net.Geometry;
 
-namespace GeoJSON.Net.Converters
-{
+namespace GeoJSON.Net.Converters {
     /// <summary>
     /// Converter to read and write the <see cref="IEnumerable{MultiPolygon}" /> type.
     /// </summary>
     public class PolygonEnumerableConverter : JsonConverter<IEnumerable<Polygon>>
     {
-        private static readonly LineStringEnumerableConverter PolygonConverter = new LineStringEnumerableConverter();
-        /// <summary>
-        ///     Determines whether this instance can convert the specified object type.
-        /// </summary>
-        /// <param name="objectType">Type of the object.</param>
-        /// <returns>
-        ///     <c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
-        /// </returns>
-        public override bool CanConvert(Type objectType)
-        {
-            return objectType == typeof(IEnumerable<Polygon>);
-        }
+        private static readonly LineStringEnumerableConverter Converter = new LineStringEnumerableConverter();
 
         /// <summary>
         ///     Reads the JSON representation of the object.
@@ -39,19 +26,25 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override IEnumerable<Polygon> Read(ref Utf8JsonReader reader, Type type, JsonSerializerOptions options)
         {
-            // var o = serializer.Deserialize<JArray>(reader);
-            // var polygons =
-            //     o.Select(
-            //         polygonObject => (IEnumerable<LineString>) PolygonConverter.ReadJson(
-            //                 polygonObject.CreateReader(),
-            //                 typeof(IEnumerable<LineString>),
-            //                 polygonObject, serializer))
-            //         .Select(lines => new Polygon(lines))
-            //         .ToList();
+            if (reader.TokenType != JsonTokenType.StartArray)
+            {
+                throw new JsonException();
+            }
 
-            // return polygons;
+            var polygons = new List<Polygon>();
 
-            return null;
+            while (reader.Read())
+            {
+                if (reader.TokenType == JsonTokenType.StartArray)
+                {
+                    polygons.Add(new Polygon(Converter.Read(ref reader, type, options)));
+                } else if (reader.TokenType == JsonTokenType.EndArray)
+                {
+                    break;
+                }
+            }
+
+            return polygons;
         }
 
         /// <summary>
@@ -65,7 +58,7 @@ namespace GeoJSON.Net.Converters
             writer.WriteStartArray();
             foreach (var polygon in value)
             {
-                PolygonConverter.Write(writer, polygon.Coordinates, options);
+                Converter.Write(writer, polygon.Rings, options);
             }
             writer.WriteEndArray();
         }
