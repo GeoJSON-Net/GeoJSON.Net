@@ -17,6 +17,7 @@ namespace GeoJSON.Net.Geometry
     /// <remarks>
     /// See https://tools.ietf.org/html/rfc7946#section-3.1.6
     /// </remarks>
+    [JsonConverter(typeof(PolygonConverter))]
     public class Polygon : GeoJSONObject, IGeometryObject, IEqualityComparer<Polygon>, IEquatable<Polygon>
     {
         /// <summary>
@@ -28,15 +29,13 @@ namespace GeoJSON.Net.Geometry
         /// </param>
         public Polygon(IEnumerable<LineString> coordinates)
         {
-            Coordinates = new ReadOnlyCollection<LineString>(
+            Rings = new ReadOnlyCollection<LineString>(
                 coordinates?.ToArray() ?? throw new ArgumentNullException(nameof(coordinates)));
-            if (Coordinates.Any(linearRing => !linearRing.IsLinearRing()))
+            if (Rings.Any(linearRing => !linearRing.IsLinearRing()))
             {
                 throw new ArgumentException("All elements must be closed LineStrings with 4 or more positions" +
                                             " (see GeoJSON spec at 'https://tools.ietf.org/html/rfc7946#section-3.1.6').", nameof(coordinates));
             }
-
-
         }
 
         /// <summary>
@@ -48,15 +47,18 @@ namespace GeoJSON.Net.Geometry
             : this(coordinates?.Select(line => new LineString(line))
               ?? throw new ArgumentNullException(nameof(coordinates)))
         {
+            Coordinates = coordinates;
         }
 
         public override GeoJSONObjectType Type => GeoJSONObjectType.Polygon;
+
+        public IEnumerable<IEnumerable<IEnumerable<double>>> Coordinates { get; }
 
         /// <summary>
         /// Gets the list of linestrings defining this <see cref="Polygon" />.
         /// </summary>
         [JsonConverter(typeof(LineStringEnumerableConverter))]
-        public IReadOnlyCollection<LineString> Coordinates { get; }
+        public IReadOnlyCollection<LineString> Rings { get; }
 
         #region IEqualityComparer, IEquatable
 
@@ -83,7 +85,7 @@ namespace GeoJSON.Net.Geometry
         {
             if (base.Equals(left, right))
             {
-                return left.Coordinates.SequenceEqual(right.Coordinates);
+                return left.Rings.SequenceEqual(right.Rings);
             }
             return false;
         }
@@ -118,7 +120,7 @@ namespace GeoJSON.Net.Geometry
         public override int GetHashCode()
         {
             var hash = base.GetHashCode();
-            foreach (var item in Coordinates)
+            foreach (var item in Rings)
             {
                 hash = (hash * 397) ^ item.GetHashCode();
             }
