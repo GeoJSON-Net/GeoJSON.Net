@@ -29,7 +29,7 @@ namespace GeoJSON.Net.Tests.Geometry
                 })
             });
 
-            var multiLineString = JsonSerializer.Deserialize<MultiLineString>(json);
+            var multiLineString = JsonSerializer.Deserialize<MultiLineString>(json, DefaultSerializerOptions);
 
             Assert.IsNotNull(multiLineString);
             Assert.AreEqual(expectedMultiLineString, multiLineString);
@@ -55,7 +55,7 @@ namespace GeoJSON.Net.Tests.Geometry
             });
 
             var expectedJson = GetExpectedJson();
-            var actualJson = JsonSerializer.Serialize<MultiLineString>(expectedMultiLineString);
+            var actualJson = JsonSerializer.Serialize(expectedMultiLineString, DefaultSerializerOptions);
 
             JsonAssert.AreEqual(expectedJson, actualJson);
         }

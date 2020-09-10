@@ -16,6 +16,7 @@ namespace GeoJSON.Net.Geometry
     /// <remarks>
     /// See https://tools.ietf.org/html/rfc7946#section-3.1.5
     /// </remarks>
+    [JsonConverter(typeof(MultiLineStringConverter))]
     public class MultiLineString : GeoJSONObject, IGeometryObject, IEqualityComparer<MultiLineString>, IEquatable<MultiLineString>
     {
         /// <summary>
@@ -24,7 +25,7 @@ namespace GeoJSON.Net.Geometry
         /// <param name="coordinates">The coordinates.</param>
         public MultiLineString(IEnumerable<LineString> coordinates)
         {
-            Coordinates =new ReadOnlyCollection<LineString>(
+            LineStrings = new ReadOnlyCollection<LineString>(
                 coordinates?.ToArray() ?? new LineString[0]);
         }
 
@@ -41,11 +42,13 @@ namespace GeoJSON.Net.Geometry
 
         public override GeoJSONObjectType Type => GeoJSONObjectType.MultiLineString;
 
+        public IEnumerable<IEnumerable<IEnumerable<double>>> Coordinates { get; set; }
+
         /// <summary>
         /// The collection of line strings of this <see cref="MultiLineString"/>.
         /// </summary>
         [JsonConverter(typeof(LineStringEnumerableConverter))]
-        public IReadOnlyCollection<LineString> Coordinates { get; }
+        public IReadOnlyCollection<LineString> LineStrings { get; }
 
         #region IEqualityComparer, IEquatable
 
@@ -72,7 +75,7 @@ namespace GeoJSON.Net.Geometry
         {
             if (base.Equals(left, right))
             {
-                return left.Coordinates.SequenceEqual(right.Coordinates);
+                return left.LineStrings.SequenceEqual(right.LineStrings);
             }
             return false;
         }
@@ -107,7 +110,7 @@ namespace GeoJSON.Net.Geometry
         public override int GetHashCode()
         {
             var hash = base.GetHashCode();
-            foreach (var item in Coordinates)
+            foreach (var item in LineStrings)
             {
                 hash = (hash * 397) ^ item.GetHashCode();
             }
