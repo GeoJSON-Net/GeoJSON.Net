@@ -27,8 +27,6 @@ namespace GeoJSON.Net.Geometry
         : this(coordinates?.Select(latLongAlt => (IPosition)latLongAlt.ToPosition())
                ?? throw new ArgumentException(nameof(coordinates)))
         {
-            Coordinates = coordinates;
-            Positions = coordinates?.Select(coors => coors.ToPosition()).ToList();
         }
 
         /// <summary>
