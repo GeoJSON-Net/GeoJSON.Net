@@ -42,7 +42,6 @@ namespace GeoJSON.Net.Tests.Geometry
             Assert.IsFalse(lineString.IsClosed());
         }
 
-
         [Test]
         public void Can_Serialize()
         {
@@ -56,7 +55,7 @@ namespace GeoJSON.Net.Tests.Geometry
 
             var lineString = new LineString(coordinates);
 
-            var actualJson = JsonSerializer.Serialize<LineString>(lineString);
+            var actualJson = JsonSerializer.Serialize(lineString, DefaultSerializerOptions);
 
             JsonAssert.AreEqual(GetExpectedJson(), actualJson);
         }
@@ -75,13 +74,13 @@ namespace GeoJSON.Net.Tests.Geometry
             var expectedLineString = new LineString(coordinates);
 
             var json = GetExpectedJson();
-            var actualLineString = JsonSerializer.Deserialize<LineString>(json);
+            var actualLineString = JsonSerializer.Deserialize<LineString>(json, DefaultSerializerOptions);
 
             Assert.AreEqual(expectedLineString, actualLineString);
 
-            Assert.AreEqual(4, actualLineString.Coordinates.Count);
-            Assert.AreEqual(expectedLineString.Coordinates.First().Latitude, actualLineString.Coordinates.First().Latitude);
-            Assert.AreEqual(expectedLineString.Coordinates.First().Longitude, actualLineString.Coordinates.First().Longitude);
+            Assert.AreEqual(4, actualLineString.Positions.Count);
+            Assert.AreEqual(expectedLineString.Positions.First().Latitude, actualLineString.Positions.First().Latitude);
+            Assert.AreEqual(expectedLineString.Positions.First().Longitude, actualLineString.Positions.First().Longitude);
         }
 
         [Test]

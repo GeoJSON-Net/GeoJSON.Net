@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text.Json.Serialization;
+using GeoJSON.Net.Converters;
 
 namespace GeoJSON.Net.Geometry
 {
@@ -14,6 +15,7 @@ namespace GeoJSON.Net.Geometry
     /// <remarks>
     /// See https://tools.ietf.org/html/rfc7946#section-3.1.4
     /// </remarks>
+    [JsonConverter(typeof(LineStringConverter))]
     public class LineString : GeoJSONObject, IGeometryObject, IEqualityComparer<LineString>, IEquatable<LineString>
     {
         /// <summary>
@@ -25,6 +27,8 @@ namespace GeoJSON.Net.Geometry
         : this(coordinates?.Select(latLongAlt => (IPosition)latLongAlt.ToPosition())
                ?? throw new ArgumentException(nameof(coordinates)))
         {
+            Coordinates = coordinates;
+            Positions = coordinates?.Select(coors => coors.ToPosition()).ToList();
         }
 
         /// <summary>
@@ -33,10 +37,10 @@ namespace GeoJSON.Net.Geometry
         /// <param name="coordinates">The coordinates.</param>
         public LineString(IEnumerable<IPosition> coordinates)
         {
-            Coordinates = new ReadOnlyCollection<IPosition>(
+            Positions = new ReadOnlyCollection<IPosition>(
                 coordinates?.ToArray() ?? throw new ArgumentNullException(nameof(coordinates)));
 
-            if (Coordinates.Count < 2)
+            if (Positions.Count < 2)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(coordinates),
@@ -46,10 +50,14 @@ namespace GeoJSON.Net.Geometry
 
         public override GeoJSONObjectType Type => GeoJSONObjectType.LineString;
 
+        /// must be available for constructor deserialization
+        public IEnumerable<IEnumerable<double>> Coordinates { get; }
+
         /// <summary>
         /// The positions of the line string.
         /// </summary>
-        public IReadOnlyCollection<IPosition> Coordinates { get; }
+        [JsonConverter(typeof(PositionEnumerableConverter))]
+        public IReadOnlyCollection<IPosition> Positions { get; }
 
         /// <summary>
         /// Determines whether this instance has its first and last coordinate at the same position and thereby is closed.
@@ -59,8 +67,8 @@ namespace GeoJSON.Net.Geometry
         /// </returns>
         public bool IsClosed()
         {
-            var firstCoordinate = Coordinates.First();
-            var lastCoordinate = Coordinates.Last();
+            var firstCoordinate = Positions.First();
+            var lastCoordinate = Positions.Last();
 
             return firstCoordinate.Longitude.Equals(lastCoordinate.Longitude)
                    && firstCoordinate.Latitude.Equals(lastCoordinate.Latitude)
@@ -78,7 +86,7 @@ namespace GeoJSON.Net.Geometry
         /// </returns>
         public bool IsLinearRing()
         {
-            return Coordinates.Count >= 4 && IsClosed();
+            return Positions.Count >= 4 && IsClosed();
         }
 
         #region IEqualityComparer, IEquatable
@@ -106,7 +114,7 @@ namespace GeoJSON.Net.Geometry
         {
             if (base.Equals(left, right))
             {
-                return left.Coordinates.SequenceEqual(right.Coordinates);
+                return left.Positions.SequenceEqual(right.Positions);
             }
             return false;
         }
@@ -141,7 +149,7 @@ namespace GeoJSON.Net.Geometry
         public override int GetHashCode()
         {
             var hash = base.GetHashCode();
-            foreach (var item in Coordinates)
+            foreach (var item in Positions)
             {
                 hash = (hash * 397) ^ item.GetHashCode();
             }
