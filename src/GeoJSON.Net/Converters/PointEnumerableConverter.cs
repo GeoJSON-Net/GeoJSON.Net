@@ -15,14 +15,14 @@ namespace GeoJSON.Net.Converters
     /// </summary>
     public class PointEnumerableConverter : JsonConverter<IEnumerable<Point>>
     {
-        private static readonly PositionConverter PositionConverter = new PositionConverter();
+        private static readonly PositionConverter Converter = new PositionConverter();
         /// <inheritdoc />
         public override void Write(Utf8JsonWriter writer, IEnumerable<Point> points, JsonSerializerOptions options)
         {
             writer.WriteStartArray();
             foreach (var point in points)
             {
-                PositionConverter.Write(writer, point.Coordinates, options);
+                Converter.Write(writer, point.Coordinates, options);
             }
             writer.WriteEndArray();
         }
@@ -32,12 +32,6 @@ namespace GeoJSON.Net.Converters
         {
             var coordinates = JsonSerializer.Deserialize<IEnumerable<Position>>(ref reader, options);
             return coordinates.Select(position => new Point(position));
-        }
-
-        /// <inheritdoc />
-        public override bool CanConvert(Type objectType)
-        {
-            return objectType == typeof(IEnumerable<Point>);
         }
     }
 }
