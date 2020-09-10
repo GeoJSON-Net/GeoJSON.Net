@@ -16,9 +16,11 @@ namespace GeoJSON.Net.Tests
         private static JsonSerializerOptions CreateSerializerOptions() {
             var options = new JsonSerializerOptions {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+                PropertyNameCaseInsensitive = true,
+
             };
-            options.Converters.Add(new JsonStringEnumConverter(new GeoJsonNamingPolicy()));
+            options.Converters.Add(new JsonStringEnumConverter());
 
             return options;
         }
@@ -27,9 +29,9 @@ namespace GeoJSON.Net.Tests
         {
             get
             {
-                string codeBase = ThisAssembly.CodeBase;
-                UriBuilder uri = new UriBuilder(codeBase);
-                string path = Uri.UnescapeDataString(uri.Path);
+                var codeBase = ThisAssembly.CodeBase;
+                var uri = new UriBuilder(codeBase);
+                var path = Uri.UnescapeDataString(uri.Path);
                 return Path.GetDirectoryName(path);
             }
         }
@@ -45,7 +47,7 @@ namespace GeoJSON.Net.Tests
                 throw new FileNotFoundException("file not found at " + path);
             }
 
-            return File.ReadAllText(path);
+            return File.ReadAllText(path).Replace(Environment.NewLine, "");
         }
     }
 }
