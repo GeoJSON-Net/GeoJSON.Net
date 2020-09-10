@@ -38,21 +38,79 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override IGeometryObject Read(ref Utf8JsonReader reader, Type type, JsonSerializerOptions options)
         {
-            switch (reader.TokenType)
-            {
-                case JsonTokenType.Null:
-                    return null;
-                case JsonTokenType.StartObject:
-                    return ReadGeoJson(ref reader, options);
-                case JsonTokenType.StartArray:
-                    // var values = JArray.Load(reader);
-                    // var geometries = new ReadOnlyCollection<IGeometryObject>(
-                    //     values.Cast<JObject>().Select(ReadGeoJson).ToArray());
-                    // return geometries;
-                    throw new NotImplementedException();
+            if (reader.TokenType != JsonTokenType.StartObject) {
+                throw new JsonException();
             }
 
-            throw new JsonException("expected null, object or array token but received " + reader.TokenType);
+            IGeometryObject geometry = null;
+            GeoJSONObjectType? geoJsonType = null;
+            ReadOnlySpan<byte> coordinateSpan = null;
+
+            while (reader.Read())
+            {
+                if (reader.CurrentDepth == 0 && reader.TokenType == JsonTokenType.EndObject)
+                {
+                    return geometry;
+                }
+
+                if (reader.TokenType != JsonTokenType.PropertyName)
+                {
+                    continue;
+                }
+
+                var propertyName = reader.GetString();
+
+                if (propertyName == "type")
+                {
+                    reader.Read();
+
+                    var geometryType = reader.GetString();
+
+                    if (!Enum.TryParse(geometryType, ignoreCase: false, out GeoJSONObjectType geoJsonGeometryType) &&
+                        !Enum.TryParse(geometryType, ignoreCase: true, out geoJsonGeometryType))
+                    {
+                        throw new JsonException("json must contain a \"type\" property that is a valid geojson geometry object type");
+                    }
+
+                    geoJsonType = geoJsonGeometryType;
+                }
+
+                if (propertyName == "coordinates" && geoJsonType.HasValue)
+                {
+                    // advance to coordinates
+                    reader.Read();
+
+                    // must real all json. cannot exit early
+                    switch (geoJsonType.Value)
+                    {
+                        case GeoJSONObjectType.Point:
+                            geometry = new Point(new PositionConverter().Read(ref reader, typeof(IPosition), options));
+                            break;
+                    }
+                }
+                else if (!coordinateSpan.IsEmpty && geoJsonType.HasValue)
+                {
+                    var newReader = new Utf8JsonReader(coordinateSpan);
+                    switch (geoJsonType.Value)
+                    {
+                        case GeoJSONObjectType.Point:
+                            geometry = (IGeometryObject)new PositionConverter().Read(ref newReader, typeof(IPosition), options);
+                            break;
+                    }
+                }
+                else if (propertyName == "coordinates" && geometry is null)
+                {
+                    reader.Read();
+                    coordinateSpan = reader.ValueSpan;
+                }
+            }
+
+            if (geometry is null)
+            {
+                throw new JsonException("expected null, object or array token but received " + reader.TokenType);
+            }
+
+            return geometry;
         }
 
         /// <summary>
@@ -66,7 +124,7 @@ namespace GeoJSON.Net.Converters
             writer.WriteStartObject();
             writer.WritePropertyName("type");
             writer.WriteStringValue(item.Type.ToString());
-            writer.WriteStartArray("coordinates");
+            writer.WritePropertyName("coordinates");
 
             switch(item)
             {
@@ -77,20 +135,19 @@ namespace GeoJSON.Net.Converters
                 }
                 case MultiPoint multiPoint:
                 {
-                    new PositionEnumerableConverter().Write(writer, multiPoint.Coordinates, options);
+                    new PositionEnumerableConverter().Write(writer, multiPoint.Positions, options);
                     break;
 
                 }
                 case LineString line:
                 {
-                    new PositionEnumerableConverter().Write(writer, line.Coordinates, options);
+                    new PositionEnumerableConverter().Write(writer, line.Positions, options);
                     break;
                 }
                 default:
                     throw new NotImplementedException("Unnecessary because CanWrite is false. The type will skip the converter.");
             }
 
-            writer.WriteEndArray();
             writer.WriteEndObject();
         }
 
