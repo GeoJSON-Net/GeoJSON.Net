@@ -15,6 +15,7 @@ namespace GeoJSON.Net.Geometry
     /// <remarks>
     /// See https://tools.ietf.org/html/rfc7946#section-3.1.3
     /// </remarks>
+    [JsonConverter(typeof(MultiPointConverter))]
     public class MultiPoint : GeoJSONObject, IGeometryObject, IEqualityComparer<MultiPoint>, IEquatable<MultiPoint>
     {
         /// <summary>
@@ -23,7 +24,7 @@ namespace GeoJSON.Net.Geometry
         /// <param name="coordinates">The coordinates.</param>
         public MultiPoint(IEnumerable<IPosition> positions)
         {
-            Coordinates = new ReadOnlyCollection<IPosition>(positions?.ToArray() ?? Array.Empty<IPosition>());
+            Positions = new ReadOnlyCollection<IPosition>(positions?.ToArray() ?? Array.Empty<IPosition>());
         }
 
         [JsonConstructor]
@@ -31,15 +32,17 @@ namespace GeoJSON.Net.Geometry
         : this(coordinates?.Select(position => position.ToPosition())
                ?? throw new ArgumentNullException(nameof(coordinates)))
         {
+            Coordinates = coordinates;
         }
 
         public override GeoJSONObjectType Type => GeoJSONObjectType.MultiPoint;
 
+        public IEnumerable<IEnumerable<double>> Coordinates { get; }
         /// <summary>
         /// The points contained in this <see cref="MultiPoint"/>.
         /// </summary>
         [JsonConverter(typeof(PositionEnumerableConverter))]
-        public IReadOnlyCollection<IPosition> Coordinates { get; }
+        public IReadOnlyCollection<IPosition> Positions { get; }
 
         #region IEqualityComparer, IEquatable
 
@@ -66,7 +69,7 @@ namespace GeoJSON.Net.Geometry
         {
             if (base.Equals(left, right))
             {
-                return left.Coordinates.SequenceEqual(right.Coordinates);
+                return left.Positions.SequenceEqual(right.Positions);
             }
             return false;
         }
@@ -101,7 +104,7 @@ namespace GeoJSON.Net.Geometry
         public override int GetHashCode()
         {
             var hash = base.GetHashCode();
-            foreach (var item in Coordinates)
+            foreach (var item in Positions)
             {
                 hash = (hash * 397) ^ item.GetHashCode();
             }
