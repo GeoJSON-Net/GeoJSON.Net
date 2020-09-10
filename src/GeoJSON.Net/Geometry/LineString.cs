@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text.Json.Serialization;
 
 namespace GeoJSON.Net.Geometry
 {
@@ -19,6 +20,7 @@ namespace GeoJSON.Net.Geometry
         /// Initializes a new <see cref="LineString" /> from a 2-d array of <see cref="double" />s
         /// that matches the "coordinates" field in the JSON representation.
         /// </summary>
+        [JsonConstructor]
         public LineString(IEnumerable<IEnumerable<double>> coordinates)
         : this(coordinates?.Select(latLongAlt => (IPosition)latLongAlt.ToPosition())
                ?? throw new ArgumentException(nameof(coordinates)))

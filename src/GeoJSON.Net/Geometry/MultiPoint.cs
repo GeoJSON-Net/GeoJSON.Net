@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using System.Collections.ObjectModel;
+using System.Text.Json.Serialization;
+using GeoJSON.Net.Converters;
 
 namespace GeoJSON.Net.Geometry
 {
@@ -24,6 +26,7 @@ namespace GeoJSON.Net.Geometry
             Coordinates = new ReadOnlyCollection<IPosition>(positions?.ToArray() ?? Array.Empty<IPosition>());
         }
 
+        [JsonConstructor]
         public MultiPoint(IEnumerable<IEnumerable<double>> coordinates)
         : this(coordinates?.Select(position => position.ToPosition())
                ?? throw new ArgumentNullException(nameof(coordinates)))
