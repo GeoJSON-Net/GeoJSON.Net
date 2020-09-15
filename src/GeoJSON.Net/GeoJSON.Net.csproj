@@ -22,7 +22,7 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
-    <PackageReference Include="System.Text.Json" Version="5.0.0-preview.8.*" />
+    <PackageReference Include="System.Text.Json" Version="5.0.0-rc.1.20451.14" />
   </ItemGroup>
 
   <PropertyGroup>
