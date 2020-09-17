@@ -153,7 +153,7 @@ namespace GeoJSON.Net.Tests.Geometry
 
             var json = JsonSerializer.Serialize(classWithGeometry);
 
-            var deserializedClassWithGeometry = JsonSerializer.Deserialize<ClassWithGeometryProperty>(json);
+            var deserializedClassWithGeometry = JsonSerializer.Deserialize<ClassWithGeometryProperty>(json, DefaultSerializerOptions);
 
             Assert.AreEqual(classWithGeometry, deserializedClassWithGeometry);
         }
