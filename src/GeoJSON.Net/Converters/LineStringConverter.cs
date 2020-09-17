@@ -26,13 +26,20 @@ namespace GeoJSON.Net.Converters
         /// <returns>
         ///     The object value.
         /// </returns>
-        public override LineString Read(ref Utf8JsonReader reader, Type type, JsonSerializerOptions options)
-        {
-            if (reader.TokenType != JsonTokenType.StartObject) {
-                throw new JsonException();
+        public override LineString Read(ref Utf8JsonReader reader, Type type, JsonSerializerOptions options) {
+            LineString lineString = null;
+            if (reader.TokenType == JsonTokenType.StartArray) {
+                lineString = new LineString(Converter.Read(ref reader, typeof(IEnumerable<Position>), options));
+                reader.Read();
             }
 
-            LineString lineString = null;
+            if (reader.TokenType == JsonTokenType.EndObject) {
+                return lineString;
+            }
+
+            if (reader.TokenType == JsonTokenType.StartObject) {
+                throw new JsonException();
+            }
 
             while (reader.Read()) {
                 if (reader.TokenType != JsonTokenType.PropertyName) {
