@@ -1,14 +1,12 @@
 ﻿// Copyright © Joerg Battermann 2014, Matt Hunt 2017
 
 using System;
-using System.Collections.ObjectModel;
-using System.Linq;
+using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using GeoJSON.Net.Geometry;
 
-namespace GeoJSON.Net.Converters
-{
+namespace GeoJSON.Net.Converters {
     /// <summary>
     /// Converts <see cref="IGeometryObject"/> types to and from JSON.
     /// </summary>
@@ -38,7 +36,8 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override IGeometryObject Read(ref Utf8JsonReader reader, Type type, JsonSerializerOptions options)
         {
-            if (reader.TokenType != JsonTokenType.StartObject) {
+            if (reader.TokenType != JsonTokenType.StartObject)
+            {
                 throw new JsonException();
             }
 
@@ -48,7 +47,7 @@ namespace GeoJSON.Net.Converters
 
             while (reader.Read())
             {
-                if (reader.CurrentDepth == 0 && reader.TokenType == JsonTokenType.EndObject)
+                if (reader.TokenType == JsonTokenType.EndObject)
                 {
                     return geometry;
                 }
@@ -80,12 +79,28 @@ namespace GeoJSON.Net.Converters
                     // advance to coordinates
                     reader.Read();
 
-                    // must real all json. cannot exit early
                     switch (geoJsonType.Value)
                     {
                         case GeoJSONObjectType.Point:
                             geometry = new Point(new PositionConverter().Read(ref reader, typeof(IPosition), options));
                             break;
+                        case GeoJSONObjectType.MultiPoint:
+                            geometry = new MultiPoint(new PositionEnumerableConverter().Read(ref reader, typeof(IEnumerable<IPosition>), options));
+                            break;
+                        case GeoJSONObjectType.LineString:
+                            geometry = new LineStringConverter().Read(ref reader, typeof(IEnumerable<IPosition>), options);
+                            break;
+                        case GeoJSONObjectType.MultiLineString:
+                            geometry = new MultiLineString(new LineStringEnumerableConverter().Read(ref reader, typeof(IEnumerable<LineString>), options));
+                            break;
+                        case GeoJSONObjectType.Polygon:
+                            geometry = new PolygonConverter().Read(ref reader, typeof(IEnumerable<IPosition>), options);
+                            break;
+                        case GeoJSONObjectType.MultiPolygon:
+                            geometry = new MultiPolygon(new PolygonEnumerableConverter().Read(ref reader, typeof(IEnumerable<Polygon>), options));
+                            break;
+                        case GeoJSONObjectType.GeometryCollection:
+                            throw new NotImplementedException("Geometry collection is not implemented");
                     }
                 }
                 else if (!coordinateSpan.IsEmpty && geoJsonType.HasValue)
@@ -96,6 +111,23 @@ namespace GeoJSON.Net.Converters
                         case GeoJSONObjectType.Point:
                             geometry = (IGeometryObject)new PositionConverter().Read(ref newReader, typeof(IPosition), options);
                             break;
+                        case GeoJSONObjectType.MultiPoint:
+                            geometry = new MultiPoint(new PositionEnumerableConverter().Read(ref newReader, typeof(IEnumerable<IPosition>), options));
+                            break;
+                        case GeoJSONObjectType.LineString:
+                            geometry = new LineStringConverter().Read(ref newReader, typeof(IEnumerable<IPosition>), options);
+                            break;
+                        case GeoJSONObjectType.MultiLineString:
+                            geometry = new MultiLineString(new LineStringEnumerableConverter().Read(ref newReader, typeof(IEnumerable<LineString>), options));
+                            break;
+                        case GeoJSONObjectType.Polygon:
+                            geometry = new PolygonConverter().Read(ref newReader, typeof(IEnumerable<IPosition>), options);
+                            break;
+                        case GeoJSONObjectType.MultiPolygon:
+                            geometry = new MultiPolygon(new PolygonEnumerableConverter().Read(ref newReader, typeof(IEnumerable<Polygon>), options));
+                            break;
+                        case GeoJSONObjectType.GeometryCollection:
+                            throw new NotImplementedException("Geometry collection is not implemented");
                     }
                 }
                 else if (propertyName == "coordinates" && geometry is null)
@@ -142,6 +174,21 @@ namespace GeoJSON.Net.Converters
                 case LineString line:
                 {
                     new PositionEnumerableConverter().Write(writer, line.Positions, options);
+                    break;
+                }
+                case MultiLineString multiLine:
+                {
+                    new LineStringEnumerableConverter().Write(writer, multiLine.LineStrings, options);
+                    break;
+                }
+                case Polygon polygon:
+                {
+                    new PolygonConverter().Write(writer, polygon, options);
+                    break;
+                }
+                case MultiPolygon multiPolygon:
+                {
+                    new PolygonEnumerableConverter().Write(writer, multiPolygon.Polygons, options);
                     break;
                 }
                 default:
