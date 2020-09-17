@@ -15,7 +15,7 @@ namespace GeoJSON.Net.Tests.Feature
         {
             var json = GetExpectedJson();
 
-            var feature = JsonSerializer.Deserialize<Net.Feature.Feature>(json);
+            var feature = JsonSerializer.Deserialize<Net.Feature.Feature>(json, DefaultSerializerOptions);
 
             Assert.IsNotNull(feature);
             Assert.IsNotNull(feature.Properties);

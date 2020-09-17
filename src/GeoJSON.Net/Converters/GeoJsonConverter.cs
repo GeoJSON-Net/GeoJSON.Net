@@ -1,15 +1,10 @@
 ﻿// Copyright © Joerg Battermann 2014, Matt Hunt 2017
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using GeoJSON.Net.Feature;
-using GeoJSON.Net.Geometry;
 
-namespace GeoJSON.Net.Converters
-{
+namespace GeoJSON.Net.Converters {
     /// <summary>
     /// Converts <see cref="IGeoJSONObject"/> types to and from JSON.
     /// </summary>

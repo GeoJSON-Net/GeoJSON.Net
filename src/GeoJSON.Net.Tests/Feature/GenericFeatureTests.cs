@@ -50,7 +50,7 @@ namespace GeoJSON.Net.Tests.Feature
 
             Assert.AreEqual(GeoJSONObjectType.LineString, feature.Geometry.Type);
 
-            Assert.AreEqual(4, feature.Geometry.Coordinates.Count);
+            Assert.AreEqual(4, feature.Geometry.Positions.Count);
 
             //Assert.AreEqual(125.6, feature.Geometry.Coordinates.Longitude);
             //Assert.AreEqual(10.1, feature.Geometry.Coordinates.Latitude);
