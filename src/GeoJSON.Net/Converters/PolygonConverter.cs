@@ -28,12 +28,15 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override Polygon Read(ref Utf8JsonReader reader, Type type, JsonSerializerOptions options)
         {
-            if (reader.TokenType != JsonTokenType.StartObject)
-            {
-                throw new JsonException();
+            Polygon polygon = null;
+
+            if (reader.TokenType == JsonTokenType.StartArray) {
+                return new Polygon(Converter.Read(ref reader, typeof(IEnumerable<LineString>), options));
             }
 
-            Polygon polygon = null;
+            if (reader.TokenType == JsonTokenType.EndObject) {
+                return polygon;
+            }
 
             while (reader.Read())
             {
