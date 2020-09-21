@@ -37,10 +37,6 @@ namespace GeoJSON.Net.Converters
                 return lineString;
             }
 
-            if (reader.TokenType == JsonTokenType.StartObject) {
-                throw new JsonException();
-            }
-
             while (reader.Read()) {
                 if (reader.TokenType != JsonTokenType.PropertyName) {
                     continue;
