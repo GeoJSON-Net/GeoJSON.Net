@@ -15,7 +15,7 @@ namespace GeoJSON.Net.Tests.Feature
         {
             var json = GetExpectedJson();
 
-            var feature = JsonSerializer.Deserialize<Feature<Point>>(json);
+            var feature = JsonSerializer.Deserialize<Feature<Point>>(json, DefaultSerializerOptions);
 
             Assert.IsNotNull(feature);
             Assert.IsNotNull(feature.Properties);
@@ -37,7 +37,7 @@ namespace GeoJSON.Net.Tests.Feature
         {
             var json = GetExpectedJson();
 
-            var feature = JsonSerializer.Deserialize<Feature<LineString>>(json);
+            var feature = JsonSerializer.Deserialize<Feature<LineString>>(json, DefaultSerializerOptions);
 
             Assert.IsNotNull(feature);
             Assert.IsNotNull(feature.Properties);
@@ -92,7 +92,7 @@ namespace GeoJSON.Net.Tests.Feature
         public void Can_Deserialize_Typed_Point_Feature()
         {
             var json = GetExpectedJson();
-            var feature = JsonSerializer.Deserialize<Feature<Point, TypedFeatureProps>>(json);
+            var feature = JsonSerializer.Deserialize<Feature<Point, TypedFeatureProps>>(json, DefaultSerializerOptions);
 
             Assert.IsNotNull(feature);
 
@@ -118,7 +118,7 @@ namespace GeoJSON.Net.Tests.Feature
             var feature = new Feature<Point, TypedFeatureProps>(geometry, props, "no id there");
 
             var expectedJson = GetExpectedJson();
-            var actualJson = JsonSerializer.Serialize<Feature<Point, TypedFeatureProps>>(feature);
+            var actualJson = JsonSerializer.Serialize(feature, DefaultSerializerOptions);
 
             JsonAssert.AreEqual(expectedJson, actualJson);
         }
