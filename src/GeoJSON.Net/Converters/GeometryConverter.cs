@@ -43,7 +43,6 @@ namespace GeoJSON.Net.Converters {
 
             IGeometryObject geometry = null;
             GeoJSONObjectType? geoJsonType = null;
-            ReadOnlySpan<byte> coordinateSpan = null;
 
             while (reader.Read())
             {
@@ -103,39 +102,6 @@ namespace GeoJSON.Net.Converters {
                             geometry = new GeometryCollectionConverter().Read(ref reader, typeof(GeometryCollection), options);
                             break;
                     }
-                }
-                else if (!coordinateSpan.IsEmpty && geoJsonType.HasValue)
-                {
-                    var newReader = new Utf8JsonReader(coordinateSpan);
-                    switch (geoJsonType.Value)
-                    {
-                        case GeoJSONObjectType.Point:
-                            geometry = (IGeometryObject)new PositionConverter().Read(ref newReader, typeof(IPosition), options);
-                            break;
-                        case GeoJSONObjectType.MultiPoint:
-                            geometry = new MultiPoint(new PositionEnumerableConverter().Read(ref newReader, typeof(IEnumerable<IPosition>), options));
-                            break;
-                        case GeoJSONObjectType.LineString:
-                            geometry = new LineStringConverter().Read(ref newReader, typeof(IEnumerable<IPosition>), options);
-                            break;
-                        case GeoJSONObjectType.MultiLineString:
-                            geometry = new MultiLineString(new LineStringEnumerableConverter().Read(ref newReader, typeof(IEnumerable<LineString>), options));
-                            break;
-                        case GeoJSONObjectType.Polygon:
-                            geometry = new PolygonConverter().Read(ref newReader, typeof(IEnumerable<IPosition>), options);
-                            break;
-                        case GeoJSONObjectType.MultiPolygon:
-                            geometry = new MultiPolygon(new PolygonEnumerableConverter().Read(ref newReader, typeof(IEnumerable<Polygon>), options));
-                            break;
-                        case GeoJSONObjectType.GeometryCollection:
-                            geometry = new GeometryCollectionConverter().Read(ref newReader, typeof(GeometryCollection), options);
-                            break;
-                    }
-                }
-                else if (propertyName == "coordinates" && geometry is null)
-                {
-                    reader.Read();
-                    coordinateSpan = reader.ValueSpan;
                 }
             }
 
