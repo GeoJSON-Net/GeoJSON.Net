@@ -98,10 +98,12 @@ namespace GeoJSON.Net.Converters {
                         case GeoJSONObjectType.MultiPolygon:
                             geometry = new MultiPolygon(new PolygonEnumerableConverter().Read(ref reader, typeof(IEnumerable<Polygon>), options));
                             break;
-                        case GeoJSONObjectType.GeometryCollection:
-                            geometry = new GeometryCollectionConverter().Read(ref reader, typeof(GeometryCollection), options);
-                            break;
                     }
+                }
+                else if (propertyName == "geometries") {
+                    // advance to geometries array
+                    reader.Read();
+                    return new GeometryCollectionConverter().Read(ref reader, typeof(GeometryCollection), options);
                 }
             }
 
