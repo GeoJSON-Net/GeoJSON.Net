@@ -121,32 +121,27 @@ namespace GeoJSON.Net.Converters {
         /// <param name="serializer">The calling serializer.</param>
         public override void Write(Utf8JsonWriter writer, IGeometryObject item, JsonSerializerOptions options)
         {
-            writer.WriteStartObject();
-            writer.WritePropertyName("type");
-            writer.WriteStringValue(item.Type.ToString());
-            writer.WritePropertyName("coordinates");
-
             switch(item)
             {
                 case Point point:
                 {
-                    new PositionConverter().Write(writer, point.Coordinates, options);
+                    new PointConverter().Write(writer, point, options);
                     break;
                 }
                 case MultiPoint multiPoint:
                 {
-                    new PositionEnumerableConverter().Write(writer, multiPoint.Positions, options);
+                    new MultiPointConverter().Write(writer, multiPoint, options);
                     break;
 
                 }
                 case LineString line:
                 {
-                    new PositionEnumerableConverter().Write(writer, line.Positions, options);
+                    new LineStringConverter().Write(writer, line, options);
                     break;
                 }
                 case MultiLineString multiLine:
                 {
-                    new LineStringEnumerableConverter().Write(writer, multiLine.LineStrings, options);
+                    new MultiLineStringConverter().Write(writer, multiLine, options);
                     break;
                 }
                 case Polygon polygon:
@@ -156,7 +151,7 @@ namespace GeoJSON.Net.Converters {
                 }
                 case MultiPolygon multiPolygon:
                 {
-                    new PolygonEnumerableConverter().Write(writer, multiPolygon.Polygons, options);
+                    new MultiPolygonConverter().Write(writer, multiPolygon, options);
                     break;
                 }
                 case GeometryCollection collection:
@@ -167,8 +162,6 @@ namespace GeoJSON.Net.Converters {
                 default:
                     throw new NotImplementedException("Unnecessary because CanWrite is false. The type will skip the converter.");
             }
-
-            writer.WriteEndObject();
         }
     }
 }
