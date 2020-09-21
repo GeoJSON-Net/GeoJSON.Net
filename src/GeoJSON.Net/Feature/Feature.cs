@@ -97,6 +97,7 @@ namespace GeoJSON.Net.Feature
     /// <remarks>
     /// See https://tools.ietf.org/html/rfc7946#section-3.2
     /// </remarks>
+    [JsonConverter(typeof(FeatureConverter))]
     public class Feature : Feature<IGeometryObject>
     {
         [JsonConstructor]
