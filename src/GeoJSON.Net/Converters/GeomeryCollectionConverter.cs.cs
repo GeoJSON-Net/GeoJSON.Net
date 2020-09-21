@@ -69,6 +69,7 @@ namespace GeoJSON.Net.Converters {
         /// <param name="serializer">The calling serializer.</param>
         public override void Write(Utf8JsonWriter writer, GeometryCollection value, JsonSerializerOptions options) {
             writer.WriteStartObject();
+            writer.WriteString("type", "GeometryCollection");
             writer.WriteStartArray("geometries");
             foreach (var geometry in value.Geometries) {
                 Converter.Write(writer, geometry, options);

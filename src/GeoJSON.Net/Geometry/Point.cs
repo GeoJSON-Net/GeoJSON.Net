@@ -14,6 +14,7 @@ namespace GeoJSON.Net.Geometry
     /// <remarks>
     /// See https://tools.ietf.org/html/rfc7946#section-3.1.2
     /// </remarks>
+    [JsonConverter(typeof(PointConverter))]
     public class Point : GeoJSONObject, IGeometryObject, IEqualityComparer<Point>, IEquatable<Point>
     {
 

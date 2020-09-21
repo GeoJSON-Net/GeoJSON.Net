@@ -66,10 +66,9 @@ namespace GeoJSON.Net.Converters
         public override void Write(Utf8JsonWriter writer, MultiPolygon value, JsonSerializerOptions options)
         {
             writer.WriteStartObject();
+            writer.WriteString("type", "MultiPolygon");
             writer.WritePropertyName("coordinates");
             Converter.Write(writer, value.Polygons, options);
-            writer.WritePropertyName("type");
-            writer.WriteStringValue("MultiPolygon");
             writer.WriteEndObject();
         }
     }

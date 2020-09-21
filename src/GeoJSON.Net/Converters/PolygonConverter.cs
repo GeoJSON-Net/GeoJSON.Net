@@ -70,10 +70,9 @@ namespace GeoJSON.Net.Converters
         public override void Write(Utf8JsonWriter writer, Polygon value, JsonSerializerOptions options)
         {
             writer.WriteStartObject();
+            writer.WriteString("type", "Polygon");
             writer.WritePropertyName("coordinates");
             Converter.Write(writer, value.Rings, options);
-            writer.WritePropertyName("type");
-            writer.WriteStringValue("Polygon");
             writer.WriteEndObject();
         }
     }

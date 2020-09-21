@@ -66,10 +66,9 @@ namespace GeoJSON.Net.Converters
         public override void Write(Utf8JsonWriter writer, MultiPoint value, JsonSerializerOptions options)
         {
             writer.WriteStartObject();
+            writer.WriteString("type", "MultiPoint");
             writer.WritePropertyName("coordinates");
             Converter.Write(writer, value.Positions, options);
-            writer.WritePropertyName("type");
-            writer.WriteStringValue("MultiPoint");
             writer.WriteEndObject();
         }
     }

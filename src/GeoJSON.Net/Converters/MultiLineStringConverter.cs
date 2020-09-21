@@ -62,10 +62,9 @@ namespace GeoJSON.Net.Converters
         public override void Write(Utf8JsonWriter writer, MultiLineString value, JsonSerializerOptions options)
         {
             writer.WriteStartObject();
+            writer.WriteString("type", "MultiLineString");
             writer.WritePropertyName("coordinates");
             Converter.Write(writer, value.LineStrings, options);
-            writer.WritePropertyName("type");
-            writer.WriteStringValue("MultiLineString");
             writer.WriteEndObject();
         }
     }

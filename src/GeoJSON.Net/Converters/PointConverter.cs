@@ -69,8 +69,7 @@ namespace GeoJSON.Net.Converters
         public override void Write(Utf8JsonWriter writer, Point value, JsonSerializerOptions options)
         {
             writer.WriteStartObject();
-            writer.WritePropertyName("type");
-            writer.WriteStringValue("Point");
+            writer.WriteString("type", "Point");
             writer.WritePropertyName("coordinates");
             Converter.Write(writer, value.Coordinates, options);
             writer.WriteEndObject();
