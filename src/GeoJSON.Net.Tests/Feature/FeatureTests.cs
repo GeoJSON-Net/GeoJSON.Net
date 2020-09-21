@@ -444,8 +444,8 @@ namespace GeoJSON.Net.Tests.Feature
         [Test]
         public void Feature_Equals_All_Geometry_Null_Issue115()
         {
-            bool equal1 = false;
-            bool equal2 = false;
+            var equal1 = false;
+            var equal2 = false;
 
             var feature1 = new Net.Feature.Feature(null);
             var feature2 = new Net.Feature.Feature(null);
