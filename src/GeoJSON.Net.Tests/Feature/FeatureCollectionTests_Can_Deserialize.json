@@ -4,7 +4,7 @@
         "type": "Feature",
         "geometry": {
             "type": "Point",
-            "coordinates": [102.0, 0.5]
+            "coordinates": [102, 0.5]
         },
         "properties": {
             "prop0": "value0"
@@ -58,11 +58,11 @@
             "type": "Polygon",
             "coordinates": [
                 [
-                    [100.0, 0.0],
-                    [101.0, 0.0],
-                    [101.0, 1.0],
-                    [100.0, 1.0],
-                    [100.0, 0.0]
+                    [100, 0],
+                    [101, 0],
+                    [101, 1],
+                    [100, 1],
+                    [100, 0]
                 ]
             ]
         },
