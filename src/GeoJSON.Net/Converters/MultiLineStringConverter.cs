@@ -32,9 +32,13 @@ namespace GeoJSON.Net.Converters
                 throw new JsonException();
             }
 
-            MultiLineString multiLineString = null;
+            MultiLineString geometry = null;
 
             while (reader.Read()) {
+                if (reader.TokenType == JsonTokenType.EndObject) {
+                    break;
+                }
+
                 if (reader.TokenType != JsonTokenType.PropertyName) {
                     continue;
                 }
@@ -46,11 +50,11 @@ namespace GeoJSON.Net.Converters
                     reader.Read();
 
                     // must real all json. cannot exit early
-                    multiLineString = new MultiLineString(Converter.Read(ref reader, typeof(IEnumerable<LineString>), options));
+                    geometry = new MultiLineString(Converter.Read(ref reader, typeof(IEnumerable<LineString>), options));
                 }
             }
 
-            return multiLineString;
+            return geometry;
         }
 
         /// <summary>

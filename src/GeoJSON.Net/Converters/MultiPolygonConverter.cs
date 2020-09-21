@@ -33,10 +33,14 @@ namespace GeoJSON.Net.Converters
                 throw new JsonException();
             }
 
-            MultiPolygon multiPolygon = null;
+            MultiPolygon geometry = null;
 
             while (reader.Read())
             {
+                if (reader.TokenType == JsonTokenType.EndObject) {
+                    break;
+                }
+
                 if (reader.TokenType != JsonTokenType.PropertyName)
                 {
                     continue;
@@ -50,11 +54,11 @@ namespace GeoJSON.Net.Converters
                     reader.Read();
 
                     // must real all json. cannot exit early
-                    multiPolygon = new MultiPolygon(Converter.Read(ref reader, typeof(IEnumerable<Polygon>), options));
+                    geometry = new MultiPolygon(Converter.Read(ref reader, typeof(IEnumerable<Polygon>), options));
                 }
             }
 
-            return multiPolygon;
+            return geometry;
         }
 
         /// <summary>

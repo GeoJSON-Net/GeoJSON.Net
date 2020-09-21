@@ -33,10 +33,14 @@ namespace GeoJSON.Net.Converters
                 throw new JsonException();
             }
 
-            MultiPoint MultiPoint = null;
+            MultiPoint geometry = null;
 
             while (reader.Read())
             {
+                if (reader.TokenType == JsonTokenType.EndObject) {
+                    break;
+                }
+
                 if (reader.TokenType != JsonTokenType.PropertyName)
                 {
                     continue;
@@ -50,11 +54,11 @@ namespace GeoJSON.Net.Converters
                     reader.Read();
 
                     // must real all json. cannot exit early
-                    MultiPoint = new MultiPoint(Converter.Read(ref reader, typeof(IEnumerable<IPosition>), options));
+                    geometry = new MultiPoint(Converter.Read(ref reader, typeof(IEnumerable<IPosition>), options));
                 }
             }
 
-            return MultiPoint;
+            return geometry;
         }
 
         /// <summary>

@@ -32,7 +32,7 @@ namespace GeoJSON.Net.Converters
                 throw new JsonException();
             }
 
-            Point point = null;
+            Point geometry = null;
 
             while (reader.Read())
             {
@@ -53,11 +53,11 @@ namespace GeoJSON.Net.Converters
                     reader.Read();
 
                     // must real all json. cannot exit early
-                    point = new Point(Converter.Read(ref reader, typeof(IPosition), options));
+                    geometry = new Point(Converter.Read(ref reader, typeof(IPosition), options));
                 }
             }
 
-            return point;
+            return geometry;
         }
 
         /// <summary>

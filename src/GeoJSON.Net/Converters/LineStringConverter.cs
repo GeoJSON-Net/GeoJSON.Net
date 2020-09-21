@@ -27,17 +27,21 @@ namespace GeoJSON.Net.Converters
         ///     The object value.
         /// </returns>
         public override LineString Read(ref Utf8JsonReader reader, Type type, JsonSerializerOptions options) {
-            LineString lineString = null;
+            LineString geometry = null;
             if (reader.TokenType == JsonTokenType.StartArray) {
-                lineString = new LineString(Converter.Read(ref reader, typeof(IEnumerable<Position>), options));
+                geometry = new LineString(Converter.Read(ref reader, typeof(IEnumerable<Position>), options));
                 reader.Read();
             }
 
             if (reader.TokenType == JsonTokenType.EndObject) {
-                return lineString;
+                return geometry;
             }
 
             while (reader.Read()) {
+                if (reader.TokenType == JsonTokenType.EndObject) {
+                    break;
+                }
+
                 if (reader.TokenType != JsonTokenType.PropertyName) {
                     continue;
                 }
@@ -49,11 +53,11 @@ namespace GeoJSON.Net.Converters
                     reader.Read();
 
                     // must real all json. cannot exit early
-                    lineString = new LineString(Converter.Read(ref reader, typeof(IEnumerable<Position>), options));
+                    geometry = new LineString(Converter.Read(ref reader, typeof(IEnumerable<Position>), options));
                 }
             }
 
-            return lineString;
+            return geometry;
         }
 
         /// <summary>

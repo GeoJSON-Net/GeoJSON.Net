@@ -28,14 +28,14 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override Polygon Read(ref Utf8JsonReader reader, Type type, JsonSerializerOptions options)
         {
-            Polygon polygon = null;
+            Polygon geometry = null;
 
             if (reader.TokenType == JsonTokenType.StartArray) {
                 return new Polygon(Converter.Read(ref reader, typeof(IEnumerable<LineString>), options));
             }
 
             if (reader.TokenType == JsonTokenType.EndObject) {
-                return polygon;
+                return geometry;
             }
 
             while (reader.Read())
@@ -57,11 +57,11 @@ namespace GeoJSON.Net.Converters
                     reader.Read();
 
                     // must real all json. cannot exit early
-                    polygon = new Polygon(Converter.Read(ref reader, typeof(IEnumerable<LineString>), options));
+                    geometry = new Polygon(Converter.Read(ref reader, typeof(IEnumerable<LineString>), options));
                 }
             }
 
-            return polygon;
+            return geometry;
         }
 
         /// <summary>
