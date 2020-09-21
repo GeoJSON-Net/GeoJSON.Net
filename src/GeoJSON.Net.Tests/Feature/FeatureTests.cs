@@ -22,7 +22,7 @@ namespace GeoJSON.Net.Tests.Feature
             Assert.IsTrue(feature.Properties.Any());
 
             Assert.IsTrue(feature.Properties.ContainsKey("name"));
-            Assert.AreEqual(feature.Properties["name"], "Dinagat Islands");
+            Assert.AreEqual(feature.Properties["name"].ToString(), "Dinagat Islands");
 
             Assert.AreEqual("test-id", feature.Id);
 
