@@ -151,7 +151,7 @@ namespace GeoJSON.Net.Tests.Geometry
         {
             var classWithGeometry = new ClassWithGeometryProperty(geometry);
 
-            var json = JsonSerializer.Serialize(classWithGeometry);
+            var json = JsonSerializer.Serialize(classWithGeometry, DefaultSerializerOptions);
 
             var deserializedClassWithGeometry = JsonSerializer.Deserialize<ClassWithGeometryProperty>(json, DefaultSerializerOptions);
 
@@ -164,9 +164,9 @@ namespace GeoJSON.Net.Tests.Geometry
         {
             var classWithGeometry = new ClassWithGeometryProperty(geometry);
 
-            var json = JsonSerializer.Serialize(classWithGeometry);
+            var json = JsonSerializer.Serialize(classWithGeometry, DefaultSerializerOptions);
 
-            var deserializedClassWithGeometry = JsonSerializer.Deserialize<ClassWithGeometryProperty>(json);
+            var deserializedClassWithGeometry = JsonSerializer.Deserialize<ClassWithGeometryProperty>(json, DefaultSerializerOptions);
 
             var actual = classWithGeometry;
             var expected = deserializedClassWithGeometry;

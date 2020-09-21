@@ -88,7 +88,7 @@ namespace GeoJSON.Net.Converters {
                             geometry = new MultiPoint(new PositionEnumerableConverter().Read(ref reader, typeof(IEnumerable<IPosition>), options));
                             break;
                         case GeoJSONObjectType.LineString:
-                            geometry = new LineStringConverter().Read(ref reader, typeof(IEnumerable<IPosition>), options);
+                            geometry = new LineString(new PositionEnumerableConverter().Read(ref reader, typeof(IEnumerable<IPosition>), options));
                             break;
                         case GeoJSONObjectType.MultiLineString:
                             geometry = new MultiLineString(new LineStringEnumerableConverter().Read(ref reader, typeof(IEnumerable<LineString>), options));
@@ -100,7 +100,8 @@ namespace GeoJSON.Net.Converters {
                             geometry = new MultiPolygon(new PolygonEnumerableConverter().Read(ref reader, typeof(IEnumerable<Polygon>), options));
                             break;
                         case GeoJSONObjectType.GeometryCollection:
-                            throw new NotImplementedException("Geometry collection is not implemented");
+                            geometry = new GeometryCollectionConverter().Read(ref reader, typeof(GeometryCollection), options);
+                            break;
                     }
                 }
                 else if (!coordinateSpan.IsEmpty && geoJsonType.HasValue)
@@ -127,7 +128,8 @@ namespace GeoJSON.Net.Converters {
                             geometry = new MultiPolygon(new PolygonEnumerableConverter().Read(ref newReader, typeof(IEnumerable<Polygon>), options));
                             break;
                         case GeoJSONObjectType.GeometryCollection:
-                            throw new NotImplementedException("Geometry collection is not implemented");
+                            geometry = new GeometryCollectionConverter().Read(ref newReader, typeof(GeometryCollection), options);
+                            break;
                     }
                 }
                 else if (propertyName == "coordinates" && geometry is null)
@@ -189,6 +191,11 @@ namespace GeoJSON.Net.Converters {
                 case MultiPolygon multiPolygon:
                 {
                     new PolygonEnumerableConverter().Write(writer, multiPolygon.Polygons, options);
+                    break;
+                }
+                case GeometryCollection collection:
+                {
+                    new GeometryCollectionConverter().Write(writer, collection, options);
                     break;
                 }
                 default:
