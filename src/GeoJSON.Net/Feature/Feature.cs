@@ -17,6 +17,7 @@ namespace GeoJSON.Net.Feature
     /// <remarks>
     /// See https://tools.ietf.org/html/rfc7946#section-3.2
     /// </remarks>
+    [JsonConverter(typeof(FeatureFactory))]
     public class Feature<TGeometry, TProps> : GeoJSONObject, IEquatable<Feature<TGeometry, TProps>>
         where TGeometry : IGeometryObject
     {
@@ -97,7 +98,7 @@ namespace GeoJSON.Net.Feature
     /// <remarks>
     /// See https://tools.ietf.org/html/rfc7946#section-3.2
     /// </remarks>
-    [JsonConverter(typeof(FeatureConverter))]
+    [JsonConverter(typeof(FeatureFactory))]
     public class Feature : Feature<IGeometryObject>
     {
         [JsonConstructor]
@@ -118,6 +119,7 @@ namespace GeoJSON.Net.Feature
     /// </summary>
     /// <remarks>Returns correctly typed Geometry property</remarks>
     /// <typeparam name="TGeometry"></typeparam>
+    [JsonConverter(typeof(FeatureFactory))]
     public class Feature<TGeometry> : Feature<TGeometry, IDictionary<string, object>>, IEquatable<Feature<TGeometry>> where TGeometry : IGeometryObject
     {
 
