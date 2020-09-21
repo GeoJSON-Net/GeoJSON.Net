@@ -19,19 +19,19 @@
         /// </summary>
         public TestFeaturePropertyDictionary()
         {
-            this.internalDictionary = new Dictionary<string, object>();
+            internalDictionary = new Dictionary<string, object>();
         }
 
         public bool BooleanProperty
         {
             get
             {
-                return this.GetKeyOrDefault<bool>(nameof(this.BooleanProperty));
+                return GetKeyOrDefault<bool>(nameof(BooleanProperty));
             }
 
             set
             {
-                this.internalDictionary[nameof(this.BooleanProperty)] = value;
+                internalDictionary[nameof(BooleanProperty)] = value;
             }
         }
 
@@ -39,12 +39,12 @@
         {
             get
             {
-                return this.GetKeyOrDefault<DateTime>(nameof(this.DateTimeProperty));
+                return GetKeyOrDefault<DateTime>(nameof(DateTimeProperty));
             }
 
             set
             {
-                this.internalDictionary[nameof(this.DateTimeProperty)] = value;
+                internalDictionary[nameof(DateTimeProperty)] = value;
             }
         }
 
@@ -52,12 +52,12 @@
         {
             get
             {
-                return this.GetKeyOrDefault<double>(nameof(this.DoubleProperty));
+                return GetKeyOrDefault<double>(nameof(DoubleProperty));
             }
 
             set
             {
-                this.internalDictionary[nameof(this.DoubleProperty)] = value;
+                internalDictionary[nameof(DoubleProperty)] = value;
             }
         }
 
@@ -65,12 +65,12 @@
         {
             get
             {
-                return this.GetKeyOrDefault<TestFeatureEnum>(nameof(this.EnumProperty));
+                return GetKeyOrDefault<TestFeatureEnum>(nameof(EnumProperty));
             }
 
             set
             {
-                this.internalDictionary[nameof(this.EnumProperty)] = value;
+                internalDictionary[nameof(EnumProperty)] = value;
             }
         }
 
@@ -78,12 +78,12 @@
         {
             get
             {
-                return this.GetKeyOrDefault<int>(nameof(this.IntProperty));
+                return GetKeyOrDefault<int>(nameof(IntProperty));
             }
 
             set
             {
-                this.internalDictionary[nameof(this.IntProperty)] = value;
+                internalDictionary[nameof(IntProperty)] = value;
             }
         }
 
@@ -91,12 +91,12 @@
         {
             get
             {
-                return this.GetKeyOrDefault<string>(nameof(this.StringProperty));
+                return GetKeyOrDefault<string>(nameof(StringProperty));
             }
 
             set
             {
-                this.internalDictionary[nameof(this.StringProperty)] = value;
+                internalDictionary[nameof(StringProperty)] = value;
             }
         }
 
@@ -105,7 +105,7 @@
         {
             get
             {
-                return this.internalDictionary.Count;
+                return internalDictionary.Count;
             }
         }
 
@@ -114,7 +114,7 @@
         {
             get
             {
-                return this.internalDictionary.IsReadOnly;
+                return internalDictionary.IsReadOnly;
             }
         }
 
@@ -123,7 +123,7 @@
         {
             get
             {
-                return this.internalDictionary.Keys;
+                return internalDictionary.Keys;
             }
         }
 
@@ -132,7 +132,7 @@
         {
             get
             {
-                return this.internalDictionary.Values;
+                return internalDictionary.Values;
             }
         }
 
@@ -141,85 +141,85 @@
         {
             get
             {
-                return this.internalDictionary[key];
+                return internalDictionary[key];
             }
 
             set
             {
-                this.internalDictionary[key] = value;
+                internalDictionary[key] = value;
             }
         }
 
         /// <inheritdoc/>
         public IEnumerator<KeyValuePair<string, object>> GetEnumerator()
         {
-            return this.internalDictionary.GetEnumerator();
+            return internalDictionary.GetEnumerator();
         }
 
         /// <inheritdoc/>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
 
         /// <inheritdoc/>
         public void Add(KeyValuePair<string, object> item)
         {
-            this.internalDictionary.Add(item);
+            internalDictionary.Add(item);
         }
 
         /// <inheritdoc/>
         public void Clear()
         {
-            this.internalDictionary.Clear();
+            internalDictionary.Clear();
         }
 
         /// <inheritdoc/>
         public bool Contains(KeyValuePair<string, object> item)
         {
-            return this.internalDictionary.Contains(item);
+            return internalDictionary.Contains(item);
         }
 
         /// <inheritdoc/>
         public void CopyTo(KeyValuePair<string, object>[] array, int arrayIndex)
         {
-            this.internalDictionary.CopyTo(array, arrayIndex);
+            internalDictionary.CopyTo(array, arrayIndex);
         }
 
         /// <inheritdoc/>
         public bool Remove(KeyValuePair<string, object> item)
         {
-            return this.internalDictionary.Remove(item);
+            return internalDictionary.Remove(item);
         }
 
         /// <inheritdoc/>
         public bool ContainsKey(string key)
         {
-            return this.internalDictionary.ContainsKey(key);
+            return internalDictionary.ContainsKey(key);
         }
 
         /// <inheritdoc/>
         public void Add(string key, object value)
         {
-            this.internalDictionary.Add(key, value);
+            internalDictionary.Add(key, value);
         }
 
         /// <inheritdoc/>
         public bool Remove(string key)
         {
-            return this.internalDictionary.Remove(key);
+            return internalDictionary.Remove(key);
         }
 
         /// <inheritdoc/>
         public bool TryGetValue(string key, out object value)
         {
-            return this.internalDictionary.TryGetValue(key, out value);
+            return internalDictionary.TryGetValue(key, out value);
         }
 
         private T GetKeyOrDefault<T>(string keyName)
         {
             object value;
-            if (this.TryGetValue(keyName, out value))
+            if (TryGetValue(keyName, out value))
             {
                 return (T)value;
             }

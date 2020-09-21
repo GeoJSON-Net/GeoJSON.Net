@@ -60,8 +60,8 @@ namespace GeoJSON.Net.Tests.Feature
         [Test]
         public void Feature_Generic_Equals_Null_Issue94()
         {
-            bool equal1 = true;
-            bool equal2 = true;
+            var equal1 = true;
+            var equal2 = true;
 
             var point = new Point(new Position(34, 123));
             var properties = new Dictionary<string, string>

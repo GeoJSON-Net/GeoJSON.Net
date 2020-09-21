@@ -23,7 +23,7 @@ namespace GeoJSON.Net.Tests.Feature
         [Test]
         public void Can_Deserialize()
         {
-            string json = GetExpectedJson();
+            var json = GetExpectedJson();
 
             var featureCollection = JsonSerializer.Deserialize<FeatureCollection>(json);
 

@@ -110,14 +110,7 @@ namespace GeoJSON.Net.Tests.Geometry
         [Test]
         public void Equals_GetHashCode_Contract()
         {
-            //var rnd = new System.Random();
-            //var offset = rnd.NextDouble() * 20;
-            //if (rnd.NextDouble() < 0.5)
-            //{
-            //    offset *= -1;
-            //}
-
-            double offset = 0d;
+            var offset = 0d;
 
             var left = GetMultiPolygon(offset);
             var right = GetMultiPolygon(offset);

@@ -47,12 +47,12 @@ namespace GeoJSON.Net.Geometry
                 throw new ArgumentOutOfRangeException(nameof(longitude), "May not be empty.");
             }
 
-            if (!double.TryParse(latitude, NumberStyles.Float, CultureInfo.InvariantCulture, out double lat))
+            if (!double.TryParse(latitude, NumberStyles.Float, CultureInfo.InvariantCulture, out var lat))
             {
                 throw new ArgumentOutOfRangeException(nameof(altitude), "Latitude representation must be a numeric.");
             }
 
-            if (!double.TryParse(longitude, NumberStyles.Float, CultureInfo.InvariantCulture, out double lon))
+            if (!double.TryParse(longitude, NumberStyles.Float, CultureInfo.InvariantCulture, out var lon))
             {
                 throw new ArgumentOutOfRangeException(nameof(altitude), "Longitude representation must be a numeric.");
             }
@@ -62,7 +62,7 @@ namespace GeoJSON.Net.Geometry
 
             if (altitude != null)
             {
-                if (!double.TryParse(altitude, NumberStyles.Float, CultureInfo.InvariantCulture, out double alt))
+                if (!double.TryParse(altitude, NumberStyles.Float, CultureInfo.InvariantCulture, out var alt))
                 {
                     throw new ArgumentOutOfRangeException(nameof(altitude), "Altitude must be a proper altitude (m(eter) as double) value, e.g. '6500'.");
                 }
@@ -70,7 +70,7 @@ namespace GeoJSON.Net.Geometry
                 Altitude = alt;
             }
         }
-        
+
         /// <summary>
         /// Gets the altitude.
         /// </summary>
@@ -85,7 +85,7 @@ namespace GeoJSON.Net.Geometry
         /// Gets the longitude or X coordinate
         /// </summary>
         public double Longitude { get; }
-        
+
         /// <summary>
         /// Returns a <see cref="string" /> that represents this instance.
         /// </summary>
