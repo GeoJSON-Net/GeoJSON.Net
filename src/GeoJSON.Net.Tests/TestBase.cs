@@ -19,7 +19,6 @@ namespace GeoJSON.Net.Tests
                 DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
                 PropertyNameCaseInsensitive = true,
             };
-            options.Converters.Add(new JsonStringEnumConverter());
 
             return options;
         }
