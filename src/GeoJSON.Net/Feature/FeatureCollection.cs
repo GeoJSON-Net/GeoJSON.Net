@@ -3,12 +3,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
+using GeoJSON.Net.Converters;
 
 namespace GeoJSON.Net.Feature
 {
     /// <summary>
     /// Defines the FeatureCollection type.
     /// </summary>
+    [JsonConverter(typeof(FeatureCollectionConverter))]
     public class FeatureCollection : GeoJSONObject, IEqualityComparer<FeatureCollection>, IEquatable<FeatureCollection>
     {
         /// <summary>

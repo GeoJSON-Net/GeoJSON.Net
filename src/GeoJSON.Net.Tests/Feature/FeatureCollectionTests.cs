@@ -25,10 +25,10 @@ namespace GeoJSON.Net.Tests.Feature
         {
             var json = GetExpectedJson();
 
-            var featureCollection = JsonSerializer.Deserialize<FeatureCollection>(json);
+            var featureCollection = JsonSerializer.Deserialize<FeatureCollection>(json, DefaultSerializerOptions);
 
             Assert.IsNotNull(featureCollection.Features);
-            Assert.AreEqual(featureCollection.Features.Count, 3);
+            Assert.AreEqual(3, featureCollection.Features.Count);
             Assert.AreEqual(featureCollection.Features.Count(x => x.Geometry.Type == GeoJSONObjectType.Point), 1);
             Assert.AreEqual(featureCollection.Features.Count(x => x.Geometry.Type == GeoJSONObjectType.MultiPolygon), 1);
             Assert.AreEqual(featureCollection.Features.Count(x => x.Geometry.Type == GeoJSONObjectType.Polygon), 1);
