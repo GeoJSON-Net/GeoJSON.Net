@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using GeoJSON.Net.CoordinateReferenceSystem;
 using GeoJSON.Net.Feature;
 using GeoJSON.Net.Geometry;
 
@@ -14,6 +15,7 @@ namespace GeoJSON.Net.Converters {
     public class FeatureCollectionConverter : JsonConverter<FeatureCollection>
     {
         private static readonly FeatureFactory Factory = new FeatureFactory();
+        private static readonly CrsConverter CrsConverter = new CrsConverter();
         /// <summary>
         ///     Reads the JSON representation of the object.
         /// </summary>
@@ -27,9 +29,12 @@ namespace GeoJSON.Net.Converters {
         public override FeatureCollection Read(ref Utf8JsonReader reader, Type type, JsonSerializerOptions options)
         {
             var features = new List<Feature.Feature>();
+            var collection = new FeatureCollection(features) {
+                CRS = new UnspecifiedCRS()
+            };
 
             if (reader.TokenType == JsonTokenType.EndObject) {
-                return new FeatureCollection(features);
+                return collection;
             }
 
             while(reader.Read()) {
@@ -61,7 +66,7 @@ namespace GeoJSON.Net.Converters {
 
                                 var feature = JsonSerializer.Deserialize<Feature.Feature>(ref reader, options);
 
-                                features.Add(feature);
+                                collection.Features.Add(feature);
                             }
                             break;
                         default:
@@ -71,7 +76,7 @@ namespace GeoJSON.Net.Converters {
                 }
             }
 
-            return new FeatureCollection(features);
+            return collection;
         }
 
         /// <summary>
@@ -80,16 +85,21 @@ namespace GeoJSON.Net.Converters {
         /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
         /// <param name="value">The value.</param>
         /// <param name="serializer">The calling serializer.</param>
-        public override void Write(Utf8JsonWriter writer, FeatureCollection item, JsonSerializerOptions options)
+        public override void Write(Utf8JsonWriter writer, FeatureCollection value, JsonSerializerOptions options)
         {
             writer.WriteStartObject();
             writer.WriteString("type", "FeatureCollection");
             writer.WriteStartArray("features");
-            foreach (var feat in item.Features) {
+            foreach (var feat in value.Features) {
                 var converter = Factory.CreateConverter(feat.GetType(), options);
                 // converter.Write(writer, feat, options);
             }
             writer.WriteEndArray();
+
+            if (value.CRS is not null) {
+                CrsConverter.Write(writer, value.CRS, options);
+            }
+
             writer.WriteEndObject();
         }
     }

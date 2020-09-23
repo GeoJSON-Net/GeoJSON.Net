@@ -5,6 +5,7 @@ using GeoJSON.Net.Geometry;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using System.Collections.Generic;
+using GeoJSON.Net.CoordinateReferenceSystem;
 
 namespace GeoJSON.Net.Converters
 {
@@ -15,6 +16,7 @@ namespace GeoJSON.Net.Converters
     public class MultiPointConverter : JsonConverter<MultiPoint>
     {
         private static readonly PositionEnumerableConverter Converter = new PositionEnumerableConverter();
+        private static readonly CrsConverter CrsConverter = new CrsConverter();
 
         /// <summary>
         ///     Reads the JSON representation of the object.
@@ -34,6 +36,7 @@ namespace GeoJSON.Net.Converters
             }
 
             MultiPoint geometry = null;
+            ICRSObject crs = null;
 
             while (reader.Read())
             {
@@ -48,15 +51,21 @@ namespace GeoJSON.Net.Converters
 
                 var propertyName = reader.GetString();
 
-                if (propertyName == "coordinates")
-                {
-                    // advance to coordinates
-                    reader.Read();
+                switch (propertyName) {
+                    case "coordinates":
+                        // advance to coordinates
+                        reader.Read();
 
-                    // must real all json. cannot exit early
-                    geometry = new MultiPoint(Converter.Read(ref reader, typeof(IEnumerable<IPosition>), options));
+                        // must real all json. cannot exit early
+                        geometry = new MultiPoint(Converter.Read(ref reader, typeof(IEnumerable<IPosition>), options));
+                        break;
+                    case "crs":
+                        crs = CrsConverter.Read(ref reader, typeof(ICRSObject), options);
+                        break;
                 }
             }
+
+            geometry.CRS = crs;
 
             return geometry;
         }
@@ -73,6 +82,9 @@ namespace GeoJSON.Net.Converters
             writer.WriteString("type", "MultiPoint");
             writer.WritePropertyName("coordinates");
             Converter.Write(writer, value.Positions, options);
+            if (value.CRS is not null) {
+                CrsConverter.Write(writer, value.CRS, options);
+            }
             writer.WriteEndObject();
         }
     }

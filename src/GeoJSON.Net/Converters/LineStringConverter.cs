@@ -5,6 +5,7 @@ using GeoJSON.Net.Geometry;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using System.Collections.Generic;
+using GeoJSON.Net.CoordinateReferenceSystem;
 
 namespace GeoJSON.Net.Converters
 {
@@ -15,6 +16,7 @@ namespace GeoJSON.Net.Converters
     public class LineStringConverter : JsonConverter<LineString>
     {
         private static readonly PositionEnumerableConverter Converter = new PositionEnumerableConverter();
+        private static readonly CrsConverter CrsConverter = new CrsConverter();
 
         /// <summary>
         ///     Reads the JSON representation of the object.
@@ -28,12 +30,16 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override LineString Read(ref Utf8JsonReader reader, Type type, JsonSerializerOptions options) {
             LineString geometry = null;
+            ICRSObject crs = null;
+
             if (reader.TokenType == JsonTokenType.StartArray) {
                 geometry = new LineString(Converter.Read(ref reader, typeof(IEnumerable<Position>), options));
                 reader.Read();
             }
 
             if (reader.TokenType == JsonTokenType.EndObject) {
+                geometry.CRS = crs;
+
                 return geometry;
             }
 
@@ -48,14 +54,21 @@ namespace GeoJSON.Net.Converters
 
                 var propertyName = reader.GetString();
 
-                if (propertyName == "coordinates") {
-                    // advance to coordinates
-                    reader.Read();
+                switch (propertyName) {
+                    case "coordinates":
+                        // advance to coordinates
+                        reader.Read();
 
-                    // must real all json. cannot exit early
-                    geometry = new LineString(Converter.Read(ref reader, typeof(IEnumerable<Position>), options));
+                        // must real all json. cannot exit early
+                        geometry = new LineString(Converter.Read(ref reader, typeof(IEnumerable<Position>), options));
+                        break;
+                    case "crs":
+                        crs = CrsConverter.Read(ref reader, typeof(ICRSObject), options);
+                        break;
                 }
             }
+
+            geometry.CRS = crs;
 
             return geometry;
         }
@@ -72,6 +85,11 @@ namespace GeoJSON.Net.Converters
             writer.WriteString("type", "LineString");
             writer.WritePropertyName("coordinates");
             Converter.Write(writer, value.Positions, options);
+
+            if (value.CRS is not null) {
+                CrsConverter.Write(writer, value.CRS, options);
+            }
+
             writer.WriteEndObject();
         }
     }

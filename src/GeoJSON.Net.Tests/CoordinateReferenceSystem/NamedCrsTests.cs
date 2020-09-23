@@ -32,9 +32,9 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
         public void Can_Serialize()
         {
             var collection = new FeatureCollection() { CRS = new NamedCRS("EPSG:31370") };
-            var actualJson = JsonSerializer.Serialize<FeatureCollection>(collection);
+            var actualJson = JsonSerializer.Serialize(collection, DefaultSerializerOptions);
 
-            JsonAssert.Contains("{\"properties\":{\"name\":\"EPSG:31370\"},\"type\":\"name\"}", actualJson);
+            JsonAssert.Contains("\"type\":\"name\",\"properties\":{\"name\":\"EPSG:31370\"}", actualJson);
         }
 
         [Test]

@@ -14,7 +14,7 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
         {
             var collection = new FeatureCollection();
 
-            var json = JsonSerializer.Serialize<FeatureCollection>(collection);
+            var json = JsonSerializer.Serialize(collection, DefaultSerializerOptions);
 
             Assert.IsTrue(!json.Contains("\"crs\""));
         }
@@ -24,7 +24,7 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
         {
             var json = "{\"coordinates\":[90.65464646,53.2455662,200.4567],\"type\":\"Point\"}";
 
-            var point = JsonSerializer.Deserialize<Point>(json);
+            var point = JsonSerializer.Deserialize<Point>(json, DefaultSerializerOptions);
 
             Assert.IsNull(point.CRS);
         }
@@ -34,7 +34,7 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
         {
             var json = "{\"coordinates\": [ 90.65464646, 53.2455662, 200.4567 ], \"type\": \"Point\", \"crs\": { \"type\": \"name\", \"properties\": { \"name\": \"urn:ogc:def:crs:OGC:1.3:CRS84\" }}}";
 
-            var point = JsonSerializer.Deserialize<Point>(json);
+            var point = JsonSerializer.Deserialize<Point>(json, DefaultSerializerOptions);
 
             Assert.IsNotNull(point.CRS);
             Assert.AreEqual(CRSType.Name, point.CRS.Type);
@@ -44,10 +44,10 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
         public void Can_Serialize_CRS_issue_89()
         {
             var expected =
-                "{\"type\":\"Point\",\"coordinates\":[34.56,12.34],\"crs\":{\"properties\":{\"name\":\"TEST NAME\"},\"type\":\"name\"}}";
+                "{\"type\":\"Point\",\"coordinates\":[34.56,12.34],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"TEST NAME\"}}}";
             var point = new Point(new Position(12.34, 34.56)) { CRS = new NamedCRS("TEST NAME") };
 
-            var json = JsonSerializer.Serialize<Point>(point);
+            var json = JsonSerializer.Serialize(point, DefaultSerializerOptions);
 
             Assert.IsNotNull(json);
             Assert.AreEqual(expected, json);
@@ -57,10 +57,10 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
         public void Can_Serialize_DefaultCRS_issue_89()
         {
             var expected =
-                "{\"type\":\"Point\",\"coordinates\":[34.56,12.34],\"crs\":{\"properties\":{\"name\":\"urn:ogc:def:crs:OGC::CRS84\"},\"type\":\"name\"}}";
+                "{\"type\":\"Point\",\"coordinates\":[34.56,12.34],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"urn:ogc:def:crs:OGC::CRS84\"}}}";
             var point = new Point(new Position(12.34, 34.56)) { CRS = new NamedCRS("urn:ogc:def:crs:OGC::CRS84") };
 
-            var json = JsonSerializer.Serialize<Point>(point);
+            var json = JsonSerializer.Serialize(point, DefaultSerializerOptions);
 
             Assert.IsNotNull(json);
             Assert.AreEqual(expected, json);

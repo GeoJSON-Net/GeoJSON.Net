@@ -41,59 +41,91 @@ namespace GeoJSON.Net.Converters
         /// </exception>
         public override ICRSObject Read(ref Utf8JsonReader reader, Type type, JsonSerializerOptions options)
         {
-            // if (reader.TokenType == JsonToken.Null)
-            // {
-            //     return new UnspecifiedCRS();
-            // }
-            // if (reader.TokenType != JsonToken.StartObject)
-            // {
-            //     throw new JsonReaderException("CRS must be null or a json object");
-            // }
+            if (reader.TokenType == JsonTokenType.Null) {
+                return new UnspecifiedCRS();
+            }
+            if (reader.TokenType != JsonTokenType.PropertyName && reader.GetString() != "crs") {
+                throw new JsonException("CRS must be null or a json object");
+            }
 
-            // var jObject = JObject.Load(reader);
+            ICRSObject crs = null;
 
-            // JToken token;
-            // if (!jObject.TryGetValue("type", StringComparison.OrdinalIgnoreCase, out token))
-            // {
-            //     throw new JsonReaderException("CRS must have a \"type\" property");
-            // }
+            while (reader.Read()) {
+                if (reader.TokenType == JsonTokenType.EndObject) {
+                    break;
+                }
 
-            // var crsType = token.Value<string>();
+                if (reader.TokenType != JsonTokenType.PropertyName) {
+                    continue;
+                }
 
-            // if (string.Equals("name", crsType, StringComparison.OrdinalIgnoreCase))
-            // {
-            //     JObject properties = null;
-            //     if (jObject.TryGetValue("properties", out token))
-            //     {
-            //         properties = token as JObject;
-            //     }
+                var propertyName = reader.GetString();
 
-            //     if (properties != null)
-            //     {
-            //         var target = new NamedCRS(properties["name"].ToString());
-            //         serializer.Populate(jObject.CreateReader(), target);
-            //         return target;
-            //     }
-            // }
-            // else if (string.Equals("link", crsType, StringComparison.OrdinalIgnoreCase))
-            // {
-            //     JObject properties = null;
-            //     if (jObject.TryGetValue("properties", out token))
-            //     {
-            //         properties = token as JObject;
-            //     }
+                if (propertyName != "type") {
+                    throw new JsonException();
+                }
 
-            //     if (properties != null)
-            //     {
-            //         var linked = new LinkedCRS(properties["href"].ToString());
-            //         serializer.Populate(jObject.CreateReader(), linked);
-            //         return linked;
-            //     }
-            // }
+                // advance to property
+                reader.Read();
+                var crsType = reader.GetString();
 
-            // return new NotSupportedException(string.Format("Type {0} unexpected.", crsType));
+                reader.Read();
 
-            return null;
+                if (reader.TokenType != JsonTokenType.PropertyName && reader.GetString() != "properties") {
+                    throw new JsonException();
+                }
+
+                switch(crsType) {
+                    case "name":
+                        var name = string.Empty;
+
+                        while (reader.Read()) {
+                            if (reader.TokenType == JsonTokenType.PropertyName && reader.GetString() == "name")
+                            {
+                                reader.Read();
+                                name = reader.GetString();
+                            }
+
+                            if (reader.TokenType == JsonTokenType.EndObject) {
+                                crs = new NamedCRS(name);
+                                break;
+                            }
+                        }
+                        break;
+                    case "link":
+                        var href = string.Empty;
+                        var linkType = string.Empty;
+
+                        while (reader.Read()) {
+                            if (reader.TokenType == JsonTokenType.PropertyName && reader.GetString() == "href") {
+                                reader.Read();
+                                href = reader.GetString();
+
+                                continue;
+                            }
+
+                            if (reader.TokenType == JsonTokenType.PropertyName && reader.GetString() == "type") {
+                                reader.Read();
+                                linkType = reader.GetString();
+
+                                continue;
+                            }
+
+                            if (reader.TokenType == JsonTokenType.EndObject) {
+                                if (string.IsNullOrEmpty(linkType)) {
+                                    crs = new LinkedCRS(href);
+                                } else {
+                                    crs = new LinkedCRS(href, linkType);
+                                }
+
+                                break;
+                            }
+                        }
+                        break;
+                }
+            }
+
+            return crs;
         }
 
         /// <summary>
@@ -105,15 +137,23 @@ namespace GeoJSON.Net.Converters
         /// <exception cref="System.ArgumentOutOfRangeException"></exception>
         public override void Write(Utf8JsonWriter writer, ICRSObject value, JsonSerializerOptions options)
         {
-            switch (value.Type)
+            switch (value)
             {
-                case CRSType.Name:
-                    JsonSerializer.Serialize(writer, value, options);
+                case NamedCRS named:
+                    writer.WriteStartObject("crs");
+                    writer.WriteString("type", "name");
+                    writer.WritePropertyName("properties");
+                    JsonSerializer.Serialize(writer, named.Properties, options);
+                    writer.WriteEndObject();
                     break;
-                case CRSType.Link:
-                    JsonSerializer.Serialize(writer, value, options);
+                case LinkedCRS linked:
+                    writer.WriteStartObject("crs");
+                    writer.WriteString("type", "link");
+                    writer.WritePropertyName("properties");
+                    JsonSerializer.Serialize(writer, linked.Properties, options);
+                    writer.WriteEndObject();
                     break;
-                case CRSType.Unspecified:
+                case UnspecifiedCRS:
                     writer.WriteNull("crs");
                     break;
                 default:

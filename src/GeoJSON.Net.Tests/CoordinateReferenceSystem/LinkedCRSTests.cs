@@ -41,16 +41,16 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
         public void Can_Serialize()
         {
             var collection = new Point(new Position(1, 2, 3)) { CRS = new LinkedCRS(Href) };
-            var actualJson = JsonSerializer.Serialize<Point>(collection);
+            var actualJson = JsonSerializer.Serialize(collection, DefaultSerializerOptions);
 
-            JsonAssert.Contains("{\"properties\":{\"href\":\"http://localhost\"},\"type\":\"link\"}", actualJson);
+            JsonAssert.Contains("{\"type\":\"link\",\"properties\":{\"href\":\"http://localhost\"}}", actualJson);
         }
 
         [Test]
         public void Can_Deserialize_CRS_issue_101()
         {
-            const string pointJson = "{\"type\":\"Point\",\"coordinates\":[2.0,1.0,3.0],\"crs\":{\"properties\":{\"href\":\"http://localhost\"},\"type\":\"link\"}}";
-            var pointWithCRS = JsonSerializer.Deserialize<Point>(pointJson);
+            const string pointJson = "{\"type\":\"Point\",\"coordinates\":[2.0,1.0,3.0],\"crs\":{\"type\":\"link\",\"properties\":{\"href\":\"http://localhost\"}}}";
+            var pointWithCRS = JsonSerializer.Deserialize<Point>(pointJson, DefaultSerializerOptions);
             var linkCRS = pointWithCRS.CRS as LinkedCRS;
 
             Assert.IsNotNull(linkCRS);
@@ -73,14 +73,11 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
         [Test]
         public void Ctor_Throws_ArgumentExpection_When_Href_Is_Not_Dereferencable_Uri()
         {
-#if NETCOREAPP1_1
-            System.Globalization.CultureInfo.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
-#else
             System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
-#endif
 
             var argumentExpection = Assert.Throws<ArgumentException>(() => { var crs = new LinkedCRS("http://not-a-valid-<>-url"); });
-            Assert.AreEqual($"must be a dereferenceable URI{Environment.NewLine}Parameter name: href", argumentExpection.Message);
+
+            Assert.AreEqual($"must be a dereferenceable URI (Parameter 'href')", argumentExpection.Message);
         }
 
         [Test]

@@ -5,6 +5,7 @@ using GeoJSON.Net.Geometry;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using System.Collections.Generic;
+using GeoJSON.Net.CoordinateReferenceSystem;
 
 namespace GeoJSON.Net.Converters
 {
@@ -15,6 +16,8 @@ namespace GeoJSON.Net.Converters
     public class MultiLineStringConverter : JsonConverter<MultiLineString>
     {
         private static readonly LineStringEnumerableConverter Converter = new LineStringEnumerableConverter();
+        private static readonly CrsConverter CrsConverter = new CrsConverter();
+
 
         /// <summary>
         ///     Reads the JSON representation of the object.
@@ -33,6 +36,7 @@ namespace GeoJSON.Net.Converters
             }
 
             MultiLineString geometry = null;
+            ICRSObject crs = null;
 
             while (reader.Read()) {
                 if (reader.TokenType == JsonTokenType.EndObject) {
@@ -45,14 +49,21 @@ namespace GeoJSON.Net.Converters
 
                 var propertyName = reader.GetString();
 
-                if (propertyName == "coordinates") {
-                    // advance to coordinates
-                    reader.Read();
+                switch (propertyName) {
+                    case "coordinates":
+                        // advance to coordinates
+                        reader.Read();
 
-                    // must real all json. cannot exit early
-                    geometry = new MultiLineString(Converter.Read(ref reader, typeof(IEnumerable<LineString>), options));
+                        // must real all json. cannot exit early
+                        geometry = new MultiLineString(Converter.Read(ref reader, typeof(IEnumerable<LineString>), options));
+                        break;
+                    case "crs":
+                        crs = CrsConverter.Read(ref reader, typeof(ICRSObject), options);
+                        break;
                 }
             }
+
+            geometry.CRS = crs;
 
             return geometry;
         }
@@ -69,6 +80,9 @@ namespace GeoJSON.Net.Converters
             writer.WriteString("type", "MultiLineString");
             writer.WritePropertyName("coordinates");
             Converter.Write(writer, value.LineStrings, options);
+            if (value.CRS is not null) {
+                CrsConverter.Write(writer, value.CRS, options);
+            }
             writer.WriteEndObject();
         }
     }
