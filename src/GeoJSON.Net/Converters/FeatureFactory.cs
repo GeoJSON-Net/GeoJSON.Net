@@ -7,6 +7,7 @@ using System.Text.Json;
 using System.Collections.Generic;
 using GeoJSON.Net.Feature;
 using System.Reflection;
+using GeoJSON.Net.CoordinateReferenceSystem;
 
 namespace GeoJSON.Net.Converters {
     /// <summary>
@@ -61,6 +62,7 @@ namespace GeoJSON.Net.Converters {
 
         private class FeatureConverter : JsonConverter<Feature.Feature> {
             private static readonly GeometryConverter Converter = new GeometryConverter();
+            private static readonly CrsConverter CrsConverter = new CrsConverter();
 
             /// <summary>
             ///     Reads the JSON representation of the object.
@@ -74,10 +76,15 @@ namespace GeoJSON.Net.Converters {
             /// </returns>
             public override Feature.Feature Read(ref Utf8JsonReader reader, Type type, JsonSerializerOptions options) {
                 IGeometryObject geometry = null;
+                ICRSObject crs = null;
+
                 var properties = new Dictionary<string, object>();
                 var id = string.Empty;
+
                 if (reader.TokenType == JsonTokenType.EndObject) {
-                    return new Feature.Feature(geometry, id);
+                    return new Feature.Feature(geometry, id){
+                        CRS = crs
+                    };
                 }
 
                 while (reader.Read()) {
@@ -118,6 +125,9 @@ namespace GeoJSON.Net.Converters {
                                     properties.Add(key, value);
                                 }
                                 break;
+                            case "crs":
+                                crs = CrsConverter.Read(ref reader, typeof(ICRSObject), options);
+                                break;
                             default:
                                 reader.Read();
                                 continue;
@@ -125,7 +135,9 @@ namespace GeoJSON.Net.Converters {
                     }
                 }
 
-                return new Feature.Feature(geometry, properties, id);
+                return new Feature.Feature(geometry, properties, id){
+                    CRS = crs
+                };
             }
 
             /// <summary>
@@ -148,6 +160,10 @@ namespace GeoJSON.Net.Converters {
                 writer.WritePropertyName("properties");
                 JsonSerializer.Serialize(writer, value.Properties, options);
 
+                if (value.CRS is not null) {
+                    CrsConverter.Write(writer, value.CRS, options);
+                }
+
                 writer.WriteEndObject();
             }
         }
@@ -156,6 +172,7 @@ namespace GeoJSON.Net.Converters {
             where TGeometry : IGeometryObject {
 
             private static readonly GeometryConverter Converter = new GeometryConverter();
+            private static readonly CrsConverter CrsConverter = new CrsConverter();
 
             /// <summary>
             ///     Reads the JSON representation of the object.
@@ -169,11 +186,15 @@ namespace GeoJSON.Net.Converters {
             /// </returns>
             public override Feature<TGeometry> Read(ref Utf8JsonReader reader, Type type, JsonSerializerOptions options) {
                 IGeometryObject geometry = null;
+                ICRSObject crs = null;
+
                 var properties = new Dictionary<string, object>();
                 var id = string.Empty;
 
                 if (reader.TokenType == JsonTokenType.EndObject) {
-                    return new Feature<TGeometry>((TGeometry)geometry, properties);
+                    return new Feature<TGeometry>((TGeometry)geometry, properties){
+                        CRS = crs
+                    };
                 }
 
                 while (reader.Read()) {
@@ -228,6 +249,9 @@ namespace GeoJSON.Net.Converters {
                                     properties.Add(key, value);
                                 }
                                 break;
+                            case "crs":
+                                crs = CrsConverter.Read(ref reader, typeof(ICRSObject), options);
+                                break;
                             default:
                                 reader.Read();
                                 continue;
@@ -235,7 +259,9 @@ namespace GeoJSON.Net.Converters {
                     }
                 }
 
-                return new Feature<TGeometry>((TGeometry)geometry, properties, id);
+                return new Feature<TGeometry>((TGeometry)geometry, properties, id) {
+                    CRS = crs
+                };
             }
 
             /// <summary>
@@ -258,6 +284,10 @@ namespace GeoJSON.Net.Converters {
                 writer.WritePropertyName("properties");
                 JsonSerializer.Serialize(writer, value.Properties, options);
 
+                if (value.CRS is not null) {
+                    CrsConverter.Write(writer, value.CRS, options);
+                }
+
                 writer.WriteEndObject();
             }
         }
@@ -266,6 +296,7 @@ namespace GeoJSON.Net.Converters {
             where TGeometry : IGeometryObject {
 
             private static readonly GeometryConverter Converter = new GeometryConverter();
+            private static readonly CrsConverter CrsConverter = new CrsConverter();
 
             /// <summary>
             ///     Reads the JSON representation of the object.
@@ -279,10 +310,13 @@ namespace GeoJSON.Net.Converters {
             /// </returns>
             public override Feature.Feature<TGeometry, TProps> Read(ref Utf8JsonReader reader, Type type, JsonSerializerOptions options) {
                 IGeometryObject geometry = null;
+                ICRSObject crs = null;
                 var properties = Activator.CreateInstance<TProps>();
                 var id = string.Empty;
                 if (reader.TokenType == JsonTokenType.EndObject) {
-                    return new Feature.Feature<TGeometry, TProps>((TGeometry)geometry, properties);
+                    return new Feature<TGeometry, TProps>((TGeometry)geometry, properties) {
+                        CRS = crs
+                    };
                 }
 
                 while (reader.Read()) {
@@ -310,6 +344,9 @@ namespace GeoJSON.Net.Converters {
                                 reader.Read();
                                 properties = JsonSerializer.Deserialize<TProps>(ref reader, options);
                                 break;
+                            case "crs":
+                                crs = CrsConverter.Read(ref reader, typeof(ICRSObject), options);
+                                break;
                             default:
                                 reader.Read();
                                 continue;
@@ -317,7 +354,9 @@ namespace GeoJSON.Net.Converters {
                     }
                 }
 
-                return new Feature.Feature<TGeometry, TProps>((TGeometry)geometry, properties, id);
+                return new Feature<TGeometry, TProps>((TGeometry)geometry, properties, id) {
+                    CRS = crs
+                };
             }
 
             /// <summary>
@@ -339,6 +378,10 @@ namespace GeoJSON.Net.Converters {
 
                 writer.WritePropertyName("properties");
                 JsonSerializer.Serialize(writer, value.Properties, options);
+
+                if (value.CRS is not null) {
+                    CrsConverter.Write(writer, value.CRS, options);
+                }
 
                 writer.WriteEndObject();
             }
