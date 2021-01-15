@@ -15,6 +15,7 @@ namespace GeoJSON.Net.Converters
 	/// </summary>
 	public class GeoJsonConverter : JsonConverter
 	{
+		/// <inheritdoc/>
 		public override bool CanWrite => false;
 
         /// <summary>
