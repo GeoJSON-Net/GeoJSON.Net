@@ -4,17 +4,8 @@
     "displayName": "GeoJSON.Net",
     "description": "This is a fork of GeoJSON.Net packaged for Untiy.\nGeoJSON.Net is a .NET library for the RFC 7946 The GeoJSON Format and it uses and provides Newtonsoft Json.NET converters for serialization and deserialization of GeoJSON data.",
     "unity": "2018.1",
-    "scopedRegistries": [
-      {
-        "name": "Packages from jillejr",
-        "url": "https://npm.cloudsmith.io/jillejr/newtonsoft-json-for-unity/",
-        "scopes": [
-          "jillejr"
-        ]
-      }
-    ],
     "dependencies": {
-      "jillejr.newtonsoft.json-for-unity": "12.0.301"
+        "com.unity.nuget.newtonsoft-json":2.0.0",
     },
    "keywords": [
       "geometry",
