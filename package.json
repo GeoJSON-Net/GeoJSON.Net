@@ -1,6 +1,6 @@
 {
     "name": "com.virgis.geojson.net",
-    "version": "1.2.16",
+    "version": "1.2.17",
     "displayName": "GeoJSON.Net",
     "description": "This is a fork of GeoJSON.Net packaged for Untiy.\nGeoJSON.Net is a .NET library for the RFC 7946 The GeoJSON Format and it uses and provides Newtonsoft Json.NET converters for serialization and deserialization of GeoJSON data.",
     "unity": "2021.1",
