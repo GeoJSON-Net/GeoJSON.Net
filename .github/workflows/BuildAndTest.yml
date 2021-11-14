@@ -36,6 +36,12 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        dotnet-version: [ '3.1.301' ]
+         #'5.0.403',
+         # '6.0.100' 
+         
     if: success() || failure()
     steps:
     - name: Download Artifacts
