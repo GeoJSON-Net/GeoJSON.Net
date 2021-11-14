@@ -52,4 +52,4 @@ jobs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       with:
         check_name: Unit Test Results
-        files: TestResults-${{ matrix.dotnet-version }}/dotnet-results-${{ matrix.dotnet-version }}
+        files: dotnet-results-${{ matrix.dotnet-version }}
