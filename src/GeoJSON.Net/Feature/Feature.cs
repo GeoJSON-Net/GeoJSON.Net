@@ -17,10 +17,16 @@ namespace GeoJSON.Net.Feature
     /// <remarks>
     /// See https://tools.ietf.org/html/rfc7946#section-3.2
     /// </remarks>
+    //[JsonConverter(typeof(FeatureConverter))]
     public class Feature<TGeometry, TProps> : GeoJSONObject, IEquatable<Feature<TGeometry, TProps>>
         where TGeometry : IGeometryObject
     {
-        [JsonConstructor]
+        public Feature()
+        {
+
+        }
+
+        //[JsonConstructor]
         public Feature(TGeometry geometry, TProps properties, string id = null)
         {
             Geometry = geometry;
@@ -29,20 +35,20 @@ namespace GeoJSON.Net.Feature
         }
 
         [JsonPropertyName("type")]
-        //, Required = Required.Always, DefaultValueHandling = DefaultValueHandling.Include)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public override GeoJSONObjectType Type => GeoJSONObjectType.Feature;
 
         [JsonPropertyName( "id")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string Id { get; }
+        public string Id { get; set; }
 
         [JsonPropertyName("geometry")]
         [JsonConverter(typeof(GeometryConverter))]
-        public TGeometry Geometry { get; }
+        public TGeometry Geometry { get; set; }
 
         [JsonPropertyName("properties")]
-        public TProps Properties { get; }
+        public TProps Properties { get; set; }
 
         /// <summary>
         /// Equality comparer.
@@ -104,9 +110,14 @@ namespace GeoJSON.Net.Feature
     /// <remarks>
     /// See https://tools.ietf.org/html/rfc7946#section-3.2
     /// </remarks>
+    //[JsonConverter(typeof(FeatureConverter))]
     public class Feature : Feature<IGeometryObject>
     {
-        [JsonConstructor]
+        public Feature()
+        {
+
+        }
+
         public Feature(IGeometryObject geometry, IDictionary<string, object> properties = null, string id = null)
             : base(geometry, properties, id)
         {
@@ -124,15 +135,21 @@ namespace GeoJSON.Net.Feature
     /// </summary>
     /// <remarks>Returns correctly typed Geometry property</remarks>
     /// <typeparam name="TGeometry"></typeparam>
+    //[JsonConverter(typeof(FeatureConverter))]
     public class Feature<TGeometry> : Feature<TGeometry, IDictionary<string, object>>, IEquatable<Feature<TGeometry>> where TGeometry : IGeometryObject
     {
+        public Feature()
+        {
+
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Feature" /> class.
         /// </summary>
         /// <param name="geometry">The Geometry Object.</param>
         /// <param name="properties">The properties.</param>
         /// <param name="id">The (optional) identifier.</param>
-        [JsonConstructor]
+        //[JsonConstructor]
         public Feature(TGeometry geometry, IDictionary<string, object> properties = null, string id = null)
         : base(geometry, properties ?? new Dictionary<string, object>(), id)
         {

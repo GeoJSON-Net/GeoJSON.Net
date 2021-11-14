@@ -23,7 +23,8 @@ namespace GeoJSON.Net.Tests.Feature
             Assert.IsTrue(feature.Properties.Any());
 
             Assert.IsTrue(feature.Properties.ContainsKey("name"));
-            Assert.AreEqual("Dinagat Islands", feature.Properties["name"]);
+            string name = feature.Properties["name"].ToString();
+            Assert.AreEqual("Dinagat Islands", name);
 
             Assert.AreEqual("test-id", feature.Id);
 
@@ -45,7 +46,7 @@ namespace GeoJSON.Net.Tests.Feature
             Assert.IsTrue(feature.Properties.Any());
 
             Assert.IsTrue(feature.Properties.ContainsKey("name"));
-            Assert.AreEqual("Dinagat Islands", feature.Properties["name"]);
+            Assert.AreEqual("Dinagat Islands", feature.Properties["name"].ToString());
 
             Assert.AreEqual("test-id", feature.Id);
 
