@@ -9,6 +9,56 @@
     <SignAssembly>False</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Feature\FeatureCollectionTests_Can_Deserialize.json" />
+    <None Remove="Feature\FeatureTests_Can_Deserialize_Point_Feature.json" />
+    <None Remove="Feature\FeatureTests_Can_Serialize_Dictionary_Subclass.json" />
+    <None Remove="Feature\FeatureTests_Can_Serialize_LineString_Feature.json" />
+    <None Remove="Feature\FeatureTests_Can_Serialize_MultiLineString_Feature.json" />
+    <None Remove="Feature\FeatureTests_Can_Serialize_MultiPolygon_Feature.json" />
+    <None Remove="Feature\FeatureTests_Can_Serialize_Point_Feature.json" />
+    <None Remove="Feature\FeatureTests_Can_Serialize_Polygon_Feature.json" />
+    <None Remove="Feature\GenericFeatureTests_Can_Deserialize_LineString_Feature.json" />
+    <None Remove="Feature\GenericFeatureTests_Can_Deserialize_Point_Feature.json" />
+    <None Remove="Feature\GenericFeatureTests_Can_Deserialize_Typed_Point_Feature.json" />
+    <None Remove="Feature\GenericFeatureTests_Can_Serialize_Typed_Point_Feature.json" />
+    <None Remove="Geometry\LineStringTests_Can_Deserialize.json" />
+    <None Remove="Geometry\LineStringTests_Can_Serialize.json" />
+    <None Remove="Geometry\MultiLineStringTests_Can_Deserialize.json" />
+    <None Remove="Geometry\MultiLineStringTests_Can_Serialize.json" />
+    <None Remove="Geometry\MultiPointTests_Can_Deserialize.json" />
+    <None Remove="Geometry\MultiPointTests_Can_Serialize.json" />
+    <None Remove="Geometry\MultiPolygonTests_Can_Deserialize.json" />
+    <None Remove="Geometry\MultiPolygonTests_Can_Serialize.json" />
+    <None Remove="Geometry\PolygonTests_Can_Deserialize.json" />
+    <None Remove="Geometry\PolygonTests_Can_Deserialize_With_Exterior_And_Inner_Rings.json" />
+    <None Remove="Geometry\PolygonTests_Can_Serialize.json" />
+  </ItemGroup>
+  <ItemGroup>
+	  <EmbeddedResource Include="Feature\FeatureCollectionTests_Can_Deserialize.json" />
+	  <EmbeddedResource Include="Feature\FeatureTests_Can_Deserialize_Point_Feature.json" />
+	  <EmbeddedResource Include="Feature\FeatureTests_Can_Serialize_Dictionary_Subclass.json" />
+	  <EmbeddedResource Include="Geometry\MultiPointTests_Can_Deserialize.json" />
+	  <EmbeddedResource Include="Feature\FeatureTests_Can_Serialize_LineString_Feature.json" />
+	  <EmbeddedResource Include="Feature\FeatureTests_Can_Serialize_MultiLineString_Feature.json" />
+	  <EmbeddedResource Include="Feature\FeatureTests_Can_Serialize_MultiPolygon_Feature.json" />
+	  <EmbeddedResource Include="Feature\FeatureTests_Can_Serialize_Point_Feature.json" />
+	  <EmbeddedResource Include="Feature\FeatureTests_Can_Serialize_Polygon_Feature.json" />
+	  <EmbeddedResource Include="Feature\GenericFeatureTests_Can_Deserialize_LineString_Feature.json" />
+	  <EmbeddedResource Include="Feature\GenericFeatureTests_Can_Deserialize_Point_Feature.json" />
+	  <EmbeddedResource Include="Geometry\LineStringTests_Can_Deserialize.json" />
+	  <EmbeddedResource Include="Geometry\MultiLineStringTests_Can_Deserialize.json" />
+    <EmbeddedResource Include="Feature\GenericFeatureTests_Can_Deserialize_Typed_Point_Feature.json" />
+    <EmbeddedResource Include="Feature\GenericFeatureTests_Can_Serialize_Typed_Point_Feature.json" />
+    <EmbeddedResource Include="Geometry\LineStringTests_Can_Serialize.json" />
+    <EmbeddedResource Include="Geometry\MultiLineStringTests_Can_Serialize.json" />
+    <EmbeddedResource Include="Geometry\MultiPointTests_Can_Serialize.json" />
+    <EmbeddedResource Include="Geometry\MultiPolygonTests_Can_Deserialize.json" />
+    <EmbeddedResource Include="Geometry\MultiPolygonTests_Can_Serialize.json" />
+    <EmbeddedResource Include="Geometry\PolygonTests_Can_Deserialize.json" />
+    <EmbeddedResource Include="Geometry\PolygonTests_Can_Deserialize_With_Exterior_And_Inner_Rings.json" />
+    <EmbeddedResource Include="Geometry\PolygonTests_Can_Serialize.json" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\GeoJSON.Net\GeoJSON.Net.csproj" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
 	<PackageReference Include="NUnit" Version="3.7.1" />
