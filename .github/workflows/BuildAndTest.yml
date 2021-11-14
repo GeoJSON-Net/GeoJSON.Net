@@ -1,44 +1,29 @@
-name: Build and test
+name: test
 
-on:
-  push:
-    breanches:
-      - 'master'
-      - 'feature/**'
-  pull_request:
-    branches:
-      - 'master'
-      - 'feature/**'
+on: [push]
 
 jobs:
   build:
 
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dotnet-version: [ '3.1.x', '5.0.x', '6.0.0' ]
 
-    steps:
-    - uses: actions/checkout@v2
-    - name: Setup .NET core 3.1
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 3.1.x
-    - name: Setup .NET 5
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 5.0.x
-    - name: Setup .NET 6
-      uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: 6.0.x
-    - name: Restore dependencies
-      run: dotnet restore ./src/
-    - name: Build
-      run: dotnet build ./src/ --no-restore
-    - name: Test
-      run: dotnet test ./src/ --logger trx --results-directory "TestResults-${{ matrix.dotnet-version }}"
-    - name: Upload dotnet test results
-        uses: actions/upload-artifact@v2
-        with:
-          name: dotnet-results-${{ matrix.dotnet-version }}
-          path: TestResults-${{ matrix.dotnet-version }}
-        # Use always() to always run this step to publish test results when there are test failures
-        if: ${{ always() }}
+      steps:
+        - uses: actions/checkout@v2
+        - name: Setup dotnet
+          uses: actions/setup-dotnet@v1
+          with:
+            dotnet-version: ${{ matrix.dotnet-version }}
+        - name: Install dependencies
+          run: dotnet restore ./src/
+        - name: Test with dotnet
+          run: dotnet test ./src/ --logger trx --results-directory "TestResults-${{ matrix.dotnet-version }}"
+        - name: Upload dotnet test results
+          uses: actions/upload-artifact@v2
+          with:
+            name: dotnet-results-${{ matrix.dotnet-version }}
+            path: TestResults-${{ matrix.dotnet-version }}
+          # Use always() to always run this step to publish test results when there are test failures
+          if: ${{ always() }}
