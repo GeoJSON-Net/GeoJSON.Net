@@ -7,6 +7,13 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        dotnet-version: [ '3.1.301' ]
+         #'5.0.403',
+         # '6.0.100' 
+         
+
     steps:
       - uses: actions/checkout@v2
       - name: Setup dotnet
@@ -24,3 +31,19 @@ jobs:
           path: TestResults-${{ matrix.dotnet-version }}
         # Use always() to always run this step to publish test results when there are test failures
         if: ${{ always() }}
+  publish-test-results:
+    needs: build
+
+    runs-on: ubuntu-latest
+
+    if: success() || failure()
+    steps:
+    - name: Download Artifacts
+      uses: actions/download-artifact@v2
+      with:
+        path: artifacts
+    - name: Publish Unit Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      with:
+        check_name: Unit Test Results
+        files: TestResults-${{ matrix.dotnet-version }}
