@@ -1,5 +1,8 @@
 ﻿// Copyright © Joerg Battermann 2014, Matt Hunt 2017
 
+using GeoJSON.Net.Converters;
+using System.Text.Json.Serialization;
+
 namespace GeoJSON.Net
 {
     /// <summary>
@@ -42,6 +45,8 @@ namespace GeoJSON.Net
         /// In addition, the coordinate reference system for the bbox is assumed to match the coordinate reference
         /// system of the GeoJSON object of which it is a member.
         /// </value>
+        [JsonPropertyName("bbox")]
+        [JsonConverter(typeof(BoundingBoxConverter))]
         double[] BoundingBoxes { get; set; }
     }
 }

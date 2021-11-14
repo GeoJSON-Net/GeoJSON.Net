@@ -1,9 +1,10 @@
 ﻿// Copyright © Joerg Battermann 2014, Matt Hunt 2017
 
+using GeoJSON.Net.Converters;
 using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using System.Linq;
+using System.Text.Json.Serialization;
 
 namespace GeoJSON.Net.Feature
 {
@@ -33,14 +34,18 @@ namespace GeoJSON.Net.Feature
             Features = features;
         }
 
+        [JsonPropertyName("type")]
+        //, Required = Required.Always, DefaultValueHandling = DefaultValueHandling.Include)]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public override GeoJSONObjectType Type => GeoJSONObjectType.FeatureCollection;
 
         /// <summary>
         /// Gets the features.
         /// </summary>
         /// <value>The features.</value>
-        [JsonProperty(PropertyName = "features", Required = Required.Always)]
-        public List<Feature> Features { get; private set; }
+        [JsonPropertyName("features")]
+        //[JsonConverter(typeof(FeatureEnumerableConverter))]
+        public List<Feature> Features { get; set; }
 
         #region IEqualityComparer, IEquatable
 

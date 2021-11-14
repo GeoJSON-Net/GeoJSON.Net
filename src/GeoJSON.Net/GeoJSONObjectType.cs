@@ -1,5 +1,7 @@
 ﻿// Copyright © Joerg Battermann 2014, Matt Hunt 2017
 
+using System.Runtime.Serialization;
+
 namespace GeoJSON.Net
 {
     /// <summary>
@@ -13,6 +15,7 @@ namespace GeoJSON.Net
         /// <remarks>
         /// See https://tools.ietf.org/html/rfc7946#section-3.1.2
         /// </remarks>
+        [EnumMember(Value = "point")]
         Point,
 
         /// <summary>
@@ -21,6 +24,7 @@ namespace GeoJSON.Net
         /// <remarks>
         /// See https://tools.ietf.org/html/rfc7946#section-3.1.3
         /// </remarks>
+        [EnumMember(Value = "multipoint")]
         MultiPoint,
 
         /// <summary>
@@ -29,6 +33,7 @@ namespace GeoJSON.Net
         /// <remarks>
         /// See https://tools.ietf.org/html/rfc7946#section-3.1.4
         /// </remarks>
+        [EnumMember(Value = "linestring")]
         LineString,
 
         /// <summary>
@@ -37,6 +42,7 @@ namespace GeoJSON.Net
         /// <remarks>
         /// See https://tools.ietf.org/html/rfc7946#section-3.1.5
         /// </remarks>
+        [EnumMember(Value = "point")]
         MultiLineString,
 
         /// <summary>
@@ -44,7 +50,8 @@ namespace GeoJSON.Net
         /// </summary>
         /// <remarks>
         /// See https://tools.ietf.org/html/rfc7946#section-3.1.6
-        /// </remarks> 
+        /// </remarks>
+        [EnumMember(Value = "point")]
         Polygon,
 
         /// <summary>
@@ -53,6 +60,7 @@ namespace GeoJSON.Net
         /// <remarks>
         /// See https://tools.ietf.org/html/rfc7946#section-3.1.7
         /// </remarks>
+        [EnumMember(Value = "point")]
         MultiPolygon,
 
         /// <summary>
@@ -61,6 +69,7 @@ namespace GeoJSON.Net
         /// <remarks>
         /// See https://tools.ietf.org/html/rfc7946#section-3.1.8
         /// </remarks>
+        [EnumMember(Value = "point")]
         GeometryCollection,
 
         /// <summary>
@@ -69,6 +78,7 @@ namespace GeoJSON.Net
         /// <remarks>
         /// See https://tools.ietf.org/html/rfc7946#section-3.2
         /// </remarks>
+        [EnumMember(Value = "point")]
         Feature,
 
         /// <summary>
@@ -77,6 +87,7 @@ namespace GeoJSON.Net
         /// <remarks>
         /// See https://tools.ietf.org/html/rfc7946#section-3.3
         /// </remarks>
+        [EnumMember(Value = "point")]
         FeatureCollection
     }
 }

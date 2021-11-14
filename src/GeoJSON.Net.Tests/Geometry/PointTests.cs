@@ -1,6 +1,7 @@
 using GeoJSON.Net.Geometry;
-using Newtonsoft.Json;
 using NUnit.Framework;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace GeoJSON.Net.Tests.Geometry
 {
@@ -14,7 +15,7 @@ namespace GeoJSON.Net.Tests.Geometry
             
             var expectedJson = "{\"coordinates\":[90.65464646,53.2455662],\"type\":\"Point\"}";
 
-            var actualJson = JsonConvert.SerializeObject(point);
+            var actualJson = JsonSerializer.Serialize(point);
             
             JsonAssert.AreEqual(expectedJson, actualJson);
         }
@@ -26,7 +27,7 @@ namespace GeoJSON.Net.Tests.Geometry
 
             var expectedJson = "{\"coordinates\":[90.65464646,53.2455662,200.4567],\"type\":\"Point\"}";
 
-            var actualJson = JsonConvert.SerializeObject(point);
+            var actualJson = JsonSerializer.Serialize(point);
 
             JsonAssert.AreEqual(expectedJson, actualJson);
         }
@@ -38,7 +39,7 @@ namespace GeoJSON.Net.Tests.Geometry
 
             var expectedPoint = new Point(new Position(53.2455662, 90.65464646, 200.4567));
 
-            var actualPoint = JsonConvert.DeserializeObject<Point>(json);
+            var actualPoint = JsonSerializer.Deserialize<Point>(json);
 
             Assert.IsNotNull(actualPoint);
             Assert.IsNotNull(actualPoint.Coordinates);
@@ -55,7 +56,7 @@ namespace GeoJSON.Net.Tests.Geometry
 
             var expectedPoint = new Point(new Position(53.2455662, 90.65464646));
 
-            var actualPoint = JsonConvert.DeserializeObject<Point>(json);
+            var actualPoint = JsonSerializer.Deserialize<Point>(json);
 
             Assert.IsNotNull(actualPoint);
             Assert.IsNotNull(actualPoint.Coordinates);
@@ -73,7 +74,7 @@ namespace GeoJSON.Net.Tests.Geometry
 
             var expectedPoint = new Point(new Position(53.2455662, 90.65464646));
 
-            var actualPoint = JsonConvert.DeserializeObject<Point>(json);
+            var actualPoint = JsonSerializer.Deserialize<Point>(json);
 
             Assert.AreEqual(expectedPoint, actualPoint);
             Assert.IsTrue(expectedPoint.Equals(actualPoint));
@@ -89,7 +90,8 @@ namespace GeoJSON.Net.Tests.Geometry
 
             var expectedJson = "{\"coordinates\":[90.65464646,53.2455662,200.4567],\"type\":\"Point\"}";
 
-            var actualJson = JsonConvert.SerializeObject(point, new JsonSerializerSettings { DefaultValueHandling = DefaultValueHandling.Ignore });
+            var options = new JsonSerializerOptions { DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault };
+            var actualJson = JsonSerializer.Serialize(point, options );
 
             JsonAssert.AreEqual(expectedJson, actualJson);
         }

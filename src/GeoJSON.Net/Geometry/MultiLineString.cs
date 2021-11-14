@@ -1,15 +1,15 @@
 ﻿// Copyright © Joerg Battermann 2014, Matt Hunt 2017
 
-using System.Collections.Generic;
-using System.Linq;
 using GeoJSON.Net.Converters;
-using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text.Json.Serialization;
 
 namespace GeoJSON.Net.Geometry
 {
-    
+
     /// <summary>
     /// Defines the MultiLineString type.
     /// </summary>
@@ -18,6 +18,11 @@ namespace GeoJSON.Net.Geometry
     /// </remarks>
     public class MultiLineString : GeoJSONObject, IGeometryObject, IEqualityComparer<MultiLineString>, IEquatable<MultiLineString>
     {
+        public MultiLineString()
+        {
+
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MultiLineString" /> class.
         /// </summary>
@@ -32,21 +37,24 @@ namespace GeoJSON.Net.Geometry
         /// Initializes a new <see cref="MultiLineString" /> from a 3-d array
         /// of <see cref="double" />s that matches the "coordinates" field in the JSON representation.
         /// </summary>
-        [JsonConstructor]
+        //[JsonConstructor]
         public MultiLineString(IEnumerable<IEnumerable<IEnumerable<double>>> coordinates)
             : this(coordinates?.Select(line => new LineString(line))
                    ?? throw new ArgumentNullException(nameof(coordinates)))
         {
         }
 
+        [JsonPropertyName("type")]
+        //, Required = Required.Always, DefaultValueHandling = DefaultValueHandling.Include)]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public override GeoJSONObjectType Type => GeoJSONObjectType.MultiLineString;
 
         /// <summary>
         /// The collection of line strings of this <see cref="MultiLineString"/>.
         /// </summary>
-        [JsonProperty("coordinates", Required = Required.Always)]
+        [JsonPropertyName("coordinates")]
         [JsonConverter(typeof(LineStringEnumerableConverter))]
-        public ReadOnlyCollection<LineString> Coordinates { get; }
+        public ReadOnlyCollection<LineString> Coordinates { get; set; }
 
         #region IEqualityComparer, IEquatable
 

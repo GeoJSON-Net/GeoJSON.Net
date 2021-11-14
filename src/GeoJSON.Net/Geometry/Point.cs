@@ -2,8 +2,8 @@
 
 using System;
 using GeoJSON.Net.Converters;
-using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace GeoJSON.Net.Geometry
 {
@@ -26,12 +26,15 @@ namespace GeoJSON.Net.Geometry
             Coordinates = coordinates ?? throw new ArgumentNullException(nameof(coordinates));
         }
 
+        [JsonPropertyName("type")]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public override GeoJSONObjectType Type => GeoJSONObjectType.Point;
 
         /// <summary>
         /// The <see cref="IPosition" /> underlying this point.
         /// </summary>
-        [JsonProperty("coordinates", Required = Required.Always)]
+        [JsonPropertyName("coordinates")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonConverter(typeof(PositionConverter))]
         public IPosition Coordinates { get; }
 
@@ -88,7 +91,7 @@ namespace GeoJSON.Net.Geometry
         {
             return !(left == right);
         }
-        
+
         /// <summary>
         /// Returns the hash code for this instance
         /// </summary>

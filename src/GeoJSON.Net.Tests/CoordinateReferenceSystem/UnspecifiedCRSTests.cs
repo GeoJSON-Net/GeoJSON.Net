@@ -1,7 +1,7 @@
 using GeoJSON.Net.CoordinateReferenceSystem;
 using GeoJSON.Net.Feature;
-using Newtonsoft.Json;
 using NUnit.Framework;
+using System.Text.Json;
 
 namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
 {
@@ -21,7 +21,7 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
         {
             var collection = new FeatureCollection { CRS = new UnspecifiedCRS() };
             var expectedJson = "{\"type\":\"FeatureCollection\",\"crs\":null,\"features\":[] }";
-            var actualJson = JsonConvert.SerializeObject(collection);
+            var actualJson = JsonSerializer.Serialize(collection);
             
             JsonAssert.AreEqual(expectedJson, actualJson);
         }
@@ -30,7 +30,7 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
         public void Can_Deserialize_From_Null()
         {
             var json = "{\"type\":\"FeatureCollection\",\"crs\":null,\"features\":[] }";
-            var featureCollection = JsonConvert.DeserializeObject<FeatureCollection>(json);
+            var featureCollection = JsonSerializer.Deserialize<FeatureCollection>(json);
 
             Assert.IsInstanceOf<UnspecifiedCRS>(featureCollection.CRS);
         }

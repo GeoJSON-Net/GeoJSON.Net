@@ -1,29 +1,32 @@
 ﻿// Copyright © Joerg Battermann 2014, Matt Hunt 2017
 
+using GeoJSON.Net.Converters;
 using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace GeoJSON.Net.CoordinateReferenceSystem
 {
     /// <summary>
     /// Base class for all IGeometryObject implementing types
     /// </summary>
-    [JsonObject(MemberSerialization.OptIn)]
+    [JsonConverter(typeof(CRSBaseRequiredPropertyConverter))]
     public abstract class CRSBase : IEqualityComparer<CRSBase>, IEquatable<CRSBase>
     {
         /// <summary>
         /// Gets the properties.
         /// </summary>
-        [JsonProperty(PropertyName = "properties", Required = Required.Always)]
+        [JsonPropertyName("properties" )]
+            //Required = Required.Always)]
         public Dictionary<string, object> Properties { get; internal set; }
 
         /// <summary>
         /// Gets the type of the GeometryObject object.
         /// </summary>
-        [JsonProperty(PropertyName = "type", Required = Required.Always)]
-        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonPropertyName("type")]
+            //, Required = Required.Always)]
+        [JsonConverter(typeof(JsonStringEnumEnumMemberConverter))]
         public CRSType Type { get; internal set; }
 
         #region IEqualityComparer, IEquatable

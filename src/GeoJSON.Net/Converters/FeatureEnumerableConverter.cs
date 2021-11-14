@@ -2,16 +2,16 @@
 
 using GeoJSON.Net.Geometry;
 using System;
+using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace GeoJSON.Net.Converters
 {
     /// <summary>
-    ///     Converter to read and write an <see cref="IPosition" />, that is,
-    ///     the coordinates of a <see cref="Point" />.
+    /// Converts <see cref="IGeometryObject"/> types to and from JSON.
     /// </summary>
-    public class PositionConverter : JsonConverter<IPosition>
+    public class FeatureEnumerableConverter : JsonConverter<List<Feature.Feature>>
     {
         /// <summary>
         ///     Determines whether this instance can convert the specified object type.
@@ -22,7 +22,7 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-            return typeof(IPosition).IsAssignableFromType(objectType);
+            return typeof(List<Feature.Feature>).IsAssignableFromType(objectType);
         }
 
         /// <summary>
@@ -35,46 +35,27 @@ namespace GeoJSON.Net.Converters
         /// <returns>
         ///     The object value.
         /// </returns>
-        public override IPosition Read(
+        public override List<Feature.Feature> Read(
             ref Utf8JsonReader reader,
             Type type,
             JsonSerializerOptions options)
         {
-            double[] coordinates;
-
-            try
-            {
-                coordinates = JsonSerializer.Deserialize<double[]>(ref reader);
-            }
-            catch (Exception e)
-            {
-                throw new JsonException("Error parsing coordinates", e);
-            }
-            return coordinates?.ToPosition() ?? throw new JsonException("Coordinates cannot be null");
+            return JsonSerializer.Deserialize<List<Feature.Feature>>(ref reader, options);
         }
 
         /// <summary>
-        ///     Writes the JSON representation of the object.
+        /// Writes the JSON representation of the object.
         /// </summary>
         /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
         /// <param name="value">The value.</param>
         /// <param name="serializer">The calling serializer.</param>
         public override void Write(
             Utf8JsonWriter writer,
-            IPosition coordinates,
+            List<Feature.Feature> value,
             JsonSerializerOptions options)
         {
-            writer.WriteStartArray();
-
-            writer.WriteNumberValue(coordinates.Longitude);
-            writer.WriteNumberValue(coordinates.Latitude);
-
-            if (coordinates.Altitude.HasValue)
-            {
-                writer.WriteNumberValue(coordinates.Altitude.Value);
-            }
-
-            writer.WriteEndArray();
+            // Standard serialization
+            JsonSerializer.Serialize(writer, value, typeof(List<Feature.Feature>), options);
         }
     }
 }

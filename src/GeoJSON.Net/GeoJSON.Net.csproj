@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.0;netstandard1.1;netstandard2.0;netstandard2.1;net35;net40;net45;</TargetFrameworks>
+    <TargetFrameworks>net6.0; net5.0; netcoreapp3.1</TargetFrameworks>
     <Description>.Net types for the GeoJSON RFC to be used with Json.Net</Description>
     <Authors>Matt Hunt;Joerg Battermann;Xavier Fischer</Authors>
     <Company>GeoJSON.Net</Company>
@@ -16,11 +16,12 @@
     <PackageReleaseNotes>Fixes exception when serializing polygons</PackageReleaseNotes>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
-  </ItemGroup>
-
   <PropertyGroup>
     <FrameworkPathOverride Condition="'$(TargetFramework)' == 'net35'">$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\.NETFramework\v3.5\Profile\Client</FrameworkPathOverride>
+    <SignAssembly>False</SignAssembly>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Text.Json" Version="5.0.2" />
+  </ItemGroup>
 </Project>

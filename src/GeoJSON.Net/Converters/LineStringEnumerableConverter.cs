@@ -1,18 +1,18 @@
 ﻿// Copyright © Joerg Battermann 2014, Matt Hunt 2017
 
+using GeoJSON.Net.Geometry;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using GeoJSON.Net.Geometry;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System.Collections.ObjectModel;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace GeoJSON.Net.Converters
 {
     /// <summary>
-    /// Converter to read and write the <see cref="IEnumerable{LineString}" /> type.
+    /// Converter to read and write the <see cref="IReadOnlyCollection{LineString}" /> type.
     /// </summary>
-    public class LineStringEnumerableConverter : JsonConverter
+    public class LineStringEnumerableConverter : JsonConverter<IReadOnlyCollection<LineString>>
     {
         private static readonly PositionEnumerableConverter LineStringConverter = new PositionEnumerableConverter();
 
@@ -25,7 +25,7 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-            return typeof(IEnumerable<LineString>).IsAssignableFromType(objectType);
+            return typeof(IReadOnlyCollection<LineString>).IsAssignableFromType(objectType);
         }
 
         /// <summary>
@@ -38,38 +38,58 @@ namespace GeoJSON.Net.Converters
         /// <returns>
         /// The object value.
         /// </returns>
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override IReadOnlyCollection<LineString> Read(
+            ref Utf8JsonReader reader,
+            Type type,
+            JsonSerializerOptions options)
         {
-            var rings = existingValue as JArray ?? serializer.Deserialize<JArray>(reader);
-            return rings.Select(ring => new LineString((IEnumerable<IPosition>) LineStringConverter.ReadJson(
-                    reader,
-                    typeof(IEnumerable<IPosition>),
-                    ring,
-                    serializer)))
-                .ToArray();
+            switch (reader.TokenType)
+            {
+                case JsonTokenType.Null:
+                    return null;
+                case JsonTokenType.StartArray:
+                    break;
+                default:
+                    throw new InvalidOperationException("Incorrect json type");
+            }
+
+            var startDepth = reader.CurrentDepth;
+            var result = new List<LineString>();
+            while (reader.Read())
+            {
+                if(JsonTokenType.EndArray == reader.TokenType && reader.CurrentDepth == startDepth)
+                {
+                    return new ReadOnlyCollection<LineString>(result);
+                }
+                if(reader.TokenType == JsonTokenType.StartArray)
+                {
+                    result.Add(new LineString(LineStringConverter.Read(
+                        ref reader,
+                        typeof(IEnumerable<IPosition>),
+                        options)));
+                }
+            }
+
+            return new ReadOnlyCollection<LineString>(result);
         }
 
         /// <summary>
         /// Writes the JSON representation of the object.
         /// </summary>
-        /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
+        /// <param name="writer">The <see cref="T:System.Text.Json.Utf8JsonWriter" /> to write to.</param>
         /// <param name="value">The value.</param>
         /// <param name="serializer">The calling serializer.</param>
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void Write(
+            Utf8JsonWriter writer,
+            IReadOnlyCollection<LineString> value,
+            JsonSerializerOptions options)
         {
-            if (value is IEnumerable<LineString> coordinateElements)
+            writer.WriteStartArray();
+            foreach (var subPolygon in value)
             {
-                writer.WriteStartArray();
-                foreach (var subPolygon in coordinateElements)
-                {
-                    LineStringConverter.WriteJson(writer, subPolygon.Coordinates, serializer);
-                }
-                writer.WriteEndArray();
+                LineStringConverter.Write(writer, subPolygon.Coordinates, options);
             }
-            else
-            {
-                throw new ArgumentException($"{nameof(LineStringEnumerableConverter)}: unsupported value type");
-            }
+            writer.WriteEndArray();
         }
     }
 }

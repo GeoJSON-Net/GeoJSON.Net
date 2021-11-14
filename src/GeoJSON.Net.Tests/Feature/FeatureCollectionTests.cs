@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using GeoJSON.Net.Feature;
 using GeoJSON.Net.Geometry;
-using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace GeoJSON.Net.Tests.Feature
@@ -25,7 +25,7 @@ namespace GeoJSON.Net.Tests.Feature
         {
             string json = GetExpectedJson();
 
-            var featureCollection = JsonConvert.DeserializeObject<FeatureCollection>(json);
+            var featureCollection = JsonSerializer.Deserialize<FeatureCollection>(json);
 
             Assert.IsNotNull(featureCollection.Features);
             Assert.AreEqual(featureCollection.Features.Count, 3);
@@ -56,13 +56,13 @@ namespace GeoJSON.Net.Tests.Feature
                 model.Features.Add(feature);
             }
 
-            var actualJson = JsonConvert.SerializeObject(model);
+            var actualJson = JsonSerializer.Serialize(model);
 
             Assert.IsNotNull(actualJson);
 
             Assert.IsFalse(string.IsNullOrEmpty(actualJson));
         }
-        
+
         [Test]
         public void FeatureCollection_Equals_GetHashCode_Contract()
         {
@@ -76,12 +76,12 @@ namespace GeoJSON.Net.Tests.Feature
         public void Serialized_And_Deserialized_FeatureCollection_Equals_And_Share_HashCode()
         {
             var leftFc = GetFeatureCollection();
-            var leftJson = JsonConvert.SerializeObject(leftFc);
-            var left = JsonConvert.DeserializeObject<FeatureCollection>(leftJson);
+            var leftJson = JsonSerializer.Serialize(leftFc);
+            var left = JsonSerializer.Deserialize<FeatureCollection>(leftJson);
 
             var rightFc = GetFeatureCollection();
-            var rightJson = JsonConvert.SerializeObject(rightFc);
-            var right = JsonConvert.DeserializeObject<FeatureCollection>(rightJson);
+            var rightJson = JsonSerializer.Serialize(rightFc);
+            var right = JsonSerializer.Deserialize<FeatureCollection>(rightJson);
 
             Assert_Are_Equal(left, right);
         }
@@ -124,7 +124,7 @@ namespace GeoJSON.Net.Tests.Feature
                 Assert.AreEqual(expectedId, actualId);
                 Assert.AreEqual(expectedIndex, actualIndex);
 
-                Assert.Inconclusive("not supported. the Feature.Id is optional. " + 
+                Assert.Inconclusive("not supported. the Feature.Id is optional. " +
                     " create a new class that inherits from" +
                     " Feature and then override Equals and GetHashCode");
 

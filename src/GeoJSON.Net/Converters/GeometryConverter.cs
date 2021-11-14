@@ -1,22 +1,19 @@
 ﻿// Copyright © Joerg Battermann 2014, Matt Hunt 2017
 
+using GeoJSON.Net.Geometry;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using GeoJSON.Net.Geometry;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace GeoJSON.Net.Converters
 {
     /// <summary>
     /// Converts <see cref="IGeometryObject"/> types to and from JSON.
     /// </summary>
-    public class GeometryConverter : JsonConverter
+    public class GeometryConverter : JsonConverter<IGeometryObject>
     {
-        public override bool CanWrite => false;
-
         /// <summary>
         ///     Determines whether this instance can convert the specified object type.
         /// </summary>
@@ -39,24 +36,39 @@ namespace GeoJSON.Net.Converters
         /// <returns>
         ///     The object value.
         /// </returns>
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+        public override IGeometryObject Read(
+            ref Utf8JsonReader reader,
+            Type type,
+            JsonSerializerOptions options)
         {
             switch (reader.TokenType)
             {
-                case JsonToken.Null:
+                case JsonTokenType.Null:
                     return null;
-                case JsonToken.StartObject:
-                    var value = JObject.Load(reader);
-                    return ReadGeoJson(value);
-                case JsonToken.StartArray:
-                    var values = JArray.Load(reader);
-                    var geometries = new ReadOnlyCollection<IGeometryObject>(
-                        values.Cast<JObject>().Select(ReadGeoJson).ToArray());
-                    return geometries;
+                case JsonTokenType.StartObject:
+                    return ReadGeoJson(ref reader);
             }
 
-            throw new JsonReaderException("expected null, object or array token but received " + reader.TokenType);
+            throw new JsonException($"expected null, object or array token but received {reader.TokenType}");
         }
+
+        //private static IGeometryObject[] ReadGeoJsonArray(JsonElement array)
+        //{
+        //    var length = array.GetArrayLength();
+        //    if(length == 0)
+        //        return new IGeometryObject[0];
+
+        //    var geoJsonArray = new IGeometryObject[length];
+
+        //    int i = 0;
+        //    var enumerator = array.EnumerateArray();
+        //    while(enumerator.MoveNext())
+        //    {
+        //        var geoJsonElement = ReadGeoJson(enumerator.Current);
+        //        geoJsonArray[i] = geoJsonElement;
+        //    }
+        //    return geoJsonArray;
+        //}
 
         /// <summary>
         /// Writes the JSON representation of the object.
@@ -64,10 +76,15 @@ namespace GeoJSON.Net.Converters
         /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
         /// <param name="value">The value.</param>
         /// <param name="serializer">The calling serializer.</param>
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void Write(
+            Utf8JsonWriter writer,
+            IGeometryObject value,
+            JsonSerializerOptions options)
         {
-            // IGeometryObject can be written without a problem
-            throw new NotImplementedException("Unnecessary because CanWrite is false. The type will skip the converter.");
+            // Standard serialization
+            JsonSerializer.Serialize(writer, value, typeof(IGeometryObject), options);
+
+            //writer.WriteRawValue(JsonSerializer.Serialize(value));
         }
 
         /// <summary>
@@ -83,49 +100,41 @@ namespace GeoJSON.Net.Converters
         /// <exception cref="System.NotSupportedException">
         /// Feature and FeatureCollection types are Feature objects and not Geometry objects
         /// </exception>
-        private static IGeometryObject ReadGeoJson(JObject value)
+        private static IGeometryObject ReadGeoJson(ref Utf8JsonReader reader)
         {
-            JToken token;
+            var document = JsonDocument.ParseValue(ref reader);
+            JsonElement value = document.RootElement;
+            JsonElement token;
 
-            if (!value.TryGetValue("type", StringComparison.OrdinalIgnoreCase, out token))
+            if (!value.TryGetProperty("type", out token))
             {
-                throw new JsonReaderException("json must contain a \"type\" property");
+                throw new JsonException("json must contain a \"type\" property");
             }
 
             GeoJSONObjectType geoJsonType;
 
-#if (NET35)
-            try
+            if (!Enum.TryParse(token.GetRawText(), true, out geoJsonType))
             {
-                geoJsonType = (GeoJSONObjectType)Enum.Parse(typeof(GeoJSONObjectType), token.Value<string>(), true);
+                throw new JsonException("type must be a valid geojson geometry object type");
             }
-            catch (Exception)
-            {
-                throw new JsonReaderException("Type must be a valid geojson object type");
-            }
-#else
-            if (!Enum.TryParse(token.Value<string>(), true, out geoJsonType))
-            {
-                throw new JsonReaderException("type must be a valid geojson geometry object type");
-            }
-#endif
 
             switch (geoJsonType)
             {
+                
                 case GeoJSONObjectType.Point:
-                    return value.ToObject<Point>();
+                    return JsonSerializer.Deserialize<Point>(ref reader);
                 case GeoJSONObjectType.MultiPoint:
-                    return value.ToObject<MultiPoint>();
+                    return JsonSerializer.Deserialize<MultiPoint>(ref reader);
                 case GeoJSONObjectType.LineString:
-                    return value.ToObject<LineString>();
+                    return JsonSerializer.Deserialize<LineString>(ref reader);
                 case GeoJSONObjectType.MultiLineString:
-                    return value.ToObject<MultiLineString>();
+                    return JsonSerializer.Deserialize<MultiLineString>(ref reader);
                 case GeoJSONObjectType.Polygon:
-                    return value.ToObject<Polygon>();
+                    return JsonSerializer.Deserialize<Polygon>(ref reader);
                 case GeoJSONObjectType.MultiPolygon:
-                    return value.ToObject<MultiPolygon>();
+                    return JsonSerializer.Deserialize<MultiPolygon>(ref reader);
                 case GeoJSONObjectType.GeometryCollection:
-                    return value.ToObject<GeometryCollection>();
+                    return JsonSerializer.Deserialize<GeometryCollection>(ref reader);
                 case GeoJSONObjectType.Feature:
                 case GeoJSONObjectType.FeatureCollection:
                 default:

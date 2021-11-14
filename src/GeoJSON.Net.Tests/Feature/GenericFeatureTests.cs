@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using GeoJSON.Net.Feature;
 using GeoJSON.Net.Geometry;
-using Newtonsoft.Json;
 using NUnit.Framework;
 
 namespace GeoJSON.Net.Tests.Feature
@@ -15,7 +16,7 @@ namespace GeoJSON.Net.Tests.Feature
         {
             var json = GetExpectedJson();
 
-            var feature = JsonConvert.DeserializeObject<Feature<Point>>(json);
+            var feature = JsonSerializer.Deserialize<Feature<Point>>(json);
 
             Assert.IsNotNull(feature);
             Assert.IsNotNull(feature.Properties);
@@ -37,7 +38,7 @@ namespace GeoJSON.Net.Tests.Feature
         {
             var json = GetExpectedJson();
 
-            var feature = JsonConvert.DeserializeObject<Feature<LineString>>(json);
+            var feature = JsonSerializer.Deserialize<Feature<LineString>>(json);
 
             Assert.IsNotNull(feature);
             Assert.IsNotNull(feature.Properties);
@@ -84,9 +85,9 @@ namespace GeoJSON.Net.Tests.Feature
 
         private class TypedFeatureProps
         {
-            [JsonProperty("name")]
+            [JsonPropertyName("name")]
             public string Name { get; set; }
-            [JsonProperty("value")]
+            [JsonPropertyName("value")]
             public double Value { get; set; }
         }
 
@@ -94,7 +95,7 @@ namespace GeoJSON.Net.Tests.Feature
         public void Can_Deserialize_Typed_Point_Feature()
         {
             var json = GetExpectedJson();
-            var feature = JsonConvert.DeserializeObject<Feature<Point, TypedFeatureProps>>(json);
+            var feature = JsonSerializer.Deserialize<Feature<Point, TypedFeatureProps>>(json);
 
             Assert.IsNotNull(feature);
 
@@ -120,7 +121,7 @@ namespace GeoJSON.Net.Tests.Feature
             var feature = new Feature<Point, TypedFeatureProps>(geometry, props, "no id there");
 
             var expectedJson = GetExpectedJson();
-            var actualJson = JsonConvert.SerializeObject(feature);
+            var actualJson = JsonSerializer.Serialize(feature);
 
             JsonAssert.AreEqual(expectedJson, actualJson);
         }

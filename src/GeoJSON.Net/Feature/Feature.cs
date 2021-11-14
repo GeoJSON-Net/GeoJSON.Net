@@ -1,14 +1,12 @@
 ﻿// Copyright © Joerg Battermann 2014, Matt Hunt 2017
 
 using System.Collections.Generic;
-#if (!NET35 || !NET40)
 using System.Reflection;
 using System.Linq;
-#endif
 using GeoJSON.Net.Converters;
 using GeoJSON.Net.Geometry;
-using Newtonsoft.Json;
 using System;
+using System.Text.Json.Serialization;
 
 namespace GeoJSON.Net.Feature
 {
@@ -30,18 +28,22 @@ namespace GeoJSON.Net.Feature
             Id = id;
         }
 
+        [JsonPropertyName("type")]
+        //, Required = Required.Always, DefaultValueHandling = DefaultValueHandling.Include)]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public override GeoJSONObjectType Type => GeoJSONObjectType.Feature;
-        
-        [JsonProperty(PropertyName = "id", NullValueHandling = NullValueHandling.Ignore)]
+
+        [JsonPropertyName( "id")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         public string Id { get; }
-        
-        [JsonProperty(PropertyName = "geometry", Required = Required.AllowNull)]
+
+        [JsonPropertyName("geometry")]
         [JsonConverter(typeof(GeometryConverter))]
         public TGeometry Geometry { get; }
-        
-        [JsonProperty(PropertyName = "properties", Required = Required.AllowNull)]
+
+        [JsonPropertyName("properties")]
         public TProps Properties { get; }
-        
+
         /// <summary>
         /// Equality comparer.
         /// </summary>
@@ -94,8 +96,8 @@ namespace GeoJSON.Net.Feature
             return !object.Equals(left, right);
         }
     }
-    
-    
+
+
     /// <summary>
     /// A GeoJSON Feature Object.
     /// </summary>
@@ -105,12 +107,12 @@ namespace GeoJSON.Net.Feature
     public class Feature : Feature<IGeometryObject>
     {
         [JsonConstructor]
-        public Feature(IGeometryObject geometry, IDictionary<string, object> properties = null, string id = null) 
+        public Feature(IGeometryObject geometry, IDictionary<string, object> properties = null, string id = null)
             : base(geometry, properties, id)
         {
         }
 
-        public Feature(IGeometryObject geometry, object properties, string id = null) 
+        public Feature(IGeometryObject geometry, object properties, string id = null)
             : base(geometry, properties, id)
         {
         }
@@ -124,7 +126,6 @@ namespace GeoJSON.Net.Feature
     /// <typeparam name="TGeometry"></typeparam>
     public class Feature<TGeometry> : Feature<TGeometry, IDictionary<string, object>>, IEquatable<Feature<TGeometry>> where TGeometry : IGeometryObject
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Feature" /> class.
         /// </summary>
@@ -157,17 +158,10 @@ namespace GeoJSON.Net.Feature
             {
                 return new Dictionary<string, object>();
             }
-#if(NET35 || NET40)
-            return properties.GetType().GetProperties()
-                .Where(propertyInfo => propertyInfo.GetGetMethod().IsPublic)
-                .ToDictionary(propertyInfo => propertyInfo.Name,
-                    propertyInfo => propertyInfo.GetValue(properties, null));
-#else
             return properties.GetType().GetTypeInfo().DeclaredProperties
                 .Where(propertyInfo => propertyInfo.GetMethod.IsPublic)
                 .ToDictionary(propertyInfo => propertyInfo.Name,
                     propertyInfo => propertyInfo.GetValue(properties, null));
-#endif
         }
 
         public bool Equals(Feature<TGeometry> other)

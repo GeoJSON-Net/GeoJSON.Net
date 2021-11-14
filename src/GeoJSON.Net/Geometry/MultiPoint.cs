@@ -1,11 +1,11 @@
 ﻿// Copyright © Joerg Battermann 2014, Matt Hunt 2017
 
-using System.Collections.Generic;
-using System.Linq;
-using Newtonsoft.Json;
-using System;
-using System.Collections.ObjectModel;
 using GeoJSON.Net.Converters;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Text.Json.Serialization;
 
 namespace GeoJSON.Net.Geometry
 {
@@ -17,6 +17,11 @@ namespace GeoJSON.Net.Geometry
     /// </remarks>
     public class MultiPoint : GeoJSONObject, IGeometryObject, IEqualityComparer<MultiPoint>, IEquatable<MultiPoint>
     {
+        public MultiPoint()
+        {
+
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="MultiPoint" /> class.
         /// </summary>
@@ -25,22 +30,25 @@ namespace GeoJSON.Net.Geometry
         {
             Coordinates = new ReadOnlyCollection<Point>(coordinates?.ToArray() ?? new Point[0]);
         }
-        
-        [JsonConstructor]
+
+        //[JsonConstructor]
         public MultiPoint(IEnumerable<IEnumerable<double>> coordinates)
         : this(coordinates?.Select(position => new Point(position.ToPosition()))
                ?? throw new ArgumentNullException(nameof(coordinates)))
         {
         }
 
+        [JsonPropertyName("type")]
+        //, Required = Required.Always, DefaultValueHandling = DefaultValueHandling.Include)]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public override GeoJSONObjectType Type => GeoJSONObjectType.MultiPoint;
 
         /// <summary>
         /// The points contained in this <see cref="MultiPoint"/>.
         /// </summary>
-        [JsonProperty("coordinates", Required = Required.Always)]
+        [JsonPropertyName("coordinates")]
         [JsonConverter(typeof(PointEnumerableConverter))]
-        public ReadOnlyCollection<Point> Coordinates { get; }
+        public ReadOnlyCollection<Point> Coordinates { get; set; }
 
         #region IEqualityComparer, IEquatable
 

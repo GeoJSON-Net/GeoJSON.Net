@@ -1,23 +1,20 @@
 ﻿// Copyright © Joerg Battermann 2014, Matt Hunt 2017
 
+using GeoJSON.Net.Geometry;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using GeoJSON.Net.Geometry;
 
 namespace GeoJSON.Net.Converters
 {
     /// <summary>
-    /// Converter to read and write the <see cref="IReadOnlyCollection{IPosition}" /> type.
+    /// Converts <see cref="IGeometryObject"/> types to and from JSON.
     /// </summary>
-    public class PositionEnumerableConverter : JsonConverter<IReadOnlyCollection<IPosition>>
+    public class GeometryEnumerableConverter : JsonConverter<ReadOnlyCollection<IGeometryObject>>
     {
-        private static readonly PositionConverter PositionConverter = new PositionConverter();
+        private static readonly GeometryConverter GeometryConverter = new GeometryConverter();
 
         /// <summary>
         ///     Determines whether this instance can convert the specified object type.
@@ -28,7 +25,7 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-            return typeof(IReadOnlyCollection<IPosition>).IsAssignableFromType(objectType);
+            return typeof(ReadOnlyCollection<IGeometryObject>).IsAssignableFromType(objectType);
         }
 
         /// <summary>
@@ -41,7 +38,7 @@ namespace GeoJSON.Net.Converters
         /// <returns>
         ///     The object value.
         /// </returns>
-        public override IReadOnlyCollection<IPosition> Read(
+        public override ReadOnlyCollection<IGeometryObject> Read(
             ref Utf8JsonReader reader,
             Type type,
             JsonSerializerOptions options)
@@ -52,24 +49,22 @@ namespace GeoJSON.Net.Converters
                     return null;
                 case JsonTokenType.StartArray:
                     break;
-                default:
-                    throw new InvalidOperationException("Incorrect json type");
             }
 
             var startDepth = reader.CurrentDepth;
-            var result = new List<IPosition>();
+            var result = new List<IGeometryObject>();
             while (reader.Read())
             {
                 if (JsonTokenType.EndArray == reader.TokenType && reader.CurrentDepth == startDepth)
                 {
-                    return new ReadOnlyCollection<IPosition>(result);
+                    return new ReadOnlyCollection<IGeometryObject>(result);
                 }
                 if (reader.TokenType == JsonTokenType.StartArray)
                 {
-                    result.Add(PositionConverter.Read(
-                            ref reader,
-                            typeof(IPosition),
-                            options));
+                    result.Add(GeometryConverter.Read(
+                        ref reader,
+                        typeof(IEnumerable<IPosition>),
+                        options));
                 }
             }
 
@@ -77,22 +72,23 @@ namespace GeoJSON.Net.Converters
         }
 
         /// <summary>
-        ///     Writes the JSON representation of the object.
+        /// Writes the JSON representation of the object.
         /// </summary>
         /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
         /// <param name="value">The value.</param>
         /// <param name="serializer">The calling serializer.</param>
         public override void Write(
             Utf8JsonWriter writer,
-            IReadOnlyCollection<IPosition> coordinateElements,
+            ReadOnlyCollection<IGeometryObject> value,
             JsonSerializerOptions options)
         {
-            writer.WriteStartArray();
-            foreach (var position in coordinateElements)
-            {
-                PositionConverter.Write(writer, position, options);
-            }
-            writer.WriteEndArray();
+            
+            foreach(var item in value)
+                GeometryConverter.Write(writer, item, options);
+            // Standard serialization
+            //writer.WriteStartObject();
+            //writer.WriteNumber("Miyagi", 10);
+            //writer.WriteEndObject();
         }
     }
 }

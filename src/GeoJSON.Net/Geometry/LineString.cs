@@ -1,11 +1,11 @@
 ﻿// Copyright © Joerg Battermann 2014, Matt Hunt 2017
 
+using GeoJSON.Net.Converters;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using GeoJSON.Net.Converters;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace GeoJSON.Net.Geometry
 {
@@ -15,14 +15,18 @@ namespace GeoJSON.Net.Geometry
     /// <remarks>
     /// See https://tools.ietf.org/html/rfc7946#section-3.1.4
     /// </remarks>
-    [JsonObject(MemberSerialization.OptIn)]
     public class LineString : GeoJSONObject, IGeometryObject, IEqualityComparer<LineString>, IEquatable<LineString>
     {
+        public LineString()
+        {
+
+        }
+
         /// <summary>
         /// Initializes a new <see cref="LineString" /> from a 2-d array of <see cref="double" />s
         /// that matches the "coordinates" field in the JSON representation.
         /// </summary>
-        [JsonConstructor]
+        //[JsonConstructor]
         public LineString(IEnumerable<IEnumerable<double>> coordinates)
         : this(coordinates?.Select(latLongAlt => (IPosition)latLongAlt.ToPosition())
                ?? throw new ArgumentException(nameof(coordinates)))
@@ -46,14 +50,17 @@ namespace GeoJSON.Net.Geometry
             }
         }
 
+        [JsonPropertyName("type")]
+        //, Required = Required.Always, DefaultValueHandling = DefaultValueHandling.Include)]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public override GeoJSONObjectType Type => GeoJSONObjectType.LineString;
 
         /// <summary>
         /// The positions of the line string.
         /// </summary>
-        [JsonProperty("coordinates", Required = Required.Always)]
+        [JsonPropertyName("coordinates")]
         [JsonConverter(typeof(PositionEnumerableConverter))]
-        public ReadOnlyCollection<IPosition> Coordinates { get; }
+        public ReadOnlyCollection<IPosition> Coordinates { get; set;  }
 
         /// <summary>
         /// Determines whether this instance has its first and last coordinate at the same position and thereby is closed.

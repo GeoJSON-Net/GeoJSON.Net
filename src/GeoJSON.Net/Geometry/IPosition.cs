@@ -13,7 +13,7 @@ namespace GeoJSON.Net.Geometry
         /// Gets the altitude.
         /// </summary>
         double? Altitude { get; }
-    
+
         /// <summary>
         /// Gets the latitude.
         /// </summary>

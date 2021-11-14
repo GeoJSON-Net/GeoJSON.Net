@@ -4,8 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text.Json.Serialization;
 using GeoJSON.Net.Converters;
-using Newtonsoft.Json;
 
 namespace GeoJSON.Net.Geometry
 {
@@ -39,12 +39,15 @@ namespace GeoJSON.Net.Geometry
         {
         }
 
+        [JsonPropertyName("type")]
+        //, Required = Required.Always, DefaultValueHandling = DefaultValueHandling.Include)]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public override GeoJSONObjectType Type => GeoJSONObjectType.MultiPolygon;
 
         /// <summary>
         /// The list of Polygons enclosed in this <see cref="MultiPolygon"/>.
         /// </summary>
-        [JsonProperty("coordinates", Required = Required.Always)]
+        [JsonPropertyName("coordinates")]
         [JsonConverter(typeof(PolygonEnumerableConverter))]
         public ReadOnlyCollection<Polygon> Coordinates { get; }
 

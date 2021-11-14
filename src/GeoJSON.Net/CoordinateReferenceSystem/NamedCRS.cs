@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace GeoJSON.Net.CoordinateReferenceSystem
 {
     /// <summary>
-    /// Defines the Named CRS type. 
+    /// Defines the Named CRS type.
     /// </summary>
     /// <remarks>
     /// See http://geojson.org/geojson-spec.html#named-crs
@@ -15,6 +15,11 @@ namespace GeoJSON.Net.CoordinateReferenceSystem
     /// </remarks>
     public class NamedCRS : CRSBase, ICRSObject
     {
+        public NamedCRS()
+        {
+
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="NamedCRS" /> class.
         /// </summary>

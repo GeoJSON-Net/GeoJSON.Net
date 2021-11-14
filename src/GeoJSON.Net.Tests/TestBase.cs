@@ -8,9 +8,6 @@ namespace GeoJSON.Net.Tests
     public abstract class TestBase
     {
         private static readonly Assembly ThisAssembly = typeof(TestBase)
-#if NETCOREAPP1_1
-        .GetTypeInfo()
-#endif
         .Assembly;
         private static readonly string AssemblyName = ThisAssembly.GetName().Name;
 
@@ -18,7 +15,7 @@ namespace GeoJSON.Net.Tests
         {
             get
             {
-                string codeBase = ThisAssembly.CodeBase;
+                string codeBase = ThisAssembly.Location;
                 UriBuilder uri = new UriBuilder(codeBase);
                 string path = Uri.UnescapeDataString(uri.Path);
                 return Path.GetDirectoryName(path);

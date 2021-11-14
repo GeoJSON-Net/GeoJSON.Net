@@ -70,7 +70,7 @@ namespace GeoJSON.Net.Geometry
                 Altitude = alt;
             }
         }
-        
+
         /// <summary>
         /// Gets the altitude.
         /// </summary>
@@ -85,7 +85,7 @@ namespace GeoJSON.Net.Geometry
         /// Gets the longitude or X coordinate
         /// </summary>
         public double Longitude { get; }
-        
+
         /// <summary>
         /// Returns a <see cref="string" /> that represents this instance.
         /// </summary>

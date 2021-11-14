@@ -1,20 +1,18 @@
 ﻿// Copyright © Joerg Battermann 2014, Matt Hunt 2017
 
-using System.Linq;
-using System.Runtime.Serialization;
 using GeoJSON.Net.Converters;
 using GeoJSON.Net.CoordinateReferenceSystem;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text.Json.Serialization;
 
 namespace GeoJSON.Net
 {
     /// <summary>
     ///     Base class for all IGeometryObject implementing types
     /// </summary>
-    [JsonObject(MemberSerialization.OptIn)]
     public abstract class GeoJSONObject : IGeoJSONObject, IEqualityComparer<GeoJSONObject>, IEquatable<GeoJSONObject>
     {
         internal static readonly DoubleTenDecimalPlaceComparer DoubleComparer = new DoubleTenDecimalPlaceComparer();
@@ -31,7 +29,10 @@ namespace GeoJSON.Net
         ///     In addition, the coordinate reference system for the bbox is assumed to match the coordinate reference
         ///     system of the GeoJSON object of which it is a member.
         /// </value>
-        [JsonProperty(PropertyName = "bbox", Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
+        [JsonPropertyName("bbox")]
+        [JsonConverter(typeof(BoundingBoxConverter))]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        //, Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
         public double[] BoundingBoxes { get; set; }
 
         /// <summary>
@@ -44,22 +45,24 @@ namespace GeoJSON.Net
         /// <value>
         ///     The Coordinate Reference System Objects.
         /// </value>
-        [JsonProperty(PropertyName = "crs", Required = Required.Default, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
-            NullValueHandling = NullValueHandling.Include)]
+        [JsonPropertyName("crs")]
+        //Required = Required.Default, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
+        //NullValueHandling = NullValueHandling.Include)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
         [JsonConverter(typeof(CrsConverter))]
-        //[DefaultValue(typeof(DefaultCRS), "")]
         public ICRSObject CRS { get; set; }
 
         /// <summary>
         ///     The (mandatory) type of the
         ///     <see cref="https://tools.ietf.org/html/rfc7946#section-3">GeoJSON Object</see>.
         /// </summary>
-        [JsonProperty(PropertyName = "type", Required = Required.Always, DefaultValueHandling = DefaultValueHandling.Include)]
-        [JsonConverter(typeof(StringEnumConverter))]
+        [JsonPropertyName("type")]
+            //, Required = Required.Always, DefaultValueHandling = DefaultValueHandling.Include)]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
         public abstract GeoJSONObjectType Type { get; }
 
 
-        #region IEqualityComparer, IEquatable
+#region IEqualityComparer, IEquatable
 
         /// <summary>
         /// Determines whether the specified object is equal to the current object
@@ -153,6 +156,6 @@ namespace GeoJSON.Net
             return obj.GetHashCode();
         }
 
-        #endregion
+#endregion
     }
 }
