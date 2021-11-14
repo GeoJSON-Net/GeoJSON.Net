@@ -14,7 +14,7 @@
 	<PackageReference Include="NUnit" Version="3.7.1" />
 	<PackageReference Include="NUnit3TestAdapter" Version="3.8.0" />
 	<PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
-    <PackageReference Include="System.Text.Json" Version="5.0.2" />
+    <PackageReference Include="System.Text.Json" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Feature\*.json">

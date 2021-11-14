@@ -8,7 +8,7 @@ namespace GeoJSON.Net.Geometry
     /// <summary>
     /// Base Interface for GeometryObject types.
     /// </summary>
-    //[JsonConverter(typeof(GeometryConverter))]
+    [JsonConverter(typeof(GeometryConverter))]
     public interface IGeometryObject
     {
         /// <summary>
@@ -23,7 +23,6 @@ namespace GeoJSON.Net.Geometry
         /// The type of the object.
         /// </value>
         [JsonPropertyName("type")]
-        //, Required = Required.Always, DefaultValueHandling = DefaultValueHandling.Include)]
         [JsonConverter(typeof(JsonStringEnumConverter))]
         GeoJSONObjectType Type { get; }
     }

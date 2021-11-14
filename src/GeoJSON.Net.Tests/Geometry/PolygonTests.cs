@@ -43,11 +43,8 @@ namespace GeoJSON.Net.Tests.Geometry
                 })
             });
 
-            var serializerSettings = new JsonSerializerOptions();
-            serializerSettings.Converters.Add( new GeometryConverter() );
-
-            var json = JsonSerializer.Serialize(polygon, serializerSettings);
-            var result = JsonSerializer.Deserialize<IGeometryObject>(json, serializerSettings);
+            var json = JsonSerializer.Serialize(polygon);
+            var result = JsonSerializer.Deserialize<IGeometryObject>(json);
 
             Assert.AreEqual(result, polygon);
         }

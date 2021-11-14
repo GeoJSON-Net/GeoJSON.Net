@@ -71,8 +71,7 @@ namespace GeoJSON.Net.Converters
                     var name = properties.GetProperty("name").GetString();
 
                     var target = new NamedCRS(name);
-                    //var converted = JsonSerializer.Deserialize<NamedCRS>(properties);
-                    var converted = JsonSerializer.Deserialize<NamedCRS>(ref reader);
+                    var converted = jObject.Deserialize<NamedCRS>();
 
                     if (converted.Properties != null)
                     {
@@ -92,8 +91,8 @@ namespace GeoJSON.Net.Converters
                     var href = properties.GetProperty("href").GetString();
 
                     var target = new LinkedCRS(href);
-                    //var converted = JsonSerializer.Deserialize<LinkedCRS>(properties);
-                    var converted = JsonSerializer.Deserialize<LinkedCRS>(ref reader);
+
+                    var converted = jObject.Deserialize<LinkedCRS>();
 
                     if (converted.Properties != null)
                     {

@@ -17,6 +17,7 @@ namespace GeoJSON.Net.Geometry
     /// </remarks>
     public class MultiPolygon : GeoJSONObject, IGeometryObject, IEqualityComparer<MultiPolygon>, IEquatable<MultiPolygon>
     {
+        public MultiPolygon() { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MultiPolygon" /> class.
@@ -32,7 +33,7 @@ namespace GeoJSON.Net.Geometry
         /// Initializes a new <see cref="MultiPolygon" /> from a 4-d array of <see cref="double" />s
         /// that matches the "coordinates" field in the JSON representation.
         /// </summary>
-        [JsonConstructor]
+        // [JsonConstructor]
         public MultiPolygon(IEnumerable<IEnumerable<IEnumerable<IEnumerable<double>>>> coordinates)
             : this(coordinates?.Select(polygon => new Polygon(polygon))
                    ?? throw new ArgumentNullException(nameof(coordinates)))
@@ -40,7 +41,7 @@ namespace GeoJSON.Net.Geometry
         }
 
         [JsonPropertyName("type")]
-        //, Required = Required.Always, DefaultValueHandling = DefaultValueHandling.Include)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public override GeoJSONObjectType Type => GeoJSONObjectType.MultiPolygon;
 
@@ -49,7 +50,7 @@ namespace GeoJSON.Net.Geometry
         /// </summary>
         [JsonPropertyName("coordinates")]
         [JsonConverter(typeof(PolygonEnumerableConverter))]
-        public ReadOnlyCollection<Polygon> Coordinates { get; }
+        public ReadOnlyCollection<Polygon> Coordinates { get; set;  }
 
         #region IEqualityComparer, IEquatable
 

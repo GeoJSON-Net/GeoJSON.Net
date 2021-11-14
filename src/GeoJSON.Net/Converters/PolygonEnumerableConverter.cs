@@ -3,6 +3,7 @@
 using GeoJSON.Net.Geometry;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,7 @@ namespace GeoJSON.Net.Converters
     /// <summary>
     /// Converter to read and write the <see cref="IEnumerable{MultiPolygon}" /> type.
     /// </summary>
-    public class PolygonEnumerableConverter : JsonConverter<IEnumerable<Polygon>>
+    public class PolygonEnumerableConverter : JsonConverter<IReadOnlyCollection<Polygon>>
     {
 
         private static readonly LineStringEnumerableConverter PolygonConverter = new LineStringEnumerableConverter();
@@ -27,7 +28,7 @@ namespace GeoJSON.Net.Converters
         /// </returns>
         public override bool CanConvert(Type objectType)
         {
-            return typeof(IEnumerable<Polygon>).IsAssignableFromType(objectType);
+            return true || typeof(IReadOnlyCollection<Polygon>).IsAssignableFromType(objectType);
         }
 
         /// <summary>
@@ -40,49 +41,78 @@ namespace GeoJSON.Net.Converters
         /// <returns>
         ///     The object value.
         /// </returns>
-        public override IEnumerable<Polygon> Read(
+        public override IReadOnlyCollection<Polygon> Read(
             ref Utf8JsonReader reader,
             Type type,
             JsonSerializerOptions options)
         {
-            JsonElement polygons;
+
             switch (reader.TokenType)
             {
                 case JsonTokenType.Null:
                     return null;
                 case JsonTokenType.StartArray:
-                    polygons = JsonDocument.ParseValue(ref reader).RootElement;
                     break;
                 default:
                     throw new InvalidOperationException("Incorrect json type");
             }
 
-            var enumerator = polygons.EnumerateArray();
-            var lineStrings = new List<IEnumerable<LineString>>();
-            int i = 0;
-            while (enumerator.MoveNext())
+            var startDepth = reader.CurrentDepth;
+            var result = new List<Polygon>();
+            while (reader.Read())
             {
-                var element = enumerator.Current;
-                byte[] bytes = Encoding.UTF8.GetBytes(element.GetRawText());
-                var stream = new MemoryStream(bytes);
-
-                var buffer = new byte[stream.Length];
-
-                // Fill the buffer.
-                // For this snippet, we're assuming the stream is open and has data.
-                // If it might be closed or empty, check if the return value is 0.
-                stream.Read(buffer, 0, (int)stream.Length);
-
-                var elementReader = new Utf8JsonReader(buffer, isFinalBlock: false, state: default);
-
-                lineStrings.Add(PolygonConverter.Read(
-                            ref elementReader,
-                            typeof(IEnumerable<LineString>),
-                            options));
-                i++;
+                if (JsonTokenType.EndArray == reader.TokenType && reader.CurrentDepth == startDepth)
+                {
+                    return new ReadOnlyCollection<Polygon>(result);
+                }
+                if (reader.TokenType == JsonTokenType.StartArray)
+                {
+                    result.Add(new Polygon(PolygonConverter.Read(
+                        ref reader,
+                        typeof(IEnumerable<LineString>),
+                        options)));
+                }
             }
 
-            return lineStrings.Select(lines => new Polygon(lines));
+            throw new JsonException($"expected null, object or array token but received {reader.TokenType}");
+            //JsonElement polygons;
+            //switch (reader.TokenType)
+            //{
+            //    case JsonTokenType.Null:
+            //        return null;
+            //    case JsonTokenType.StartArray:
+            //        polygons = JsonDocument.ParseValue(ref reader).RootElement;
+            //        break;
+            //    default:
+            //        throw new InvalidOperationException("Incorrect json type");
+            //}
+
+            //var enumerator = polygons.EnumerateArray();
+            //var lineStrings = new List<IEnumerable<LineString>>();
+            //int i = 0;
+            //while (enumerator.MoveNext())
+            //{
+            //    var element = enumerator.Current;
+            //    byte[] bytes = Encoding.UTF8.GetBytes(element.GetRawText());
+            //    var stream = new MemoryStream(bytes);
+
+            //    var buffer = new byte[stream.Length];
+
+            //    // Fill the buffer.
+            //    // For this snippet, we're assuming the stream is open and has data.
+            //    // If it might be closed or empty, check if the return value is 0.
+            //    stream.Read(buffer, 0, (int)stream.Length);
+
+            //    var elementReader = new Utf8JsonReader(buffer, isFinalBlock: false, state: default);
+
+            //    lineStrings.Add(PolygonConverter.Read(
+            //                ref elementReader,
+            //                typeof(IEnumerable<LineString>),
+            //                options));
+            //    i++;
+            //}
+
+            //return lineStrings.Select(lines => new Polygon(lines));
         }
 
         /// <summary>
@@ -94,7 +124,7 @@ namespace GeoJSON.Net.Converters
 
         public override void Write(
             Utf8JsonWriter writer,
-            IEnumerable<Polygon> value,
+            IReadOnlyCollection<Polygon> value,
             JsonSerializerOptions options)
         {
             writer.WriteStartArray();

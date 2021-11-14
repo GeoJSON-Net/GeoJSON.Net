@@ -16,6 +16,9 @@ namespace GeoJSON.Net.Geometry
     /// </remarks>
     public class Point : GeoJSONObject, IGeometryObject, IEqualityComparer<Point>, IEquatable<Point>
     {
+        public Point()
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Point" /> class.
@@ -27,6 +30,7 @@ namespace GeoJSON.Net.Geometry
         }
 
         [JsonPropertyName("type")]
+        [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public override GeoJSONObjectType Type => GeoJSONObjectType.Point;
 
@@ -34,9 +38,9 @@ namespace GeoJSON.Net.Geometry
         /// The <see cref="IPosition" /> underlying this point.
         /// </summary>
         [JsonPropertyName("coordinates")]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [JsonConverter(typeof(PositionConverter))]
-        public IPosition Coordinates { get; }
+        public IPosition Coordinates { get; set; }
 
         #region IEqualityComparer, IEquatable
 

@@ -59,7 +59,7 @@ namespace GeoJSON.Net.Converters
                 {
                     return new ReadOnlyCollection<IGeometryObject>(result);
                 }
-                if (reader.TokenType == JsonTokenType.StartArray)
+                if (reader.TokenType == JsonTokenType.StartObject)
                 {
                     result.Add(GeometryConverter.Read(
                         ref reader,
@@ -82,13 +82,12 @@ namespace GeoJSON.Net.Converters
             ReadOnlyCollection<IGeometryObject> value,
             JsonSerializerOptions options)
         {
-            
+            writer.WriteStartArray();
             foreach(var item in value)
+            {
                 GeometryConverter.Write(writer, item, options);
-            // Standard serialization
-            //writer.WriteStartObject();
-            //writer.WriteNumber("Miyagi", 10);
-            //writer.WriteEndObject();
+            }
+            writer.WriteEndArray();
         }
     }
 }

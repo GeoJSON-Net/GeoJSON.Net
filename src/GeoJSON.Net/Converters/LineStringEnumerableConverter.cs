@@ -70,7 +70,7 @@ namespace GeoJSON.Net.Converters
                 }
             }
 
-            return new ReadOnlyCollection<LineString>(result);
+            throw new JsonException($"expected null, object or array token but received {reader.TokenType}");
         }
 
         /// <summary>
