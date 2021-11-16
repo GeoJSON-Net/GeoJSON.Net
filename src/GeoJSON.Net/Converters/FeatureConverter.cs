@@ -49,34 +49,36 @@ namespace GeoJSON.Net.Converters
                         }
                         else if (genericArguments.Length == 1)
                         {
+                            var typedGeometry = Convert.ChangeType(geometryObject, genericArguments[0]);
                             return Activator.CreateInstance(
                                 typeof(Feature<>).MakeGenericType(
                                     genericArguments),
                                 BindingFlags.Default,
                                 binder: null,
-                                args: new object[] { geometryObject, (IDictionary<string, object>)properties, id },
+                                args: new object[] { typedGeometry, (IDictionary<string, object>)properties, id },
                                 culture: null);
                         }
                         else
                         {
-                            // TODO: cast properties to requested type
-
+                            var typedGeometry = Convert.ChangeType(geometryObject, genericArguments[0]);
+                            var typedProperty = Convert.ChangeType(properties, genericArguments[1]);
                             return Activator.CreateInstance(
                                 typeof(Feature<,>).MakeGenericType(
                                     genericArguments),
                                 BindingFlags.Default,
                                 binder: null,
-                                args: new object[] { geometryObject, properties, id },
+                                args: new object[] { typedGeometry, typedProperty, id },
                                 culture: null);
                         }
                     }
+
                     if (reader.TokenType == JsonTokenType.PropertyName)
                     {
                         var propertyName = reader.GetString();
                         genericArguments = typeToConvert.GetGenericArguments();
                         if (propertyName == "geometry")
                         {
-                            reader.Read(); // Move one step forward
+                            reader.Read(); //Move one step forward to get property value
                             geometryObject = geometryConverter.Read(ref reader, typeof(IGeometryObject), options);
                         }
                         else if (propertyName == "properties")
@@ -93,7 +95,7 @@ namespace GeoJSON.Net.Converters
                         }
                         else if (propertyName == "id")
                         {
-                            reader.Read(); //Move one step forward
+                            reader.Read(); //Move one step forward to get property value
                             id = reader.GetString();
                         }
                     }
@@ -103,7 +105,7 @@ namespace GeoJSON.Net.Converters
             }
             else
             {
-                throw new JsonException("Json could not be parsed to feature type");
+                throw new JsonException("Json to parse of not of type object");
             }
         }
 
