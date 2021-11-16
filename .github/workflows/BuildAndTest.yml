@@ -32,6 +32,7 @@ jobs:
       - name: Install dependencies
         run: dotnet build ./src/ --no-restore --framework ${{matrix.dotnet-version}}
   
+  if: success()
   Test:
 
     runs-on: ubuntu-latest
