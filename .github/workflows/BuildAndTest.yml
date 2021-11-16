@@ -29,10 +29,9 @@ jobs:
           dotnet-version: '6.0.x'
       - name: Install dependencies
         run: dotnet restore ./src/
-      - name: Install dependencies
+      - name: Build solution
         run: dotnet build ./src/ --no-restore --framework ${{matrix.dotnet-version}}
   
-  if: success()
   Test:
 
     runs-on: ubuntu-latest
@@ -43,6 +42,7 @@ jobs:
       matrix:
         dotnet-version: [ 'netcoreapp3.1', 'net5', 'net6' ] 
          
+    if: success()
     steps:
       - uses: actions/checkout@v2
       - name: Setup .NET Core
