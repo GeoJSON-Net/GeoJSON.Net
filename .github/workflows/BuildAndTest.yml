@@ -33,7 +33,7 @@ jobs:
         run: dotnet build ./src/ --no-restore --framework ${{matrix.dotnet-version}}
   
   Test:
-
+    needs: build
     runs-on: ubuntu-latest
     env: 
       VSTEST_CONNECTION_TIMEOUT: 900
