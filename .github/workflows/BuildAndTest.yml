@@ -9,15 +9,23 @@ jobs:
 
     strategy:
       matrix:
-        dotnet-version: [ '3.1.301', '5.0.403', '6.0.100' ] 
+        dotnet-version: [ 'netcoreapp3.1', 'net5', 'net6' ] 
          
 
     steps:
       - uses: actions/checkout@v2
-      - name: Setup dotnet
+      - name: Setup .NET Core
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: ${{ matrix.dotnet-version }}
+          dotnet-version: 3.1.301
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.403
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 6.0.100
       - name: Install dependencies
         run: dotnet restore ./src/
       - name: Test with dotnet
@@ -29,27 +37,27 @@ jobs:
           path: TestResults-${{ matrix.dotnet-version }}
         # Use always() to always run this step to publish test results when there are test failures
         if: ${{ always() }}
-  publish-test-results:
-    needs: build
+  # publish-test-results:
+  #   needs: build
 
-    runs-on: ubuntu-latest
+  #   runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        dotnet-version: [ '3.1.301' ]
-         #'5.0.403',
-         # '6.0.100' 
+  #   strategy:
+  #     matrix:
+  #       dotnet-version: [ '3.1.301' ]
+  #        #'5.0.403',
+  #        # '6.0.100' 
          
-    if: success() || failure()
-    steps:
-    - name: Download Artifacts
-      uses: actions/download-artifact@v2
-      with:
-        path: artifacts
-    - name: Location
-      run: echo $PWD
-    - name: Publish Unit Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      with:
-        check_name: Unit Test Results
-        files: artifacts/dotnet-results-${{ matrix.dotnet-version }}
+  #   if: success() || failure()
+  #   steps:
+  #   - name: Download Artifacts
+  #     uses: actions/download-artifact@v2
+  #     with:
+  #       path: artifacts
+  #   - name: Location
+  #     run: echo $PWD
+  #   - name: Publish Unit Test Results
+  #     uses: EnricoMi/publish-unit-test-result-action@v1
+  #     with:
+  #       check_name: Unit Test Results
+  #       files: artifacts/dotnet-results-${{ matrix.dotnet-version }}
