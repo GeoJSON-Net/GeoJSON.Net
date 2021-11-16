@@ -40,7 +40,7 @@ namespace GeoJSON.Net.Tests.Feature
             var json = GetExpectedJson();
 
             var feature = JsonSerializer.Deserialize<Feature<LineString>>(json);
-
+            
             Assert.IsNotNull(feature);
             Assert.IsNotNull(feature.Properties);
             Assert.IsTrue(feature.Properties.Any());

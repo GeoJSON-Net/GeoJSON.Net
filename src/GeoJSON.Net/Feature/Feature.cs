@@ -17,16 +17,10 @@ namespace GeoJSON.Net.Feature
     /// <remarks>
     /// See https://tools.ietf.org/html/rfc7946#section-3.2
     /// </remarks>
-    //[JsonConverter(typeof(FeatureConverter))]
+    [JsonConverter(typeof(FeatureConverter))]
     public class Feature<TGeometry, TProps> : GeoJSONObject, IEquatable<Feature<TGeometry, TProps>>
         where TGeometry : IGeometryObject
     {
-        public Feature()
-        {
-
-        }
-
-        //[JsonConstructor]
         public Feature(TGeometry geometry, TProps properties, string id = null)
         {
             Geometry = geometry;
@@ -41,14 +35,14 @@ namespace GeoJSON.Net.Feature
 
         [JsonPropertyName( "id")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string Id { get; set; }
+        public string Id { get; }
 
         [JsonPropertyName("geometry")]
         [JsonConverter(typeof(GeometryConverter))]
-        public TGeometry Geometry { get; set; }
+        public TGeometry Geometry { get; }
 
         [JsonPropertyName("properties")]
-        public TProps Properties { get; set; }
+        public TProps Properties { get; }
 
         /// <summary>
         /// Equality comparer.
@@ -110,14 +104,9 @@ namespace GeoJSON.Net.Feature
     /// <remarks>
     /// See https://tools.ietf.org/html/rfc7946#section-3.2
     /// </remarks>
-    //[JsonConverter(typeof(FeatureConverter))]
+    [JsonConverter(typeof(FeatureConverter))]
     public class Feature : Feature<IGeometryObject>
     {
-        public Feature()
-        {
-
-        }
-
         public Feature(IGeometryObject geometry, IDictionary<string, object> properties = null, string id = null)
             : base(geometry, properties, id)
         {
@@ -135,21 +124,15 @@ namespace GeoJSON.Net.Feature
     /// </summary>
     /// <remarks>Returns correctly typed Geometry property</remarks>
     /// <typeparam name="TGeometry"></typeparam>
-    //[JsonConverter(typeof(FeatureConverter))]
+    [JsonConverter(typeof(FeatureConverter))]
     public class Feature<TGeometry> : Feature<TGeometry, IDictionary<string, object>>, IEquatable<Feature<TGeometry>> where TGeometry : IGeometryObject
     {
-        public Feature()
-        {
-
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="Feature" /> class.
         /// </summary>
         /// <param name="geometry">The Geometry Object.</param>
         /// <param name="properties">The properties.</param>
         /// <param name="id">The (optional) identifier.</param>
-        //[JsonConstructor]
         public Feature(TGeometry geometry, IDictionary<string, object> properties = null, string id = null)
         : base(geometry, properties ?? new Dictionary<string, object>(), id)
         {

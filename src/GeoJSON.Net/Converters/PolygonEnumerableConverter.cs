@@ -75,44 +75,6 @@ namespace GeoJSON.Net.Converters
             }
 
             throw new JsonException($"expected null, object or array token but received {reader.TokenType}");
-            //JsonElement polygons;
-            //switch (reader.TokenType)
-            //{
-            //    case JsonTokenType.Null:
-            //        return null;
-            //    case JsonTokenType.StartArray:
-            //        polygons = JsonDocument.ParseValue(ref reader).RootElement;
-            //        break;
-            //    default:
-            //        throw new InvalidOperationException("Incorrect json type");
-            //}
-
-            //var enumerator = polygons.EnumerateArray();
-            //var lineStrings = new List<IEnumerable<LineString>>();
-            //int i = 0;
-            //while (enumerator.MoveNext())
-            //{
-            //    var element = enumerator.Current;
-            //    byte[] bytes = Encoding.UTF8.GetBytes(element.GetRawText());
-            //    var stream = new MemoryStream(bytes);
-
-            //    var buffer = new byte[stream.Length];
-
-            //    // Fill the buffer.
-            //    // For this snippet, we're assuming the stream is open and has data.
-            //    // If it might be closed or empty, check if the return value is 0.
-            //    stream.Read(buffer, 0, (int)stream.Length);
-
-            //    var elementReader = new Utf8JsonReader(buffer, isFinalBlock: false, state: default);
-
-            //    lineStrings.Add(PolygonConverter.Read(
-            //                ref elementReader,
-            //                typeof(IEnumerable<LineString>),
-            //                options));
-            //    i++;
-            //}
-
-            //return lineStrings.Select(lines => new Polygon(lines));
         }
 
         /// <summary>
@@ -121,7 +83,6 @@ namespace GeoJSON.Net.Converters
         /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter" /> to write to.</param>
         /// <param name="value">The value.</param>
         /// <param name="serializer">The calling serializer.</param>
-
         public override void Write(
             Utf8JsonWriter writer,
             IReadOnlyCollection<Polygon> value,

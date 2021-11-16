@@ -35,7 +35,7 @@ namespace GeoJSON.Net.Feature
         }
 
         [JsonPropertyName("type")]
-        //, Required = Required.Always, DefaultValueHandling = DefaultValueHandling.Include)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.Never)]
         [JsonConverter(typeof(JsonStringEnumConverter))]
         public override GeoJSONObjectType Type => GeoJSONObjectType.FeatureCollection;
 
@@ -44,7 +44,7 @@ namespace GeoJSON.Net.Feature
         /// </summary>
         /// <value>The features.</value>
         [JsonPropertyName("features")]
-        //[JsonConverter(typeof(FeatureEnumerableConverter))]
+        [JsonConverter(typeof(FeatureEnumerableConverter))]
         public List<Feature> Features { get; set; }
 
         #region IEqualityComparer, IEquatable
