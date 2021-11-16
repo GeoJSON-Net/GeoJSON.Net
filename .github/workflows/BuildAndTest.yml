@@ -6,6 +6,8 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    env: 
+      VSTEST_CONNECTION_TIMEOUT: 15
 
     strategy:
       matrix:
