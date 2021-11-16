@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.6
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7AFBD129-E5A1-48D0-B7F6-7CCD6D06AF17}"
 	ProjectSection(SolutionItems) = preProject
@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoJSON.Net.Tests", "GeoJSON.Net.Tests\GeoJSON.Net.Tests.csproj", "{6C93B314-9208-4684-B873-172F7EC81689}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoJSON.Net.Tests", "GeoJSON.Net.Tests\GeoJSON.Net.Tests.csproj", "{6C93B314-9208-4684-B873-172F7EC81689}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoJSON.Net", "GeoJSON.Net\GeoJSON.Net.csproj", "{8AF7C40E-E8C7-425F-A8B1-A4B7E74D3CA9}"
 EndProject
@@ -31,5 +31,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D63D10B6-9FB2-478D-B740-647629C70EC4}
 	EndGlobalSection
 EndGlobal
