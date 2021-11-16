@@ -1,4 +1,4 @@
-name: test
+name: Build and Test
 
 on: [push]
 
@@ -27,6 +27,8 @@ jobs:
           dotnet-version: '3.1.x'
       - name: Install dependencies
         run: dotnet restore ./src/
+      - name: Install dependencies
+        run: dotnet build ./src/ --no-restore --framework ${{matrix.dotnet-version}}
       - name: Test with dotnet
         run: dotnet test ./src/ --framework ${{matrix.dotnet-version}} --logger trx --results-directory "TestResults-${{ matrix.dotnet-version }}"
       - name: Upload dotnet test results
