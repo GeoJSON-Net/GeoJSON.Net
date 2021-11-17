@@ -142,6 +142,17 @@ namespace GeoJSON.Net.Feature
         /// Initializes a new instance of the <see cref="Feature" /> class.
         /// </summary>
         /// <param name="geometry">The Geometry Object.</param>
+        /// <param name="properties">The properties.</param>
+        /// <param name="id">The (optional) identifier.</param>
+        public Feature(IGeometryObject geometry, IDictionary<string, object> properties = null, string id = null)
+        : base((TGeometry)geometry, properties ?? new Dictionary<string, object>(), id)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Feature" /> class.
+        /// </summary>
+        /// <param name="geometry">The Geometry Object.</param>
         /// <param name="properties">
         /// Class used to fill feature properties. Any public member will be added to feature
         /// properties
@@ -151,6 +162,7 @@ namespace GeoJSON.Net.Feature
         : this(geometry, GetDictionaryOfPublicProperties(properties), id)
         {
         }
+
 
         private static Dictionary<string, object> GetDictionaryOfPublicProperties(object properties)
         {
