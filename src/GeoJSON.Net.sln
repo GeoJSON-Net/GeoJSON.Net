@@ -14,8 +14,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoJSON.Net.Tests", "GeoJSO
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeoJSON.Net", "GeoJSON.Net\GeoJSON.Net.csproj", "{8AF7C40E-E8C7-425F-A8B1-A4B7E74D3CA9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeoJSON.Net.Benchmark", "GeoJSON.Net.Benchmark\GeoJSON.Net.Benchmark.csproj", "{44A46D84-4FE0-4320-904A-E347851B119D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,10 +28,6 @@ Global
 		{8AF7C40E-E8C7-425F-A8B1-A4B7E74D3CA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8AF7C40E-E8C7-425F-A8B1-A4B7E74D3CA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8AF7C40E-E8C7-425F-A8B1-A4B7E74D3CA9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{44A46D84-4FE0-4320-904A-E347851B119D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{44A46D84-4FE0-4320-904A-E347851B119D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{44A46D84-4FE0-4320-904A-E347851B119D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{44A46D84-4FE0-4320-904A-E347851B119D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
