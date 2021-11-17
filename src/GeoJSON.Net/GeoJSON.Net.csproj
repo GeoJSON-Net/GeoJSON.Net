@@ -6,7 +6,7 @@
     <Authors>Matt Hunt;Joerg Battermann;Xavier Fischer</Authors>
     <Company>GeoJSON.Net</Company>
     <Copyright>Copyright © Joerg Battermann, Matt Hunt, Xavier Fischer and Contributors, 2014 - 2019</Copyright>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <Version>1.2.16</Version>
     <PackageProjectUrl>https://github.com/GeoJSON-Net/GeoJSON.Net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/GeoJSON-Net/GeoJSON.Net.git</RepositoryUrl>
@@ -18,7 +18,6 @@
 
   <PropertyGroup>
     <FrameworkPathOverride Condition="'$(TargetFramework)' == 'net35'">$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\.NETFramework\v3.5\Profile\Client</FrameworkPathOverride>
-    <SignAssembly>False</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>
