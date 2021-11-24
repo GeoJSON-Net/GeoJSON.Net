@@ -12,7 +12,7 @@ namespace GeoJSON.Net.Converters
     /// <summary>
     /// Converts <see cref="IGeometryObject"/> types to and from JSON.
     /// </summary>
-    public class GeometryConverter : JsonConverter<object>
+    public class GeometryConverter : JsonConverter<IGeometryObject>
     {
         /// <summary>
         ///     Determines whether this instance can convert the specified object type.
@@ -36,7 +36,7 @@ namespace GeoJSON.Net.Converters
         /// <returns>
         ///     The object value.
         /// </returns>
-        public override object Read(
+        public override IGeometryObject Read(
             ref Utf8JsonReader reader,
             Type type,
             JsonSerializerOptions options)
@@ -65,7 +65,7 @@ namespace GeoJSON.Net.Converters
         /// <exception cref="System.NotSupportedException">
         /// Feature and FeatureCollection types are Feature objects and not Geometry objects
         /// </exception>
-        private static object ReadGeoJson(ref Utf8JsonReader reader, JsonSerializerOptions options)
+        private static IGeometryObject ReadGeoJson(ref Utf8JsonReader reader, JsonSerializerOptions options)
         {
             var document = JsonDocument.ParseValue(ref reader);
             JsonElement value = document.RootElement;
@@ -115,12 +115,11 @@ namespace GeoJSON.Net.Converters
         /// <param name="serializer">The calling serializer.</param>
         public override void Write(
             Utf8JsonWriter writer,
-            object value,
+            IGeometryObject value,
             JsonSerializerOptions options)
         {
-            var castedValue = value as IGeometryObject;
             // Standard serialization
-            switch (castedValue.Type)
+            switch (value.Type)
             {
                 case GeoJSONObjectType.Point:
                     JsonSerializer.Serialize<Point>(writer, (Point)value);
