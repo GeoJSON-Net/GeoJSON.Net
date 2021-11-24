@@ -19,6 +19,7 @@ namespace GeoJSON.Net
         /// <value>
         /// The type of the object.
         /// </value>
+        [JsonPropertyName("type")]
         GeoJSONObjectType Type { get; }
 
         /// <summary>
@@ -30,6 +31,7 @@ namespace GeoJSON.Net
         /// <value>
         /// The Coordinate Reference System Objects.
         /// </value>
+        [JsonPropertyName("crs")]
         CoordinateReferenceSystem.ICRSObject CRS { get; }
 
         /// <summary>

@@ -32,7 +32,6 @@ namespace GeoJSON.Net
         [JsonPropertyName("bbox")]
         [JsonConverter(typeof(BoundingBoxConverter))]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        //, Required = Required.Default, NullValueHandling = NullValueHandling.Ignore)]
         public double[] BoundingBoxes { get; set; }
 
         /// <summary>
@@ -46,9 +45,7 @@ namespace GeoJSON.Net
         ///     The Coordinate Reference System Objects.
         /// </value>
         [JsonPropertyName("crs")]
-        //Required = Required.Default, DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
-        //NullValueHandling = NullValueHandling.Include)]
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         [JsonConverter(typeof(CrsConverter))]
         public ICRSObject CRS { get; set; }
 

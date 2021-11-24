@@ -44,7 +44,7 @@ namespace GeoJSON.Net.Feature
         /// </summary>
         /// <value>The features.</value>
         [JsonPropertyName("features")]
-        [JsonConverter(typeof(FeatureEnumerableConverter))]
+        //[JsonConverter(typeof(FeatureEnumerableConverter))]
         public List<Feature> Features { get; set; }
 
         #region IEqualityComparer, IEquatable

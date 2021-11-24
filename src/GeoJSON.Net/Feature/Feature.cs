@@ -7,6 +7,7 @@ using GeoJSON.Net.Converters;
 using GeoJSON.Net.Geometry;
 using System;
 using System.Text.Json.Serialization;
+using GeoJSON.Net.CoordinateReferenceSystem;
 
 namespace GeoJSON.Net.Feature
 {
@@ -17,13 +18,31 @@ namespace GeoJSON.Net.Feature
     /// <remarks>
     /// See https://tools.ietf.org/html/rfc7946#section-3.2
     /// </remarks>
-    [JsonConverter(typeof(FeatureConverter))]
     public class Feature<TGeometry, TProps> : GeoJSONObject, IEquatable<Feature<TGeometry, TProps>>
         where TGeometry : IGeometryObject
     {
+        private string _id;
+        private bool _idHasValue = false;
+        private TGeometry _geometry;
+        private bool _geometryHasValue = false;
+        private TProps _properties;
+        private bool _propertiesHasValue = false;
+
+        public Feature()
+        {
+
+        }
+
         public Feature(TGeometry geometry, TProps properties, string id = null)
         {
             Geometry = geometry;
+            Properties = properties;
+            Id = id;
+        }
+
+        public Feature(IGeometryObject geometry, TProps properties, string id = null)
+        {
+            Geometry = (TGeometry)geometry;
             Properties = properties;
             Id = id;
         }
@@ -35,14 +54,80 @@ namespace GeoJSON.Net.Feature
 
         [JsonPropertyName( "id")]
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-        public string Id { get; }
+        public string Id { 
+            get
+            {
+                return _id;
+            }
+#if NET5_0_OR_GREATER
+            init
+            {
+                if (_idHasValue) throw new InvalidOperationException("Id property already set, is read only");
+
+                _id = value;
+                _idHasValue = true;
+            }
+#else
+            set
+            {
+                if (_idHasValue) throw new InvalidOperationException("Id property already set, is read only");
+
+                _id = value;
+                _idHasValue = true;
+            }
+#endif
+        }
 
         [JsonPropertyName("geometry")]
         [JsonConverter(typeof(GeometryConverter))]
-        public TGeometry Geometry { get; }
+        public TGeometry Geometry { 
+            get
+            {
+                return _geometry;
+            }
+#if NET5_0_OR_GREATER
+            init
+            {
+                if (_geometryHasValue) throw new InvalidOperationException("Geometry property already set, is read only");
+
+                _geometry = value;
+                _geometryHasValue = true;
+            }
+#else
+            set
+            {
+                if (_geometryHasValue) throw new InvalidOperationException("Geometry property already set, is read only");
+
+                _geometry = value;
+                _geometryHasValue = true;
+            }
+#endif
+        }
 
         [JsonPropertyName("properties")]
-        public TProps Properties { get; }
+        public TProps Properties { 
+            get
+            {
+                return _properties;
+            }
+#if NET5_0_OR_GREATER
+            init
+            {
+                if (_propertiesHasValue) throw new InvalidOperationException("Geometry property already set, is read only");
+
+                _properties = value;
+                _propertiesHasValue = true;
+            }
+#else
+            set
+            {
+                if (_propertiesHasValue) throw new InvalidOperationException("Geometry property already set, is read only");
+
+                _properties = value;
+                _propertiesHasValue = true;
+            }
+#endif
+        }
 
         /// <summary>
         /// Equality comparer.
@@ -104,9 +189,13 @@ namespace GeoJSON.Net.Feature
     /// <remarks>
     /// See https://tools.ietf.org/html/rfc7946#section-3.2
     /// </remarks>
-    [JsonConverter(typeof(FeatureConverter))]
     public class Feature : Feature<IGeometryObject>
     {
+        public Feature()
+        {
+
+        }
+
         public Feature(IGeometryObject geometry, IDictionary<string, object> properties = null, string id = null)
             : base(geometry, properties, id)
         {
@@ -124,9 +213,13 @@ namespace GeoJSON.Net.Feature
     /// </summary>
     /// <remarks>Returns correctly typed Geometry property</remarks>
     /// <typeparam name="TGeometry"></typeparam>
-    [JsonConverter(typeof(FeatureConverter))]
     public class Feature<TGeometry> : Feature<TGeometry, IDictionary<string, object>>, IEquatable<Feature<TGeometry>> where TGeometry : IGeometryObject
     {
+        public Feature()
+        {
+
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Feature" /> class.
         /// </summary>

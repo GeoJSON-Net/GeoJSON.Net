@@ -61,7 +61,7 @@ namespace GeoJSON.Net.Converters
                 }
                 if (reader.TokenType == JsonTokenType.StartObject)
                 {
-                    result.Add(GeometryConverter.Read(
+                    result.Add((IGeometryObject)GeometryConverter.Read(
                         ref reader,
                         typeof(IEnumerable<IPosition>),
                         options));

@@ -33,7 +33,6 @@ namespace GeoJSON.Net.Tests.Feature
             Assert.AreEqual(10.1, feature.Geometry.Coordinates.Latitude);
             Assert.AreEqual(456, feature.Geometry.Coordinates.Altitude);
         }
-
         [Test]
         public void Can_Deserialize_LineString_Feature()
         {

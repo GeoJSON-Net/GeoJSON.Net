@@ -79,7 +79,7 @@ namespace GeoJSON.Net.Converters
                         if (propertyName == "geometry")
                         {
                             reader.Read(); //Move one step forward to get property value
-                            geometryObject = geometryConverter.Read(ref reader, typeof(IGeometryObject), options);
+                            geometryObject = (IGeometryObject)geometryConverter.Read(ref reader, typeof(IGeometryObject), options);
                         }
                         else if (propertyName == "properties")
                         {
