@@ -7,17 +7,17 @@
     <Company>GeoJSON.Net</Company>
     <Copyright>Copyright © Joerg Battermann, Matt Hunt, Xavier Fischer and Contributors, 2014 - 2019</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.2.16</Version>
+    <Version>1.2.17</Version>
     <PackageProjectUrl>https://github.com/GeoJSON-Net/GeoJSON.Net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/GeoJSON-Net/GeoJSON.Net.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>geojson;geo;json;geolocation</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageReleaseNotes>Fixes exception when serializing polygons</PackageReleaseNotes>
+    <PackageReleaseNotes>Update Newtonsoft.Json package</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="10.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
   <PropertyGroup>
