@@ -13,13 +13,27 @@ using System;
 namespace GeoJSON.Net.Feature
 {
     /// <summary>
+	/// A GeoJSON Feature Object; generic version for strongly typed <see cref="Geometry"/>
+	/// and <see cref="Properties"/>
+	/// </summary>
+	/// <remarks>
+	/// See https://tools.ietf.org/html/rfc7946#section-3.2
+	/// </remarks>
+	public interface IFeature<out TGeometry, TProps> where TGeometry : IGeometryObject
+    {
+        string Id { get; }
+        TGeometry Geometry { get; }
+        TProps Properties { get; }
+    }
+
+    /// <summary>
     /// A GeoJSON Feature Object; generic version for strongly typed <see cref="Geometry"/>
     /// and <see cref="Properties"/>
     /// </summary>
     /// <remarks>
     /// See https://tools.ietf.org/html/rfc7946#section-3.2
     /// </remarks>
-    public class Feature<TGeometry, TProps> : GeoJSONObject, IEquatable<Feature<TGeometry, TProps>>
+    public class Feature<TGeometry, TProps> : GeoJSONObject, IFeature<TGeometry, TProps>, IEquatable<Feature<TGeometry, TProps>>
         where TGeometry : IGeometryObject
     {
         [JsonConstructor]
