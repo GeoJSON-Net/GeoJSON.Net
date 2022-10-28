@@ -45,12 +45,6 @@ Highly welcome! Just fork away and send a pull request. We try and review most p
 ## Thanks
 This library would be NOTHING without its [contributors](https://github.com/GeoJSON-Net/GeoJSON.Net/graphs/contributors) - thanks so much!!
 
-## Sponsors
-
- We have the awesome .NET tools from [JetBrains](http://www.jetbrains.com/).
-
-[![Resharper](http://www.filehelpers.net/images/tools_resharper.gif)](http://www.jetbrains.com/resharper/)
-
 ## Contributors
 
 This project exists thanks to all the people who contribute. 
