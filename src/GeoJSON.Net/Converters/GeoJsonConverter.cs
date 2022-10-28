@@ -15,14 +15,17 @@ namespace GeoJSON.Net.Converters
 	/// </summary>
 	public class GeoJsonConverter : JsonConverter
 	{
-		/// <summary>
-		///     Determines whether this instance can convert the specified object type.
-		/// </summary>
-		/// <param name="objectType">Type of the object.</param>
-		/// <returns>
-		///     <c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
-		/// </returns>
-		public override bool CanConvert(Type objectType)
+		/// <inheritdoc/>
+		public override bool CanWrite => false;
+
+        /// <summary>
+        ///     Determines whether this instance can convert the specified object type.
+        /// </summary>
+        /// <param name="objectType">Type of the object.</param>
+        /// <returns>
+        ///     <c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
+        /// </returns>
+        public override bool CanConvert(Type objectType)
 		{
 			return typeof(IGeoJSONObject).IsAssignableFromType(objectType);
 		}
@@ -64,7 +67,7 @@ namespace GeoJSON.Net.Converters
 		/// <param name="serializer">The calling serializer.</param>
 		public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
 		{
-			serializer.Serialize(writer, value);
+			throw new NotSupportedException();
 		}
 
 		/// <summary>
