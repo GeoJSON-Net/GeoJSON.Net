@@ -27,12 +27,29 @@ namespace GeoJSON.Net.Tests.Feature
 
             var featureCollection = JsonConvert.DeserializeObject<FeatureCollection>(json);
 
+            Assert.IsNotNull(featureCollection);
             Assert.IsNotNull(featureCollection.Features);
             Assert.AreEqual(featureCollection.Features.Count, 3);
             Assert.AreEqual(featureCollection.Features.Count(x => x.Geometry.Type == GeoJSONObjectType.Point), 1);
             Assert.AreEqual(featureCollection.Features.Count(x => x.Geometry.Type == GeoJSONObjectType.MultiPolygon), 1);
             Assert.AreEqual(featureCollection.Features.Count(x => x.Geometry.Type == GeoJSONObjectType.Polygon), 1);
         }
+        
+        [Test]
+        public void Can_DeserializeGeneric()
+        {
+            string json = GetExpectedJson();
+
+            var featureCollection = JsonConvert.DeserializeObject<FeatureCollection<FeatureCollectionTestPropertyObject>>(json);
+
+            Assert.IsNotNull(featureCollection);
+            Assert.IsNotNull(featureCollection.Features);
+            Assert.AreEqual(featureCollection.Features.Count, 3);
+            Assert.AreEqual("DD", featureCollection.Features.First().Properties.Name);
+            Assert.AreEqual(123, featureCollection.Features.First().Properties.Size);
+        }
+        
+        
 
         [Test]
         public void FeatureCollectionSerialization()
@@ -170,5 +187,11 @@ namespace GeoJSON.Net.Tests.Feature
 
             Assert.AreEqual(left.GetHashCode(), right.GetHashCode());
         }
+    }
+    
+    
+    internal class FeatureCollectionTestPropertyObject {
+        public string Name { get; set; }
+        public int Size { get; set; }
     }
 }
