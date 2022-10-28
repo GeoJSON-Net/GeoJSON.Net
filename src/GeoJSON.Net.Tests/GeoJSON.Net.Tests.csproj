@@ -4,7 +4,7 @@
     <ProjectGuid>{6C93B314-9208-4684-B873-172F7EC81689}</ProjectGuid>
     <RootNamespace>GeoJSON.Net.Tests</RootNamespace>
     <AssemblyName>GeoJSON.Net.Tests</AssemblyName>
-    <TargetFrameworks>net45;netcoreapp1.1</TargetFrameworks>
+    <TargetFrameworks>net45;netcoreapp3.1</TargetFrameworks>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
