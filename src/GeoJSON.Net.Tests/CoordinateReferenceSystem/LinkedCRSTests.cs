@@ -73,6 +73,11 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
         [Test]
         public void Ctor_Throws_ArgumentExpection_When_Href_Is_Not_Dereferencable_Uri()
         {
+#if NETFRAMEWORK
+            var expected = $"must be a dereferenceable URI{Environment.NewLine}Parameter name: href";
+#else
+            var expected = $"must be a dereferenceable URI (Parameter 'href')";
+#endif
 #if NETCOREAPP1_1
             System.Globalization.CultureInfo.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
 #else
@@ -80,7 +85,7 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
 #endif
 
             var argumentExpection = Assert.Throws<ArgumentException>(() => { var crs = new LinkedCRS("http://not-a-valid-<>-url"); });
-            Assert.AreEqual($"must be a dereferenceable URI{Environment.NewLine}Parameter name: href", argumentExpection.Message);
+            Assert.AreEqual(expected, argumentExpection.Message);
         }
 
         [Test]
