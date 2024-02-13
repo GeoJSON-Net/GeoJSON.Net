@@ -2,9 +2,11 @@ name: Build and Tests
 
 on:
   push:
-    branches: [ v2 ]
+    branches: [ '**' ]
   pull_request:
-    branches: [ v2 ]
+    branches: [ '**' ]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 jobs:
   build:
@@ -14,12 +16,14 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: 3.1.301
+        dotnet-version: |
+          3.1.x
+          5.0.x
     - name: Install dependencies
-      run: dotnet restore
+      run: dotnet restore src/GeoJSON.Net.sln
     - name: Build
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build src/GeoJSON.Net.sln --configuration Release --no-restore
     - name: Test
-      run: dotnet test --no-restore --verbosity normal
+      run: dotnet test src/GeoJSON.Net.sln --no-restore --verbosity normal
