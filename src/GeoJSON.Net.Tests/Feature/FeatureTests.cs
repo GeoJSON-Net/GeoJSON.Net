@@ -30,6 +30,20 @@ namespace GeoJSON.Net.Tests.Feature
         }
 
         [Test]
+        public void Can_Deserialize_Feature_Without_Props()
+        {
+            var json = GetExpectedJson();
+
+            var feature = JsonConvert.DeserializeObject<Net.Feature.Feature>(json);
+
+            Assert.IsNotNull(feature);
+            Assert.IsNotNull(feature.Properties);
+            Assert.IsEmpty(feature.Properties);
+
+            Assert.AreEqual(GeoJSONObjectType.Polygon, feature.Geometry.Type);
+        }
+
+        [Test]
         public void Can_Serialize_LineString_Feature()
         {
             var coordinates = new[]
