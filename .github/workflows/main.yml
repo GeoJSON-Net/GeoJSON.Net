@@ -45,5 +45,10 @@ jobs:
       run: dotnet restore src/GeoJSON.Net.sln
     - name: Build
       run: dotnet build src/GeoJSON.Net.sln -c Release --no-restore -p:Version=$(git describe --tags)
+    - name: Upload package
+      uses: actions/upload-artifact@v4
+      with:
+        name: nupkg
+        path: ./src/GeoJSON.Net/bin/Release/*.nupkg
     - name: Test
       run: dotnet test src/GeoJSON.Net.sln --no-restore --verbosity normal
