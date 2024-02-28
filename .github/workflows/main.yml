@@ -9,12 +9,13 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
 
+  linuxBuild:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v4
       with:
@@ -24,6 +25,30 @@ jobs:
     - name: Install dependencies
       run: dotnet restore src/GeoJSON.Net.sln
     - name: Build
-      run: dotnet build src/GeoJSON.Net.sln --configuration Release --no-restore
+      run: dotnet build src/GeoJSON.Net.sln -c Release --no-restore -p:Version=$(git describe --tags)
+    - name: Test
+      run: dotnet test src/GeoJSON.Net.sln --no-restore --verbosity normal
+
+  winBuild:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: |
+          3.1.x
+          5.0.x
+    - name: Install dependencies
+      run: dotnet restore src/GeoJSON.Net.sln
+    - name: Build
+      run: dotnet build src/GeoJSON.Net.sln -c Release --no-restore -p:Version=$(git describe --tags)
+    - name: Upload package
+      uses: actions/upload-artifact@v4
+      with:
+        name: nupkg
+        path: ./src/GeoJSON.Net/bin/Release/*.nupkg
     - name: Test
       run: dotnet test src/GeoJSON.Net.sln --no-restore --verbosity normal
