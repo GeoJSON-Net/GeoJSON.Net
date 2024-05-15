@@ -2,24 +2,53 @@ name: Build and Tests
 
 on:
   push:
-    branches: [ v2 ]
+    branches: [ '**' ]
   pull_request:
-    branches: [ v2 ]
+    branches: [ '**' ]
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 jobs:
-  build:
 
+  linuxBuild:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.301
+        fetch-depth: 0
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: |
+          3.1.x
+          5.0.x
     - name: Install dependencies
-      run: dotnet restore
+      run: dotnet restore src/GeoJSON.Net.sln
     - name: Build
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build src/GeoJSON.Net.sln -c Release --no-restore -p:Version=$(git describe --tags)
     - name: Test
-      run: dotnet test --no-restore --verbosity normal
+      run: dotnet test src/GeoJSON.Net.sln --no-restore --verbosity normal
+
+  winBuild:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: |
+          3.1.x
+          5.0.x
+    - name: Install dependencies
+      run: dotnet restore src/GeoJSON.Net.sln
+    - name: Build
+      run: dotnet build src/GeoJSON.Net.sln -c Release --no-restore -p:Version=$(git describe --tags)
+    - name: Upload package
+      uses: actions/upload-artifact@v4
+      with:
+        name: nupkg
+        path: ./src/GeoJSON.Net/bin/Release/*.nupkg
+    - name: Test
+      run: dotnet test src/GeoJSON.Net.sln --no-restore --verbosity normal

@@ -39,7 +39,7 @@ namespace GeoJSON.Net.Feature
         [JsonConverter(typeof(GeometryConverter))]
         public TGeometry Geometry { get; }
         
-        [JsonProperty(PropertyName = "properties", Required = Required.AllowNull)]
+        [JsonProperty(PropertyName = "properties", Required = Required.Default)]
         public TProps Properties { get; }
         
         /// <summary>

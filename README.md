@@ -1,4 +1,4 @@
-[![Backers on Open Collective](https://opencollective.com/geojson-net/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/geojson-net/sponsors/badge.svg)](#sponsors) [![NuGet Version](http://img.shields.io/nuget/v/GeoJSON.NET.svg?style=flat)](https://www.nuget.org/packages/GeoJSON.NET/) 
+[![Backers on Open Collective](https://opencollective.com/geojson-net/tiers/backer/badge.svg?label=backer&color=brightgreen)](#backers) [![Sponsors on Open Collective](https://opencollective.com/geojson-net/sponsors/badge.svg)](#sponsors) [![NuGet Version](http://img.shields.io/nuget/v/GeoJSON.NET.svg?style=flat)](https://www.nuget.org/packages/GeoJSON.NET/) 
 [![Build status](https://dev.azure.com/GeoJSON-Net/GeoJSON.Net/_apis/build/status/GeoJSON.Net)](https://dev.azure.com/GeoJSON-Net/GeoJSON.Net/_build/latest?definitionId=1)
 
 # GeoJSON.NET
@@ -28,26 +28,22 @@ Point point = JsonConvert.DeserializeObject<Point>(json);
 
 See the [Tests](https://github.com/GeoJSON-Net/GeoJSON.Net/tree/master/src/GeoJSON.Net.Tests) for more examples.
 
-## Special considerations for ASP.Net Core 3+
+## Special considerations for ASP.Net Core 3.1+
 
-System.Text.Json is the default (recommended) serializer. GeoJSON.Net **does not play well with System.Text.Json**. Here are the recommended steps as a workaround:
+System.Text.Json is the default (recommended) serializer. GeoJSON.Net **does not play well with System.Text.Json** and only supports Newtonsoft.Json
+
+[GeoJSON.Text](https://github.com/GeoJSON-Net/GeoJSON.Text) is a fork of this repository and have been developed to support System.Text.Json.
+
+If you still need to use Newtonsoft.Json in ASP.Net Core 3.1+, you must overwrite the default serializer.
 
 - add the "Microsoft.AspNetCore.Mvc.NewtonsoftJson" NuGet Package
 - add "services.AddControllers().AddNewtonsoftJson();" to your service configuration.
-
-(Thanks for @jrowe88 for pointing this out)
 
 ## Contributing
 Highly welcome! Just fork away and send a pull request. We try and review most pull requests within a couple of days. There is now a version 2.0.0 branch. I've created this ready for any breaking changes and any extra features and would encourage anything that isn't a bug fix to go in there.
 
 ## Thanks
 This library would be NOTHING without its [contributors](https://github.com/GeoJSON-Net/GeoJSON.Net/graphs/contributors) - thanks so much!!
-
-## Sponsors
-
- We have the awesome .NET tools from [JetBrains](http://www.jetbrains.com/).
-
-[![Resharper](http://www.filehelpers.net/images/tools_resharper.gif)](http://www.jetbrains.com/resharper/)
 
 ## Contributors
 
