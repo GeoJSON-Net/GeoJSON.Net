@@ -35,7 +35,7 @@ namespace GeoJSON.Net.Feature
         [JsonProperty(PropertyName = "id", NullValueHandling = NullValueHandling.Ignore)]
         public string Id { get; }
         
-        [JsonProperty(PropertyName = "geometry", Required = Required.AllowNull)]
+        [JsonProperty(PropertyName = "geometry", Required = Required.Default)]
         [JsonConverter(typeof(GeometryConverter))]
         public TGeometry Geometry { get; }
         
