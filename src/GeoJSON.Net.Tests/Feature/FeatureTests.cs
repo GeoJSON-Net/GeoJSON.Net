@@ -44,6 +44,38 @@ namespace GeoJSON.Net.Tests.Feature
         }
 
         [Test]
+        public void Can_Deserialize_Feature_With_Null_Geometry()
+        {
+            var json = GetExpectedJson();
+
+            var feature = JsonConvert.DeserializeObject<Net.Feature.Feature>(json);
+
+            Assert.IsNotNull(feature);
+            Assert.IsNotNull(feature.Properties);
+            Assert.IsTrue(feature.Properties.Any());
+            Assert.IsTrue(feature.Properties.ContainsKey("name"));
+            Assert.AreEqual(feature.Properties["name"], "Unlocalized Feature");
+
+            Assert.IsNull(feature.Geometry);
+        }
+
+        [Test]
+        public void Can_Deserialize_Feature_Without_Geometry()
+        {
+            var json = GetExpectedJson();
+
+            var feature = JsonConvert.DeserializeObject<Net.Feature.Feature>(json);
+
+            Assert.IsNotNull(feature);
+            Assert.IsNotNull(feature.Properties);
+            Assert.IsTrue(feature.Properties.Any());
+            Assert.IsTrue(feature.Properties.ContainsKey("name"));
+            Assert.AreEqual(feature.Properties["name"], "Unlocalized Feature");
+
+            Assert.IsNull(feature.Geometry);
+        }
+
+        [Test]
         public void Can_Serialize_LineString_Feature()
         {
             var coordinates = new[]
