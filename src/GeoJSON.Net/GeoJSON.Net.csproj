@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.0;netstandard1.1;netstandard2.0;netstandard2.1;net462;net5.0</TargetFrameworks>
+    <TargetFrameworks>netstandard1.0;netstandard1.1;netstandard2.0;netstandard2.1;net462;net6.0</TargetFrameworks>
     <Description>.Net types for the GeoJSON RFC to be used with Json.Net</Description>
     <Authors>Matt Hunt;Joerg Battermann;Xavier Fischer</Authors>
     <Company>GeoJSON.Net</Company>
