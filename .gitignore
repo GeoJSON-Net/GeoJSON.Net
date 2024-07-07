@@ -8,6 +8,7 @@ node_modules
 *.csproj.user
 /TestResults
 .vscode
+.mono
 /GoCompare.CustomerPreference/CustomerPreferenceService/Service.xml
 /GoCompare.CustomerPreference/CustomerPreferenceService/Properties/PublishProfiles/CustomerPreferenceService - Web Deploy.pubxml
 /GoCompare.CustomerPreference/CustomerPreferenceService/Properties/PublishProfiles/CustomerPreferenceService - Web Deploy.pubxml.user
