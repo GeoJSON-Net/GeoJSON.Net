@@ -2,6 +2,7 @@ using GeoJSON.Net.CoordinateReferenceSystem;
 using GeoJSON.Net.Feature;
 using Newtonsoft.Json;
 using NUnit.Framework;
+using NUnit.Framework.Legacy;
 
 namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
 {
@@ -13,7 +14,7 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
         {
             var crs = new UnspecifiedCRS();
 
-            Assert.AreEqual(CRSType.Unspecified, crs.Type);
+            ClassicAssert.AreEqual(CRSType.Unspecified, crs.Type);
         }
 
         [Test]
@@ -32,7 +33,7 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
             var json = "{\"type\":\"FeatureCollection\",\"crs\":null,\"features\":[] }";
             var featureCollection = JsonConvert.DeserializeObject<FeatureCollection>(json);
 
-            Assert.IsInstanceOf<UnspecifiedCRS>(featureCollection.CRS);
+            ClassicAssert.IsInstanceOf<UnspecifiedCRS>(featureCollection.CRS);
         }
 
         [Test]
@@ -41,18 +42,18 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
             var left = new UnspecifiedCRS();
             var right = new UnspecifiedCRS();
 
-            Assert.AreEqual(left, right);
+            ClassicAssert.AreEqual(left, right);
 
-            Assert.IsTrue(left == right);
-            Assert.IsTrue(right == left);
+            ClassicAssert.IsTrue(left == right);
+            ClassicAssert.IsTrue(right == left);
 
-            Assert.IsTrue(left.Equals(right));
-            Assert.IsTrue(right.Equals(left));
+            ClassicAssert.IsTrue(left.Equals(right));
+            ClassicAssert.IsTrue(right.Equals(left));
 
-            Assert.IsTrue(left.Equals(left));
-            Assert.IsTrue(right.Equals(right));
+            ClassicAssert.IsTrue(left.Equals(left));
+            ClassicAssert.IsTrue(right.Equals(right));
 
-            Assert.AreEqual(left.GetHashCode(), right.GetHashCode());
+            ClassicAssert.AreEqual(left.GetHashCode(), right.GetHashCode());
         }
     }
 }
