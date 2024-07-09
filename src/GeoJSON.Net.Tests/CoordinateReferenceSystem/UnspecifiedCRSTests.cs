@@ -2,7 +2,6 @@ using GeoJSON.Net.CoordinateReferenceSystem;
 using GeoJSON.Net.Feature;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
 {
@@ -14,7 +13,7 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
         {
             var crs = new UnspecifiedCRS();
 
-            ClassicAssert.AreEqual(CRSType.Unspecified, crs.Type);
+            Assert.That(crs.Type, Is.EqualTo(CRSType.Unspecified));
         }
 
         [Test]
@@ -23,7 +22,7 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
             var collection = new FeatureCollection { CRS = new UnspecifiedCRS() };
             var expectedJson = "{\"type\":\"FeatureCollection\",\"crs\":null,\"features\":[] }";
             var actualJson = JsonConvert.SerializeObject(collection);
-            
+
             JsonAssert.AreEqual(expectedJson, actualJson);
         }
 
@@ -33,7 +32,7 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
             var json = "{\"type\":\"FeatureCollection\",\"crs\":null,\"features\":[] }";
             var featureCollection = JsonConvert.DeserializeObject<FeatureCollection>(json);
 
-            ClassicAssert.IsInstanceOf<UnspecifiedCRS>(featureCollection.CRS);
+            Assert.That(featureCollection.CRS, Is.InstanceOf<UnspecifiedCRS>());
         }
 
         [Test]
@@ -42,18 +41,18 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
             var left = new UnspecifiedCRS();
             var right = new UnspecifiedCRS();
 
-            ClassicAssert.AreEqual(left, right);
+            Assert.That(right, Is.EqualTo(left));
 
-            ClassicAssert.IsTrue(left == right);
-            ClassicAssert.IsTrue(right == left);
+            Assert.That(left == right);
+            Assert.That(right == left);
 
-            ClassicAssert.IsTrue(left.Equals(right));
-            ClassicAssert.IsTrue(right.Equals(left));
+            Assert.That(left.Equals(right));
+            Assert.That(right.Equals(left));
 
-            ClassicAssert.IsTrue(left.Equals(left));
-            ClassicAssert.IsTrue(right.Equals(right));
+            Assert.That(left.Equals(left));
+            Assert.That(right.Equals(right));
 
-            ClassicAssert.AreEqual(left.GetHashCode(), right.GetHashCode());
+            Assert.That(right.GetHashCode(), Is.EqualTo(left.GetHashCode()));
         }
     }
 }

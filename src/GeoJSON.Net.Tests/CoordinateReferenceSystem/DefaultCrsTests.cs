@@ -3,7 +3,6 @@ using GeoJSON.Net.Feature;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
 {
@@ -17,7 +16,7 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
 
             var json = JsonConvert.SerializeObject(collection);
 
-            ClassicAssert.IsTrue(!json.Contains("\"crs\""));
+            Assert.That(!json.Contains("\"crs\""));
         }
 
         [Test]
@@ -27,7 +26,7 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
 
             var point = JsonConvert.DeserializeObject<Point>(json);
 
-            ClassicAssert.IsNull(point.CRS);
+            Assert.That(point.CRS, Is.Null);
         }
 
         [Test]
@@ -37,8 +36,8 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
 
             var point = JsonConvert.DeserializeObject<Point>(json);
 
-            ClassicAssert.IsNotNull(point.CRS);
-            ClassicAssert.AreEqual(CRSType.Name, point.CRS.Type);
+            Assert.That(point.CRS, Is.Not.Null);
+            Assert.That(point.CRS.Type, Is.EqualTo(CRSType.Name));
         }
 
         [Test]
@@ -50,8 +49,8 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
 
             var json = JsonConvert.SerializeObject(point);
 
-            ClassicAssert.IsNotNull(json);
-            ClassicAssert.AreEqual(expected, json);
+            Assert.That(json, Is.Not.Null);
+            Assert.That(json, Is.EqualTo(expected));
         }
 
         [Test]
@@ -63,8 +62,8 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
 
             var json = JsonConvert.SerializeObject(point);
 
-            ClassicAssert.IsNotNull(json);
-            ClassicAssert.AreEqual(expected, json);
+            Assert.That(json, Is.Not.Null);
+            Assert.That(json, Is.EqualTo(expected));
         }
     }
 }

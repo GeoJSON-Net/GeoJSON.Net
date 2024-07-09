@@ -1,7 +1,6 @@
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 namespace GeoJSON.Net.Tests.Geometry
 {
@@ -41,12 +40,12 @@ namespace GeoJSON.Net.Tests.Geometry
 
             var actualPoint = JsonConvert.DeserializeObject<Point>(json);
 
-            ClassicAssert.IsNotNull(actualPoint);
-            ClassicAssert.IsNotNull(actualPoint.Coordinates);
-            ClassicAssert.AreEqual(53.2455662, actualPoint.Coordinates.Latitude);
-            ClassicAssert.AreEqual(90.65464646, actualPoint.Coordinates.Longitude);
-            ClassicAssert.AreEqual(200.4567, actualPoint.Coordinates.Altitude);
-            ClassicAssert.AreEqual(expectedPoint, actualPoint);
+            Assert.That(actualPoint, Is.Not.Null);
+            Assert.That(actualPoint.Coordinates, Is.Not.Null);
+            Assert.That(actualPoint.Coordinates.Latitude, Is.EqualTo(53.2455662));
+            Assert.That(actualPoint.Coordinates.Longitude, Is.EqualTo(90.65464646));
+            Assert.That(actualPoint.Coordinates.Altitude, Is.EqualTo(200.4567));
+            Assert.That(actualPoint, Is.EqualTo(expectedPoint));
         }
 
         [Test]
@@ -58,13 +57,13 @@ namespace GeoJSON.Net.Tests.Geometry
 
             var actualPoint = JsonConvert.DeserializeObject<Point>(json);
 
-            ClassicAssert.IsNotNull(actualPoint);
-            ClassicAssert.IsNotNull(actualPoint.Coordinates);
-            ClassicAssert.AreEqual(53.2455662, actualPoint.Coordinates.Latitude);
-            ClassicAssert.AreEqual(90.65464646, actualPoint.Coordinates.Longitude);
-            ClassicAssert.IsFalse(actualPoint.Coordinates.Altitude.HasValue);
-            ClassicAssert.IsNull(actualPoint.Coordinates.Altitude);
-            ClassicAssert.AreEqual(expectedPoint, actualPoint);
+            Assert.That(actualPoint, Is.Not.Null);
+            Assert.That(actualPoint.Coordinates, Is.Not.Null);
+            Assert.That(actualPoint.Coordinates.Latitude, Is.EqualTo(53.2455662));
+            Assert.That(actualPoint.Coordinates.Longitude, Is.EqualTo(90.65464646));
+            Assert.That(actualPoint.Coordinates.Altitude.HasValue, Is.False);
+            Assert.That(actualPoint.Coordinates.Altitude, Is.Null);
+            Assert.That(actualPoint, Is.EqualTo(expectedPoint));
         }
 
         [Test]
@@ -76,11 +75,11 @@ namespace GeoJSON.Net.Tests.Geometry
 
             var actualPoint = JsonConvert.DeserializeObject<Point>(json);
 
-            ClassicAssert.AreEqual(expectedPoint, actualPoint);
-            ClassicAssert.IsTrue(expectedPoint.Equals(actualPoint));
-            ClassicAssert.IsTrue(actualPoint.Equals(expectedPoint));
+            Assert.That(actualPoint, Is.EqualTo(expectedPoint));
+            Assert.That(expectedPoint.Equals(actualPoint));
+            Assert.That(actualPoint.Equals(expectedPoint));
 
-            ClassicAssert.AreEqual(expectedPoint.GetHashCode(), actualPoint.GetHashCode());
+            Assert.That(actualPoint.GetHashCode(), Is.EqualTo(expectedPoint.GetHashCode()));
         }
 
         [Test]

@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 namespace GeoJSON.Net.Tests.Geometry
 {
@@ -18,7 +17,7 @@ namespace GeoJSON.Net.Tests.Geometry
 
             var actualMultiPolygon = JsonConvert.DeserializeObject<MultiPolygon>(json);
 
-            ClassicAssert.AreEqual(expectMultiPolygon, actualMultiPolygon);
+            Assert.That(actualMultiPolygon, Is.EqualTo(expectMultiPolygon));
         }
 
         private MultiPolygon GetMultiPolygon(double offset = 0.0)
@@ -123,18 +122,18 @@ namespace GeoJSON.Net.Tests.Geometry
             var left = GetMultiPolygon(offset);
             var right = GetMultiPolygon(offset);
 
-            ClassicAssert.AreEqual(left, right);
-            ClassicAssert.AreEqual(right, left);
+            Assert.That(right, Is.EqualTo(left));
+            Assert.That(left, Is.EqualTo(right));
 
-            ClassicAssert.IsTrue(left.Equals(right));
-            ClassicAssert.IsTrue(left.Equals(left));
-            ClassicAssert.IsTrue(right.Equals(left));
-            ClassicAssert.IsTrue(right.Equals(right));
+            Assert.That(left.Equals(right));
+            Assert.That(left.Equals(left));
+            Assert.That(right.Equals(left));
+            Assert.That(right.Equals(right));
 
-            ClassicAssert.IsTrue(left == right);
-            ClassicAssert.IsTrue(right == left);
+            Assert.That(left == right);
+            Assert.That(right == left);
 
-            ClassicAssert.AreEqual(left.GetHashCode(), right.GetHashCode());
+            Assert.That(right.GetHashCode(), Is.EqualTo(left.GetHashCode()));
         }
     }
 }

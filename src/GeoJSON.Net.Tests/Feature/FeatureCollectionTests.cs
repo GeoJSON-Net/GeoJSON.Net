@@ -5,7 +5,6 @@ using GeoJSON.Net.Feature;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 namespace GeoJSON.Net.Tests.Feature
 {
@@ -15,7 +14,7 @@ namespace GeoJSON.Net.Tests.Feature
         [Test]
         public void Ctor_Throws_ArgumentNullException_When_Features_Is_Null()
         {
-            ClassicAssert.Throws<ArgumentNullException>(() =>
+            Assert.Throws<ArgumentNullException>(() =>
             {
                 var featureCollection = new FeatureCollection(null);
             });
@@ -28,12 +27,12 @@ namespace GeoJSON.Net.Tests.Feature
 
             var featureCollection = JsonConvert.DeserializeObject<FeatureCollection>(json);
 
-            ClassicAssert.IsNotNull(featureCollection);
-            ClassicAssert.IsNotNull(featureCollection.Features);
-            ClassicAssert.AreEqual(featureCollection.Features.Count, 3);
-            ClassicAssert.AreEqual(featureCollection.Features.Count(x => x.Geometry.Type == GeoJSONObjectType.Point), 1);
-            ClassicAssert.AreEqual(featureCollection.Features.Count(x => x.Geometry.Type == GeoJSONObjectType.MultiPolygon), 1);
-            ClassicAssert.AreEqual(featureCollection.Features.Count(x => x.Geometry.Type == GeoJSONObjectType.Polygon), 1);
+            Assert.That(featureCollection, Is.Not.Null);
+            Assert.That(featureCollection.Features, Is.Not.Null);
+            Assert.That(featureCollection.Features.Count, Is.EqualTo(3));
+            Assert.That(featureCollection.Features.Count(x => x.Geometry.Type == GeoJSONObjectType.Point), Is.EqualTo(1));
+            Assert.That(featureCollection.Features.Count(x => x.Geometry.Type == GeoJSONObjectType.MultiPolygon), Is.EqualTo(1));
+            Assert.That(featureCollection.Features.Count(x => x.Geometry.Type == GeoJSONObjectType.Polygon), Is.EqualTo(1));
         }
         
         [Test]
@@ -43,11 +42,11 @@ namespace GeoJSON.Net.Tests.Feature
 
             var featureCollection = JsonConvert.DeserializeObject<FeatureCollection<FeatureCollectionTestPropertyObject>>(json);
 
-            ClassicAssert.IsNotNull(featureCollection);
-            ClassicAssert.IsNotNull(featureCollection.Features);
-            ClassicAssert.AreEqual(featureCollection.Features.Count, 3);
-            ClassicAssert.AreEqual("DD", featureCollection.Features.First().Properties.Name);
-            ClassicAssert.AreEqual(123, featureCollection.Features.First().Properties.Size);
+            Assert.That(featureCollection, Is.Not.Null);
+            Assert.That(featureCollection.Features, Is.Not.Null);
+            Assert.That(featureCollection.Features.Count, Is.EqualTo(3));
+            Assert.That(featureCollection.Features.First().Properties.Name, Is.EqualTo("DD"));
+            Assert.That(featureCollection.Features.First().Properties.Size, Is.EqualTo(123));
         }
         
         
@@ -76,9 +75,9 @@ namespace GeoJSON.Net.Tests.Feature
 
             var actualJson = JsonConvert.SerializeObject(model);
 
-            ClassicAssert.IsNotNull(actualJson);
+            Assert.That(actualJson, Is.Not.Null);
 
-            ClassicAssert.IsFalse(string.IsNullOrEmpty(actualJson));
+            Assert.That(string.IsNullOrEmpty(actualJson), Is.False);
         }
         
         [Test]
@@ -139,10 +138,10 @@ namespace GeoJSON.Net.Tests.Feature
                 var expectedId = expectedIds[i];
                 var expectedIndex = expectedIndexes[i];
 
-                ClassicAssert.AreEqual(expectedId, actualId);
-                ClassicAssert.AreEqual(expectedIndex, actualIndex);
+                Assert.That(actualId, Is.EqualTo(expectedId));
+                Assert.That(actualIndex, Is.EqualTo(expectedIndex));
 
-                ClassicAssert.Inconclusive("not supported. the Feature.Id is optional. " + 
+                Assert.Inconclusive("not supported. the Feature.Id is optional. " + 
                     " create a new class that inherits from" +
                     " Feature and then override Equals and GetHashCode");
 
@@ -172,21 +171,21 @@ namespace GeoJSON.Net.Tests.Feature
 
         private void Assert_Are_Equal(FeatureCollection left, FeatureCollection right)
         {
-            ClassicAssert.AreEqual(left, right);
+            Assert.That(right, Is.EqualTo(left));
 
-            ClassicAssert.IsTrue(left.Equals(right));
-            ClassicAssert.IsTrue(right.Equals(left));
+            Assert.That(left.Equals(right));
+            Assert.That(right.Equals(left));
 
-            ClassicAssert.IsTrue(left.Equals(left));
-            ClassicAssert.IsTrue(right.Equals(right));
+            Assert.That(left.Equals(left));
+            Assert.That(right.Equals(right));
 
-            ClassicAssert.IsTrue(left == right);
-            ClassicAssert.IsTrue(right == left);
+            Assert.That(left == right);
+            Assert.That(right == left);
 
-            ClassicAssert.IsFalse(left != right);
-            ClassicAssert.IsFalse(right != left);
+            Assert.That(left != right, Is.False);
+            Assert.That(right != left, Is.False);
 
-            ClassicAssert.AreEqual(left.GetHashCode(), right.GetHashCode());
+            Assert.That(right.GetHashCode(), Is.EqualTo(left.GetHashCode()));
         }
     }
     

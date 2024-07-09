@@ -2,7 +2,6 @@
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 namespace GeoJSON.Net.Tests.Geometry
 {
@@ -32,8 +31,8 @@ namespace GeoJSON.Net.Tests.Geometry
 
             var multiLineString = JsonConvert.DeserializeObject<MultiLineString>(json);
 
-            ClassicAssert.IsNotNull(multiLineString);
-            ClassicAssert.AreEqual(expectedMultiLineString, multiLineString);
+            Assert.That(multiLineString, Is.Not.Null);
+            Assert.That(multiLineString, Is.EqualTo(expectedMultiLineString));
         }
 
         [Test]
@@ -99,18 +98,18 @@ namespace GeoJSON.Net.Tests.Geometry
 
             var right = new MultiLineString(rightLine);
 
-            ClassicAssert.AreEqual(left, right);
-            ClassicAssert.AreEqual(right, left);
+            Assert.That(right, Is.EqualTo(left));
+            Assert.That(left, Is.EqualTo(right));
 
-            ClassicAssert.IsTrue(left.Equals(right));
-            ClassicAssert.IsTrue(left.Equals(left));
-            ClassicAssert.IsTrue(right.Equals(left));
-            ClassicAssert.IsTrue(right.Equals(right));
+            Assert.That(left.Equals(right));
+            Assert.That(left.Equals(left));
+            Assert.That(right.Equals(left));
+            Assert.That(right.Equals(right));
 
-            ClassicAssert.IsTrue(left == right);
-            ClassicAssert.IsTrue(right == left);
+            Assert.That(left == right);
+            Assert.That(right == left);
 
-            ClassicAssert.AreEqual(left.GetHashCode(), right.GetHashCode());
+            Assert.That(right.GetHashCode(), Is.EqualTo(left.GetHashCode()));
         }
     }
 }

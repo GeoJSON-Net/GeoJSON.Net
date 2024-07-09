@@ -3,7 +3,6 @@ using GeoJSON.Net.CoordinateReferenceSystem;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
 {
@@ -16,7 +15,7 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
         public void Has_Correct_Type()
         {
             var crs = new LinkedCRS(Href);
-            ClassicAssert.AreEqual(CRSType.Link, crs.Type);
+            Assert.That(crs.Type, Is.EqualTo(CRSType.Link));
         }
 
         [Test]
@@ -24,8 +23,8 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
         {
             var crs = new LinkedCRS(Href);
 
-            ClassicAssert.IsTrue(crs.Properties.ContainsKey("href"));
-            ClassicAssert.AreEqual(Href, crs.Properties["href"]);
+            Assert.That(crs.Properties.ContainsKey("href"));
+            Assert.That(crs.Properties["href"], Is.EqualTo(Href));
         }
 
         [Test]
@@ -34,8 +33,8 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
             const string type = "ogcwkt";
             var crs = new LinkedCRS(Href, type);
 
-            ClassicAssert.IsTrue(crs.Properties.ContainsKey("type"));
-            ClassicAssert.AreEqual(type, crs.Properties["type"]);
+            Assert.That(crs.Properties.ContainsKey("type"));
+            Assert.That(crs.Properties["type"], Is.EqualTo(type));
         }
 
         [Test]
@@ -54,21 +53,21 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
             var pointWithCRS = JsonConvert.DeserializeObject<Point>(pointJson);
             var linkCRS = pointWithCRS.CRS as LinkedCRS;
 
-            ClassicAssert.IsNotNull(linkCRS);
-            ClassicAssert.AreEqual(CRSType.Link, linkCRS.Type);
-            ClassicAssert.AreEqual(Href, linkCRS.Properties["href"]);
+            Assert.That(linkCRS, Is.Not.Null);
+            Assert.That(linkCRS.Type, Is.EqualTo(CRSType.Link));
+            Assert.That(linkCRS.Properties["href"], Is.EqualTo(Href));
         }
 
         [Test]
         public void Ctor_Throws_ArgumentNullExpection_When_Href_String_Is_Null()
         {
-            ClassicAssert.Throws<ArgumentNullException>(() => { var crs = new LinkedCRS((string)null); });
+            Assert.Throws<ArgumentNullException>(() => { var crs = new LinkedCRS((string)null); });
         }
 
         [Test]
         public void Ctor_Throws_ArgumentNullExpection_When_Href_Uri_Is_Null()
         {
-            ClassicAssert.Throws<ArgumentNullException>(() => { var crs = new LinkedCRS((Uri)null); });
+            Assert.Throws<ArgumentNullException>(() => { var crs = new LinkedCRS((Uri)null); });
         }
 
         [Test]
@@ -85,20 +84,20 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
             System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
 #endif
 
-            var argumentExpection = ClassicAssert.Throws<ArgumentException>(() => { var crs = new LinkedCRS("http://not-a-valid-<>-url"); });
-            ClassicAssert.AreEqual(expected, argumentExpection.Message);
+            var argumentExpection = Assert.Throws<ArgumentException>(() => { var crs = new LinkedCRS("http://not-a-valid-<>-url"); });
+            Assert.That(argumentExpection.Message, Is.EqualTo(expected));
         }
 
         [Test]
         public void Ctor_Does_Not_Throw_When_Href_Is_Dereferencable_Uri()
         {
-            ClassicAssert.DoesNotThrow(() => { var crs = new LinkedCRS("data.crs"); });
+            Assert.DoesNotThrow(() => { var crs = new LinkedCRS("data.crs"); });
         }
 
         [Test]
         public void Ctor_Throws_ArgumentNullExpection_When_Name_Is_Empty()
         {
-            ClassicAssert.Throws<ArgumentException>(() => { var crs = new LinkedCRS(string.Empty); });
+            Assert.Throws<ArgumentException>(() => { var crs = new LinkedCRS(string.Empty); });
         }
 
         [Test]
@@ -107,30 +106,30 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
             var left = new LinkedCRS(Href);
             var right = new LinkedCRS(Href);
 
-            ClassicAssert.AreEqual(left, right);
+            Assert.That(right, Is.EqualTo(left));
 
-            ClassicAssert.IsTrue(left == right);
-            ClassicAssert.IsTrue(right == left);
+            Assert.That(left == right);
+            Assert.That(right == left);
 
-            ClassicAssert.IsTrue(left.Equals(right));
-            ClassicAssert.IsTrue(right.Equals(left));
+            Assert.That(left.Equals(right));
+            Assert.That(right.Equals(left));
 
-            ClassicAssert.IsTrue(left.Equals(left));
-            ClassicAssert.IsTrue(right.Equals(right));
+            Assert.That(left.Equals(left));
+            Assert.That(right.Equals(right));
 
-            ClassicAssert.AreEqual(left.GetHashCode(), right.GetHashCode());
+            Assert.That(right.GetHashCode(), Is.EqualTo(left.GetHashCode()));
 
             right = new LinkedCRS(Href + "?query=null");
 
-            ClassicAssert.AreNotEqual(left, right);
+            Assert.That(right, Is.Not.EqualTo(left));
 
-            ClassicAssert.IsFalse(left == right);
-            ClassicAssert.IsFalse(right == left);
+            Assert.That(left == right, Is.False);
+            Assert.That(right == left, Is.False);
 
-            ClassicAssert.IsFalse(left.Equals(right));
-            ClassicAssert.IsFalse(right.Equals(left));
+            Assert.That(left.Equals(right), Is.False);
+            Assert.That(right.Equals(left), Is.False);
 
-            ClassicAssert.AreNotEqual(left.GetHashCode(), right.GetHashCode());
+            Assert.That(right.GetHashCode(), Is.Not.EqualTo(left.GetHashCode()));
         }
     }
 }

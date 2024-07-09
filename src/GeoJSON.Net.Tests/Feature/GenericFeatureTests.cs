@@ -4,7 +4,6 @@ using GeoJSON.Net.Feature;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 namespace GeoJSON.Net.Tests.Feature
 {
@@ -18,19 +17,19 @@ namespace GeoJSON.Net.Tests.Feature
 
             var feature = JsonConvert.DeserializeObject<Feature<Point>>(json);
 
-            ClassicAssert.IsNotNull(feature);
-            ClassicAssert.IsNotNull(feature.Properties);
-            ClassicAssert.IsTrue(feature.Properties.Any());
+            Assert.That(feature, Is.Not.Null);
+            Assert.That(feature.Properties, Is.Not.Null);
+            Assert.That(feature.Properties.Any());
 
-            ClassicAssert.IsTrue(feature.Properties.ContainsKey("name"));
-            ClassicAssert.AreEqual("Dinagat Islands", feature.Properties["name"]);
+            Assert.That(feature.Properties.ContainsKey("name"));
+            Assert.That(feature.Properties["name"], Is.EqualTo("Dinagat Islands"));
 
-            ClassicAssert.AreEqual("test-id", feature.Id);
+            Assert.That(feature.Id, Is.EqualTo("test-id"));
 
-            ClassicAssert.AreEqual(GeoJSONObjectType.Point, feature.Geometry.Type);
-            ClassicAssert.AreEqual(125.6, feature.Geometry.Coordinates.Longitude);
-            ClassicAssert.AreEqual(10.1, feature.Geometry.Coordinates.Latitude);
-            ClassicAssert.AreEqual(456, feature.Geometry.Coordinates.Altitude);
+            Assert.That(feature.Geometry.Type, Is.EqualTo(GeoJSONObjectType.Point));
+            Assert.That(feature.Geometry.Coordinates.Longitude, Is.EqualTo(125.6));
+            Assert.That(feature.Geometry.Coordinates.Latitude, Is.EqualTo(10.1));
+            Assert.That(feature.Geometry.Coordinates.Altitude, Is.EqualTo(456));
         }
 
         [Test]
@@ -40,18 +39,18 @@ namespace GeoJSON.Net.Tests.Feature
 
             var feature = JsonConvert.DeserializeObject<Feature<LineString>>(json);
 
-            ClassicAssert.IsNotNull(feature);
-            ClassicAssert.IsNotNull(feature.Properties);
-            ClassicAssert.IsTrue(feature.Properties.Any());
+            Assert.That(feature, Is.Not.Null);
+            Assert.That(feature.Properties, Is.Not.Null);
+            Assert.That(feature.Properties.Any());
 
-            ClassicAssert.IsTrue(feature.Properties.ContainsKey("name"));
-            ClassicAssert.AreEqual("Dinagat Islands", feature.Properties["name"]);
+            Assert.That(feature.Properties.ContainsKey("name"));
+            Assert.That(feature.Properties["name"], Is.EqualTo("Dinagat Islands"));
 
-            ClassicAssert.AreEqual("test-id", feature.Id);
+            Assert.That(feature.Id, Is.EqualTo("test-id"));
 
-            ClassicAssert.AreEqual(GeoJSONObjectType.LineString, feature.Geometry.Type);
+            Assert.That(feature.Geometry.Type, Is.EqualTo(GeoJSONObjectType.LineString));
 
-            ClassicAssert.AreEqual(4, feature.Geometry.Coordinates.Count);
+            Assert.That(feature.Geometry.Coordinates.Count, Is.EqualTo(4));
 
             //Assert.AreEqual(125.6, feature.Geometry.Coordinates.Longitude);
             //Assert.AreEqual(10.1, feature.Geometry.Coordinates.Latitude);
@@ -73,14 +72,14 @@ namespace GeoJSON.Net.Tests.Feature
 
             var feature = new Feature<Point, Dictionary<string, string>>(point, properties, "testid");
 
-            ClassicAssert.DoesNotThrow(() =>
+            Assert.DoesNotThrow(() =>
             {
                 equal1 = feature == null;
                 equal2 = feature.Equals(null);
             });
 
-            ClassicAssert.IsFalse(equal1);
-            ClassicAssert.IsFalse(equal2);
+            Assert.That(equal1, Is.False);
+            Assert.That(equal2, Is.False);
         }
 
         private class TypedFeatureProps
@@ -97,15 +96,15 @@ namespace GeoJSON.Net.Tests.Feature
             var json = GetExpectedJson();
             var feature = JsonConvert.DeserializeObject<Feature<Point, TypedFeatureProps>>(json);
 
-            ClassicAssert.IsNotNull(feature);
+            Assert.That(feature, Is.Not.Null);
 
-            ClassicAssert.IsNotNull(feature.Properties);
-            ClassicAssert.AreEqual(feature.Properties.Name, "Dinagat Islands");
-            ClassicAssert.AreEqual(feature.Properties.Value, 4.2);
+            Assert.That(feature.Properties, Is.Not.Null);
+            Assert.That(feature.Properties.Name, Is.EqualTo("Dinagat Islands"));
+            Assert.That(feature.Properties.Value, Is.EqualTo(4.2));
 
-            ClassicAssert.AreEqual(feature.Id, "test-id");
+            Assert.That(feature.Id, Is.EqualTo("test-id"));
 
-            ClassicAssert.AreEqual(feature.Geometry.Type, GeoJSONObjectType.Point);
+            Assert.That(feature.Geometry.Type, Is.EqualTo(GeoJSONObjectType.Point));
         }
 
 

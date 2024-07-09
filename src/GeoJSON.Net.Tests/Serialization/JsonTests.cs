@@ -2,7 +2,6 @@
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 namespace GeoJSON.Net.Tests.Serialization
 {
@@ -17,7 +16,7 @@ namespace GeoJSON.Net.Tests.Serialization
 
             var deserialized = JsonConvert.DeserializeObject<GeoJSONObject>(json, new GeoJsonConverter());
 
-            ClassicAssert.AreEqual(source, deserialized);
+            Assert.That(deserialized, Is.EqualTo(source));
         }
 
         [Test]
@@ -29,7 +28,7 @@ namespace GeoJSON.Net.Tests.Serialization
 
             var deserialized = JsonConvert.DeserializeObject<IGeoJSONObject>(json, new GeoJsonConverter());
 
-            ClassicAssert.AreEqual(source, deserialized);
+            Assert.That(deserialized, Is.EqualTo(source));
         }
     }
 }

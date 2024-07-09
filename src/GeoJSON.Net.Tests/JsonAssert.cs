@@ -1,6 +1,6 @@
 using System.Linq;
 using Newtonsoft.Json.Linq;
-using NUnit.Framework.Legacy;
+using NUnit.Framework;
 
 namespace GeoJSON.Net.Tests
 {
@@ -20,9 +20,8 @@ namespace GeoJSON.Net.Tests
         /// <param name="actualJson">The actual json.</param>
         public static void AreEqual(string expectJson, string actualJson)
         {
-            ClassicAssert.AreEqual(
-                JObject.Parse(expectJson).SortProperties().ToString(),
-                JObject.Parse(actualJson).SortProperties().ToString());
+            Assert.That(
+                JObject.Parse(actualJson).SortProperties().ToString(), Is.EqualTo(JObject.Parse(expectJson).SortProperties().ToString()));
         }
 
         /// <summary>
@@ -32,7 +31,7 @@ namespace GeoJSON.Net.Tests
         /// <param name="actualJson">The actual json.</param>
         public static void Contains(string expectedJson, string actualJson)
         {
-            ClassicAssert.IsTrue(actualJson.Contains(expectedJson), "expected {0} to contain {1}", actualJson, expectedJson);
+            Assert.That(actualJson.Contains(expectedJson), $"expected {actualJson} to contain {expectedJson}");
         }
 
         /// <summary>

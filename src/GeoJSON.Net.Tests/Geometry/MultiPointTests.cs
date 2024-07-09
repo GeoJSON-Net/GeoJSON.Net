@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 namespace GeoJSON.Net.Tests.Geometry
 {
@@ -41,7 +40,7 @@ namespace GeoJSON.Net.Tests.Geometry
             var json = GetExpectedJson();
             var actualMultiPoint = JsonConvert.DeserializeObject<MultiPoint>(json);
 
-            ClassicAssert.AreEqual(expectedMultiPoint, actualMultiPoint);
+            Assert.That(actualMultiPoint, Is.EqualTo(expectedMultiPoint));
         }
 
         private List<Point> GetPoints(double offset)
@@ -69,18 +68,18 @@ namespace GeoJSON.Net.Tests.Geometry
             var left = new MultiPoint(GetPoints(offset));
             var right = new MultiPoint(GetPoints(offset));
 
-            ClassicAssert.AreEqual(left, right);
-            ClassicAssert.AreEqual(right, left);
+            Assert.That(right, Is.EqualTo(left));
+            Assert.That(left, Is.EqualTo(right));
 
-            ClassicAssert.IsTrue(left.Equals(right));
-            ClassicAssert.IsTrue(left.Equals(left));
-            ClassicAssert.IsTrue(right.Equals(left));
-            ClassicAssert.IsTrue(right.Equals(right));
+            Assert.That(left.Equals(right));
+            Assert.That(left.Equals(left));
+            Assert.That(right.Equals(left));
+            Assert.That(right.Equals(right));
 
-            ClassicAssert.IsTrue(left == right);
-            ClassicAssert.IsTrue(right == left);
+            Assert.That(left == right);
+            Assert.That(right == left);
 
-            ClassicAssert.AreEqual(left.GetHashCode(), right.GetHashCode());
+            Assert.That(right.GetHashCode(), Is.EqualTo(left.GetHashCode()));
         }
     }
 }

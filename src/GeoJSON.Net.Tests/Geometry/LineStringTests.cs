@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using GeoJSON.Net.Geometry;
 using Newtonsoft.Json;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
 
 namespace GeoJSON.Net.Tests.Geometry
 {
@@ -23,7 +22,7 @@ namespace GeoJSON.Net.Tests.Geometry
 
             var lineString = new LineString(coordinates);
 
-            ClassicAssert.IsTrue(lineString.IsClosed());
+            Assert.That(lineString.IsClosed());
         }
 
         [Test]
@@ -39,7 +38,7 @@ namespace GeoJSON.Net.Tests.Geometry
 
             var lineString = new LineString(coordinates);
 
-            ClassicAssert.IsFalse(lineString.IsClosed());
+            Assert.That(lineString.IsClosed(), Is.False);
         }
         
 
@@ -77,24 +76,24 @@ namespace GeoJSON.Net.Tests.Geometry
             var json = GetExpectedJson();
             var actualLineString = JsonConvert.DeserializeObject<LineString>(json);
 
-            ClassicAssert.AreEqual(expectedLineString, actualLineString);
+            Assert.That(actualLineString, Is.EqualTo(expectedLineString));
 
-            ClassicAssert.AreEqual(4, actualLineString.Coordinates.Count);
-            ClassicAssert.AreEqual(expectedLineString.Coordinates[0].Latitude, actualLineString.Coordinates[0].Latitude);
-            ClassicAssert.AreEqual(expectedLineString.Coordinates[0].Longitude, actualLineString.Coordinates[0].Longitude);
+            Assert.That(actualLineString.Coordinates.Count, Is.EqualTo(4));
+            Assert.That(actualLineString.Coordinates[0].Latitude, Is.EqualTo(expectedLineString.Coordinates[0].Latitude));
+            Assert.That(actualLineString.Coordinates[0].Longitude, Is.EqualTo(expectedLineString.Coordinates[0].Longitude));
         }
 
         [Test]
         public void Constructor_No_Coordinates_Throws_Exception()
         {
             var coordinates = new List<IPosition>();
-            ClassicAssert.Throws<ArgumentOutOfRangeException>(() => new LineString(coordinates));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new LineString(coordinates));
         }
 
         [Test]
         public void Constructor_Null_Coordinates_Throws_Exception()
         {
-            ClassicAssert.Throws<ArgumentNullException>(() => new LineString((IEnumerable<IPosition>)null));
+            Assert.Throws<ArgumentNullException>(() => new LineString((IEnumerable<IPosition>)null));
         }
 
         private LineString GetLineString(double offset = 0.0)
@@ -123,18 +122,18 @@ namespace GeoJSON.Net.Tests.Geometry
             var left = GetLineString(offset);
             var right = GetLineString(offset);
 
-            ClassicAssert.AreEqual(left, right);
-            ClassicAssert.AreEqual(right, left);
+            Assert.That(right, Is.EqualTo(left));
+            Assert.That(left, Is.EqualTo(right));
 
-            ClassicAssert.IsTrue(left.Equals(right));
-            ClassicAssert.IsTrue(left.Equals(left));
-            ClassicAssert.IsTrue(right.Equals(left));
-            ClassicAssert.IsTrue(right.Equals(right));
+            Assert.That(left.Equals(right));
+            Assert.That(left.Equals(left));
+            Assert.That(right.Equals(left));
+            Assert.That(right.Equals(right));
 
-            ClassicAssert.IsTrue(left == right);
-            ClassicAssert.IsTrue(right == left);
+            Assert.That(left == right);
+            Assert.That(right == left);
 
-            ClassicAssert.AreEqual(left.GetHashCode(), right.GetHashCode());
+            Assert.That(right.GetHashCode(), Is.EqualTo(left.GetHashCode()));
         }
     }
 }
