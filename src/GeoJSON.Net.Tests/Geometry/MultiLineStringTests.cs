@@ -31,8 +31,8 @@ namespace GeoJSON.Net.Tests.Geometry
 
             var multiLineString = JsonConvert.DeserializeObject<MultiLineString>(json);
 
-            Assert.IsNotNull(multiLineString);
-            Assert.AreEqual(expectedMultiLineString, multiLineString);
+            Assert.That(multiLineString, Is.Not.Null);
+            Assert.That(multiLineString, Is.EqualTo(expectedMultiLineString));
         }
 
         [Test]
@@ -98,18 +98,18 @@ namespace GeoJSON.Net.Tests.Geometry
 
             var right = new MultiLineString(rightLine);
 
-            Assert.AreEqual(left, right);
-            Assert.AreEqual(right, left);
+            Assert.That(right, Is.EqualTo(left));
+            Assert.That(left, Is.EqualTo(right));
 
-            Assert.IsTrue(left.Equals(right));
-            Assert.IsTrue(left.Equals(left));
-            Assert.IsTrue(right.Equals(left));
-            Assert.IsTrue(right.Equals(right));
+            Assert.That(left.Equals(right));
+            Assert.That(left.Equals(left));
+            Assert.That(right.Equals(left));
+            Assert.That(right.Equals(right));
 
-            Assert.IsTrue(left == right);
-            Assert.IsTrue(right == left);
+            Assert.That(left == right);
+            Assert.That(right == left);
 
-            Assert.AreEqual(left.GetHashCode(), right.GetHashCode());
+            Assert.That(right.GetHashCode(), Is.EqualTo(left.GetHashCode()));
         }
     }
 }

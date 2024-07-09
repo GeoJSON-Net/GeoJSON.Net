@@ -13,7 +13,7 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
         {
             var crs = new UnspecifiedCRS();
 
-            Assert.AreEqual(CRSType.Unspecified, crs.Type);
+            Assert.That(crs.Type, Is.EqualTo(CRSType.Unspecified));
         }
 
         [Test]
@@ -22,7 +22,7 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
             var collection = new FeatureCollection { CRS = new UnspecifiedCRS() };
             var expectedJson = "{\"type\":\"FeatureCollection\",\"crs\":null,\"features\":[] }";
             var actualJson = JsonConvert.SerializeObject(collection);
-            
+
             JsonAssert.AreEqual(expectedJson, actualJson);
         }
 
@@ -32,7 +32,7 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
             var json = "{\"type\":\"FeatureCollection\",\"crs\":null,\"features\":[] }";
             var featureCollection = JsonConvert.DeserializeObject<FeatureCollection>(json);
 
-            Assert.IsInstanceOf<UnspecifiedCRS>(featureCollection.CRS);
+            Assert.That(featureCollection.CRS, Is.InstanceOf<UnspecifiedCRS>());
         }
 
         [Test]
@@ -41,18 +41,18 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
             var left = new UnspecifiedCRS();
             var right = new UnspecifiedCRS();
 
-            Assert.AreEqual(left, right);
+            Assert.That(right, Is.EqualTo(left));
 
-            Assert.IsTrue(left == right);
-            Assert.IsTrue(right == left);
+            Assert.That(left == right);
+            Assert.That(right == left);
 
-            Assert.IsTrue(left.Equals(right));
-            Assert.IsTrue(right.Equals(left));
+            Assert.That(left.Equals(right));
+            Assert.That(right.Equals(left));
 
-            Assert.IsTrue(left.Equals(left));
-            Assert.IsTrue(right.Equals(right));
+            Assert.That(left.Equals(left));
+            Assert.That(right.Equals(right));
 
-            Assert.AreEqual(left.GetHashCode(), right.GetHashCode());
+            Assert.That(right.GetHashCode(), Is.EqualTo(left.GetHashCode()));
         }
     }
 }

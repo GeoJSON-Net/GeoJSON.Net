@@ -17,7 +17,7 @@ namespace GeoJSON.Net.Tests.Geometry
 
             var actualMultiPolygon = JsonConvert.DeserializeObject<MultiPolygon>(json);
 
-            Assert.AreEqual(expectMultiPolygon, actualMultiPolygon);
+            Assert.That(actualMultiPolygon, Is.EqualTo(expectMultiPolygon));
         }
 
         private MultiPolygon GetMultiPolygon(double offset = 0.0)
@@ -122,18 +122,18 @@ namespace GeoJSON.Net.Tests.Geometry
             var left = GetMultiPolygon(offset);
             var right = GetMultiPolygon(offset);
 
-            Assert.AreEqual(left, right);
-            Assert.AreEqual(right, left);
+            Assert.That(right, Is.EqualTo(left));
+            Assert.That(left, Is.EqualTo(right));
 
-            Assert.IsTrue(left.Equals(right));
-            Assert.IsTrue(left.Equals(left));
-            Assert.IsTrue(right.Equals(left));
-            Assert.IsTrue(right.Equals(right));
+            Assert.That(left.Equals(right));
+            Assert.That(left.Equals(left));
+            Assert.That(right.Equals(left));
+            Assert.That(right.Equals(right));
 
-            Assert.IsTrue(left == right);
-            Assert.IsTrue(right == left);
+            Assert.That(left == right);
+            Assert.That(right == left);
 
-            Assert.AreEqual(left.GetHashCode(), right.GetHashCode());
+            Assert.That(right.GetHashCode(), Is.EqualTo(left.GetHashCode()));
         }
     }
 }

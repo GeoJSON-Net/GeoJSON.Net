@@ -16,7 +16,7 @@ namespace GeoJSON.Net.Tests.Serialization
 
             var deserialized = JsonConvert.DeserializeObject<GeoJSONObject>(json, new GeoJsonConverter());
 
-            Assert.AreEqual(source, deserialized);
+            Assert.That(deserialized, Is.EqualTo(source));
         }
 
         [Test]
@@ -28,7 +28,7 @@ namespace GeoJSON.Net.Tests.Serialization
 
             var deserialized = JsonConvert.DeserializeObject<IGeoJSONObject>(json, new GeoJsonConverter());
 
-            Assert.AreEqual(source, deserialized);
+            Assert.That(deserialized, Is.EqualTo(source));
         }
     }
 }

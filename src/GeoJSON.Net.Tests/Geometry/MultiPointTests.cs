@@ -40,7 +40,7 @@ namespace GeoJSON.Net.Tests.Geometry
             var json = GetExpectedJson();
             var actualMultiPoint = JsonConvert.DeserializeObject<MultiPoint>(json);
 
-            Assert.AreEqual(expectedMultiPoint, actualMultiPoint);
+            Assert.That(actualMultiPoint, Is.EqualTo(expectedMultiPoint));
         }
 
         private List<Point> GetPoints(double offset)
@@ -68,18 +68,18 @@ namespace GeoJSON.Net.Tests.Geometry
             var left = new MultiPoint(GetPoints(offset));
             var right = new MultiPoint(GetPoints(offset));
 
-            Assert.AreEqual(left, right);
-            Assert.AreEqual(right, left);
+            Assert.That(right, Is.EqualTo(left));
+            Assert.That(left, Is.EqualTo(right));
 
-            Assert.IsTrue(left.Equals(right));
-            Assert.IsTrue(left.Equals(left));
-            Assert.IsTrue(right.Equals(left));
-            Assert.IsTrue(right.Equals(right));
+            Assert.That(left.Equals(right));
+            Assert.That(left.Equals(left));
+            Assert.That(right.Equals(left));
+            Assert.That(right.Equals(right));
 
-            Assert.IsTrue(left == right);
-            Assert.IsTrue(right == left);
+            Assert.That(left == right);
+            Assert.That(right == left);
 
-            Assert.AreEqual(left.GetHashCode(), right.GetHashCode());
+            Assert.That(right.GetHashCode(), Is.EqualTo(left.GetHashCode()));
         }
     }
 }

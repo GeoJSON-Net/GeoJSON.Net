@@ -15,7 +15,7 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
             var name = "EPSG:31370";
             var crs = new NamedCRS(name);
 
-            Assert.AreEqual(CRSType.Name, crs.Type);
+            Assert.That(crs.Type, Is.EqualTo(CRSType.Name));
         }
 
         [Test]
@@ -24,8 +24,8 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
             var name = "EPSG:31370";
             var crs = new NamedCRS(name);
 
-            Assert.IsTrue(crs.Properties.ContainsKey("name"));
-            Assert.AreEqual(name, crs.Properties["name"]);
+            Assert.That(crs.Properties.ContainsKey("name"));
+            Assert.That(crs.Properties["name"], Is.EqualTo(name));
         }
 
         [Test]
@@ -57,31 +57,31 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
             var left = new NamedCRS(name);
             var right = new NamedCRS(name);
 
-            Assert.AreEqual(left, right);
+            Assert.That(right, Is.EqualTo(left));
 
-            Assert.IsTrue(left == right);
-            Assert.IsTrue(right == left);
+            Assert.That(left == right);
+            Assert.That(right == left);
 
-            Assert.IsTrue(left.Equals(right));
-            Assert.IsTrue(right.Equals(left));
+            Assert.That(left.Equals(right));
+            Assert.That(right.Equals(left));
 
-            Assert.IsTrue(left.Equals(left));
-            Assert.IsTrue(right.Equals(right));
+            Assert.That(left.Equals(left));
+            Assert.That(right.Equals(right));
 
-            Assert.AreEqual(left.GetHashCode(), right.GetHashCode());
+            Assert.That(right.GetHashCode(), Is.EqualTo(left.GetHashCode()));
 
             name = "EPSG:25832";
             right = new NamedCRS(name);
 
-            Assert.AreNotEqual(left, right);
+            Assert.That(right, Is.Not.EqualTo(left));
 
-            Assert.IsFalse(left == right);
-            Assert.IsFalse(right == left);
+            Assert.That(left == right, Is.False);
+            Assert.That(right == left, Is.False);
 
-            Assert.IsFalse(left.Equals(right));
-            Assert.IsFalse(right.Equals(left));
+            Assert.That(left.Equals(right), Is.False);
+            Assert.That(right.Equals(left), Is.False);
 
-            Assert.AreNotEqual(left.GetHashCode(), right.GetHashCode());
+            Assert.That(right.GetHashCode(), Is.Not.EqualTo(left.GetHashCode()));
         }
     }
 }

@@ -22,7 +22,7 @@ namespace GeoJSON.Net.Tests.Geometry
 
             var lineString = new LineString(coordinates);
 
-            Assert.IsTrue(lineString.IsClosed());
+            Assert.That(lineString.IsClosed());
         }
 
         [Test]
@@ -38,7 +38,7 @@ namespace GeoJSON.Net.Tests.Geometry
 
             var lineString = new LineString(coordinates);
 
-            Assert.IsFalse(lineString.IsClosed());
+            Assert.That(lineString.IsClosed(), Is.False);
         }
         
 
@@ -76,11 +76,11 @@ namespace GeoJSON.Net.Tests.Geometry
             var json = GetExpectedJson();
             var actualLineString = JsonConvert.DeserializeObject<LineString>(json);
 
-            Assert.AreEqual(expectedLineString, actualLineString);
+            Assert.That(actualLineString, Is.EqualTo(expectedLineString));
 
-            Assert.AreEqual(4, actualLineString.Coordinates.Count);
-            Assert.AreEqual(expectedLineString.Coordinates[0].Latitude, actualLineString.Coordinates[0].Latitude);
-            Assert.AreEqual(expectedLineString.Coordinates[0].Longitude, actualLineString.Coordinates[0].Longitude);
+            Assert.That(actualLineString.Coordinates.Count, Is.EqualTo(4));
+            Assert.That(actualLineString.Coordinates[0].Latitude, Is.EqualTo(expectedLineString.Coordinates[0].Latitude));
+            Assert.That(actualLineString.Coordinates[0].Longitude, Is.EqualTo(expectedLineString.Coordinates[0].Longitude));
         }
 
         [Test]
@@ -122,18 +122,18 @@ namespace GeoJSON.Net.Tests.Geometry
             var left = GetLineString(offset);
             var right = GetLineString(offset);
 
-            Assert.AreEqual(left, right);
-            Assert.AreEqual(right, left);
+            Assert.That(right, Is.EqualTo(left));
+            Assert.That(left, Is.EqualTo(right));
 
-            Assert.IsTrue(left.Equals(right));
-            Assert.IsTrue(left.Equals(left));
-            Assert.IsTrue(right.Equals(left));
-            Assert.IsTrue(right.Equals(right));
+            Assert.That(left.Equals(right));
+            Assert.That(left.Equals(left));
+            Assert.That(right.Equals(left));
+            Assert.That(right.Equals(right));
 
-            Assert.IsTrue(left == right);
-            Assert.IsTrue(right == left);
+            Assert.That(left == right);
+            Assert.That(right == left);
 
-            Assert.AreEqual(left.GetHashCode(), right.GetHashCode());
+            Assert.That(right.GetHashCode(), Is.EqualTo(left.GetHashCode()));
         }
     }
 }

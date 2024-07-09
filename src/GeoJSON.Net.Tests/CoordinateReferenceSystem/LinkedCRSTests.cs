@@ -15,7 +15,7 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
         public void Has_Correct_Type()
         {
             var crs = new LinkedCRS(Href);
-            Assert.AreEqual(CRSType.Link, crs.Type);
+            Assert.That(crs.Type, Is.EqualTo(CRSType.Link));
         }
 
         [Test]
@@ -23,8 +23,8 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
         {
             var crs = new LinkedCRS(Href);
 
-            Assert.IsTrue(crs.Properties.ContainsKey("href"));
-            Assert.AreEqual(Href, crs.Properties["href"]);
+            Assert.That(crs.Properties.ContainsKey("href"));
+            Assert.That(crs.Properties["href"], Is.EqualTo(Href));
         }
 
         [Test]
@@ -33,8 +33,8 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
             const string type = "ogcwkt";
             var crs = new LinkedCRS(Href, type);
 
-            Assert.IsTrue(crs.Properties.ContainsKey("type"));
-            Assert.AreEqual(type, crs.Properties["type"]);
+            Assert.That(crs.Properties.ContainsKey("type"));
+            Assert.That(crs.Properties["type"], Is.EqualTo(type));
         }
 
         [Test]
@@ -53,9 +53,9 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
             var pointWithCRS = JsonConvert.DeserializeObject<Point>(pointJson);
             var linkCRS = pointWithCRS.CRS as LinkedCRS;
 
-            Assert.IsNotNull(linkCRS);
-            Assert.AreEqual(CRSType.Link, linkCRS.Type);
-            Assert.AreEqual(Href, linkCRS.Properties["href"]);
+            Assert.That(linkCRS, Is.Not.Null);
+            Assert.That(linkCRS.Type, Is.EqualTo(CRSType.Link));
+            Assert.That(linkCRS.Properties["href"], Is.EqualTo(Href));
         }
 
         [Test]
@@ -85,7 +85,7 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
 #endif
 
             var argumentExpection = Assert.Throws<ArgumentException>(() => { var crs = new LinkedCRS("http://not-a-valid-<>-url"); });
-            Assert.AreEqual(expected, argumentExpection.Message);
+            Assert.That(argumentExpection.Message, Is.EqualTo(expected));
         }
 
         [Test]
@@ -106,30 +106,30 @@ namespace GeoJSON.Net.Tests.CoordinateReferenceSystem
             var left = new LinkedCRS(Href);
             var right = new LinkedCRS(Href);
 
-            Assert.AreEqual(left, right);
+            Assert.That(right, Is.EqualTo(left));
 
-            Assert.IsTrue(left == right);
-            Assert.IsTrue(right == left);
+            Assert.That(left == right);
+            Assert.That(right == left);
 
-            Assert.IsTrue(left.Equals(right));
-            Assert.IsTrue(right.Equals(left));
+            Assert.That(left.Equals(right));
+            Assert.That(right.Equals(left));
 
-            Assert.IsTrue(left.Equals(left));
-            Assert.IsTrue(right.Equals(right));
+            Assert.That(left.Equals(left));
+            Assert.That(right.Equals(right));
 
-            Assert.AreEqual(left.GetHashCode(), right.GetHashCode());
+            Assert.That(right.GetHashCode(), Is.EqualTo(left.GetHashCode()));
 
             right = new LinkedCRS(Href + "?query=null");
 
-            Assert.AreNotEqual(left, right);
+            Assert.That(right, Is.Not.EqualTo(left));
 
-            Assert.IsFalse(left == right);
-            Assert.IsFalse(right == left);
+            Assert.That(left == right, Is.False);
+            Assert.That(right == left, Is.False);
 
-            Assert.IsFalse(left.Equals(right));
-            Assert.IsFalse(right.Equals(left));
+            Assert.That(left.Equals(right), Is.False);
+            Assert.That(right.Equals(left), Is.False);
 
-            Assert.AreNotEqual(left.GetHashCode(), right.GetHashCode());
+            Assert.That(right.GetHashCode(), Is.Not.EqualTo(left.GetHashCode()));
         }
     }
 }

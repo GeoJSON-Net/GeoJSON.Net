@@ -120,7 +120,7 @@ namespace GeoJSON.Net.Tests.Geometry
 
             var deserializedGeometry = JsonConvert.DeserializeObject<IGeometryObject>(json, new GeometryConverter());
 
-            Assert.AreEqual(geometry, deserializedGeometry);
+            Assert.That(deserializedGeometry, Is.EqualTo(geometry));
         }
 
         [Test]
@@ -128,7 +128,7 @@ namespace GeoJSON.Net.Tests.Geometry
         public void Serialization_Observes_Indenting_Setting_Of_Serializer(IGeometryObject geometry)
         {
             var json = JsonConvert.SerializeObject(geometry, Formatting.Indented);
-            Assert.IsTrue(json.Contains(Environment.NewLine));
+            Assert.That(json.Contains(Environment.NewLine));
         }
 
         [Test]
@@ -136,8 +136,8 @@ namespace GeoJSON.Net.Tests.Geometry
         public void Serialization_Observes_No_Indenting_Setting_Of_Serializer(IGeometryObject geometry)
         {
             var json = JsonConvert.SerializeObject(geometry, Formatting.None);
-            Assert.IsFalse(json.Contains(Environment.NewLine));
-            Assert.IsFalse(json.Contains(" "));
+            Assert.That(json.Contains(Environment.NewLine), Is.False);
+            Assert.That(json.Contains(" "), Is.False);
         }
 
         [Test]
@@ -150,7 +150,7 @@ namespace GeoJSON.Net.Tests.Geometry
 
             var deserializedClassWithGeometry = JsonConvert.DeserializeObject<ClassWithGeometryProperty>(json);
 
-            Assert.AreEqual(classWithGeometry, deserializedClassWithGeometry);
+            Assert.That(deserializedClassWithGeometry, Is.EqualTo(classWithGeometry));
         }
 
         [Test]
@@ -165,17 +165,17 @@ namespace GeoJSON.Net.Tests.Geometry
 
             var actual = classWithGeometry;
             var expected = deserializedClassWithGeometry;
-            
-            Assert.IsTrue(actual.Equals(expected));
-            Assert.IsTrue(actual.Equals(actual));
 
-            Assert.IsTrue(expected.Equals(actual));
-            Assert.IsTrue(expected.Equals(expected));
+            Assert.That(actual.Equals(expected));
+            Assert.That(actual.Equals(actual));
 
-            Assert.IsTrue(classWithGeometry == deserializedClassWithGeometry);
-            Assert.IsTrue(deserializedClassWithGeometry == classWithGeometry);
+            Assert.That(expected.Equals(actual));
+            Assert.That(expected.Equals(expected));
 
-            Assert.AreEqual(actual.GetHashCode(), expected.GetHashCode());
+            Assert.That(classWithGeometry == deserializedClassWithGeometry);
+            Assert.That(deserializedClassWithGeometry == classWithGeometry);
+
+            Assert.That(expected.GetHashCode(), Is.EqualTo(actual.GetHashCode()));
         }
 
         internal class ClassWithGeometryProperty

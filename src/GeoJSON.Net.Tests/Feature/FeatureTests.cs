@@ -1,9 +1,9 @@
-using GeoJSON.Net.Geometry;
-using Newtonsoft.Json;
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using GeoJSON.Net.Geometry;
+using Newtonsoft.Json;
+using NUnit.Framework;
 
 namespace GeoJSON.Net.Tests.Feature
 {
@@ -17,16 +17,16 @@ namespace GeoJSON.Net.Tests.Feature
 
             var feature = JsonConvert.DeserializeObject<Net.Feature.Feature>(json);
 
-            Assert.IsNotNull(feature);
-            Assert.IsNotNull(feature.Properties);
-            Assert.IsTrue(feature.Properties.Any());
+            Assert.That(feature, Is.Not.Null);
+            Assert.That(feature.Properties, Is.Not.Null);
+            Assert.That(feature.Properties.Any());
 
-            Assert.IsTrue(feature.Properties.ContainsKey("name"));
-            Assert.AreEqual(feature.Properties["name"], "Dinagat Islands");
+            Assert.That(feature.Properties.ContainsKey("name"));
+            Assert.That(feature.Properties["name"], Is.EqualTo("Dinagat Islands"));
 
-            Assert.AreEqual("test-id", feature.Id);
+            Assert.That(feature.Id, Is.EqualTo("test-id"));
 
-            Assert.AreEqual(GeoJSONObjectType.Point, feature.Geometry.Type);
+            Assert.That(feature.Geometry.Type, Is.EqualTo(GeoJSONObjectType.Point));
         }
 
         [Test]
@@ -36,11 +36,11 @@ namespace GeoJSON.Net.Tests.Feature
 
             var feature = JsonConvert.DeserializeObject<Net.Feature.Feature>(json);
 
-            Assert.IsNotNull(feature);
-            Assert.IsNotNull(feature.Properties);
-            Assert.IsEmpty(feature.Properties);
+            Assert.That(feature, Is.Not.Null);
+            Assert.That(feature.Properties, Is.Not.Null);
+            Assert.That(feature.Properties, Is.Empty);
 
-            Assert.AreEqual(GeoJSONObjectType.Polygon, feature.Geometry.Type);
+            Assert.That(feature.Geometry.Type, Is.EqualTo(GeoJSONObjectType.Polygon));
         }
 
         [Test]
@@ -50,13 +50,13 @@ namespace GeoJSON.Net.Tests.Feature
 
             var feature = JsonConvert.DeserializeObject<Net.Feature.Feature>(json);
 
-            Assert.IsNotNull(feature);
-            Assert.IsNotNull(feature.Properties);
-            Assert.IsTrue(feature.Properties.Any());
-            Assert.IsTrue(feature.Properties.ContainsKey("name"));
-            Assert.AreEqual(feature.Properties["name"], "Unlocalized Feature");
+            Assert.That(feature, Is.Not.Null);
+            Assert.That(feature.Properties, Is.Not.Null);
+            Assert.That(feature.Properties.Any());
+            Assert.That(feature.Properties.ContainsKey("name"));
+            Assert.That(feature.Properties["name"], Is.EqualTo("Unlocalized Feature"));
 
-            Assert.IsNull(feature.Geometry);
+            Assert.That(feature.Geometry, Is.Null);
         }
 
         [Test]
@@ -66,13 +66,13 @@ namespace GeoJSON.Net.Tests.Feature
 
             var feature = JsonConvert.DeserializeObject<Net.Feature.Feature>(json);
 
-            Assert.IsNotNull(feature);
-            Assert.IsNotNull(feature.Properties);
-            Assert.IsTrue(feature.Properties.Any());
-            Assert.IsTrue(feature.Properties.ContainsKey("name"));
-            Assert.AreEqual(feature.Properties["name"], "Unlocalized Feature");
+            Assert.That(feature, Is.Not.Null);
+            Assert.That(feature.Properties, Is.Not.Null);
+            Assert.That(feature.Properties.Any());
+            Assert.That(feature.Properties.ContainsKey("name"));
+            Assert.That(feature.Properties["name"], Is.EqualTo("Unlocalized Feature"));
 
-            Assert.IsNull(feature.Geometry);
+            Assert.That(feature.Geometry, Is.Null);
         }
 
         [Test]
@@ -231,7 +231,7 @@ namespace GeoJSON.Net.Tests.Feature
             var expectedJson = this.GetExpectedJson();
             var actualJson = JsonConvert.SerializeObject(feature);
 
-            Assert.False(string.IsNullOrEmpty(expectedJson));
+            Assert.That(string.IsNullOrEmpty(expectedJson), Is.False);
             JsonAssert.AreEqual(expectedJson, actualJson);
         }
 
@@ -250,9 +250,9 @@ namespace GeoJSON.Net.Tests.Feature
 
             Net.Feature.Feature feature = new Net.Feature.Feature(new Point(new Position(10, 10)), properties);
 
-            Assert.IsNotNull(feature.Properties);
-            Assert.IsTrue(feature.Properties.Count > 1);
-            Assert.AreEqual(feature.Properties.Count, 6);
+            Assert.That(feature.Properties, Is.Not.Null);
+            Assert.That(feature.Properties.Count > 1);
+            Assert.That(feature.Properties.Count, Is.EqualTo(6));
         }
 
         [Test]
@@ -272,11 +272,10 @@ namespace GeoJSON.Net.Tests.Feature
 
             Net.Feature.Feature feature = new Net.Feature.Feature(new Point(new Position(10, 10)), properties);
 
-            Assert.IsNotNull(feature.Properties);
-            Assert.IsTrue(feature.Properties.Count > 1);
-            Assert.AreEqual(
-                feature.Properties.Count,
-                expectedProperties,
+            Assert.That(feature.Properties, Is.Not.Null);
+            Assert.That(feature.Properties.Count > 1);
+            Assert.That(
+                expectedProperties, Is.EqualTo(feature.Properties.Count),
                 $"Expected: {expectedProperties} Actual: {feature.Properties.Count}");
         }
 
@@ -285,8 +284,8 @@ namespace GeoJSON.Net.Tests.Feature
         {
             Net.Feature.Feature feature = new Net.Feature.Feature(new Point(new Position(10, 10)), (object)null);
 
-            Assert.IsNotNull(feature.Properties);
-            CollectionAssert.IsEmpty(feature.Properties);
+            Assert.That(feature.Properties, Is.Not.Null);
+            Assert.That(feature.Properties, Is.Empty);
         }
 
         [Test]
@@ -414,8 +413,8 @@ namespace GeoJSON.Net.Tests.Feature
                 equal2 = feature == null;
             });
 
-            Assert.IsFalse(equal1);
-            Assert.IsFalse(equal2);
+            Assert.That(equal1, Is.False);
+            Assert.That(equal2, Is.False);
         }
 
         [Test]
@@ -429,7 +428,7 @@ namespace GeoJSON.Net.Tests.Feature
                 equal1 = feature != null;
             });
 
-            Assert.IsFalse(equal1);
+            Assert.That(equal1, Is.False);
         }
 
         [Test]
@@ -445,8 +444,8 @@ namespace GeoJSON.Net.Tests.Feature
                 equal2 = feature.Equals(feature);
             });
 
-            Assert.IsTrue(equal1);
-            Assert.IsTrue(equal2);
+            Assert.That(equal1);
+            Assert.That(equal2);
         }
 
         [Test]
@@ -464,8 +463,8 @@ namespace GeoJSON.Net.Tests.Feature
                 equal2 = feature1.Equals(feature2);
             });
 
-            Assert.IsFalse(equal1);
-            Assert.IsFalse(equal2);
+            Assert.That(equal1, Is.False);
+            Assert.That(equal2, Is.False);
         }
 
         [Test]
@@ -483,8 +482,8 @@ namespace GeoJSON.Net.Tests.Feature
                 equal2 = feature1.Equals(feature2);
             });
 
-            Assert.IsFalse(equal1);
-            Assert.IsFalse(equal2);
+            Assert.That(equal1, Is.False);
+            Assert.That(equal2, Is.False);
         }
 
         [Test]
@@ -502,8 +501,8 @@ namespace GeoJSON.Net.Tests.Feature
                 equal2 = feature1.Equals(feature2);
             });
 
-            Assert.IsTrue(equal1);
-            Assert.IsTrue(equal2);
+            Assert.That(equal1);
+            Assert.That(equal2);
         }
 
 
@@ -553,37 +552,37 @@ namespace GeoJSON.Net.Tests.Feature
 
         private void Assert_Are_Equal(Net.Feature.Feature left, Net.Feature.Feature right)
         {
-            Assert.AreEqual(left, right);
+            Assert.That(right, Is.EqualTo(left));
 
-            Assert.IsTrue(left.Equals(right));
-            Assert.IsTrue(right.Equals(left));
+            Assert.That(left.Equals(right));
+            Assert.That(right.Equals(left));
 
-            Assert.IsTrue(left.Equals(left));
-            Assert.IsTrue(right.Equals(right));
+            Assert.That(left.Equals(left));
+            Assert.That(right.Equals(right));
 
-            Assert.IsTrue(left == right);
-            Assert.IsTrue(right == left);
+            Assert.That(left == right);
+            Assert.That(right == left);
 
-            Assert.IsFalse(left != right);
-            Assert.IsFalse(right != left);
+            Assert.That(left != right, Is.False);
+            Assert.That(right != left, Is.False);
 
-            Assert.AreEqual(left.GetHashCode(), right.GetHashCode());
+            Assert.That(right.GetHashCode(), Is.EqualTo(left.GetHashCode()));
         }
 
         private void Assert_Are_Not_Equal(Net.Feature.Feature left, Net.Feature.Feature right)
         {
-            Assert.AreNotEqual(left, right);
+            Assert.That(right, Is.Not.EqualTo(left));
 
-            Assert.IsFalse(left.Equals(right));
-            Assert.IsFalse(right.Equals(left));
+            Assert.That(left.Equals(right), Is.False);
+            Assert.That(right.Equals(left), Is.False);
 
-            Assert.IsFalse(left == right);
-            Assert.IsFalse(right == left);
+            Assert.That(left == right, Is.False);
+            Assert.That(right == left, Is.False);
 
-            Assert.IsTrue(left != right);
-            Assert.IsTrue(right != left);
+            Assert.That(left != right);
+            Assert.That(right != left);
 
-            Assert.AreNotEqual(left.GetHashCode(), right.GetHashCode());
+            Assert.That(right.GetHashCode(), Is.Not.EqualTo(left.GetHashCode()));
         }
     }
 }

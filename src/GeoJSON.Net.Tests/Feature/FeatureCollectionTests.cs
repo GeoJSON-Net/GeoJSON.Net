@@ -27,12 +27,12 @@ namespace GeoJSON.Net.Tests.Feature
 
             var featureCollection = JsonConvert.DeserializeObject<FeatureCollection>(json);
 
-            Assert.IsNotNull(featureCollection);
-            Assert.IsNotNull(featureCollection.Features);
-            Assert.AreEqual(featureCollection.Features.Count, 3);
-            Assert.AreEqual(featureCollection.Features.Count(x => x.Geometry.Type == GeoJSONObjectType.Point), 1);
-            Assert.AreEqual(featureCollection.Features.Count(x => x.Geometry.Type == GeoJSONObjectType.MultiPolygon), 1);
-            Assert.AreEqual(featureCollection.Features.Count(x => x.Geometry.Type == GeoJSONObjectType.Polygon), 1);
+            Assert.That(featureCollection, Is.Not.Null);
+            Assert.That(featureCollection.Features, Is.Not.Null);
+            Assert.That(featureCollection.Features.Count, Is.EqualTo(3));
+            Assert.That(featureCollection.Features.Count(x => x.Geometry.Type == GeoJSONObjectType.Point), Is.EqualTo(1));
+            Assert.That(featureCollection.Features.Count(x => x.Geometry.Type == GeoJSONObjectType.MultiPolygon), Is.EqualTo(1));
+            Assert.That(featureCollection.Features.Count(x => x.Geometry.Type == GeoJSONObjectType.Polygon), Is.EqualTo(1));
         }
         
         [Test]
@@ -42,11 +42,11 @@ namespace GeoJSON.Net.Tests.Feature
 
             var featureCollection = JsonConvert.DeserializeObject<FeatureCollection<FeatureCollectionTestPropertyObject>>(json);
 
-            Assert.IsNotNull(featureCollection);
-            Assert.IsNotNull(featureCollection.Features);
-            Assert.AreEqual(featureCollection.Features.Count, 3);
-            Assert.AreEqual("DD", featureCollection.Features.First().Properties.Name);
-            Assert.AreEqual(123, featureCollection.Features.First().Properties.Size);
+            Assert.That(featureCollection, Is.Not.Null);
+            Assert.That(featureCollection.Features, Is.Not.Null);
+            Assert.That(featureCollection.Features.Count, Is.EqualTo(3));
+            Assert.That(featureCollection.Features.First().Properties.Name, Is.EqualTo("DD"));
+            Assert.That(featureCollection.Features.First().Properties.Size, Is.EqualTo(123));
         }
         
         
@@ -75,9 +75,9 @@ namespace GeoJSON.Net.Tests.Feature
 
             var actualJson = JsonConvert.SerializeObject(model);
 
-            Assert.IsNotNull(actualJson);
+            Assert.That(actualJson, Is.Not.Null);
 
-            Assert.IsFalse(string.IsNullOrEmpty(actualJson));
+            Assert.That(string.IsNullOrEmpty(actualJson), Is.False);
         }
         
         [Test]
@@ -138,8 +138,8 @@ namespace GeoJSON.Net.Tests.Feature
                 var expectedId = expectedIds[i];
                 var expectedIndex = expectedIndexes[i];
 
-                Assert.AreEqual(expectedId, actualId);
-                Assert.AreEqual(expectedIndex, actualIndex);
+                Assert.That(actualId, Is.EqualTo(expectedId));
+                Assert.That(actualIndex, Is.EqualTo(expectedIndex));
 
                 Assert.Inconclusive("not supported. the Feature.Id is optional. " + 
                     " create a new class that inherits from" +
@@ -171,21 +171,21 @@ namespace GeoJSON.Net.Tests.Feature
 
         private void Assert_Are_Equal(FeatureCollection left, FeatureCollection right)
         {
-            Assert.AreEqual(left, right);
+            Assert.That(right, Is.EqualTo(left));
 
-            Assert.IsTrue(left.Equals(right));
-            Assert.IsTrue(right.Equals(left));
+            Assert.That(left.Equals(right));
+            Assert.That(right.Equals(left));
 
-            Assert.IsTrue(left.Equals(left));
-            Assert.IsTrue(right.Equals(right));
+            Assert.That(left.Equals(left));
+            Assert.That(right.Equals(right));
 
-            Assert.IsTrue(left == right);
-            Assert.IsTrue(right == left);
+            Assert.That(left == right);
+            Assert.That(right == left);
 
-            Assert.IsFalse(left != right);
-            Assert.IsFalse(right != left);
+            Assert.That(left != right, Is.False);
+            Assert.That(right != left, Is.False);
 
-            Assert.AreEqual(left.GetHashCode(), right.GetHashCode());
+            Assert.That(right.GetHashCode(), Is.EqualTo(left.GetHashCode()));
         }
     }
     

@@ -51,7 +51,7 @@ namespace GeoJSON.Net.Tests.Geometry
             var json = JsonConvert.SerializeObject(polygon, serializerSettings);
             var result = JsonConvert.DeserializeObject<IGeometryObject>(json, serializerSettings);
 
-            Assert.AreEqual(result, polygon);
+            Assert.That(polygon, Is.EqualTo(result));
         }
 
         [Test]
@@ -265,7 +265,7 @@ namespace GeoJSON.Net.Tests.Geometry
             });
 
             var actualPolygon = JsonConvert.DeserializeObject<Polygon>(json);
-            Assert.AreEqual(expectedPolygon, actualPolygon);
+            Assert.That(actualPolygon, Is.EqualTo(expectedPolygon));
         }
 
         [Test]
@@ -286,7 +286,7 @@ namespace GeoJSON.Net.Tests.Geometry
 
             var actualPolygon = JsonConvert.DeserializeObject<Polygon>(json);
 
-            Assert.AreEqual(expectedPolygon, actualPolygon);
+            Assert.That(actualPolygon, Is.EqualTo(expectedPolygon));
         }
         
         [Test]
@@ -303,18 +303,18 @@ namespace GeoJSON.Net.Tests.Geometry
             var left = GetPolygon(offset);
             var right = GetPolygon(offset);
 
-            Assert.AreEqual(left, right);
-            Assert.AreEqual(right, left);
+            Assert.That(right, Is.EqualTo(left));
+            Assert.That(left, Is.EqualTo(right));
 
-            Assert.IsTrue(left.Equals(right));
-            Assert.IsTrue(left.Equals(left));
-            Assert.IsTrue(right.Equals(left));
-            Assert.IsTrue(right.Equals(right));
+            Assert.That(left.Equals(right));
+            Assert.That(left.Equals(left));
+            Assert.That(right.Equals(left));
+            Assert.That(right.Equals(right));
 
-            Assert.IsTrue(left == right);
-            Assert.IsTrue(right == left);
+            Assert.That(left == right);
+            Assert.That(right == left);
 
-            Assert.AreEqual(left.GetHashCode(), right.GetHashCode());
+            Assert.That(right.GetHashCode(), Is.EqualTo(left.GetHashCode()));
         }
 
         

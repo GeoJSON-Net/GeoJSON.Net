@@ -17,19 +17,19 @@ namespace GeoJSON.Net.Tests.Feature
 
             var feature = JsonConvert.DeserializeObject<Feature<Point>>(json);
 
-            Assert.IsNotNull(feature);
-            Assert.IsNotNull(feature.Properties);
-            Assert.IsTrue(feature.Properties.Any());
+            Assert.That(feature, Is.Not.Null);
+            Assert.That(feature.Properties, Is.Not.Null);
+            Assert.That(feature.Properties.Any());
 
-            Assert.IsTrue(feature.Properties.ContainsKey("name"));
-            Assert.AreEqual("Dinagat Islands", feature.Properties["name"]);
+            Assert.That(feature.Properties.ContainsKey("name"));
+            Assert.That(feature.Properties["name"], Is.EqualTo("Dinagat Islands"));
 
-            Assert.AreEqual("test-id", feature.Id);
+            Assert.That(feature.Id, Is.EqualTo("test-id"));
 
-            Assert.AreEqual(GeoJSONObjectType.Point, feature.Geometry.Type);
-            Assert.AreEqual(125.6, feature.Geometry.Coordinates.Longitude);
-            Assert.AreEqual(10.1, feature.Geometry.Coordinates.Latitude);
-            Assert.AreEqual(456, feature.Geometry.Coordinates.Altitude);
+            Assert.That(feature.Geometry.Type, Is.EqualTo(GeoJSONObjectType.Point));
+            Assert.That(feature.Geometry.Coordinates.Longitude, Is.EqualTo(125.6));
+            Assert.That(feature.Geometry.Coordinates.Latitude, Is.EqualTo(10.1));
+            Assert.That(feature.Geometry.Coordinates.Altitude, Is.EqualTo(456));
         }
 
         [Test]
@@ -39,18 +39,18 @@ namespace GeoJSON.Net.Tests.Feature
 
             var feature = JsonConvert.DeserializeObject<Feature<LineString>>(json);
 
-            Assert.IsNotNull(feature);
-            Assert.IsNotNull(feature.Properties);
-            Assert.IsTrue(feature.Properties.Any());
+            Assert.That(feature, Is.Not.Null);
+            Assert.That(feature.Properties, Is.Not.Null);
+            Assert.That(feature.Properties.Any());
 
-            Assert.IsTrue(feature.Properties.ContainsKey("name"));
-            Assert.AreEqual("Dinagat Islands", feature.Properties["name"]);
+            Assert.That(feature.Properties.ContainsKey("name"));
+            Assert.That(feature.Properties["name"], Is.EqualTo("Dinagat Islands"));
 
-            Assert.AreEqual("test-id", feature.Id);
+            Assert.That(feature.Id, Is.EqualTo("test-id"));
 
-            Assert.AreEqual(GeoJSONObjectType.LineString, feature.Geometry.Type);
+            Assert.That(feature.Geometry.Type, Is.EqualTo(GeoJSONObjectType.LineString));
 
-            Assert.AreEqual(4, feature.Geometry.Coordinates.Count);
+            Assert.That(feature.Geometry.Coordinates.Count, Is.EqualTo(4));
 
             //Assert.AreEqual(125.6, feature.Geometry.Coordinates.Longitude);
             //Assert.AreEqual(10.1, feature.Geometry.Coordinates.Latitude);
@@ -78,8 +78,8 @@ namespace GeoJSON.Net.Tests.Feature
                 equal2 = feature.Equals(null);
             });
 
-            Assert.IsFalse(equal1);
-            Assert.IsFalse(equal2);
+            Assert.That(equal1, Is.False);
+            Assert.That(equal2, Is.False);
         }
 
         private class TypedFeatureProps
@@ -96,15 +96,15 @@ namespace GeoJSON.Net.Tests.Feature
             var json = GetExpectedJson();
             var feature = JsonConvert.DeserializeObject<Feature<Point, TypedFeatureProps>>(json);
 
-            Assert.IsNotNull(feature);
+            Assert.That(feature, Is.Not.Null);
 
-            Assert.IsNotNull(feature.Properties);
-            Assert.AreEqual(feature.Properties.Name, "Dinagat Islands");
-            Assert.AreEqual(feature.Properties.Value, 4.2);
+            Assert.That(feature.Properties, Is.Not.Null);
+            Assert.That(feature.Properties.Name, Is.EqualTo("Dinagat Islands"));
+            Assert.That(feature.Properties.Value, Is.EqualTo(4.2));
 
-            Assert.AreEqual(feature.Id, "test-id");
+            Assert.That(feature.Id, Is.EqualTo("test-id"));
 
-            Assert.AreEqual(feature.Geometry.Type, GeoJSONObjectType.Point);
+            Assert.That(feature.Geometry.Type, Is.EqualTo(GeoJSONObjectType.Point));
         }
 
 
