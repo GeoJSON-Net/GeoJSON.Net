@@ -3,24 +3,19 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1;net462;net6.0;net8.0</TargetFrameworks>
     <Description>.Net types for the GeoJSON RFC to be used with Json.Net</Description>
-    <Authors>Matt Hunt;Joerg Battermann;Xavier Fischer</Authors>
+    <Authors>Matt Hunt;Joerg Battermann;Xavier Fischer;Janus Weil</Authors>
     <Company>GeoJSON.Net</Company>
-    <Copyright>Copyright © Joerg Battermann, Matt Hunt, Xavier Fischer and Contributors, 2014 - 2019</Copyright>
+    <Copyright>Copyright © Joerg Battermann, Matt Hunt, Xavier Fischer, Janus Weil and Contributors, 2014 - 2024</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.2.16</Version>
+    <Version>1.4.0</Version>
     <PackageProjectUrl>https://github.com/GeoJSON-Net/GeoJSON.Net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/GeoJSON-Net/GeoJSON.Net.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>geojson;geo;json;geolocation</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageReleaseNotes>Fixes exception when serializing polygons</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
-
-  <PropertyGroup>
-    <FrameworkPathOverride Condition="'$(TargetFramework)' == 'net35'">$(MSBuildProgramFiles32)\Reference Assemblies\Microsoft\Framework\.NETFramework\v3.5\Profile\Client</FrameworkPathOverride>
-  </PropertyGroup>
 </Project>
