@@ -40,7 +40,7 @@ If you still need to use Newtonsoft.Json in ASP.Net Core 3.1+, you must overwrit
 - add "services.AddControllers().AddNewtonsoftJson();" to your service configuration.
 
 ## Contributing
-Highly welcome! Just fork away and send a pull request. We try and review most pull requests within a couple of days. There is now a version 2.0.0 branch. I've created this ready for any breaking changes and any extra features and would encourage anything that isn't a bug fix to go in there.
+Highly welcome! Just fork away and send a pull request. We try and review most pull requests within a couple of days.
 
 ## Thanks
 This library would be NOTHING without its [contributors](https://github.com/GeoJSON-Net/GeoJSON.Net/graphs/contributors) - thanks so much!!
