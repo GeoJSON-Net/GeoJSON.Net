@@ -45,6 +45,8 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: nupkg
-        path: ./src/GeoJSON.Net/bin/Release/*.nupkg
+        path: |
+          ./src/GeoJSON.Net/bin/Release/*.nupkg
+          ./src/GeoJSON.Net/bin/Release/*.snupkg
     - name: Test
       run: dotnet test src/GeoJSON.Net.sln --no-restore --verbosity normal

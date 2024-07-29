@@ -1,21 +1,21 @@
-name: 'Release' 
+name: 'Release'
 
 on:
   release:
-    types: 
+    types:
       - published
 
 env:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
   DOTNET_CLI_TELEMETRY_OPTOUT: true
-  
+
   # Project name to pack and publish
   PROJECT_NAME: GeoJSON.Net
 
    # Official NuGet Feed settings
   NUGET_FEED: https://api.nuget.org/v3/index.json
   NUGET_KEY: ${{ secrets.NUGET_KEY }}
-  NUGET_VERSIONING_REGEX: "[0-9]+\\.[0-9]+\\.[0-9]+(-[a-zA-Z]+)?"  
+  NUGET_VERSIONING_REGEX: "[0-9]+\\.[0-9]+\\.[0-9]+(-[a-zA-Z]+)?"
 
 jobs:
   deploy:
@@ -35,16 +35,11 @@ jobs:
           }
           echo "Version to use is - $VERSION"
           echo "RELEASE_VERSION=$VERSION" | Out-File -FilePath ${env:GITHUB_ENV} -Append
-      - uses: actions/checkout@v2 
+      - uses: actions/checkout@v4
       - name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: |
-            3.1.x
-            5.0.x
-            6.0.x
-            7.0.x
-            8.0.x
+          dotnet-version: '8.0.x'
       - name: Install dependencies
         run: dotnet restore src/${{ env.PROJECT_NAME }}.sln
       - name: Build solution

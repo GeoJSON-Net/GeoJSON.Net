@@ -7,6 +7,8 @@
     <Company>GeoJSON.Net</Company>
     <Copyright>Copyright © Joerg Battermann, Matt Hunt, Xavier Fischer, Janus Weil and Contributors, 2014 - 2024</Copyright>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <Version>1.4.0</Version>
     <PackageProjectUrl>https://github.com/GeoJSON-Net/GeoJSON.Net</PackageProjectUrl>
     <RepositoryUrl>https://github.com/GeoJSON-Net/GeoJSON.Net.git</RepositoryUrl>
