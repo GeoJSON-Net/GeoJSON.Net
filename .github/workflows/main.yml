@@ -27,6 +27,23 @@ jobs:
     - name: Test
       run: dotnet test src/GeoJSON.Net.sln --no-restore --verbosity normal
 
+  macBuild:
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+    - name: Install dependencies
+      run: dotnet restore src/GeoJSON.Net.sln
+    - name: Build
+      run: dotnet build src/GeoJSON.Net.sln -c Release --no-restore -p:Version=$(git describe --tags)
+    - name: Test
+      run: dotnet test src/GeoJSON.Net.sln --no-restore --verbosity normal
+
   winBuild:
     runs-on: windows-latest
     steps:
